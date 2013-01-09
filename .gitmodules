@@ -1,0 +1,6 @@
+[submodule "src/vendors/Font-Awesome"]
+	path = src/vendors/Font-Awesome
+	url = git://github.com/FortAwesome/Font-Awesome.git
+[submodule "src/vendors/Metro-UI-CSS"]
+	path = src/vendors/Metro-UI-CSS
+	url = git://github.com/olton/Metro-UI-CSS.git
