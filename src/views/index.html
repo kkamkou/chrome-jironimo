@@ -1,0 +1,12 @@
+<div ng-repeat="issue in issues">
+  <div class="tile {{issue._colors.bg}}" ng-class="issue.fields.issuetype.name == 'Story' && 'double'">
+    <div class="tile-content">
+      <h4>{{issue.key}}</h4>
+      <h6>{{issue.fields.reporter.displayName}}</h6>
+      <p>{{issue.fields.description}}</p>
+    </div>
+    <div class="brand">
+      <span class="name">{{issue.fields.issuetype.name}}</span>
+    </div>
+  </div>
+</div>

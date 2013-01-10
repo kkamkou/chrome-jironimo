@@ -4,6 +4,7 @@
   "manifest_version": 2,
   "default_locale": "en",
   "description": "__MSG_extensionDescription__",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "icons": {
     "16": "/icons/16.png",
     "48": "/icons/48.png",
@@ -11,9 +12,10 @@
   },
   "browser_action": {
     "default_icon": "/icons/128.png",
-    "default_popup": "/app/layouts/popup.html"
+    "default_popup": "/views/default.html"
   },
   "permissions": [
+    "http://*/",
     "tabs",
     "cookies",
     "notifications"
