@@ -1,0 +1,46 @@
+<div class="page secondary">
+  <div class="page-header">
+    <div class="page-header-content">
+      <h1>
+        Jironimo
+        <small>Account</small>
+      </h1>
+    </div>
+  </div>
+
+  <div class="page-region">
+    <div class="page-region-content">
+
+      <div class="toolbar">
+        <button disabled><i class="icon-key"></i></button>
+        <a href="#/settings/colors"><i class="icon-sun-3"></i></a>
+        <a href="#/settings/timer"><i class="icon-clock"></i></a>
+      </div>
+
+      <form ng-submit="save('account', account)">
+          <div class="span12">
+            <h3>JIRA&trade; login information</h3>
+          </div>
+          <div class="input-control text span6">
+            <input type="text" ng-model="account.login" placeholder="Login" tabindex="1">
+            <button class="helper"></button>
+          </div>
+          <div class="input-control text span6">
+            <input type="password" ng-model="account.password" placeholder="Password" tabindex="2">
+            <button class="helper"></button>
+          </div>
+
+          <div class="span12">
+            <h3>JIRA&trade; address</h3>
+          </div>
+          <div class="input-control text span6">
+            <input type="url" ng-model="account.url" placeholder="https://jira.atlassian.com" tabindex="3">
+            <button class="helper"></button>
+          </div>
+
+          <input type="submit" value="Save" tabindex="4">
+      </form>
+
+    </div>
+  </div>
+</div>

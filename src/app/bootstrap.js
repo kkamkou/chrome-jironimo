@@ -7,6 +7,24 @@ var jironimo = angular
         controller: 'IndexController'
       });
 
+      // settings action
+      $routeProvider.when('/settings', {
+        templateUrl: '/views/options-account.html',
+        controller: 'SettingsController'
+      });
+
+      // settings colors action
+      $routeProvider.when('/settings/colors', {
+        templateUrl: '/views/options-colors.html',
+        controller: 'SettingsController'
+      });
+
+      // settings timer action
+      $routeProvider.when('/settings/timer', {
+        templateUrl: '/views/options-timer.html',
+        controller: 'SettingsController'
+      });
+
       // fallback action
       $routeProvider.otherwise({redirectTo: '/'});
     }

@@ -31,7 +31,7 @@ function IndexController($scope, jrApi) {
         $scope.issues.push(issue);
       });
 
-      console.log(data.issues);
+      //console.log(data.issues);
 
       $scope.$apply();
     });
