@@ -19,6 +19,7 @@ function JiraApi(settings) {
       cache: false,
       data: dataSet,
       dataType: 'json',
+      timeout: 5000,
       headers: {Authorization: this._getAuthHeader()}
     });
 
@@ -40,14 +41,20 @@ function JiraApi(settings) {
         };
 
       // error messages
-      messages = loginReason
-        ? [loginReasonSet[loginReason]]
-        : angular.fromJson(err.responseText).errorMessages;
+      if (loginReason) {
+        messages = [loginReasonSet[loginReason]];
+      } else {
+        if (err.responseText) {
+          messages = angular.fromJson(err.responseText).errorMessages;
+        }
+      }
 
       // custom message
       $('body').append(
         '<div class="error-bar">' +
-          '<h3 class="fg-color-white">' + err.statusText + '</h3>' +
+          '<h3 class="fg-color-white">' +
+            S(err.statusText).capitalize().s +
+          '</h3>' +
           '<p>' + messages.join(';') + '</p>' +
         '</div>'
       );
