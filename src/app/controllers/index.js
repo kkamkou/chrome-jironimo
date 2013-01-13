@@ -15,6 +15,11 @@ function IndexController($scope, jrApi) {
   this.refreshTickets = function () {
     $scope.issues = [];
 
+    // some initial checks
+    if (jrApi.isAuthenticated()) {
+      return false;
+    };
+
     jrApi.search('assignee = currentUser() ORDER BY updatedDate DESC', function (err, data) {
       if (err) {
         return false;

@@ -1,7 +1,6 @@
 // default options
 if (localStorage.settings) {
   localStorage.settings = {};
-  console.log(localStorage.settings)
   localStorage.settings.account = {url: '', login: '', password: ''};
 }
 
