@@ -44,5 +44,7 @@ function IndexController($scope, jrApi) {
     setTimeout(self.refreshTickets, 20000);
   };
 
-  this.refreshTickets();
+  if (localStorage.account) {
+    this.refreshTickets();
+  }
 }

@@ -1,3 +1,8 @@
+// default settings for the colors section
+if (!localStorage.colors) {
+  localStorage.colors = '{"theme": "default"}';
+}
+
 function SettingsController($scope) {
   // defining dynamic data
   angular.forEach(['account', 'colors', 'timer'], function (name) {

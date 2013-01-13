@@ -2,6 +2,11 @@
   <div class="page-region">
     <div class="page-region-content" >
 
+      <div ng-show="!issues" class="info-bar">
+        <h3 class="fg-color-white">No data provided</h3>
+        <p>No matching entries according the current JIRA&trade; query</p>
+      </div>
+
       <div ng-repeat="issue in issues">
         <div class="tile {{issue._colors.bg}}" ng-class="issue.fields.issuetype.name == 'Story' && 'double'">
           <div class="tile-content">

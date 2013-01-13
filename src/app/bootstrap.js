@@ -19,6 +19,12 @@ var jironimo = angular
         controller: 'SettingsController'
       });
 
+      // settings jql action
+      $routeProvider.when('/settings/jql', {
+        templateUrl: '/views/options-jql.html',
+        controller: 'SettingsController'
+      });
+
       // settings timer action
       $routeProvider.when('/settings/timer', {
         templateUrl: '/views/options-timer.html',
