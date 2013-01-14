@@ -18,17 +18,46 @@
         <a href="#/settings/timer"><i class="icon-clock"></i></a>
       </div>
 
-      <form ng-submit="save('colors', colors)">
+      <form ng-submit="save('workspaces', workspaces)">
 
           <div class="span12">
-            <h3>Default theme</h3>
-          </div>
-          <div class="input-control select span6">
-            <select ng-model="colors.theme">
-              <option value="default">Jironimo</option>
-            </select>
+            <h3>JIRA&trade; Queries</h3>
           </div>
 
+          <div class="grid">
+            <div class="row" ng-repeat="workspace in workspaces">
+
+              <div class="span2">
+                <div class="input-control text">
+                  <input type="text" ng-model="workspace.title" placeholder="Label">
+                  <button class="helper"></button>
+                </div>
+              </div>
+
+              <div class="span6">
+                <div class="input-control text">
+                  <input type="text" ng-model="workspace.query" placeholder="JQL">
+                  <button class="helper"></button>
+                </div>
+              </div>
+
+              <div class="span1">
+                <div class="toolbar">
+                  <button ng-click="workspaceRemove(workspace)"><i class="icon-cancel-2"></i></button>
+                </div>
+              </div>
+
+              <div class="span3">
+                <label class="input-control radio">
+                  <input type="radio" name="isDefault" ng-click="workspaceSetAsDefault(workspace)" ng-checked="workspace.default">
+                  <span class="helper">Default</span>
+                </label>
+              </div>
+
+            </div>
+          </div>
+
+          <button ng-click="workspaceAdd()"><i class="icon-plus-2"></i> Add one more</button>
           <input type="submit" value="Save">
       </form>
 
