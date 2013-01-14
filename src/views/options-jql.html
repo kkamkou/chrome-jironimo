@@ -21,7 +21,7 @@
       <form ng-submit="save('workspaces', workspaces)">
 
           <div class="span12">
-            <h3>JIRA&trade; Queries</h3>
+            <h3>JIRA&trade; queries</h3>
           </div>
 
           <div class="grid">
@@ -29,14 +29,14 @@
 
               <div class="span2">
                 <div class="input-control text">
-                  <input type="text" ng-model="workspace.title" placeholder="Label">
+                  <input type="text" ng-model="workspace.title" placeholder="Label" required>
                   <button class="helper"></button>
                 </div>
               </div>
 
               <div class="span6">
                 <div class="input-control text">
-                  <input type="text" ng-model="workspace.query" placeholder="JQL">
+                  <input type="text" ng-model="workspace.query" placeholder="JQL" required>
                   <button class="helper"></button>
                 </div>
               </div>

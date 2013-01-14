@@ -20,7 +20,7 @@ function IndexController($scope, jrApi) {
       return false;
     };
 
-    jrApi.search('assignee = currentUser() ORDER BY updatedDate DESC', function (err, data) {
+    jrApi.search(localStorage.workspaces[0].query, function (err, data) {
       if (err) {
         return false;
       }
