@@ -1,28 +1,34 @@
 function IndexController($scope, jrApi) {
+  // context storing
   var self = this;
 
-  // default workspaces
+  // workspaces
   $scope.workspaces = jironimoSettings.workspaces;
 
-  // lets find the default workspace
+  // the default workspace
   $scope.workspaceActive = _.find($scope.workspaces, function (dataSet) {
     return dataSet.default;
   });
 
+  /**
+   * Makes another workspace active
+   *
+   * @param {Number} index
+   */
   $scope.workspaceSwitchTo = function (index) {
+    if (!$scope.workspaces[index]) {
+      index = 0;
+    }
     $scope.workspaceActive = $scope.workspaces[index];
     self.workspaceRefresh();
   };
 
-  this.getPriorityColor = function (num) {
-    var colorSet = {
-      5: {fg: '', bg: ''},
-      4: {fg: 'fg-color-white', bg: 'bg-color-darken'},
-      3: {fg: 'fg-color-white', bg: 'bg-color-pinkDark'},
-      2: {fg: 'fg-color-white', bg: 'bg-color-orangeDark'},
-      1: {fg: 'fg-color-white', bg: 'bg-color-red'},
-    };
-    return colorSet[num];
+  $scope.tabOpen = function (index) {
+    chrome.tabs.create({
+      url: jironimoSettings.account.url + '/browse/' + $scope.issues[index].key,
+      active: false
+    });
+    return false;
   };
 
   this.workspaceRefresh = function () {
@@ -36,20 +42,29 @@ function IndexController($scope, jrApi) {
       // some corrections
       $.map(data.issues, function (issue) {
         if (issue.fields.description) {
-          issue.fields.description = S(issue.fields.description).truncate(70).s;
+          issue.fields.description = S(issue.fields.description).truncate(100).s;
         }
 
-        issue._colors = self.getPriorityColor(issue.fields.priority.id);
+        issue._isClosed = (issue.fields.status.name === 'Closed');
+
+        // applying custom colors
+        issue._colors = jironimoSettings.colors.priority[issue.fields.priority.id]
+          ? jironimoSettings.colors.priority[issue.fields.priority.id]
+          : jironimoSettings.colors.priority[0];
 
         $scope.issues.push(issue);
       });
 
-      //console.log(data.issues);
+      console.log(data.issues);
 
       $scope.$apply();
     });
 
-    setTimeout(self.workspaceRefresh, 20000);
+    // refresh interval
+    setTimeout(
+      self.workspaceRefresh,
+      parseInt(jironimoSettings.timer.workspace, 10) * 1000 * 60
+    );
   };
 
   // lets refresh tickets
@@ -58,4 +73,13 @@ function IndexController($scope, jrApi) {
       self.workspaceRefresh();
     }
   });
+
+  $(function () {
+    $(window).bind('mousewheel', function(event, delta) {
+      console.log(delta)
+      if (delta > 0) { window.scrollBy(-80,0);
+      } else window.scrollBy(80,20) ;
+  });
+  });
+
 }

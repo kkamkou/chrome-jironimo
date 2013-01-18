@@ -1,0 +1,38 @@
+<div class="page secondary">
+  <div class="page-header">
+    <div class="page-header-content">
+      <h1>
+        Jironimo
+        <small>Timer</small>
+      </h1>
+    </div>
+  </div>
+
+  <div class="page-region">
+    <div class="page-region-content">
+
+      <div class="toolbar">
+        <a href="#/settings"><i class="icon-key"></i></a>
+        <a href="#/settings/jql"><i class="icon-bug"></i></a>
+        <a href="#/settings/colors"><i class="icon-sun-3"></i></a>
+        <button disabled><i class="icon-clock"></i></button>
+      </div>
+
+      <form ng-submit="save('timer', timer)">
+
+          <div class="span12">
+            <h3>Workspace</h3>
+          </div>
+          <div class="input-control select span6">
+            <div class="input-control text">
+              <input type="text" maxlength="4" placeholder="Refresh interval (min.)" required
+                ng-model="timer.workspace">
+            </div>
+          </div>
+
+          <input type="submit" value="Save">
+      </form>
+
+    </div>
+  </div>
+</div>

@@ -44,9 +44,16 @@ function SettingsController($scope) {
    * @return {Boolean}
    */
   $scope.save = function (type, data) {
-    if (data) {
-      jironimoSettings[type] = angular.copy(data);
+    if (!data) {
+      return false;
     }
-    return false;
+
+    // some normalization
+    if (type === 'account') {
+      data.url = data.url.replace(/\/$/, '');
+    }
+
+    jironimoSettings[type] = angular.copy(data);
+    return true;
   };
 }
