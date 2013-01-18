@@ -1,22 +1,8 @@
-// default settings for the colors section
-if (!localStorage.colors) {
-  localStorage.colors = angular.toJson({theme: 'default'});
-}
-
-// default settings for the workspaces section
-if (!localStorage.workspaces) {
-  localStorage.workspaces = angular.toJson([{
-    title: 'Default',
-    query: 'assignee = currentUser() ORDER BY updatedDate DESC',
-    default: true
-  }]);
-}
-
 function SettingsController($scope) {
   // defining dynamic data
   angular.forEach(
     ['account', 'colors', 'timer', 'workspaces'], function (name) {
-      $scope[name] = angular.fromJson(localStorage[name]);
+      $scope[name] = jironimoSettings[name];
     }
   );
 
@@ -59,7 +45,7 @@ function SettingsController($scope) {
    */
   $scope.save = function (type, data) {
     if (data) {
-      localStorage[type] = angular.toJson(angular.copy(data));
+      jironimoSettings[type] = angular.copy(data);
     }
     return false;
   };

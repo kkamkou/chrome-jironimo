@@ -20,7 +20,12 @@ function IndexController($scope, jrApi) {
       return false;
     };
 
-    jrApi.search(localStorage.workspaces[0].query, function (err, data) {
+    // lets find the default workspace
+    var defaultWrkspace = _.find(jironimoSettings.workspaces, function (dataSet) {
+      return dataSet.default;
+    });
+
+    jrApi.search(defaultWrkspace.query, function (err, data) {
       if (err) {
         return false;
       }

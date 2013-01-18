@@ -1,12 +1,21 @@
-function JiraApi(settings) {
-  var isAuthenticated = false;
-
+function CjJiraApi(settings) {
+  /**
+   * Check if use is authenticated or not
+   *
+   * @param {Function} callback
+   */
   this.isAuthenticated = function (callback) {
     this._makeRequest('/auth/latest/session', {}, function (err, data) {
-      return (!err && data.loginInfo);
+      callback(!err && data.loginInfo);
     });
   };
 
+  /**
+   * Executes query
+   *
+   * @param {String} query
+   * @param {Function} callback
+   */
   this.search = function (query, callback) {
     this._makeRequest('/api/latest/search', {jql: query}, callback);
   };
@@ -84,5 +93,5 @@ function JiraApi(settings) {
 }
 
 jironimo.factory('jrApi', function () {
-  return new JiraApi(angular.fromJson(localStorage.account));
+  return new CjJiraApi(jironimoSettings.account);
 });
