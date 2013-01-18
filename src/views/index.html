@@ -1,24 +1,32 @@
 <div class="page">
   <div class="page-region">
-    <div class="page-region-content" >
+    <div class="page-region-content">
 
       <div ng-show="!issues" class="info-bar">
         <h3 class="fg-color-white">No data provided</h3>
         <p>No matching entries according the current JIRA&trade; query</p>
       </div>
 
-      <div ng-repeat="issue in issues">
-        <div class="tile {{issue._colors.bg}}" ng-class="issue.fields.issuetype.name == 'Story' && 'double'">
-          <div class="tile-content">
-            <h4>{{issue.key}}</h4>
-            <h6>{{issue.fields.reporter.displayName}}</h6>
-            <p>{{issue.fields.description}}</p>
-          </div>
-          <div class="brand">
-            <span class="name">{{issue.fields.issuetype.name}}</span>
-          </div>
+      <div class="tile {{issue._colors.bg}}"
+        ng-repeat="issue in issues"
+        ng-class="issue.fields.issuetype.name == 'Story' && 'double'">
+
+        <div class="tile-content">
+          <h4>{{issue.key}}</h4>
+          <h6>{{issue.fields.reporter.displayName}}</h6>
+          <p>{{issue.fields.description}}</p>
         </div>
+        <div class="brand">
+          <span class="name">{{issue.fields.issuetype.name}}</span>
+        </div>
+
       </div>
+
+      <ul id="home-workspaces" ng-hide="workspaces.length < 2">
+        <li ng-repeat="workspace in workspaces" ng-controller="IndexController">
+          <button ng-click="$parent.workspaceSwitchTo($index)">{{workspace.title}}</button>
+        </li>
+      </ul>
 
     </div>
   </div>

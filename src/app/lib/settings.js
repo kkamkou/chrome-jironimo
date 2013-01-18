@@ -6,6 +6,7 @@ if (!localStorage.colors) {
 // default settings for the workspaces section
 if (!localStorage.workspaces) {
   localStorage.workspaces = angular.toJson([{
+    icon: 'home',
     title: 'Default',
     query: 'assignee = currentUser() ORDER BY updatedDate DESC',
     default: true

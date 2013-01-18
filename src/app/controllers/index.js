@@ -1,6 +1,19 @@
 function IndexController($scope, jrApi) {
   var self = this;
 
+  // default workspaces
+  $scope.workspaces = jironimoSettings.workspaces;
+
+  // lets find the default workspace
+  $scope.workspaceActive = _.find($scope.workspaces, function (dataSet) {
+    return dataSet.default;
+  });
+
+  $scope.workspaceSwitchTo = function (index) {
+    $scope.workspaceActive = $scope.workspaces[index];
+    self.workspaceRefresh();
+  };
+
   this.getPriorityColor = function (num) {
     var colorSet = {
       5: {fg: '', bg: ''},
@@ -12,20 +25,10 @@ function IndexController($scope, jrApi) {
     return colorSet[num];
   };
 
-  this.refreshTickets = function () {
+  this.workspaceRefresh = function () {
     $scope.issues = [];
 
-    // some initial checks
-    if (jrApi.isAuthenticated()) {
-      return false;
-    };
-
-    // lets find the default workspace
-    var defaultWrkspace = _.find(jironimoSettings.workspaces, function (dataSet) {
-      return dataSet.default;
-    });
-
-    jrApi.search(defaultWrkspace.query, function (err, data) {
+    jrApi.search($scope.workspaceActive.query, function (err, data) {
       if (err) {
         return false;
       }
@@ -46,10 +49,13 @@ function IndexController($scope, jrApi) {
       $scope.$apply();
     });
 
-    setTimeout(self.refreshTickets, 20000);
+    setTimeout(self.workspaceRefresh, 20000);
   };
 
-  if (localStorage.account) {
-    this.refreshTickets();
-  }
+  // lets refresh tickets
+  jrApi.isAuthenticated(function (err, flag) {
+    if (flag) {
+      self.workspaceRefresh();
+    }
+  });
 }

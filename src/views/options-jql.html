@@ -29,15 +29,19 @@
 
               <div class="span2">
                 <div class="input-control text">
-                  <input type="text" ng-model="workspace.title" placeholder="Label" required>
-                  <button class="helper"></button>
+                  <input type="text" ng-model="workspace.title" placeholder="Label" maxlength="16" required>
                 </div>
               </div>
 
               <div class="span6">
                 <div class="input-control text">
                   <input type="text" ng-model="workspace.query" placeholder="JQL" required>
-                  <button class="helper"></button>
+                </div>
+              </div>
+
+              <div class="span1">
+                <div class="input-control text">
+                  <input type="text" ng-model="workspace.icon" placeholder="icon" maxlength="18" required>
                 </div>
               </div>
 

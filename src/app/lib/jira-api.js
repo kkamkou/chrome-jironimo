@@ -6,7 +6,7 @@ function CjJiraApi(settings) {
    */
   this.isAuthenticated = function (callback) {
     this._makeRequest('/auth/latest/session', {}, function (err, data) {
-      callback(!err && data.loginInfo);
+      callback(err, data);
     });
   };
 

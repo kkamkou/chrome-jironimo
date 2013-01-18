@@ -1,4 +1,6 @@
 @import '/themes/default/variables.less';
+@FontAwesomePath: "/vendors/Font-Awesome/font";
+@import '/vendors/Font-Awesome/less/font-awesome.less';
 
 body {
   padding-left: 10px;
@@ -8,6 +10,26 @@ body {
   overflow-x: hidden;
 }
 
+.input-control > input[type="text"],
+.input-control > input[type="email"],
+.input-control > input[type="url"],
+.input-control > input[type="phone"],
+.input-control > input[type="password"],
+.input-control > select,
+.input-control > textarea{
+  padding-right: 6px;
+}
+
 label.radio {
   margin-top: 6px;
+}
+
+#home-workspaces {
+  position: absolute;
+  right: 0px;
+  list-style: none;
+}
+
+#home-workspaces li{
+  display: block;
 }
