@@ -2,6 +2,9 @@ function IndexController($scope, jrApi) {
   // context storing
   var self = this;
 
+  // the loading state
+  $scope.loading = true;
+
   // workspaces
   $scope.workspaces = jironimoSettings.workspaces;
 
@@ -33,31 +36,49 @@ function IndexController($scope, jrApi) {
 
   this.workspaceRefresh = function () {
     $scope.issues = [];
+    $scope.loading = true;
 
     jrApi.search($scope.workspaceActive.query, function (err, data) {
       if (err) {
+        $scope.loading = false;
         return false;
       }
 
       // some corrections
       $.map(data.issues, function (issue) {
-        if (issue.fields.description) {
-          issue.fields.description = S(issue.fields.description).truncate(100).s;
+        if (!issue.fields.description) {
+          issue.fields.description = 'Without description';
         }
 
+        // the description length
+        issue._description = S(issue.fields.description)
+          .truncate(100).s;
+
+        // the closed status
         issue._isClosed = (issue.fields.status.name === 'Closed');
+
+        // timeestimate
+        if (issue.fields.timeestimate) {
+          issue.fields.timeestimate = moment
+            .humanizeDuration(issue.fields.timeestimate * 1000);
+        }
 
         // applying custom colors
         issue._colors = jironimoSettings.colors.priority[issue.fields.priority.id]
           ? jironimoSettings.colors.priority[issue.fields.priority.id]
           : jironimoSettings.colors.priority[0];
 
+        // can we start the timer?
+        issue._timerAlowed = !issue._isClosed;
+
         $scope.issues.push(issue);
       });
 
       console.log(data.issues);
 
+      $scope.loading = false;
       $scope.$apply();
+
     });
 
     // refresh interval
@@ -75,11 +96,12 @@ function IndexController($scope, jrApi) {
   });
 
   $(function () {
-    $(window).bind('mousewheel', function(event, delta) {
-      console.log(delta)
-      if (delta > 0) { window.scrollBy(-80,0);
-      } else window.scrollBy(80,20) ;
-  });
-  });
+    var $tiles = $('div.tiles');
 
+    $tiles.on('click', 'div.tile', function (e) {
+      $tiles.find('div.toolbar:visible').slideUp('fast');
+      $(this).find('div.toolbar:not(:visible)').slideDown('fast');
+      return false;
+    });
+  });
 }
