@@ -19,24 +19,39 @@
       </div>
 
       <form ng-submit="save('account', account)">
-          <div class="span12">
-            <h3>JIRA&trade; login information</h3>
-          </div>
-          <div class="input-control text span6">
-            <input type="text" ng-model="account.login" placeholder="Login" tabindex="1">
-          </div>
-          <div class="input-control text span6">
-            <input type="password" ng-model="account.password" placeholder="Password" tabindex="2">
-          </div>
 
           <div class="span12">
             <h3>JIRA&trade; address</h3>
           </div>
           <div class="input-control text span6">
-            <input type="url" ng-model="account.url" placeholder="https://jira.atlassian.com" tabindex="3">
+            <input type="url" ng-model="account.url" placeholder="https://jira.atlassian.com">
           </div>
 
-          <input type="submit" value="Save" tabindex="4">
+          <div class="span12">
+            <h3>JIRA&trade; account information</h3>
+          </div>
+          <div class="input-control text span6">
+            <input type="text" ng-model="account.login" placeholder="Login">
+          </div>
+          <div class="input-control text span6">
+            <input type="password" ng-model="account.password" placeholder="Password">
+          </div>
+
+          <div class="span12">
+            <h3>HTTP Authorization</h3>
+          </div>
+
+          <div class="input-control text span6">
+            <input type="text" ng-model="account.http.login" placeholder="Login">
+          </div>
+
+          <div class="input-control text span6">
+            <input type="password" ng-model="account.http.password" placeholder="Password">
+          </div>
+
+          <div class="span12">
+            <input type="submit" value="Save" tabindex="4">
+          </div>
       </form>
 
     </div>

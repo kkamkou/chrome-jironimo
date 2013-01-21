@@ -1,4 +1,6 @@
 function CjJiraApi(settings) {
+  "use strict";
+
   /**
    * Check if use is authenticated or not
    *
@@ -20,17 +22,39 @@ function CjJiraApi(settings) {
     this._makeRequest('/api/latest/search', {jql: query}, callback);
   };
 
+  /**
+   * Makes request with the data set
+   *
+   * @param {String} urn
+   * @param {Object} dataSet
+   * @param {Function} callback
+   * @private
+   * @return {String}
+   */
   this._makeRequest = function (urn, dataSet, callback) {
+    // defaults
+    var call,
+      callOptions = {
+        type: 'GET',
+        url: settings.url + '/rest' + urn,
+        cache: false,
+        data: dataSet,
+        dataType: 'json',
+        timeout: 5000,
+        headers: {
+          Authorization: 'Basic ' +
+            window.btoa(settings.login + ':' + settings.password)
+        }
+      };
+
+    // adding the HTTP Authorization
+    if (settings.http.login) {
+      callOptions.username = settings.http.login;
+      callOptions.password = settings.http.password || null;
+    }
+
     // ajax object
-    var call = $.ajax({
-      type: 'GET',
-      url: this._getJiraUrl() + '/rest' + urn,
-      cache: false,
-      data: dataSet,
-      dataType: 'json',
-      timeout: 5000,
-      headers: {Authorization: this._getAuthHeader()}
-    });
+    call = $.ajax(callOptions);
 
     // we are ok
     call.done(function (json) {
@@ -72,26 +96,10 @@ function CjJiraApi(settings) {
       return callback(err);
     });
   };
-
-  /**
-   * Returns the authorization header
-   *
-   * @return {String}
-   */
-  this._getAuthHeader = function () {
-    return 'Basic ' + window.btoa(settings.login + ':' + settings.password);
-  };
-
-  /**
-   * Returns correct url of the JIRA tracker
-   *
-   * @return {String}
-   */
-  this._getJiraUrl = function () {
-    return settings.url.replace(/\/$/, '');
-  };
 }
 
 jironimo.factory('jrApi', function () {
   return new CjJiraApi(jironimoSettings.account);
 });
+
+

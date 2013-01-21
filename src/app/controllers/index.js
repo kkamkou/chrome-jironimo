@@ -46,6 +46,7 @@ function IndexController($scope, jrApi) {
 
       // some corrections
       $.map(data.issues, function (issue) {
+        // no description
         if (!issue.fields.description) {
           issue.fields.description = 'Without description';
         }

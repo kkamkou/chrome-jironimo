@@ -23,12 +23,11 @@
         </div>
 
         <div class="brand">
-          <span class="name fg-{{issue._colors.fg}}" ng-show="issue.fields.timeestimate">
-            <small>{{issue.fields.timeestimate}}</small>
+          <span class="name fg-{{issue._colors.fg}}" ng-hide="issue._timerEnabled">
+            {{issue.fields.issuetype.name}}
+            <sup ng-show="issue.fields.timeestimate">{{issue.fields.timeestimate}}</sup>
           </span>
-          <span class="badge fg-{{issue._colors.fg}}">
-            <small>{{issue.fields.issuetype.name}}</small>
-          </span>
+          <span class="badge playing" ng-show="issue._timerEnabled"></span>
         </div>
 
         <div class="progress-bar" ng-show="issue.fields.progress.percent">
