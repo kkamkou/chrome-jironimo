@@ -1,4 +1,4 @@
-function IndexController($scope, jrApi) {
+function IndexController($scope) {
   // context storing
   var self = this;
 
@@ -6,7 +6,7 @@ function IndexController($scope, jrApi) {
   $scope.loading = true;
 
   // workspaces
-  $scope.workspaces = jironimoSettings.workspaces;
+  $scope.workspaces = $scope.cjSettings.workspaces;
 
   // the default workspace
   $scope.workspaceActive = _.find($scope.workspaces, function (dataSet) {
@@ -28,8 +28,9 @@ function IndexController($scope, jrApi) {
 
   $scope.tabOpen = function (index) {
     chrome.tabs.create({
-      url: jironimoSettings.account.url + '/browse/' + $scope.issues[index].key,
-      active: false
+      active: false,
+      url: $scope.cjSettings.account.url +
+        '/browse/' + $scope.issues[index].key
     });
     return false;
   };
@@ -38,7 +39,7 @@ function IndexController($scope, jrApi) {
     $scope.issues = [];
     $scope.loading = true;
 
-    jrApi.search($scope.workspaceActive.query, function (err, data) {
+    $scope.cjJira.search($scope.workspaceActive.query, function (err, data) {
       if (err) {
         $scope.loading = false;
         return false;
@@ -65,9 +66,9 @@ function IndexController($scope, jrApi) {
         }
 
         // applying custom colors
-        issue._colors = jironimoSettings.colors.priority[issue.fields.priority.id]
-          ? jironimoSettings.colors.priority[issue.fields.priority.id]
-          : jironimoSettings.colors.priority[0];
+        issue._colors = $scope.cjSettings.colors.priority[issue.fields.priority.id]
+          ? $scope.cjSettings.colors.priority[issue.fields.priority.id]
+          : $scope.cjSettings.colors.priority[0];
 
         // can we start the timer?
         issue._timerAlowed = !issue._isClosed;
@@ -75,7 +76,7 @@ function IndexController($scope, jrApi) {
         $scope.issues.push(issue);
       });
 
-      console.log(data.issues);
+      //console.log(data.issues);
 
       $scope.loading = false;
       $scope.$apply();
@@ -85,12 +86,12 @@ function IndexController($scope, jrApi) {
     // refresh interval
     setTimeout(
       self.workspaceRefresh,
-      parseInt(jironimoSettings.timer.workspace, 10) * 1000 * 60
+      parseInt($scope.cjSettings.timer.workspace, 10) * 1000 * 60
     );
   };
 
   // lets refresh tickets
-  jrApi.isAuthenticated(function (err, flag) {
+  $scope.cjJira.isAuthenticated(function (err, flag) {
     if (flag) {
       self.workspaceRefresh();
     }
@@ -99,7 +100,7 @@ function IndexController($scope, jrApi) {
   $(function () {
     var $tiles = $('div.tiles');
 
-    $tiles.on('click', 'div.tile', function (e) {
+    $tiles.on('click', 'div.tile', function () {
       $tiles.find('div.toolbar:visible').slideUp('fast');
       $(this).find('div.toolbar:not(:visible)').slideDown('fast');
       return false;

@@ -2,7 +2,7 @@ function SettingsController($scope) {
   // defining dynamic data
   angular.forEach(
     ['account', 'colors', 'timer', 'workspaces'], function (name) {
-      $scope[name] = jironimoSettings[name];
+      $scope[name] = $scope.cjSettings[name];
     }
   );
 
@@ -14,7 +14,7 @@ function SettingsController($scope) {
   };
 
   $scope.workspaceSetAsDefault = function (workspace) {
-    angular.forEach($scope.workspaces, function(entry){
+    angular.forEach($scope.workspaces, function (entry) {
       if (entry.default) {
         entry.default = false;
       }
@@ -53,7 +53,7 @@ function SettingsController($scope) {
       data.url = data.url.replace(/\/$/, '');
     }
 
-    jironimoSettings[type] = angular.copy(data);
+    $scope.cjSettings[type] = angular.copy(data);
     return true;
   };
 }

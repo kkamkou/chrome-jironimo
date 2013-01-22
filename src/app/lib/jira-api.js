@@ -1,6 +1,4 @@
 function CjJiraApi(settings) {
-  "use strict";
-
   /**
    * Check if use is authenticated or not
    *
@@ -97,9 +95,3 @@ function CjJiraApi(settings) {
     });
   };
 }
-
-jironimo.factory('jrApi', function () {
-  return new CjJiraApi(jironimoSettings.account);
-});
-
-

@@ -24,15 +24,15 @@ function CjSettings() {
 
   this._data = localStorage;
 
-  angular.forEach(['account', 'colors', 'timer', 'workspaces'], function(name) {
-    self.__defineGetter__(name, function() {
+  angular.forEach(['account', 'colors', 'timer', 'workspaces'], function (name) {
+    self.__defineGetter__(name, function () {
       if (!self._data[name] && defaults[name]) {
         self._data[name] = angular.toJson(defaults[name]);
       }
       return self._data[name] ? angular.fromJson(self._data[name]) : null;
     });
 
-    self.__defineSetter__(name, function(val) {
+    self.__defineSetter__(name, function (val) {
       return self._data[name] = angular.toJson(val);
     });
   });
