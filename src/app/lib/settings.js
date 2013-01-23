@@ -1,3 +1,11 @@
+/**
+ * chrome-jironimo
+ *
+ * @author Kanstantsin Kamkou <2ka.by>
+ * @{@link http://github.com/kkamkou/chrome-jironimo}
+ * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
+ * @version 1.0
+ */
 angular
   .module('jironimo.settings', [])
   .service('cjSettings', function () {
@@ -17,15 +25,26 @@ angular
     };
 
     // default settings for the workspaces tab
-    defaults.workspaces = [{
-      icon: 'home',
-      title: 'Default',
-      query: 'assignee = currentUser() ORDER BY updatedDate DESC',
-      default: true
-    }];
+    defaults.workspaces = [
+      {
+        icon: 'target',
+        title: 'My issues',
+        query: 'assignee = currentUser() ORDER BY updatedDate DESC',
+        default: true
+      },
+      {
+        icon: 'share-2',
+        title: 'Created by me',
+        query: 'reporter = currentUser() ORDER BY created DESC',
+        default: false
+      }
+    ];
 
     // default settings for the timer tab
-    defaults.timer = {workspace: 5};
+    defaults.timer = {
+      workspace: 5,
+      singleton: true
+    };
 
     // default active timers
     defaults.timers = {};

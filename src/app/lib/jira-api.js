@@ -1,6 +1,14 @@
+/**
+ * chrome-jironimo
+ *
+ * @author Kanstantsin Kamkou <2ka.by>
+ * @{@link http://github.com/kkamkou/chrome-jironimo}
+ * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
+ * @version 1.0
+ */
 angular
   .module('jironimo.jira', ['jironimo.settings'])
-  .service('cjJira', function (cjSettings) {
+  .service('cjJira', function ($rootScope, cjSettings) {
     /**
      * Check if use is authenticated or not
      *
@@ -85,17 +93,23 @@ angular
         }
 
         // custom message
-        $('body').append(
-          '<div class="error-bar">' +
-            '<h3 class="fg-color-white">' +
-              S(err.statusText).capitalize().s +
-            '</h3>' +
-            '<p>' + messages.join(';') + '</p>' +
-          '</div>'
-        );
+        $rootScope.$emit('jiraRequestFail', [err.statusText, messages]);
 
         // lets notice parents
         return callback(err);
       });
     };
+  })
+
+  .run(function ($rootScope) {
+    $rootScope.$on('jiraRequestFail', function (event, args) {
+      $('body').append(
+        '<div class="error-bar">' +
+          '<h3 class="fg-color-white">' +
+            S(args[0]).capitalize().s +
+          '</h3>' +
+          '<p>' + args[1].join(';') + '</p>' +
+        '</div>'
+      );
+    });
   });
