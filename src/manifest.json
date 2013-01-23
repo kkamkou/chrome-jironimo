@@ -2,6 +2,7 @@
   "name": "jironimo",
   "version": "1.0",
   "manifest_version": 2,
+  "homepage_url": "http://github.com/kkamkou/chrome-jironimo",
   "description": "JIRA tickets in your browser. Created by developer for developers.",
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "icons": {
