@@ -58,7 +58,7 @@ angular
         };
 
       // adding the HTTP Authorization
-      if (cjSettings.account.http.login) {
+      if (cjSettings.account.http && cjSettings.account.http.login) {
         callOptions.username = cjSettings.account.http.login;
         callOptions.password = cjSettings.account.http.password || null;
       }
@@ -88,7 +88,11 @@ angular
           messages = [loginReasonSet[loginReason]];
         } else {
           if (err.responseText) {
-            messages = angular.fromJson(err.responseText).errorMessages;
+            try {
+              messages = angular.fromJson(err.responseText).errorMessages;
+            } catch (e) {
+              messages = [e.message];
+            }
           }
         }
 
