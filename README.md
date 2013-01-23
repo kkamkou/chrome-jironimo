@@ -7,6 +7,10 @@ Version
 -------------
 1.0 (early beta)
 
+Options
+-------------
+![Bilby Stampede](https://raw.github.com/kkamkou/chrome-jironimo/gh-pages/images/jironimo-options.jpg)
+
 License
 -------------
 **Boost Software License 1.0 (BSL-1.0)**
