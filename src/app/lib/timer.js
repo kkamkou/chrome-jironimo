@@ -7,15 +7,12 @@
  * @version 1.0
  */
 angular
-  .module('jironimo.timer', ['jironimo.settings'])
-  .factory('cjTimer', function (cjSettings) {
+  .module('jironimo.timer', ['jironimo.jira', 'jironimo.settings'])
+  .factory('cjTimer', function (cjJira, cjSettings) {
     // defaults
     var timerSet = cjSettings.timers,
       updateTimer = function (issueId, fields) {
-        var defaultFields = {
-          started: true,
-          timestamp: Date.now()
-        };
+        var defaultFields = {started: true, timestamp: null};
 
         if (!timerSet[issueId]) {
           timerSet[issueId] = angular.copy(defaultFields);
@@ -77,7 +74,7 @@ angular
        * @param {object} issue
        */
       start: function (issue) {
-        updateTimer(issue.id, {started: true});
+        updateTimer(issue.id, {started: true, timestamp: moment().unix()});
       },
 
       /**
@@ -86,7 +83,26 @@ angular
        * @param {object} issue
        */
       stop: function (issue) {
-        updateTimer(issue.id, {started: false});
+        // time diff
+        var diff = parseInt(moment().unix() - timerSet[issue.id].timestamp, 10),
+          callback = function () {
+            updateTimer(issue.id, {started: false, timestamp: null});
+          };
+
+        // time diff is zero or NaN
+        if (!diff) {
+          return callback();
+        }
+
+        // data set for the worklog request
+        var dataSet = {
+          _method: 'post',
+          comment: moment.humanizeDuration(diff * 1000),
+          timeSpent: Math.ceil(diff / 60) + 'm'
+        };
+
+        // sending request
+        cjJira.worklog(issue.id, dataSet, callback);
       }
     };
   });

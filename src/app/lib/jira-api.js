@@ -33,6 +33,20 @@ angular
     };
 
     /**
+     * Worklog adjusment
+     *
+     * @param {Number} issueId
+     * @param {Object} data
+     * @param {Function} callback
+     */
+    this.worklog = function (issueId, data, callback) {
+      this._makeRequest(
+        '/api/latest/issue/' + issueId + '/worklog/?adjustEstimate=auto',
+        data, callback
+      );
+    };
+
+    /**
      * Makes request with the data set
      *
      * @param {String} urn
@@ -49,6 +63,7 @@ angular
           url: cjSettings.account.url + '/rest' + urn,
           cache: false,
           data: dataSet,
+          contentType: 'application/json; charset=UTF-8',
           dataType: 'json',
           timeout: 5000,
           headers: {
@@ -56,6 +71,13 @@ angular
               window.btoa(cjSettings.account.login + ':' + cjSettings.account.password)
           }
         };
+
+      // different method
+      if (callOptions.data._method) {
+        callOptions.type = callOptions.data._method.toUpperCase();
+        delete callOptions.data._method;
+        callOptions.data = angular.toJson(callOptions.data);
+      }
 
       // adding the HTTP Authorization
       if (cjSettings.account.http && cjSettings.account.http.login) {
@@ -110,6 +132,7 @@ angular
     };
   })
 
+  // listeners
   .run(function ($rootScope) {
     $rootScope.$on('jiraRequestFail', function (event, args) {
       $('body').append(
