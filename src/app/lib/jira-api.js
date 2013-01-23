@@ -84,7 +84,7 @@ angular
           };
 
         // error messages
-        if (loginReason) {
+        if (loginReason && err.status === 200) {
           messages = [loginReasonSet[loginReason]];
         } else if (err.status === 500) {
           messages = [
@@ -96,7 +96,7 @@ angular
             try {
               messages = angular.fromJson(err.responseText).errorMessages;
             } catch (e) {
-              messages = [e.message];
+              // nothing here, default message shown
             }
           }
         }
@@ -120,5 +120,7 @@ angular
           '<p>' + args[1].join(';') + '</p>' +
         '</div>'
       );
+
+      $('#home-workspaces').remove();
     });
   });
