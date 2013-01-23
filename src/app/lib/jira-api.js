@@ -86,6 +86,11 @@ angular
         // error messages
         if (loginReason) {
           messages = [loginReasonSet[loginReason]];
+        } else if (err.status === 500) {
+          messages = [
+            'Check the JIRA&trade; configuration. Make sure the "Allow Remote API Calls"' +
+            ' is turned ON under Administration > General Configuration.'
+          ];
         } else {
           if (err.responseText) {
             try {
