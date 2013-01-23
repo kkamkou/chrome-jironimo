@@ -7,6 +7,10 @@ Version
 -------------
 1.0 (early beta)
 
+Frontend
+-------------
+![Bilby Stampede](https://raw.github.com/kkamkou/chrome-jironimo/gh-pages/images/jironimo-frontend.jpg)
+
 Options
 -------------
 ![Bilby Stampede](https://raw.github.com/kkamkou/chrome-jironimo/gh-pages/images/jironimo-options.jpg)
