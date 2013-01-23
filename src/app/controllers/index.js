@@ -1,4 +1,4 @@
-function IndexController($scope) {
+function IndexController($scope, cjTimer, cjSettings, cjJira) {
   // context storing
   var self = this;
 
@@ -6,7 +6,7 @@ function IndexController($scope) {
   $scope.loading = true;
 
   // workspaces
-  $scope.workspaces = $scope.cjSettings.workspaces;
+  $scope.workspaces = cjSettings.workspaces;
 
   // the default workspace
   $scope.workspaceActive = _.find($scope.workspaces, function (dataSet) {
@@ -29,17 +29,19 @@ function IndexController($scope) {
   $scope.tabOpen = function (index) {
     chrome.tabs.create({
       active: false,
-      url: $scope.cjSettings.account.url +
+      url: cjSettings.account.url +
         '/browse/' + $scope.issues[index].key
     });
     return false;
   };
 
+  $scope.timer = cjTimer;
+
   this.workspaceRefresh = function () {
     $scope.issues = [];
     $scope.loading = true;
 
-    $scope.cjJira.search($scope.workspaceActive.query, function (err, data) {
+    cjJira.search($scope.workspaceActive.query, function (err, data) {
       if (err) {
         $scope.loading = false;
         return false;
@@ -66,12 +68,12 @@ function IndexController($scope) {
         }
 
         // applying custom colors
-        issue._colors = $scope.cjSettings.colors.priority[issue.fields.priority.id]
-          ? $scope.cjSettings.colors.priority[issue.fields.priority.id]
-          : $scope.cjSettings.colors.priority[0];
+        issue._colors = cjSettings.colors.priority[issue.fields.priority.id]
+          ? cjSettings.colors.priority[issue.fields.priority.id]
+          : cjSettings.colors.priority[0];
 
         // can we start the timer?
-        issue._timerAlowed = !issue._isClosed;
+        //issue._timerAlowed = !issue._isClosed && !cjTimer.isStarted(issue);
 
         $scope.issues.push(issue);
       });
@@ -86,12 +88,12 @@ function IndexController($scope) {
     // refresh interval
     setTimeout(
       self.workspaceRefresh,
-      parseInt($scope.cjSettings.timer.workspace, 10) * 1000 * 60
+      parseInt(cjSettings.timer.workspace, 10) * 1000 * 60
     );
   };
 
   // lets refresh tickets
-  $scope.cjJira.isAuthenticated(function (err, flag) {
+  cjJira.isAuthenticated(function (err, flag) {
     if (flag) {
       self.workspaceRefresh();
     }

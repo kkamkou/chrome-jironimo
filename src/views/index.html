@@ -27,7 +27,7 @@
             {{issue.fields.issuetype.name}}
             <sup ng-show="issue.fields.timeestimate">{{issue.fields.timeestimate}}</sup>
           </span>
-          <span class="badge playing" ng-show="issue._timerEnabled"></span>
+          <span class="badge playing" ng-show="timer.isStarted(issue)"></span>
         </div>
 
         <div class="progress-bar" ng-show="issue.fields.progress.percent">
@@ -36,7 +36,8 @@
 
         <div class="toolbar">
           <div class="button-set">
-             <button class="active" ng-show="issue._timerAlowed"><i class="icon-play"></i></button>
+             <button class="active" ng-show="timer.canBeStarted(issue)" ng-click="timer.start(issue)"><i class="icon-play"></i></button>
+             <button class="active" ng-show="timer.canBeStopped(issue)" ng-click="timer.stop(issue)"><i class="icon-stop"></i></button>
              <button class="active" ng-click="ticketInfo()"><i class="icon-info-2"></i></button>
           </div>
         </div>

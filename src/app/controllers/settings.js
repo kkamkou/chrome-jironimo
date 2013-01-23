@@ -1,8 +1,8 @@
-function SettingsController($scope) {
+function SettingsController($scope, cjSettings) {
   // defining dynamic data
   angular.forEach(
     ['account', 'colors', 'timer', 'workspaces'], function (name) {
-      $scope[name] = $scope.cjSettings[name];
+      $scope[name] = cjSettings[name];
     }
   );
 
@@ -53,7 +53,7 @@ function SettingsController($scope) {
       data.url = data.url.replace(/\/$/, '');
     }
 
-    $scope.cjSettings[type] = angular.copy(data);
+    cjSettings[type] = angular.copy(data);
     return true;
   };
 }

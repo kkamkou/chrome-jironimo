@@ -1,44 +1,37 @@
 angular
-  .module('jironimo', [])
+  .module('jironimo', ['jironimo.settings', 'jironimo.jira', 'jironimo.timer'])
   .config(function ($routeProvider) {
       // default action
       $routeProvider.when('/', {
         templateUrl: '/views/index.html',
-        controller: IndexController
+        controller: 'IndexController'
       });
 
       // settings account action
       $routeProvider.when('/settings', {
         templateUrl: '/views/options-account.html',
-        controller: SettingsController
+        controller: 'SettingsController'
       });
 
       // settings colors action
       $routeProvider.when('/settings/colors', {
         templateUrl: '/views/options-colors.html',
-        controller: SettingsController
+        controller: 'SettingsController'
       });
 
       // settings jql action
       $routeProvider.when('/settings/jql', {
         templateUrl: '/views/options-jql.html',
-        controller: SettingsController
+        controller: 'SettingsController'
       });
 
       // settings timer action
       $routeProvider.when('/settings/timer', {
         templateUrl: '/views/options-timer.html',
-        controller: SettingsController
+        controller: 'SettingsController'
       });
 
       // fallback action
       $routeProvider.otherwise({redirectTo: '/'});
     }
-  )
-  .run(function ($rootScope) {
-    $rootScope.cjSettings = new CjSettings();
-    $rootScope.cjJira = new CjJiraApi($rootScope.cjSettings.account);
-  });
-
-// some services
-IndexController.$inject = ['$scope', 'notify'];
+  );
