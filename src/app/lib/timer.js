@@ -15,7 +15,7 @@ angular
         var defaultFields = {started: true, timestamp: null};
 
         if (!timerSet[issueId]) {
-          timerSet[issueId] = angular.copy(defaultFields);
+          timerSet[issueId] = defaultFields;
         }
 
         Object.keys(fields).forEach(function (field) {
@@ -83,26 +83,37 @@ angular
        * @param {object} issue
        */
       stop: function (issue) {
-        // time diff
-        var diff = parseInt(moment().unix() - timerSet[issue.id].timestamp, 10),
-          callback = function () {
-            updateTimer(issue.id, {started: false, timestamp: null});
-          };
+        // stop check
+        if (!this.canBeStopped(issue)) {
+          return false;
+        }
 
-        // time diff is zero or NaN
+        // time diff
+        var issueTimestamp = timerSet[issue.id].timestamp,
+          diff = parseInt(moment().unix() - issueTimestamp, 10);
+
+        // diff is zero (fastclick?)
         if (!diff) {
-          return callback();
+          return false;
         }
 
         // data set for the worklog request
         var dataSet = {
           _method: 'post',
           comment: moment.humanizeDuration(diff * 1000),
-          timeSpent: Math.ceil(diff / 60) + 'm'
+          timeSpent: (diff > 60 ? Math.ceil(diff / 60) : 1) + 'm'
         };
 
+        // updating the entry
+        updateTimer(issue.id, {started: false, timestamp: null});
+
         // sending request
-        cjJira.worklog(issue.id, dataSet, callback);
+        cjJira.worklog(issue.id, dataSet, function (err) {
+          // rollback if error
+          if (err) {
+            updateTimer(issue.id, {started: true, timestamp: issueTimestamp});
+          }
+        });
       }
     };
   });
