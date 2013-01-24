@@ -3,9 +3,18 @@ Jironimo
 
 JIRA&trade; extension for the Chrome browser with balls.
 
-Version
+Version: 1.0
 -------------
-1.0 (early beta)
+Early beta
+
+
+Manual installation
+-------------
+Right-click one the "[chrome-jironimo-latest.crx](https://raw.github.com/kkamkou/chrome-jironimo/master/build/chrome-jironimo-latest.crx)" link and select "Save Link As" to download the extension to your desktop.
+
+Open Chrome's extensions page in your browser by pasting chrome://chrome/extensions/ into your address bar and pressing Enter. Or open the "Tools -> Extensions" section.
+
+Drag and drop the extension you just downloaded into the Chrome extensions page.
 
 Frontend
 -------------
