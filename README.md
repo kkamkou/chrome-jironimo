@@ -7,6 +7,9 @@ Version: 1.0
 -------------
 Early beta
 
+Chrome Web Store
+-------------
+[jironimo](https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl)
 
 Manual installation
 -------------
