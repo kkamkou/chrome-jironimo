@@ -9,7 +9,7 @@ Early beta
 
 Chrome Web Store
 -------------
-[jironimo](https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl)
+[jironimo](https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl) (if you have the "download was not a CRX" message, just search this extension with google chrome marketplace)
 
 Manual installation
 -------------
