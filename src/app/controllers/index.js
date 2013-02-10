@@ -88,16 +88,7 @@ function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
    * @return {*}
    */
   this._issuesModify = function (issues) {
-    $.map(issues, function (issue) {
-      // no description
-      if (!issue.fields.description) {
-        issue.fields.description = 'Without description';
-      }
-
-      // the description length
-      issue._description = S(issue.fields.description)
-        .truncate(100).s;
-
+    angular.forEach(issues, function (issue) {
       // the closed status
       issue._isClosed = (issue.fields.status.name === 'Closed');
 
@@ -112,6 +103,7 @@ function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
         ? cjSettings.colors.priority[issue.fields.priority.id]
         : cjSettings.colors.priority[0];
 
+      // updating the ui
       $scope.issues.push(issue);
     });
   };
