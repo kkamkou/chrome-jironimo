@@ -27,7 +27,7 @@
 
         <div class="brand">
           <span class="name fg-{{issue._colors.fg}}" ng-hide="issue._timerEnabled">
-            {{issue.fields.issuetype.name | lowercase}}
+            {{issue.fields.issuetype.name}}
             <sup ng-show="issue.fields.timeestimate">{{issue.fields.timeestimate}}</sup>
           </span>
           <span class="badge playing" ng-show="timer.isStarted(issue)"></span>
