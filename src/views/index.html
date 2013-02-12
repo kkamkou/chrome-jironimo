@@ -16,6 +16,9 @@
         ng-dblclick="tabOpen($index)"
         ng-class="{selected: issue._isClosed}">
 
+        <div class="issue-icon bg-{{issue._colors.bd}}"><img ng-src="{{issue.fields.status.iconUrl}}"
+          alt="{{issue.fields.status.name}}" style="width: 12px; height: 12px;"></div>
+
         <div class="tile-content">
           <h4 class="fg-{{issue._colors.fg}}">{{issue.key}}</h4>
           <h6 class="fg-{{issue._colors.fg}}">{{issue.fields.reporter.displayName}}</h6>
@@ -24,7 +27,7 @@
 
         <div class="brand">
           <span class="name fg-{{issue._colors.fg}}" ng-hide="issue._timerEnabled">
-            {{issue.fields.issuetype.name}}
+            {{issue.fields.issuetype.name | lowercase}}
             <sup ng-show="issue.fields.timeestimate">{{issue.fields.timeestimate}}</sup>
           </span>
           <span class="badge playing" ng-show="timer.isStarted(issue)"></span>
@@ -38,6 +41,7 @@
           <div class="button-set">
              <button class="active" ng-show="timer.canBeStarted(issue)" ng-click="timer.start(issue)"><i class="icon-play"></i></button>
              <button class="active" ng-show="timer.canBeStopped(issue)" ng-click="timer.stop(issue)"><i class="icon-stop"></i></button>
+             <button class="active" ng-click="tabOpen($index)"><i class="icon-arrow-up-right"></i></button>
              <!--
               <button class="active" ng-click="ticketInfo()"><i class="icon-info-2"></i></button>
              -->
