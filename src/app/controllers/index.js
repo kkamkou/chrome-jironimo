@@ -95,7 +95,7 @@ function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
       // timeestimate
       if (issue.fields.timeestimate) {
         issue.fields.timeestimate = moment
-          .humanizeDuration(issue.fields.timeestimate * 1000);
+          .duration(issue.fields.timeestimate * 1000).humanize();
       }
 
       // applying custom colors
