@@ -86,7 +86,16 @@ angular
        * @param {object} issue
        */
       start: function (issue) {
+        // storage update
         updateTimer(issue.id, {started: true, timestamp: moment().unix()});
+
+        // updating the state if needed
+        if (cjSettings.timer.stateChangeEnabled) {
+          cjJira.transitions(issue.id, {
+            _method: 'post',
+            transition: {id: cjSettings.timer.stateChangeStop}
+          });
+        }
       },
 
       /**
@@ -126,6 +135,14 @@ angular
             updateTimer(issue.id, {started: true, timestamp: issueTimestamp});
           }
         });
+
+        // updating the state if needed
+        if (cjSettings.timer.stateChangeEnabled) {
+          cjJira.transitions(issue.id, {
+            _method: 'post',
+            transition: {id: cjSettings.timer.stateChangeStart}
+          });
+        }
       }
     };
   });

@@ -24,7 +24,8 @@
           <div class="span12">
             <h3>Workspace</h3>
           </div>
-          <div class="input-control select span6">
+
+          <div class="input-control span6">
             <div class="input-control text">
               <input type="text" maxlength="4" placeholder="Refresh interval (min.)" required
                 ng-model="timer.workspace">
@@ -34,11 +35,30 @@
           <div class="span12">
             <h3>Behaviour</h3>
           </div>
+
           <div>
-            <label class="input-control switch" onclick="">
+            <label class="input-control switch">
                 <input type="checkbox" ng-model="timer.singleton">
                 <span class="helper">Allow only one active issue</span>
             </label>
+          </div>
+
+          <div>
+            <label class="input-control switch">
+                <input type="checkbox" ng-model="timer.stateChangeEnabled">
+                <span class="helper">Change the state of an issue (example: Backlog &rarr; In work &rarr; Backlog)</span>
+            </label>
+          </div>
+
+          <div class="input-control select span3" ng-show="timer.stateChangeEnabled">
+            <div class="input-control text">
+              <input type="text" maxlength="2" placeholder="State-ID before stop (Default: 1)" required
+                ng-model="timer.stateChangeStart">
+            </div>
+            <div class="input-control text">
+              <input type="text" maxlength="2" placeholder="State-ID before start (Default: 3)" required
+                ng-model="timer.stateChangeStop">
+            </div>
           </div>
 
           <div>

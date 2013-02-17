@@ -43,7 +43,10 @@ angular
     // default settings for the timer tab
     defaults.timer = {
       workspace: 5,
-      singleton: true
+      singleton: true,
+      stateChangeEnabled: false,
+      stateChangeStart: 1,
+      stateChangeStop: 3
     };
 
     // default active timers
