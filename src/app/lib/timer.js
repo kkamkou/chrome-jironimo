@@ -69,6 +69,18 @@ angular
       },
 
       /**
+       * Returns elapsed time for the current issue (humanized)
+       *
+       * @param {object} issue
+       * @return {String}
+       */
+      elapsedTime: function (issue) {
+        return !this.isStarted(issue) ? '' : moment.duration(
+          moment(timerSet[issue.id].timestamp * 1000).diff()
+        ).humanize();
+      },
+
+      /**
        * Starts timer for the current issue
        *
        * @param {object} issue
@@ -100,7 +112,7 @@ angular
         // data set for the worklog request
         var dataSet = {
           _method: 'post',
-          comment: moment.humanizeDuration(diff * 1000),
+          comment: moment.duration(diff * 1000).humanize(),
           timeSpent: (diff > 60 ? Math.ceil(diff / 60) : 1) + 'm'
         };
 

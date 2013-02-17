@@ -26,10 +26,11 @@
         </div>
 
         <div class="brand">
-          <span class="name fg-{{issue._colors.fg}}" ng-hide="issue._timerEnabled">
+          <span class="name fg-{{issue._colors.fg}}" ng-hide="timer.isStarted(issue)">
             {{issue.fields.issuetype.name}}
             <sup ng-show="issue.fields.timeestimate">{{issue.fields.timeestimate}}</sup>
           </span>
+          <span class="name" ng-show="timer.canBeStopped(issue)" ng-bind="timer.elapsedTime(issue)"></span>
           <span class="badge playing" ng-show="timer.isStarted(issue)"></span>
         </div>
 
@@ -42,9 +43,6 @@
              <button class="active" ng-show="timer.canBeStarted(issue)" ng-click="timer.start(issue)"><i class="icon-play"></i></button>
              <button class="active" ng-show="timer.canBeStopped(issue)" ng-click="timer.stop(issue)"><i class="icon-stop"></i></button>
              <button class="active" ng-click="tabOpen($index)"><i class="icon-arrow-up-right"></i></button>
-             <!--
-              <button class="active" ng-click="ticketInfo()"><i class="icon-info-2"></i></button>
-             -->
           </div>
         </div>
       </div>
