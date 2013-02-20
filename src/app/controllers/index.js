@@ -67,6 +67,36 @@ function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
   };
 
   /**
+   * Executes transition for the current ticket
+   *
+   * @param {Object} issue
+   * @param {Object} transition
+   * @return false
+   */
+  $scope.transition = function (issue, transition) {
+    // we have no transition
+    if (!issue) {
+      $(event.target).parent().hide();
+      return false;
+    }
+
+    // the data object
+    var dataSet = {
+      _method: 'post',
+      transition: {id: transition.id}
+    };
+
+    // lets update the entry
+    cjJira.transitions(issue.id, dataSet, function (err) {
+      if (!err) {
+        $scope.workspaceRefresh();
+      }
+    });
+
+    return false;
+  };
+
+  /**
    * Opens issue in the JIRA
    *
    * @param {Number} index
@@ -103,6 +133,15 @@ function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
         ? cjSettings.colors.priority[issue.fields.priority.id]
         : cjSettings.colors.priority[0];
 
+      // lets load some transitions
+      cjJira.transitions(issue.id, {}, function (err, data) {
+        if (!err && data.transitions) {
+          $scope.$apply(function () {
+            issue._transitions = data.transitions;
+          });
+        }
+      });
+
       // updating the ui
       $scope.issues.push(issue);
     });
@@ -137,13 +176,18 @@ function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
     return deferred.promise;
   };
 
-  // jQuery DOM-ready function
-  $(function () {
+  // DOM playground(should be moved somewhere)
+  $scope.$on('$viewContentLoaded', function () {
     var $tiles = $('div.tiles');
 
     $tiles.on('click', 'div.tile', function () {
       $tiles.find('div.toolbar:visible').slideUp('fast');
       $(this).find('div.toolbar:not(:visible)').slideDown('fast');
+      return false;
+    });
+
+    $tiles.on('click', 'button.transitions', function () {
+      $(this).closest('div.tile').find('div.transitions').show();
       return false;
     });
 

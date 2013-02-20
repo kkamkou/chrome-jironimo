@@ -55,7 +55,8 @@ angular
      */
     this.transitions = function (issueId, data, callback) {
       this._makeRequest(
-        '/api/latest/issue/' + issueId + '/transitions', data, callback
+        '/api/latest/issue/' + issueId + '/transitions?expand=transitions.fields',
+        data, callback
       );
     };
 

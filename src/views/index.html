@@ -40,9 +40,17 @@
 
         <div class="toolbar">
           <div class="button-set">
-             <button class="active" ng-show="timer.canBeStarted(issue)" ng-click="timer.start(issue)"><i class="icon-play"></i></button>
-             <button class="active" ng-show="timer.canBeStopped(issue)" ng-click="timer.stop(issue)"><i class="icon-stop"></i></button>
-             <button class="active" ng-click="tabOpen($index)"><i class="icon-arrow-up-right"></i></button>
+            <button class="active" ng-show="timer.canBeStarted(issue)" ng-click="timer.start(issue)"><i class="icon-play"></i></button>
+            <button class="active" ng-show="timer.canBeStopped(issue)" ng-click="timer.stop(issue)"><i class="icon-stop"></i></button>
+            <button class="active transitions" ng-show="issue._transitions"><i class="icon-list"></i></button>
+            <button class="active" ng-click="tabOpen($index)"><i class="icon-new-tab"></i></button>
+          </div>
+        </div>
+
+        <div class="transitions bg-color-darken padding10">
+          <a href="#" ng-click="transition()">&times;</a>
+          <div ng-repeat="trans in issue._transitions">
+            <a href="#" ng-click="transition(issue, trans)"><small>{{trans.name}}</small></a>
           </div>
         </div>
       </div>
