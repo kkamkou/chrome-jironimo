@@ -12,6 +12,9 @@ angular
     // defaults
     var _data = localStorage, self = this, defaults = {};
 
+    // default settings for the account tab
+    defaults.account: {};
+
     // default settings for the colors tab
     defaults.colors = {
       theme: 'default',
