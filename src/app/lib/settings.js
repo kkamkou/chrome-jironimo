@@ -43,10 +43,7 @@ angular
     // default settings for the timer tab
     defaults.timer = {
       workspace: 5,
-      singleton: true,
-      stateChangeEnabled: false,
-      stateChangeStart: 1,
-      stateChangeStop: 3
+      singleton: true
     };
 
     // default active timers
@@ -54,8 +51,7 @@ angular
 
     // getters and setters override
     angular.forEach(
-      ['account', 'colors', 'timer', 'workspaces', 'timers'],
-      function (name) {
+      Object.keys(defaults), function (name) {
         self.__defineGetter__(name, function () {
           if (!_data[name] && defaults[name]) {
             _data[name] = angular.toJson(defaults[name]);
