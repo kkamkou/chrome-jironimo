@@ -41,7 +41,21 @@ angular
      */
     this.worklog = function (issueId, data, callback) {
       this._makeRequest(
-        '/api/latest/issue/' + issueId + '/worklog/?adjustEstimate=auto',
+        '/api/latest/issue/' + issueId + '/worklog?adjustEstimate=auto',
+        data, callback
+      );
+    };
+
+    /**
+     * Perform a transition on an issue
+     *
+     * @param {Number} issueId
+     * @param {Object} data
+     * @param {Function} callback
+     */
+    this.transitions = function (issueId, data, callback) {
+      this._makeRequest(
+        '/api/latest/issue/' + issueId + '/transitions?expand=transitions.fields',
         data, callback
       );
     };

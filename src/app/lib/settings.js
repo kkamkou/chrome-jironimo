@@ -51,8 +51,7 @@ angular
 
     // getters and setters override
     angular.forEach(
-      ['account', 'colors', 'timer', 'workspaces', 'timers'],
-      function (name) {
+      Object.keys(defaults), function (name) {
         self.__defineGetter__(name, function () {
           if (!_data[name] && defaults[name]) {
             _data[name] = angular.toJson(defaults[name]);
