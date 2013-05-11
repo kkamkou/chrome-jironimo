@@ -135,6 +135,17 @@ angular
       },
 
       /**
+       * Stops timer without time-logging
+       *
+       * @param {object} issue
+       */
+      discard: function (issue) {
+        if (this.canBeStopped(issue)) {
+          updateTimer(issue.id, {started: false, timestamp: null});
+        }
+      },
+
+      /**
        * Shows timer on the extension badge for the active issue
        *
        * @param {object} issue
