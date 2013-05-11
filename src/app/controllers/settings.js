@@ -4,7 +4,6 @@
  * @author Kanstantsin Kamkou <2ka.by>
  * @{@link http://github.com/kkamkou/chrome-jironimo}
  * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
- * @version 1.0
  */
 function SettingsController($scope, cjSettings) {
   // defining dynamic data
@@ -18,15 +17,15 @@ function SettingsController($scope, cjSettings) {
     if ($scope.workspaces.length > 10) {
       return false;
     }
-    $scope.workspaces.push({title: null, query: null, default: false});
+    $scope.workspaces.push({title: null, query: null, isDefault: false});
   };
 
   $scope.workspaceSetAsDefault = function (workspace) {
     angular.forEach($scope.workspaces, function (entry) {
-      if (entry.default) {
-        entry.default = false;
+      if (entry.isDefault) {
+        entry.isDefault = false;
       }
-      entry.default = (entry === workspace);
+      entry.isDefault = (entry === workspace);
     });
   };
 
@@ -39,7 +38,7 @@ function SettingsController($scope, cjSettings) {
       return entry !== workspace;
     });
 
-    if (workspace.default) {
+    if (workspace.isDefault) {
       $scope.workspaceSetAsDefault($scope.workspaces[0]);
     }
   };
@@ -59,6 +58,7 @@ function SettingsController($scope, cjSettings) {
     // some normalization
     if (type === 'account') {
       data.url = data.url.replace(/\/$/, '');
+      data.timeout = parseInt(data.timeout, 10) || 10;
     }
 
     cjSettings[type] = angular.copy(data);

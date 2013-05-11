@@ -11,6 +11,8 @@
         <img src="/vendors/Metro-UI-CSS/images/preloader-w8-line-black.gif" alt="">
       </center>
 
+      <h3>{{workspaceActive.title}}</h3>
+
       <div class="tile bg-{{issue._colors.bg}} border-{{issue._colors.bd}} outline-{{issue._colors.ot}}"
         ng-repeat="issue in issues"
         ng-dblclick="tabOpen($index)"
@@ -40,10 +42,20 @@
 
         <div class="toolbar">
           <div class="button-set">
-            <button class="active" ng-show="timer.canBeStarted(issue)" ng-click="timer.start(issue)"><i class="icon-play"></i></button>
-            <button class="active" ng-show="timer.canBeStopped(issue)" ng-click="timer.stop(issue)"><i class="icon-stop"></i></button>
-            <button class="active transitions" ng-show="issue._transitions"><i class="icon-list"></i></button>
-            <button class="active" ng-click="tabOpen($index)"><i class="icon-new-tab"></i></button>
+            <button title="Start progress" class="active"
+              ng-show="timer.canBeStarted(issue)" ng-click="timer.start(issue)"><i class="icon-play"></i></button>
+
+            <button title="Save time and stop progress" class="active"
+              ng-show="timer.canBeStopped(issue)" ng-click="timer.stop(issue)"><i class="icon-stop"></i></button>
+
+            <button title="Stop progress without time-saving" class="active"
+              ng-show="timer.canBeStopped(issue)" ng-click="timer.discard(issue)"><i class="icon-remove"></i></button>
+
+            <button title="Actions" class="active transitions"
+              ng-show="issue._transitions"><i class="icon-list"></i></button>
+
+            <button title="Open this issue in JIRA&trade;" class="active"
+              ng-click="tabOpen($index)"><i class="icon-new-tab"></i></button>
           </div>
         </div>
 
@@ -55,12 +67,12 @@
         </div>
       </div>
 
-      <div class="toolbar-vertical button-set" id="home-workspaces"
+      <div class="toolbar-vertical" id="home-workspaces"
         ng-hide="workspaces.length < 2 || loading">
         <button title="{{workspace.title}}"
           ng-click="$parent.workspaceSwitchTo($index)"
           ng-repeat="workspace in workspaces"
-          ng-class="{active: workspace == workspaceActive}">
+          ng-class="{default: workspace == workspaceActive}">
           <i class="icon-{{workspace.icon}}"></i>
         </button>
       </div>

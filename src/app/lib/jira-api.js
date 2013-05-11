@@ -4,7 +4,6 @@
  * @author Kanstantsin Kamkou <2ka.by>
  * @{@link http://github.com/kkamkou/chrome-jironimo}
  * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
- * @version 1.0
  */
 angular
   .module('jironimo.jira', ['jironimo.settings'])
@@ -67,7 +66,6 @@ angular
      * @param {Object} dataSet
      * @param {Function} callback
      * @private
-     * @return {String}
      */
     this._makeRequest = function (urn, dataSet, callback) {
       // defaults
@@ -79,7 +77,7 @@ angular
           data: dataSet,
           contentType: 'application/json; charset=UTF-8',
           dataType: 'json',
-          timeout: 5000,
+          timeout: cjSettings.account.timeout * 1000,
           headers: {
             Authorization: 'Basic ' +
               window.btoa(cjSettings.account.login + ':' + cjSettings.account.password)
