@@ -17,15 +17,15 @@ function SettingsController($scope, cjSettings) {
     if ($scope.workspaces.length > 10) {
       return false;
     }
-    $scope.workspaces.push({title: null, query: null, default: false});
+    $scope.workspaces.push({title: null, query: null, isDefault: false});
   };
 
   $scope.workspaceSetAsDefault = function (workspace) {
     angular.forEach($scope.workspaces, function (entry) {
-      if (entry.default) {
-        entry.default = false;
+      if (entry.isDefault) {
+        entry.isDefault = false;
       }
-      entry.default = (entry === workspace);
+      entry.isDefault = (entry === workspace);
     });
   };
 
@@ -38,7 +38,7 @@ function SettingsController($scope, cjSettings) {
       return entry !== workspace;
     });
 
-    if (workspace.default) {
+    if (workspace.isDefault) {
       $scope.workspaceSetAsDefault($scope.workspaces[0]);
     }
   };

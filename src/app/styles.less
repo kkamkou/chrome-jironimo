@@ -8,16 +8,6 @@ body {
   overflow-x: hidden;
 }
 
-.input-control > input[type="text"],
-.input-control > input[type="email"],
-.input-control > input[type="url"],
-.input-control > input[type="phone"],
-.input-control > input[type="password"],
-.input-control > select,
-.input-control > textarea{
-  padding-right: 6px;
-}
-
 label.radio {
   margin-top: 6px;
 }
@@ -38,6 +28,10 @@ div.tile .progress-bar{
 .tile .issue-icon{ position: absolute; right: 0; top: 0; width: 13px; height: 13px; text-align: center; }
 .tile .issue-icon img{ vertical-align: top; width: 12px; height: 12px; }
 
-#home-workspaces{ position: absolute; right: 0; }
+#home-workspaces{ position: absolute; right: 4px; }
 
 .error-bar, .warning-bar, .info-bar { z-index: 1002; }
+
+/* Bugs? */
+#home-workspaces i{ margin-right: 0; }
+i[class^="icon-"]{ font-size: 1em!important; }

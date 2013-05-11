@@ -61,7 +61,7 @@
                 <label class="input-control radio">
                   <input type="radio" name="isDefault"
                     ng-click="workspaceSetAsDefault(workspace)"
-                    ng-checked="workspace.default">
+                    ng-checked="workspace.isDefault">
                   <span class="helper">Default</span>
                 </label>
               </div>
@@ -77,7 +77,7 @@
 
           <div>
             <button ng-click="workspaceAdd()"><i class="icon-plus-2"></i> Add one more</button>
-            <input type="submit" value="Save">
+            <input type="submit" value="Save" class="tool-button">
           </div>
       </form>
 
