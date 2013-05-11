@@ -59,6 +59,7 @@ function SettingsController($scope, cjSettings) {
     // some normalization
     if (type === 'account') {
       data.url = data.url.replace(/\/$/, '');
+      data.timeout = parseInt(data.timeout, 10) || 10;
     }
 
     cjSettings[type] = angular.copy(data);

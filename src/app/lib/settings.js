@@ -13,7 +13,7 @@ angular
     var _data = localStorage, self = this, defaults = {};
 
     // default settings for the account tab
-    defaults.account = {};
+    defaults.account = {timeout: 10};
 
     // default settings for the colors tab
     defaults.colors = {

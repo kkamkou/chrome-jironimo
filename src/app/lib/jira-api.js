@@ -79,7 +79,7 @@ angular
           data: dataSet,
           contentType: 'application/json; charset=UTF-8',
           dataType: 'json',
-          timeout: 5000,
+          timeout: cjSettings.account.timeout * 1000,
           headers: {
             Authorization: 'Basic ' +
               window.btoa(cjSettings.account.login + ':' + cjSettings.account.password)
