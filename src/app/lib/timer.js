@@ -87,6 +87,9 @@ angular
       start: function (issue) {
         // storage update
         updateTimer(issue.id, {started: true, timestamp: moment().unix()});
+
+        // timer on the extension icon
+        this.refreshIcon(issue);
       },
 
       /**
@@ -119,6 +122,9 @@ angular
         // updating the entry
         updateTimer(issue.id, {started: false, timestamp: null});
 
+        // updating the icon
+        this.refreshIcon(issue);
+
         // sending request
         cjJira.worklog(issue.id, dataSet, function (err) {
           // rollback if error
@@ -126,6 +132,31 @@ angular
             updateTimer(issue.id, {started: true, timestamp: issueTimestamp});
           }
         });
+      },
+
+      /**
+       * Shows timer on the extension badge for the active issue
+       *
+       * @param {object} issue
+       */
+      refreshIcon: function (issue) {
+        // if timer is not active, we should cleanup the badge
+        if (!this.isStarted(issue)) {
+          chrome.browserAction.setBadgeText({text: ''});
+          return;
+        }
+
+        // defaults
+        var self = this,
+          diff = parseInt(moment().unix() - timerSet[issue.id].timestamp, 10);
+
+        // real-time timer
+        setTimeout(function () {
+          chrome.browserAction.setBadgeText({
+            text: moment().startOf('day').add('seconds', diff).format('HH:mm')
+          });
+          return self.refreshIcon(issue);
+        }, 1000);
       }
     };
   });
