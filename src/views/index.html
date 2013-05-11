@@ -11,6 +11,8 @@
         <img src="/vendors/Metro-UI-CSS/images/preloader-w8-line-black.gif" alt="">
       </center>
 
+      <h3>{{workspaceActive.title}}</h3>
+
       <div class="tile bg-{{issue._colors.bg}} border-{{issue._colors.bd}} outline-{{issue._colors.ot}}"
         ng-repeat="issue in issues"
         ng-dblclick="tabOpen($index)"

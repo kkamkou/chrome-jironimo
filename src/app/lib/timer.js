@@ -163,10 +163,13 @@ angular
 
         // real-time timer
         setTimeout(function () {
+          // badge timer update
           chrome.browserAction.setBadgeText({
             text: moment().startOf('day').add('seconds', diff).format('HH:mm')
           });
-          return self.refreshIcon(issue);
+
+          // cycling
+          self.refreshIcon(issue);
         }, 1000);
       }
     };
