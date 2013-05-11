@@ -4,7 +4,6 @@
  * @author Kanstantsin Kamkou <2ka.by>
  * @{@link http://github.com/kkamkou/chrome-jironimo}
  * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
- * @version 1.0
  */
 angular
   .module('jironimo.timer', ['jironimo.jira', 'jironimo.settings'])
@@ -98,7 +97,7 @@ angular
       stop: function (issue) {
         // stop check
         if (!this.canBeStopped(issue)) {
-          return false;
+          return;
         }
 
         // time diff
@@ -107,7 +106,7 @@ angular
 
         // diff is zero (fastclick?)
         if (!diff) {
-          return false;
+          return;
         }
 
         // data set for the worklog request

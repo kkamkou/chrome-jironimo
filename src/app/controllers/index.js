@@ -4,7 +4,6 @@
  * @author Kanstantsin Kamkou <2ka.by>
  * @{@link http://github.com/kkamkou/chrome-jironimo}
  * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
- * @version 1.0
  */
 function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
   // context storing
@@ -18,7 +17,7 @@ function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
 
   // the active workspace
   $scope.workspaceActive = _.find($scope.workspaces, function (dataSet) {
-    return dataSet.default;
+    return dataSet.isDefault;
   });
 
   /**

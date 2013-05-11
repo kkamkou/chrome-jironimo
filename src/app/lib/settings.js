@@ -4,7 +4,6 @@
  * @author Kanstantsin Kamkou <2ka.by>
  * @{@link http://github.com/kkamkou/chrome-jironimo}
  * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
- * @version 1.0
  */
 angular
   .module('jironimo.settings', [])
@@ -33,13 +32,13 @@ angular
         icon: 'target',
         title: 'My issues',
         query: 'assignee = currentUser() ORDER BY updatedDate DESC',
-        default: true
+        isDefault: true
       },
       {
         icon: 'share-2',
         title: 'Created by me',
         query: 'reporter = currentUser() ORDER BY created DESC',
-        default: false
+        isDefault: false
       }
     ];
 
@@ -63,7 +62,7 @@ angular
         });
 
         self.__defineSetter__(name, function (val) {
-          return _data[name] = angular.toJson(val);
+          _data[name] = angular.toJson(val);
         });
       }
     );
