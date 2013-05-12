@@ -8,17 +8,17 @@
 
 chrome.alarms.onAlarm.addListener(refreshIcon);
 
-chrome.alarms.create('jironimoRefreshIcon', {periodInMinutes: 1});
+chrome.alarms.create('jironimoRefreshIcon', {periodInMinutes: 5}); // 5 is the minimum, docs have 1
 chrome.alarms.get('jironimoRefreshIcon', refreshIcon);
 
 function refreshIcon(alarm) {
   // alarm validation
-  if (alarm.name !== 'jironimoRefreshIcon') {
+  if (alarm && alarm.name !== 'jironimoRefreshIcon') {
     return;
   }
 
   // defaults
-  var timers = JSON.parse(localStorage.timers || {}),
+  var timers = JSON.parse(localStorage.timers || '{}'),
       timersKeys = Object.keys(timers);
 
   // no timers at all
