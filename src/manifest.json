@@ -5,20 +5,24 @@
   "homepage_url": "http://github.com/kkamkou/chrome-jironimo",
   "description": "JIRA workflow in your browser.",
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "options_page": "views/default.html#settings",
   "icons": {
     "16": "icons/16.png",
     "48": "icons/48.png",
     "128": "icons/128.png"
   },
-  "options_page": "views/default.html#settings",
   "browser_action": {
     "default_icon": "icons/128.png",
     "default_popup": "views/default.html"
+  },
+  "background": {
+    "persistent": false,
+    "scripts": ["app/background.js"]
   },
   "permissions": [
     "http://*/",
     "https://*/",
     "tabs",
-    "notifications"
+    "alarms"
   ]
 }
