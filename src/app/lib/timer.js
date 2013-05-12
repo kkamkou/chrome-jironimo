@@ -9,23 +9,33 @@ angular
   .module('jironimo.timer', ['jironimo.jira', 'jironimo.settings'])
   .factory('cjTimer', function (cjJira, cjSettings) {
     // defaults
-    var timerSet = cjSettings.timers,
-      updateTimer = function (issueId, fields) {
-        var defaultFields = {started: true, timestamp: null};
-
-        if (!timerSet[issueId]) {
-          timerSet[issueId] = defaultFields;
-        }
-
-        Object.keys(fields).forEach(function (field) {
-          timerSet[issueId][field] = fields[field];
-        });
-
-        cjSettings.timers = timerSet;
-      };
+    var timerSet = cjSettings.timers;
 
     // exports
     return {
+      /**
+       * Updates a timer entry for the issue
+       *
+       * @param {object} issue
+       * @param {object} fields
+       */
+      update: function (issue, fields) {
+        var defaultFields = {started: false, timestamp: null};
+
+        if (!timerSet[issue.id]) {
+          timerSet[issue.id] = defaultFields;
+        }
+
+        Object.keys(fields).forEach(function (field) {
+          timerSet[issue.id][field] = fields[field];
+        });
+
+        cjSettings.timers = timerSet;
+
+        // updating a timer icon
+        this._iconInit(issue);
+      },
+
       /**
        * Returns true if timer for this issue already started
        *
@@ -86,10 +96,7 @@ angular
        */
       start: function (issue) {
         // storage update
-        updateTimer(issue.id, {started: true, timestamp: moment().unix()});
-
-        // timer on the extension icon
-        this.refreshIcon(issue);
+        this.update(issue, {started: true, timestamp: moment().unix()});
       },
 
       /**
@@ -120,18 +127,15 @@ angular
         };
 
         // updating the entry
-        updateTimer(issue.id, {started: false, timestamp: null});
-
-        // updating the icon
-        this.refreshIcon(issue);
+        this.update(issue, {started: false, timestamp: null});
 
         // sending request
         cjJira.worklog(issue.id, dataSet, function (err) {
           // rollback if error
           if (err) {
-            updateTimer(issue.id, {started: true, timestamp: issueTimestamp});
+            this.update(issue, {started: true, timestamp: issueTimestamp});
           }
-        });
+        }.bind(this));
       },
 
       /**
@@ -141,36 +145,26 @@ angular
        */
       discard: function (issue) {
         if (this.canBeStopped(issue)) {
-          updateTimer(issue.id, {started: false, timestamp: null});
+          this.update(issue, {started: false, timestamp: null});
         }
       },
 
       /**
-       * Shows timer on the extension badge for the active issue
+       * Shows a timer stub on the badge for the active issue
        *
        * @param {object} issue
+       * @return {Boolean}
+       * @private
        */
-      refreshIcon: function (issue) {
+      _iconInit: function (issue) {
         // if timer is not active, we should cleanup the badge
         if (!this.isStarted(issue)) {
           chrome.browserAction.setBadgeText({text: ''});
-          return;
+          return false;
         }
 
-        // defaults
-        var self = this,
-          diff = parseInt(moment().unix() - timerSet[issue.id].timestamp, 10);
-
-        // real-time timer
-        setTimeout(function () {
-          // badge timer update
-          chrome.browserAction.setBadgeText({
-            text: moment().startOf('day').add('seconds', diff).format('HH:mm')
-          });
-
-          // cycling
-          self.refreshIcon(issue);
-        }, 1000);
+        chrome.browserAction.setBadgeText({text: '00:00'});
+        return true;
       }
     };
   });
