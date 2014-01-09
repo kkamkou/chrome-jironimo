@@ -3,7 +3,7 @@ Jironimo
 
 JIRA&trade; extension for the Chrome browser with balls.
 
-Version: 3.1
+Version: 3.2
 -------------
 
 Chrome Web Store
