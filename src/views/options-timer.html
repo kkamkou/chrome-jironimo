@@ -1,53 +1,45 @@
-<div class="page secondary">
-  <div class="page-header">
-    <div class="page-header-content">
-      <h1>
-        Jironimo
-        <small>Timer</small>
-      </h1>
-    </div>
+<div class="container">
+
+  <div class="toolbar place-right">
+    <button ng-click="goTo('/settings')"><i class="icon-key"></i></button>
+    <button ng-click="goTo('/settings/jql')"><i class="icon-bug"></i></button>
+    <button ng-click="goTo('/settings/colors')"><i class="icon-sun-3"></i></button>
+    <button disabled><i class="icon-clock"></i></button>
+    <button ng-click="goTo('/settings/about')"><i class="icon-info-2"></i></button>
   </div>
 
-  <div class="page-region">
-    <div class="page-region-content">
+  <h1>
+    Jironimo
+    <small>Timer</small>
+  </h1>
 
-      <div class="toolbar">
-        <a href="#/settings"><i class="icon-key"></i></a>
-        <a href="#/settings/jql"><i class="icon-bug"></i></a>
-        <a href="#/settings/colors"><i class="icon-sun-3"></i></a>
-        <button disabled><i class="icon-clock"></i></button>
-        <a href="#/settings/about"><i class="icon-info-2"></i></a>
+  <form ng-submit="save('timer', timer)">
+    <div class="grid">
+      <div class="row">
+
+        <div class="span6">
+          <h2>Workspace</h2>
+          <div class="input-control text">
+            <input type="text" maxlength="4" placeholder="Refresh interval (min.)" required
+              ng-model="timer.workspace">
+          </div>
+        </div>
+
+        <div class="span6">
+          <h2>Behaviour</h2>
+          <label class="input-control switch">
+              <input type="checkbox" ng-model="timer.singleton">
+              <span class="check"></span>
+              Allow only one active issue
+          </label>
+        </div>
+
       </div>
-
-      <form ng-submit="save('timer', timer)">
-
-          <div class="span12">
-            <h3>Workspace</h3>
-          </div>
-
-          <div class="input-control span6">
-            <div class="input-control text">
-              <input type="text" maxlength="4" placeholder="Refresh interval (min.)" required
-                ng-model="timer.workspace">
-            </div>
-          </div>
-
-          <div class="span12">
-            <h3>Behaviour</h3>
-          </div>
-
-          <div>
-            <label class="input-control switch">
-                <input type="checkbox" ng-model="timer.singleton">
-                <span class="helper">Allow only one active issue</span>
-            </label>
-          </div>
-
-          <div>
-            <input type="submit" value="Save" class="tool-button">
-          </div>
-      </form>
-
     </div>
-  </div>
+
+    <hr>
+
+    <input type="submit" value="Save" class="tool-button">
+  </form>
+
 </div>
