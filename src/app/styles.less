@@ -18,7 +18,8 @@ div.tile .progress-bar{
 }
 
 .tile .tile-content h4, .tile .tile-content h6, .tile .tile-content p{ line-height: 18px!important; }
-.tile .tile-content p{ height: 70px; }
+.tile .tile-content p{ height: 70px; line-height: 14px!important; }
+.tile .tile-content h6{ font-size: 12px!important; white-space: nowrap; }
 
 .tile div.toolbar{ display: none; position: absolute; bottom: 0; background-color: rgba(0,0,0,0.6); width: 100%; height: 32px; z-index: 1; }
 .tile div.transitions{ display: none; position: absolute; bottom: 0; left: 0; z-index: 1; width: 100%; height: 150px; overflow: auto; }
@@ -28,9 +29,9 @@ div.tile .progress-bar{
 .tile .issue-icon{ position: absolute; right: 0; top: 0; width: 13px; height: 13px; text-align: center; }
 .tile .issue-icon img{ vertical-align: top; width: 12px; height: 12px; }
 
-#home-workspaces{ position: absolute; right: 4px; }
+#home-workspaces{ position: absolute; right: 4px; z-index: 1003; }
 
-.error-bar, .warning-bar, .info-bar { z-index: 1002; }
+.error-bar, .warning-bar, .info-bar { z-index: 1002; height: 100%; }
 
 /* Bugs? */
 #home-workspaces i{ margin-right: 0; }

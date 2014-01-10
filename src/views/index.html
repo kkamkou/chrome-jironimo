@@ -13,6 +13,16 @@
 
       <h3 ng-show="issues.length">{{workspaceActive.title}}</h3>
 
+      <div class="toolbar-vertical" id="home-workspaces"
+        ng-hide="workspaces.length < 2 || loading">
+        <button title="{{workspace.title}}"
+          ng-click="$parent.workspaceSwitchTo($index)"
+          ng-repeat="workspace in workspaces"
+          ng-class="{default: workspace == workspaceActive}">
+          <i class="icon-{{workspace.icon}}"></i>
+        </button>
+      </div>
+
       <div class="tile bg-{{issue._colors.bg}} border-{{issue._colors.bd}} outline-{{issue._colors.ot}}"
         ng-repeat="issue in issues"
         ng-dblclick="tabOpen($index)"
@@ -23,7 +33,7 @@
 
         <div class="tile-content">
           <h4 class="fg-{{issue._colors.fg}}">{{issue.key}}</h4>
-          <h6 class="fg-{{issue._colors.fg}}">{{issue.fields.reporter.displayName}}</h6>
+          <h6 class="fg-{{issue._colors.fg}}">{{issue.fields.reporter.displayName | limitTo: 16}}</h6>
           <p class="fg-{{issue._colors.fg}}">{{issue.fields.summary}}</p>
         </div>
 
@@ -65,16 +75,6 @@
             <a href="#" ng-click="transition(issue, trans)"><small>{{trans.name}}</small></a>
           </div>
         </div>
-      </div>
-
-      <div class="toolbar-vertical" id="home-workspaces"
-        ng-hide="workspaces.length < 2 || loading">
-        <button title="{{workspace.title}}"
-          ng-click="$parent.workspaceSwitchTo($index)"
-          ng-repeat="workspace in workspaces"
-          ng-class="{default: workspace == workspaceActive}">
-          <i class="icon-{{workspace.icon}}"></i>
-        </button>
       </div>
 
     </div>
