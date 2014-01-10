@@ -111,6 +111,28 @@ function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
   };
 
   /**
+   * Opens this extension in a window
+   *
+   * @return {void}
+   */
+  $scope.detachWindow = function () {
+    var width = 800,
+      height = 600,
+      cb = function () {
+        window.close();
+      };
+
+    chrome.windows.create({
+      url: 'views/default.html',
+      type: 'popup',
+      width: width,
+      height: height,
+      left: Math.round((screen.availWidth - width) / 2),
+      top: Math.round((screen.availHeight - height) / 2)
+    }, cb);
+  };
+
+  /**
    * Entry set corrections
    *
    * @param {Array} issues

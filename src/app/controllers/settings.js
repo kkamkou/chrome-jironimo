@@ -65,8 +65,14 @@ function SettingsController($scope, $location, cjSettings) {
     return true;
   };
 
+  /**
+   * Chnages the location path
+   *
+   * @param  {string} route
+   * @return {boolean}
+   */
   $scope.goTo = function (route) {
     $location.path(route);
     return false;
-  }
+  };
 }
