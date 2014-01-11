@@ -3,31 +3,28 @@ Jironimo
 
 JIRA&trade; extension for the Chrome browser with balls.
 
-Version: 4.0
--------------
-
-Chrome Web Store
--------------
+## Chrome Web Store
 [jironimo](https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl) (if you have the "download was not a CRX" message, just search this extension with google chrome marketplace)
 
-Manual installation
--------------
+### Manual installation
 Right-click one the "[chrome-jironimo-latest.crx](https://raw.github.com/kkamkou/chrome-jironimo/master/build/chrome-jironimo-latest.crx)" link and select "Save Link As" to download the extension to your desktop.
 
 Open Chrome's extensions page in your browser by pasting chrome://chrome/extensions/ into your address bar and pressing Enter. Or open the "Tools -> Extensions" section.
 
 Drag and drop the extension you just downloaded into the Chrome extensions page.
 
-Frontend
--------------
-![Bilby Stampede](https://raw.github.com/kkamkou/chrome-jironimo/gh-pages/images/jironimo-frontend.jpg)
+### Frontend
+![Frontend](https://raw.github.com/kkamkou/chrome-jironimo/gh-pages/images/jironimo-frontend.jpg)
 
-Options
--------------
-![Bilby Stampede](https://raw.github.com/kkamkou/chrome-jironimo/gh-pages/images/jironimo-options.jpg)
+### Options
+![Options](https://raw.github.com/kkamkou/chrome-jironimo/gh-pages/images/jironimo-options.jpg)
 
-License
--------------
+### Build
+```sh
+npm install && ./node_modules/.bin/jake build
+```
+
+#### License
 **Boost Software License 1.0 (BSL-1.0)**
 
 Permission is hereby granted, free of charge, to any person or organization obtaining a copy of the software and accompanying documentation covered by this license (the "Software") to use, reproduce, display, distribute, execute, and transmit the Software, and to prepare derivative works of the Software, and to permit third-parties to whom the Software is furnished to do so, all subject to the following:
