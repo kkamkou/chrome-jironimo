@@ -9,6 +9,7 @@
   "dependencies": {
     "jake": "latest",
     "uglify-js": "latest",
-    "csso": "latest"
+    "csso": "latest",
+    "lodash": "latest"
   }
 }
