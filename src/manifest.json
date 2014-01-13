@@ -3,7 +3,7 @@
   "version": "4.0",
   "manifest_version": 2,
   "homepage_url": "http://github.com/kkamkou/chrome-jironimo",
-  "description": "JIRA workflow in your browser.",
+  "description": "JIRA workflow in your browser. Robust extension for passionate techies.",
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "options_page": "views/default.html#settings",
   "minimum_chrome_version": "23",
