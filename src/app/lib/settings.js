@@ -17,6 +17,13 @@ angular
     // default settings for the colors tab
     defaults.colors = {
       theme: 'default',
+      sizes: {
+        epic: 'triple',
+        story: 'double',
+        'sub-task': 'default',
+        bug: 'default',
+        improvement: 'default'
+      },
       priority: {
         1: {fg: 'white', bg: 'red', bd: 'white', ot: 'red'},
         2: {fg: 'white', bg: 'orangeDark', bd: 'white', ot: 'orangeDark'},

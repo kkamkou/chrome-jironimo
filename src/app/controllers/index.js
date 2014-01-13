@@ -149,6 +149,11 @@ function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
           .duration(issue.fields.timeestimate * 1000).humanize();
       }
 
+      // applying custom sizes
+      issue._size = cjSettings.colors
+        .sizes[issue.fields.issuetype.name.toLowerCase()] || cjSettings.colors
+        .sizes.task;
+
       // applying custom colors
       issue._colors = cjSettings.colors.priority[issue.fields.priority.id]
         ? cjSettings.colors.priority[issue.fields.priority.id]

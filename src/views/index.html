@@ -20,7 +20,7 @@
       </button>
     </div>
 
-    <div class="tile padding10 double bg-{{issue._colors.bg}} border-{{issue._colors.bd}} outline-{{issue._colors.ot}}"
+    <div class="tile padding10 {{issue._size}} bg-{{issue._colors.bg}} border-{{issue._colors.bd}} outline-{{issue._colors.ot}}"
       ng-repeat="issue in issues"
       ng-dblclick="tabOpen($index)"
       ng-class="{selected: issue._isClosed}">
