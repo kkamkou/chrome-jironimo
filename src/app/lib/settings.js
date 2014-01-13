@@ -18,11 +18,11 @@ angular
     defaults.colors = {
       theme: 'default',
       priority: {
-        1: {fg: 'color-white', bg: 'color-red', bd: 'color-white', ot: 'color-red'},
-        2: {fg: 'color-white', bg: 'color-orangeDark', bd: 'color-white', ot: 'color-orangeDark'},
-        3: {fg: 'color-white', bg: 'color-orange', bd: 'color-white', ot: 'color-orange'},
-        4: {fg: 'color-white', bg: 'color-grayDark', bd: 'color-white', ot: 'color-grayDark'},
-        5: {fg: 'color-darken', bg: 'color-blueLight', bd: 'color-white', ot: 'color-blueLight'}
+        1: {fg: 'white', bg: 'red', bd: 'white', ot: 'red'},
+        2: {fg: 'white', bg: 'orangeDark', bd: 'white', ot: 'orangeDark'},
+        3: {fg: 'white', bg: 'orange', bd: 'white', ot: 'orange'},
+        4: {fg: 'white', bg: 'grayDark', bd: 'white', ot: 'grayDark'},
+        5: {fg: 'darken', bg: 'blueLight', bd: 'white', ot: 'blueLight'}
       }
     };
 

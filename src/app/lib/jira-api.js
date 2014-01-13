@@ -149,7 +149,7 @@ angular
     $rootScope.$on('jiraRequestFail', function (event, args) {
       $('body').append(
         '<div class="error-bar">' +
-          '<h3 class="fg-color-white">' +
+          '<h3 class="fg-white">' +
             S(args[0]).capitalize().s +
           '</h3>' +
           '<p>' + args[1].join(';') + '</p>' +
