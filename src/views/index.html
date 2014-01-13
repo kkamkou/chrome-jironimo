@@ -18,6 +18,9 @@
         ng-class="{default: workspace == workspaceActive}">
         <i class="icon-{{workspace.icon}}"></i>
       </button>
+
+      <button title="Detach this window" ng-click="detachWindow()"><i
+        class="icon-new-tab-2"></i></button>
     </div>
 
     <div class="tile padding10 {{issue._size}} bg-{{issue._colors.bg}} border-{{issue._colors.bd}} outline-{{issue._colors.ot}}"
