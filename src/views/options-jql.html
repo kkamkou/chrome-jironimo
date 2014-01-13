@@ -1,86 +1,79 @@
-<div class="page secondary">
-  <div class="page-header">
-    <div class="page-header-content">
-      <h1>
-        Jironimo
-        <small>Workspaces</small>
-      </h1>
-    </div>
+<div class="container container-options">
+
+  <div class="toolbar place-right">
+    <button ng-click="goTo('/settings')"><i class="icon-key"></i></button>
+    <button disabled><i class="icon-bug"></i></button>
+    <button ng-click="goTo('/settings/colors')"><i class="icon-sun-3"></i></button>
+    <button ng-click="goTo('/settings/timer')"><i class="icon-clock"></i></button>
+    <button ng-click="goTo('/settings/about')"><i class="icon-info-2"></i></button>
   </div>
 
-  <div class="page-region">
-    <div class="page-region-content">
+  <h1>
+    Jironimo
+    <small>Workspaces</small>
+  </h1>
 
-      <div class="toolbar">
-        <a href="#/settings"><i class="icon-key"></i></a>
-        <button disabled><i class="icon-bug"></i></button>
-        <a href="#/settings/colors"><i class="icon-sun-3"></i></a>
-        <a href="#/settings/timer"><i class="icon-clock"></i></a>
-        <a href="#/settings/about"><i class="icon-info-2"></i></a>
+  <form class="span12"
+    ng-submit="save('workspaces', workspaces)">
+
+      <div class="span12">
+        <h3>JIRA&trade; queries</h3>
       </div>
 
-      <form class="span12"
-        ng-submit="save('workspaces', workspaces)">
+      <div class="grid">
+        <div class="row" ng-repeat="workspace in workspaces">
 
-          <div class="span12">
-            <h3>JIRA&trade; queries</h3>
+          <div class="span2">
+            <label class="input-control radio">
+              <input type="radio" name="isDefault"
+                ng-click="workspaceSetAsDefault(workspace)"
+                ng-checked="workspace.isDefault">
+              <span class="check"></span> Default
+            </label>
           </div>
 
-          <div class="grid">
-            <div class="row"
-              ng-repeat="workspace in workspaces">
-
-              <div class="span2">
-                <div class="input-control text">
-                  <input type="text" placeholder="Label" maxlength="16" required
-                    ng-model="workspace.title">
-                </div>
-              </div>
-
-              <div class="span6">
-                <div class="input-control text">
-                  <input type="text" placeholder="JQL" required
-                    ng-model="workspace.query">
-                </div>
-              </div>
-
-              <div class="span1">
-                <div class="input-control text">
-                  <input type="text" placeholder="icon*" maxlength="18" required
-                    ng-model="workspace.icon">
-                </div>
-              </div>
-
-              <div class="span1">
-                <div class="toolbar">
-                  <button ng-click="workspaceRemove(workspace)"><i class="icon-cancel-2"></i></button>
-                </div>
-              </div>
-
-              <div class="span2">
-                <label class="input-control radio">
-                  <input type="radio" name="isDefault"
-                    ng-click="workspaceSetAsDefault(workspace)"
-                    ng-checked="workspace.isDefault">
-                  <span class="helper">Default</span>
-                </label>
-              </div>
-
+          <div class="span2">
+            <div class="input-control text">
+              <input type="text" placeholder="Label" maxlength="16" required
+                ng-model="workspace.title">
             </div>
           </div>
 
-          <p>
-            <small>
-              * <a href="http://metroui.org.ua/icons" target="_blank">Click here to open the list of available icons</a>
-            </small>
-          </p>
-
-          <div>
-            <button ng-click="workspaceAdd()"><i class="icon-plus-2"></i> Add one more</button>
-            <input type="submit" value="Save" class="tool-button">
+          <div class="span6">
+            <div class="input-control text">
+              <input type="text" placeholder="JQL" required
+                ng-model="workspace.query">
+            </div>
           </div>
-      </form>
 
-    </div>
-  </div>
+          <div class="span1">
+            <div class="input-control text">
+              <input type="text" placeholder="icon*" maxlength="18" required
+                ng-model="workspace.icon">
+            </div>
+          </div>
+
+          <div class="span1 text-center">
+            <button ng-click="workspaceRemove(workspace)" style="margin-top: 5px;"><i
+              class="icon-cancel-2"></i></button>
+          </div>
+
+        </div>
+      </div>
+
+      <p>
+        <small>
+          * <a href="http://metroui.org.ua/icons" target="_blank">Click here to open the list of available icons</a>
+        </small>
+      </p>
+
+      <hr>
+
+      <div>
+        <button ng-click="workspaceAdd()" class="success place-right"><i
+          class="icon-plus-2"></i> Add one more</button>
+        <input type="submit" value="Save" class="default">
+      </div>
+  </form>
+
 </div>

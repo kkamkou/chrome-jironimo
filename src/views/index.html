@@ -10,7 +10,7 @@
 
     <h3 ng-show="issues.length">{{workspaceActive.title}}</h3>
 
-    <div class="toolbar-vertical" data-role="button-set" id="home-workspaces"
+    <div class="toolbar-vertical" id="home-workspaces"
       ng-hide="workspaces.length < 2 || loading">
       <button title="{{workspace.title}}"
         ng-click="$parent.workspaceSwitchTo($index)"
