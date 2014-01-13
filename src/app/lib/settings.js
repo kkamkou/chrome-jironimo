@@ -74,5 +74,11 @@ angular
       }
     );
 
+    // migrations
+    // v3.1 to 4.0
+    if (_data.colors && _data.colors.indexOf(',"sizes":{') === -1) {
+      delete _data.colors;
+    }
+
     return this;
   });
