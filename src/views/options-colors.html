@@ -15,7 +15,7 @@
 
   <form ng-submit="save('colors', colors)">
 
-    <h3>Default theme</h3>
+    <h2>Default theme</h2>
 
     <div class="input-control select span5">
       <select ng-model="colors.theme">
@@ -23,7 +23,7 @@
       </select>
     </div>
 
-    <h3>Priority colors</h3>
+    <h2>Priority colors</h2>
 
     <div class="grid">
       <div class="row" ng-repeat="colpri in colors.priority">
@@ -57,7 +57,7 @@
       </div>
     </div>
 
-    <h3>Priority sizes</h3>
+    <h2>Priority sizes</h2>
 
     <div class="grid">
       <div class="row" ng-repeat="(sizkey, sizval) in colors.sizes">
