@@ -43,7 +43,7 @@
           <sup ng-show="issue.fields.timeestimate">{{issue.fields.timeestimate}}</sup>
         </span>
         <span class="name" ng-show="timer.canBeStopped(issue)" ng-bind="timer.elapsedTime(issue)"></span>
-        <span class="badge playing" ng-show="timer.isStarted(issue)"></span>
+        <span class="badge bg-lightRed" ng-show="timer.isStarted(issue)"><i class="icon-play"></i></span>
       </div>
 
       <div class="progress-bar" ng-show="issue.fields.progress.percent">
@@ -62,7 +62,7 @@
             ng-show="timer.canBeStopped(issue)" ng-click="timer.discard(issue)"><i class="icon-remove"></i></button>
 
           <button title="Actions" class="active transitions"
-            ng-show="issue._transitions"><i class="icon-list"></i></button>
+            ng-show="issue._transitions && timer.canBeStarted(issue)"><i class="icon-list"></i></button>
 
           <button title="Open this issue in JIRA&trade;" class="active"
             ng-click="tabOpen($index)"><i class="icon-new-tab"></i></button>

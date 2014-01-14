@@ -118,7 +118,7 @@ angular
           };
 
         // error messages
-        if (loginReason && err.status < 500) {
+        if (loginReason && err.status > 400 && err.status < 500) {
           messages = [loginReasonSet[loginReason]];
         } else if (err.status === 500) {
           messages = [
