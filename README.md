@@ -21,7 +21,7 @@ Drag and drop the extension you just downloaded into the Chrome extensions page.
 
 ### Build
 ```sh
-npm install && ./node_modules/.bin/jake build
+npm install && ./node_modules/.bin/jake build version='1.0'
 ```
 
 #### License
