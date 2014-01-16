@@ -20,6 +20,7 @@ angular
       sizes: {
         epic: 'triple',
         story: 'double',
+        task: 'default',
         'sub-task': 'default',
         bug: 'default',
         improvement: 'default'
