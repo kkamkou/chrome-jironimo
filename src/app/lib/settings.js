@@ -26,10 +26,10 @@ angular
       },
       priority: {
         1: {fg: 'white', bg: 'red', bd: 'white', ot: 'red'},
-        2: {fg: 'white', bg: 'orangeDark', bd: 'white', ot: 'orangeDark'},
-        3: {fg: 'white', bg: 'orange', bd: 'white', ot: 'orange'},
-        4: {fg: 'white', bg: 'grayDark', bd: 'white', ot: 'grayDark'},
-        5: {fg: 'darken', bg: 'blueLight', bd: 'white', ot: 'blueLight'}
+        2: {fg: 'white', bg: 'orange', bd: 'white', ot: 'orange'},
+        3: {fg: 'white', bg: 'lightOlive', bd: 'white', ot: 'lightOlive'},
+        4: {fg: 'white', bg: 'gray', bd: 'white', ot: 'gray'},
+        5: {fg: 'darken', bg: 'lightBlue', bd: 'white', ot: 'lightBlue'}
       }
     };
 
@@ -75,8 +75,8 @@ angular
     );
 
     // migrations
-    // v3.1 to 4.0
-    if (_data.colors && _data.colors.indexOf(',"sizes":{') === -1) {
+    if (!_data.version) {
+      _data.version = 4;
       delete _data.colors;
     }
 
