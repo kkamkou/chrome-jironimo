@@ -14,19 +14,24 @@
   </h1>
 
   <form ng-submit="save('timer', timer)">
+    <h2>Workspace</h2>
+    <div class="input-control text span6">
+      <input type="text" maxlength="4" placeholder="Refresh interval (min.)" required
+        ng-model="timer.workspace">
+    </div>
+
+    <h2>Timelog</h2>
     <div class="grid">
       <div class="row">
-
         <div class="span6">
-          <h2>Workspace</h2>
-          <div class="input-control text">
-            <input type="text" maxlength="4" placeholder="Refresh interval (min.)" required
-              ng-model="timer.workspace">
-          </div>
+          <label class="input-control switch">
+              <input type="checkbox" ng-model="timer.disabled">
+              <span class="check"></span>
+              Disable the timelog feature
+          </label>
         </div>
 
         <div class="span6">
-          <h2>Behaviour</h2>
           <label class="input-control switch">
               <input type="checkbox" ng-model="timer.singleton">
               <span class="check"></span>

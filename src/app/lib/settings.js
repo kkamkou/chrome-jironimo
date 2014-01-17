@@ -52,6 +52,7 @@ angular
 
     // default settings for the timer tab
     defaults.timer = {
+      disabled: false,
       workspace: 5,
       singleton: true
     };
@@ -78,6 +79,7 @@ angular
     // migrations
     if (!_data.version) {
       _data.version = 4;
+      delete _data.timer;
       delete _data.colors;
     }
 
