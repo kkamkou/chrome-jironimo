@@ -5,7 +5,7 @@
  * @{@link http://github.com/kkamkou/chrome-jironimo}
  * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
  */
-function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
+function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjJira) {
   // context storing
   var self = this;
 
@@ -16,8 +16,8 @@ function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
   $scope.timer = cjTimer;
 
   // the active workspace
-  $scope.workspaceActive = _.find($scope.workspaces, function (dataSet) {
-    return dataSet.isDefault;
+  $scope.workspaceActive = _.find($scope.workspaces, function (dataSet, index) {
+    return (cjSettings.workspaceLast === index || dataSet.isDefault);
   });
 
   /**
@@ -59,10 +59,15 @@ function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
    * @param {Number} index
    */
   $scope.workspaceSwitchTo = function (index) {
-    $scope.workspaceActive = $scope.workspaces[index]
-      ? $scope.workspaces[index]
-      : $scope.workspaces[0];
+    index = $scope.workspaces[index] ? index : 0;
+
+    $scope.workspaceActive = $scope.workspaces[index];
     $scope.workspaceRefresh();
+
+    // updating the active workspace
+    if (cjSettings.workspaceLast !== index) {
+      cjSettings.workspaceLast = index;
+    }
   };
 
   /**
@@ -218,5 +223,14 @@ function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
     });
 
     $scope.workspaceRefresh();
+  });
+
+  $rootScope.$on('jiraRequestFail', function (event, args) {
+    $('body').prepend(
+      '<div class="error-bar">' +
+        '<h3 class="fg-white">' + S(args[0]).capitalize().s + '</h3>' +
+        '<p class="fg-white">' + args[1].join(';') + '</p>' +
+      '</div>'
+    );
   });
 }

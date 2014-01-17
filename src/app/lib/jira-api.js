@@ -142,20 +142,4 @@ angular
         return callback(err);
       });
     };
-  })
-
-  // listeners
-  .run(function ($rootScope) {
-    $rootScope.$on('jiraRequestFail', function (event, args) {
-      $('body').append(
-        '<div class="error-bar">' +
-          '<h3 class="fg-white">' +
-            S(args[0]).capitalize().s +
-          '</h3>' +
-          '<p class="fg-white">' + args[1].join(';') + '</p>' +
-        '</div>'
-      );
-
-      $('#home-workspaces').remove();
-    });
   });

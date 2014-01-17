@@ -57,8 +57,9 @@ angular
       singleton: true
     };
 
-    // default active timers
+    // defaults for the personal data
     defaults.timers = {};
+    defaults.workspaceLast = 0;
 
     // getters and setters override
     angular.forEach(

@@ -1,11 +1,10 @@
+<div class="info-bar" ng-show="!issues.length && !loading">
+  <h3 class="fg-darkCobalt">No data provided</h3>
+  <p>No matching entries according the current JIRA&trade; query</p>
+</div>
+
 <div class="container">
   <div class="tiles">
-
-    <div class="info-bar" ng-show="!issues.length && !loading">
-      <h3 class="fg-darkCobalt">No data provided</h3>
-      <p>No matching entries according the current JIRA&trade; query</p>
-    </div>
-
     <div id="loading" ng-show="loading"><i class="icon-clock"></i></div>
 
     <h3 ng-show="issues.length">{{workspaceActive.title}}</h3>
@@ -19,7 +18,9 @@
         <i class="icon-{{workspace.icon}}"></i>
       </button>
 
-      <button title="Detach this window" ng-click="detachWindow()"><i
+      <button title="Refresh" ng-click="workspaceRefresh()"><i
+        class="icon-spin"></i></button><button
+        title="Detach this window" ng-click="detachWindow()"><i
         class="icon-new-tab-2"></i></button>
     </div>
 
