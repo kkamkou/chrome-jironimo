@@ -62,7 +62,7 @@
             ng-show="timer.canBeStopped(issue)" ng-click="timer.discard(issue)"><i class="icon-remove"></i></button>
 
           <button title="Actions" class="active transitions"
-            ng-show="issue._transitions && timer.canBeStarted(issue)"><i class="icon-list"></i></button>
+            ng-show="issue._transitions && !timer.isStarted(issue)"><i class="icon-list"></i></button>
 
           <button title="Open this issue in JIRA&trade;" class="active"
             ng-click="tabOpen($index)"><i class="icon-new-tab"></i></button>
