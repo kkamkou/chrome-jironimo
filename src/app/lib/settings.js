@@ -17,12 +17,20 @@ angular
     // default settings for the colors tab
     defaults.colors = {
       theme: 'default',
+      sizes: {
+        epic: 'triple',
+        story: 'double',
+        task: 'default',
+        'sub-task': 'default',
+        bug: 'default',
+        improvement: 'default'
+      },
       priority: {
-        1: {fg: 'color-white', bg: 'color-red', bd: 'color-white', ot: 'color-red'},
-        2: {fg: 'color-white', bg: 'color-orangeDark', bd: 'color-white', ot: 'color-orangeDark'},
-        3: {fg: 'color-white', bg: 'color-orange', bd: 'color-white', ot: 'color-orange'},
-        4: {fg: 'color-white', bg: 'color-grayDark', bd: 'color-white', ot: 'color-grayDark'},
-        5: {fg: 'color-darken', bg: 'color-blueLight', bd: 'color-white', ot: 'color-blueLight'}
+        1: {fg: 'white', bg: 'red', bd: 'white', ot: 'red'},
+        2: {fg: 'white', bg: 'orange', bd: 'white', ot: 'orange'},
+        3: {fg: 'white', bg: 'lightOlive', bd: 'white', ot: 'lightOlive'},
+        4: {fg: 'white', bg: 'gray', bd: 'white', ot: 'gray'},
+        5: {fg: 'darken', bg: 'lightBlue', bd: 'white', ot: 'lightBlue'}
       }
     };
 
@@ -44,12 +52,14 @@ angular
 
     // default settings for the timer tab
     defaults.timer = {
+      disabled: false,
       workspace: 5,
       singleton: true
     };
 
-    // default active timers
+    // defaults for the personal data
     defaults.timers = {};
+    defaults.workspaceLast = 0;
 
     // getters and setters override
     angular.forEach(
@@ -66,6 +76,13 @@ angular
         });
       }
     );
+
+    // migrations
+    if (!_data.version) {
+      _data.version = 4;
+      delete _data.timer;
+      delete _data.colors;
+    }
 
     return this;
   });

@@ -5,7 +5,7 @@
  * @{@link http://github.com/kkamkou/chrome-jironimo}
  * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
  */
-function SettingsController($scope, cjSettings) {
+function SettingsController($scope, $location, cjSettings) {
   // defining dynamic data
   angular.forEach(
     ['account', 'colors', 'timer', 'workspaces'], function (name) {
@@ -63,5 +63,16 @@ function SettingsController($scope, cjSettings) {
 
     cjSettings[type] = angular.copy(data);
     return true;
+  };
+
+  /**
+   * Chnages the location path
+   *
+   * @param  {string} route
+   * @return {boolean}
+   */
+  $scope.goTo = function (route) {
+    $location.path(route);
+    return false;
   };
 }

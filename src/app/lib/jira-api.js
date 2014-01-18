@@ -118,7 +118,7 @@ angular
           };
 
         // error messages
-        if (loginReason && err.status < 500) {
+        if (loginReason && err.status > 400 && err.status < 500) {
           messages = [loginReasonSet[loginReason]];
         } else if (err.status === 500) {
           messages = [
@@ -135,6 +135,9 @@ angular
           }
         }
 
+        // debug information
+        console.error(err);
+
         // custom message
         $rootScope.$emit('jiraRequestFail', [err.statusText, messages]);
 
@@ -142,20 +145,4 @@ angular
         return callback(err);
       });
     };
-  })
-
-  // listeners
-  .run(function ($rootScope) {
-    $rootScope.$on('jiraRequestFail', function (event, args) {
-      $('body').append(
-        '<div class="error-bar">' +
-          '<h3 class="fg-color-white">' +
-            S(args[0]).capitalize().s +
-          '</h3>' +
-          '<p>' + args[1].join(';') + '</p>' +
-        '</div>'
-      );
-
-      $('#home-workspaces').remove();
-    });
   });

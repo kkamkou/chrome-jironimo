@@ -1,0 +1,15 @@
+{
+  "name": "chrome-jironimo",
+  "engines": {
+    "node": "0.10.x",
+    "npm":  "1.3.x"
+  },
+  "author": "Kanstantsin Kamkou <kkamkou@gmail.com>",
+  "private": true,
+  "dependencies": {
+    "jake": "latest",
+    "uglify-js": "latest",
+    "csso": "latest",
+    "lodash": "latest"
+  }
+}

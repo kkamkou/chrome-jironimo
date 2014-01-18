@@ -5,7 +5,7 @@
  * @{@link http://github.com/kkamkou/chrome-jironimo}
  * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
  */
-function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
+function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjJira) {
   // context storing
   var self = this;
 
@@ -16,8 +16,8 @@ function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
   $scope.timer = cjTimer;
 
   // the active workspace
-  $scope.workspaceActive = _.find($scope.workspaces, function (dataSet) {
-    return dataSet.isDefault;
+  $scope.workspaceActive = _.find($scope.workspaces, function (dataSet, index) {
+    return (cjSettings.workspaceLast === index || dataSet.isDefault);
   });
 
   /**
@@ -28,6 +28,9 @@ function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
   $scope.workspaceRefresh = function () {
     // displaying the loader
     $scope.loading = true;
+
+    // removing the filter field
+    $scope.filterFieldDisplay = false;
 
     // issues cleanup
     $scope.issues = [];
@@ -59,10 +62,15 @@ function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
    * @param {Number} index
    */
   $scope.workspaceSwitchTo = function (index) {
-    $scope.workspaceActive = $scope.workspaces[index]
-      ? $scope.workspaces[index]
-      : $scope.workspaces[0];
+    index = $scope.workspaces[index] ? index : 0;
+
+    $scope.workspaceActive = $scope.workspaces[index];
     $scope.workspaceRefresh();
+
+    // updating the active workspace
+    if (cjSettings.workspaceLast !== index) {
+      cjSettings.workspaceLast = index;
+    }
   };
 
   /**
@@ -111,6 +119,28 @@ function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
   };
 
   /**
+   * Opens this extension in a window
+   *
+   * @return {void}
+   */
+  $scope.detachWindow = function () {
+    var width = 800,
+      height = 600,
+      cb = function () {
+        window.close();
+      };
+
+    chrome.windows.create({
+      url: 'views/default.html',
+      type: 'popup',
+      width: width,
+      height: height,
+      left: Math.round((screen.availWidth - width) / 2),
+      top: Math.round((screen.availHeight - height) / 2)
+    }, cb);
+  };
+
+  /**
    * Entry set corrections
    *
    * @param {Array} issues
@@ -126,6 +156,11 @@ function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
         issue.fields.timeestimate = moment
           .duration(issue.fields.timeestimate * 1000).humanize();
       }
+
+      // applying custom sizes
+      issue._size = cjSettings.colors
+        .sizes[issue.fields.issuetype.name.toLowerCase()] || cjSettings.colors
+        .sizes.task;
 
       // applying custom colors
       issue._colors = cjSettings.colors.priority[issue.fields.priority.id]
@@ -191,5 +226,23 @@ function IndexController($q, $scope, cjTimer, cjSettings, cjJira) {
     });
 
     $scope.workspaceRefresh();
+  });
+
+  $scope.$watch('filterFieldDisplay', function (value) {
+    if (!value) {
+      return false;
+    }
+    setTimeout(function () {
+      $('#filter input').focus();
+    }, 100);
+  });
+
+  $rootScope.$on('jiraRequestFail', function (event, args) {
+    $('body').prepend(
+      '<div class="error-bar">' +
+        '<h3 class="fg-white">' + S(args[0]).capitalize().s + '</h3>' +
+        '<p class="fg-white">' + args[1].join(';') + '</p>' +
+      '</div>'
+    );
   });
 }
