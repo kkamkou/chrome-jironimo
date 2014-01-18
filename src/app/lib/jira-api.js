@@ -130,7 +130,7 @@ angular
             try {
               messages = angular.fromJson(err.responseText).errorMessages;
             } catch (e) {
-              // nothing here, default message shown
+              console.error(e); // nothing here, default message shown
             }
           }
         }

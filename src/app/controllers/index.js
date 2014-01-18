@@ -29,6 +29,9 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjJira) {
     // displaying the loader
     $scope.loading = true;
 
+    // removing the filter field
+    $scope.filterFieldDisplay = false;
+
     // issues cleanup
     $scope.issues = [];
 
@@ -223,6 +226,15 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjJira) {
     });
 
     $scope.workspaceRefresh();
+  });
+
+  $scope.$watch('filterFieldDisplay', function (value) {
+    if (!value) {
+      return false;
+    }
+    setTimeout(function () {
+      $('#filter input').focus();
+    }, 100);
   });
 
   $rootScope.$on('jiraRequestFail', function (event, args) {

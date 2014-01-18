@@ -11,24 +11,33 @@
 
     <div class="toolbar-vertical" id="home-workspaces"
       ng-hide="workspaces.length < 2 || loading">
+      <div>
+        <div class="input-control text size3" id="filter"
+          ng-show="filterFieldDisplay">
+          <input type="text" ng-model="filterText">
+        </div>
+
+        <button title="Filter"
+          ng-click="filterFieldDisplay = !filterFieldDisplay"
+          ng-class="{inverse: filterFieldDisplay || filterText}">
+          <i class="icon-filter"></i>
+        </button>
+
+        <button title="Refresh" ng-click="workspaceRefresh()">
+          <i class="icon-spin"></i>
+        </button>
+
+        <button title="Detach this window" ng-click="detachWindow()">
+          <i class="icon-new-tab-2"></i>
+        </button>
+      </div>
+
       <button title="{{workspace.title}}"
         ng-click="$parent.workspaceSwitchTo($index)"
         ng-repeat="workspace in workspaces"
         ng-class="{default: workspace == workspaceActive}">
         <i class="icon-{{workspace.icon}}"></i>
       </button>
-
-      <div class="input-control text size3" id="filter"
-        ng-focus="filterFieldDisplay" ng-show="filterFieldDisplay">
-        <input type="text" ng-model="filterText">
-      </div>
-
-      <button title="Filter" ng-click="filterFieldDisplay = !filterFieldDisplay" ng-class="{inverse: filterFieldDisplay}"><i
-        class="icon-filter"></i></button><button
-        title="Refresh" ng-click="workspaceRefresh()"><i
-        class="icon-spin"></i></button><button
-        title="Detach this window" ng-click="detachWindow()"><i
-        class="icon-new-tab-2"></i></button>
     </div>
 
     <div class="tile padding10 {{issue._size}} bg-{{issue._colors.bg}} border-{{issue._colors.bd}} outline-{{issue._colors.ot}}"
