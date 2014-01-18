@@ -130,10 +130,13 @@ angular
             try {
               messages = angular.fromJson(err.responseText).errorMessages;
             } catch (e) {
-              console.error(e); // nothing here, default message shown
+              // nothing here, default message shown
             }
           }
         }
+
+        // debug information
+        console.error(err);
 
         // custom message
         $rootScope.$emit('jiraRequestFail', [err.statusText, messages]);
