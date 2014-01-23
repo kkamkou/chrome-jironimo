@@ -10,6 +10,7 @@
     "jake": "latest",
     "uglify-js": "latest",
     "csso": "latest",
-    "lodash": "latest"
+    "lodash": "latest",
+    "wrench": "latest"
   }
 }

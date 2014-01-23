@@ -5,18 +5,22 @@
 var uglify = require('uglify-js'),
   fs = require('fs'),
   path = require('path'),
+  wrench = require('wrench'),
   _ = require('lodash');
 
 // constants
 var CONSTANTS = {
   DIR_APP: path.join(__dirname, 'src', 'app'),
+  DIR_SRC: path.join(__dirname, 'src'),
+  DIR_VENDORS: path.join(__dirname, 'src', 'vendors'),
   DIR_BUILD: path.join(__dirname, 'build'),
-  DIR_VENDORS: path.join(__dirname, 'src', 'vendors')
+  DIR_BUILD_APP: path.join(__dirname, 'build', 'app'),
+  DIR_BUILD_VENDORS: path.join(__dirname, 'build', 'vendors')
 };
 
 // default
 desc('Default build action');
-task('default', ['pack-app', 'pack-vendors'], function (params) {
+task('default', ['copy-sources', 'pack-app', 'pack-vendors'], function (params) {
   var versionNumber = process.env['version'];
   console.log('Done. Version:', versionNumber);
 });
@@ -33,7 +37,7 @@ task('pack-app', {async: true}, function () {
   });
 
   fs.writeFile(
-    path.join(CONSTANTS.DIR_BUILD, 'app.js'),
+    path.join(CONSTANTS.DIR_BUILD_APP, 'app.js'),
     uglify.minify(fileSet).code,
     function () {
       console.log('Packed to "app.js":', "\n", fileSet);
@@ -54,13 +58,28 @@ task('pack-vendors', {async: true}, function () {
   });
 
   fs.writeFile(
-    path.join(CONSTANTS.DIR_BUILD, 'vendors.js'),
+    path.join(CONSTANTS.DIR_BUILD_VENDORS, 'vendors.js'),
     uglify.minify(fileSet).code,
     function () {
       console.log('Packed to "vendors.js":', "\n", fileSet);
       complete();
     }
   );
+});
+
+// copy distr
+desc('Copying sources to the build folder');
+task('copy-sources', function () {
+  wrench.copyDirSyncRecursive(
+    CONSTANTS.DIR_SRC, CONSTANTS.DIR_BUILD, {
+      forceDelete: true,
+      exclude: function (fileName, filePath) {
+        return filePath.indexOf(CONSTANTS.DIR_VENDORS) !== -1
+          || filePath.indexOf(CONSTANTS.DIR_APP) !== -1;
+      }
+    }
+  );
+  console.log('Copying sources to the build folder is complete');
 });
 
 // internal functions
