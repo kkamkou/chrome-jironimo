@@ -29,7 +29,7 @@ task('default', ['layout-modify'], function () {
 // pack-app
 desc('Application scripts packing');
 task('pack-app', ['copy-sources'], {async: true}, function () {
-  var fileSet = _readDir(CONSTANTS.DIR_APP, 'js');
+  var fileSet = _readDir(CONSTANTS.DIR_APP, 'js').reverse();
 
   ['background.js'].forEach(function (fileName) {
     _.remove(fileSet, function (filePath) {
@@ -39,7 +39,7 @@ task('pack-app', ['copy-sources'], {async: true}, function () {
 
   fs.writeFile(
     path.join(CONSTANTS.DIR_BUILD_APP, 'app.js'),
-    uglify.minify(fileSet).code,
+    uglify.minify(fileSet, {mangle: false}).code,
     function () {
       console.log('- Packed to "app.js":', "\n", fileSet);
       complete();
@@ -60,7 +60,7 @@ task('pack-vendors', ['copy-sources'], {async: true}, function () {
 
   fs.writeFile(
     path.join(CONSTANTS.DIR_BUILD_APP, 'vendors.js'),
-    uglify.minify(fileSet).code,
+    uglify.minify(fileSet, {mangle: false}).code,
     function () {
       console.log('- Packed to "vendors.js":', "\n", fileSet);
       complete();
