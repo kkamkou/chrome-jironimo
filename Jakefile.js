@@ -1,3 +1,6 @@
+// @author Kanstantsin Kamkou <2ka.by>
+// MIT license
+
 // defaults
 var uglify = require('uglify-js'),
   fs = require('fs'),
@@ -11,13 +14,15 @@ var CONSTANTS = {
   DIR_VENDORS: path.join(__dirname, 'src', 'vendors')
 };
 
-desc('xxx');
+// default
+desc('Default build action');
 task('default', ['pack-app', 'pack-vendors'], function (params) {
   var versionNumber = process.env['version'];
   console.log('Done. Version:', versionNumber);
 });
 
-desc('xxx');
+// pack-app
+desc('Application scripts packing');
 task('pack-app', {async: true}, function () {
   var fileSet = _readDir(CONSTANTS.DIR_APP, 'js').reverse();
 
@@ -37,7 +42,8 @@ task('pack-app', {async: true}, function () {
   );
 });
 
-desc('xxx');
+// pack-vendors
+desc('Vendors scripts packing');
 task('pack-vendors', {async: true}, function () {
   var fileSet = _readDir(CONSTANTS.DIR_VENDORS, 'js').sort();
 
@@ -57,6 +63,7 @@ task('pack-vendors', {async: true}, function () {
   );
 });
 
+// internal functions
 function _readDir(pathDir, ext) {
   var files = fs.readdirSync(pathDir),
     results = [];
