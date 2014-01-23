@@ -20,7 +20,7 @@ var CONSTANTS = {
 
 // default
 desc('Default build action');
-task('default', ['layout-modify'], function (params) {
+task('default', ['layout-modify'], function () {
   var versionNumber = process.env['version'];
   console.log('Done. Version:', versionNumber);
 });
@@ -68,7 +68,7 @@ task('pack-vendors', {async: true}, function () {
 });
 
 // pack-css
-desc('App styles packing');
+desc('Application styles packing');
 task('pack-css', {async: true}, function () {
   var cssPath = path.join(CONSTANTS.DIR_APP, 'styles.less'),
   parser = new(less.Parser)({
@@ -88,7 +88,7 @@ task('pack-css', {async: true}, function () {
   console.log('Styles packed');
 });
 
-// copy distr
+// copy-sources
 desc('Copying sources to the build folder');
 task('copy-sources', function () {
   wrench.copyDirSyncRecursive(
@@ -104,9 +104,23 @@ task('copy-sources', function () {
   console.log('Copying sources to the build folder is complete');
 });
 
-// default view replacements
+// copy-metro
+desc('Copying Metro-UI-CSS styles to the build folder');
+task('copy-metro', ['copy-sources'], function () {
+  var pathMetroCssOut = path.join(CONSTANTS.DIR_BUILD_APP, 'metro.css'),
+    pathMetroCssIn = path.join(
+      CONSTANTS.DIR_VENDORS, 'Metro-UI-CSS', 'css', 'metro-bootstrap.css'
+    );
+
+  fs.createReadStream(pathMetroCssIn)
+    .pipe(fs.createWriteStream(pathMetroCssOut));
+
+  console.log('Metro styles were copied');
+});
+
+// layout-modify
 desc('Replaces headers in the dafault layout');
-task('layout-modify', ['copy-sources', 'pack-app', 'pack-vendors', 'pack-css'], function () {
+task('layout-modify', ['copy-sources', 'pack-app', 'pack-vendors', 'pack-css', 'copy-metro', 'version-number'], function () {
   var templatePath = path.join(CONSTANTS.DIR_BUILD, 'views', 'default.html'),
     body = fs.readFileSync(templatePath, {encoding: 'utf-8'});
 
@@ -124,6 +138,15 @@ task('layout-modify', ['copy-sources', 'pack-app', 'pack-vendors', 'pack-css'], 
 
   fs.writeFileSync(templatePath, body);
   console.log('Layout updated');
+});
+
+// version-number
+desc('Adds a version number to the about template');
+task('version-number', ['copy-sources'], function () {
+  var templatePath = path.join(CONSTANTS.DIR_BUILD, 'views', 'options-about.html'),
+    body = fs.readFileSync(templatePath, {encoding: 'utf-8'});
+  fs.writeFileSync(templatePath, body.replace('##VERSION##', process.env['version']));
+  console.log('Version number updated');
 });
 
 // internal functions
