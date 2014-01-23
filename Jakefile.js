@@ -7,7 +7,8 @@ var uglify = require('uglify-js'),
   path = require('path'),
   wrench = require('wrench'),
   _ = require('lodash'),
-  less = require('less');
+  less = require('less'),
+  csso = require('csso');
 
 // constants
 var CONSTANTS = {
@@ -27,8 +28,8 @@ task('default', ['layout-modify'], function () {
 
 // pack-app
 desc('Application scripts packing');
-task('pack-app', {async: true}, function () {
-  var fileSet = _readDir(CONSTANTS.DIR_APP, 'js').reverse();
+task('pack-app', ['copy-sources'], {async: true}, function () {
+  var fileSet = _readDir(CONSTANTS.DIR_APP, 'js');
 
   ['background.js'].forEach(function (fileName) {
     _.remove(fileSet, function (filePath) {
@@ -40,7 +41,7 @@ task('pack-app', {async: true}, function () {
     path.join(CONSTANTS.DIR_BUILD_APP, 'app.js'),
     uglify.minify(fileSet).code,
     function () {
-      console.log('Packed to "app.js":', "\n", fileSet);
+      console.log('- Packed to "app.js":', "\n", fileSet);
       complete();
     }
   );
@@ -48,7 +49,7 @@ task('pack-app', {async: true}, function () {
 
 // pack-vendors
 desc('Vendors scripts packing');
-task('pack-vendors', {async: true}, function () {
+task('pack-vendors', ['copy-sources'], {async: true}, function () {
   var fileSet = _readDir(CONSTANTS.DIR_VENDORS, 'js').sort();
 
   ['Metro-UI-CSS', 'less'].forEach(function (libName) {
@@ -61,7 +62,7 @@ task('pack-vendors', {async: true}, function () {
     path.join(CONSTANTS.DIR_BUILD_APP, 'vendors.js'),
     uglify.minify(fileSet).code,
     function () {
-      console.log('Packed to "vendors.js":', "\n", fileSet);
+      console.log('- Packed to "vendors.js":', "\n", fileSet);
       complete();
     }
   );
@@ -69,23 +70,24 @@ task('pack-vendors', {async: true}, function () {
 
 // pack-css
 desc('Application styles packing');
-task('pack-css', {async: true}, function () {
+task('pack-css', ['copy-sources'], {async: true}, function () {
   var cssPath = path.join(CONSTANTS.DIR_APP, 'styles.less'),
-  parser = new(less.Parser)({
-    paths: [CONSTANTS.DIR_SRC]
-  });
+  parser = new(less.Parser)({paths: [CONSTANTS.DIR_SRC]});
 
   parser.parse(
     fs.readFileSync(cssPath, {encoding: 'utf-8'}),
     function (err, tree) {
       if (!err) {
-        fs.writeFileSync(path.join(CONSTANTS.DIR_BUILD_APP, 'app.css'), tree.toCSS());
+        fs.writeFileSync(
+          path.join(CONSTANTS.DIR_BUILD_APP, 'app.css'),
+          csso.justDoIt(tree.toCSS())
+        );
         complete();
       }
     }
   );
 
-  console.log('Styles packed');
+  console.log('- Styles are packed');
 });
 
 // copy-sources
@@ -101,7 +103,7 @@ task('copy-sources', function () {
       }
     }
   );
-  console.log('Copying sources to the build folder is complete');
+  console.log('- Copying sources to the build folder is complete');
 });
 
 // copy-metro
@@ -112,15 +114,29 @@ task('copy-metro', ['copy-sources'], function () {
       CONSTANTS.DIR_VENDORS, 'Metro-UI-CSS', 'css', 'metro-bootstrap.css'
     );
 
-  fs.createReadStream(pathMetroCssIn)
-    .pipe(fs.createWriteStream(pathMetroCssOut));
+  fs.writeFileSync(
+    pathMetroCssOut,
+    csso.justDoIt(fs.readFileSync(pathMetroCssIn, {encoding: 'utf-8'}))
+  );
 
-  console.log('Metro styles were copied');
+  console.log('- Metro styles are copied');
+});
+
+// copy-background
+desc('Copying background.js to the build folder');
+task('copy-background', ['copy-sources'], {async: true}, function () {
+  var btOut = path.join(CONSTANTS.DIR_BUILD_APP, 'background.js'),
+    btIn = path.join(CONSTANTS.DIR_APP, 'background.js');
+
+  fs.writeFile(btOut, uglify.minify(btIn).code, function () {
+    console.log('- background.js is copied');
+    complete();
+  });
 });
 
 // layout-modify
 desc('Replaces headers in the dafault layout');
-task('layout-modify', ['copy-sources', 'pack-app', 'pack-vendors', 'pack-css', 'copy-metro', 'version-number'], function () {
+task('layout-modify', ['copy-sources', 'pack-app', 'pack-vendors', 'pack-css', 'copy-metro', 'copy-background', 'version-number'], function () {
   var templatePath = path.join(CONSTANTS.DIR_BUILD, 'views', 'default.html'),
     body = fs.readFileSync(templatePath, {encoding: 'utf-8'});
 
@@ -137,7 +153,7 @@ task('layout-modify', ['copy-sources', 'pack-app', 'pack-vendors', 'pack-css', '
   );
 
   fs.writeFileSync(templatePath, body);
-  console.log('Layout updated');
+  console.log('- The default.html is updated');
 });
 
 // version-number
@@ -146,7 +162,7 @@ task('version-number', ['copy-sources'], function () {
   var templatePath = path.join(CONSTANTS.DIR_BUILD, 'views', 'options-about.html'),
     body = fs.readFileSync(templatePath, {encoding: 'utf-8'});
   fs.writeFileSync(templatePath, body.replace('##VERSION##', process.env['version']));
-  console.log('Version number updated');
+  console.log('- Version number is changed');
 });
 
 // internal functions
