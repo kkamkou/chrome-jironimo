@@ -6,7 +6,8 @@ var uglify = require('uglify-js'),
   fs = require('fs'),
   path = require('path'),
   wrench = require('wrench'),
-  _ = require('lodash');
+  _ = require('lodash'),
+  less = require('less');
 
 // constants
 var CONSTANTS = {
@@ -14,13 +15,12 @@ var CONSTANTS = {
   DIR_SRC: path.join(__dirname, 'src'),
   DIR_VENDORS: path.join(__dirname, 'src', 'vendors'),
   DIR_BUILD: path.join(__dirname, 'build'),
-  DIR_BUILD_APP: path.join(__dirname, 'build', 'app'),
-  DIR_BUILD_VENDORS: path.join(__dirname, 'build', 'vendors')
+  DIR_BUILD_APP: path.join(__dirname, 'build', 'app')
 };
 
 // default
 desc('Default build action');
-task('default', ['copy-sources', 'pack-app', 'pack-vendors'], function (params) {
+task('default', ['layout-modify'], function (params) {
   var versionNumber = process.env['version'];
   console.log('Done. Version:', versionNumber);
 });
@@ -58,13 +58,34 @@ task('pack-vendors', {async: true}, function () {
   });
 
   fs.writeFile(
-    path.join(CONSTANTS.DIR_BUILD_VENDORS, 'vendors.js'),
+    path.join(CONSTANTS.DIR_BUILD_APP, 'vendors.js'),
     uglify.minify(fileSet).code,
     function () {
       console.log('Packed to "vendors.js":', "\n", fileSet);
       complete();
     }
   );
+});
+
+// pack-css
+desc('App styles packing');
+task('pack-css', {async: true}, function () {
+  var cssPath = path.join(CONSTANTS.DIR_APP, 'styles.less'),
+  parser = new(less.Parser)({
+    paths: [CONSTANTS.DIR_SRC]
+  });
+
+  parser.parse(
+    fs.readFileSync(cssPath, {encoding: 'utf-8'}),
+    function (err, tree) {
+      if (!err) {
+        fs.writeFileSync(path.join(CONSTANTS.DIR_BUILD_APP, 'app.css'), tree.toCSS());
+        complete();
+      }
+    }
+  );
+
+  console.log('Styles packed');
 });
 
 // copy distr
@@ -74,12 +95,35 @@ task('copy-sources', function () {
     CONSTANTS.DIR_SRC, CONSTANTS.DIR_BUILD, {
       forceDelete: true,
       exclude: function (fileName, filePath) {
-        return filePath.indexOf(CONSTANTS.DIR_VENDORS) !== -1
+        return fileName === 'variables.less'
+          || filePath.indexOf(CONSTANTS.DIR_VENDORS) !== -1
           || filePath.indexOf(CONSTANTS.DIR_APP) !== -1;
       }
     }
   );
   console.log('Copying sources to the build folder is complete');
+});
+
+// default view replacements
+desc('Replaces headers in the dafault layout');
+task('layout-modify', ['copy-sources', 'pack-app', 'pack-vendors', 'pack-css'], function () {
+  var templatePath = path.join(CONSTANTS.DIR_BUILD, 'views', 'default.html'),
+    body = fs.readFileSync(templatePath, {encoding: 'utf-8'});
+
+  body = body.replace(
+    /<!-- styles -->([^_]+?)<!-- \/styles -->/gm,
+    '<link rel="stylesheet" type="text/css" href="/app/metro.css">' +
+    '<link rel="stylesheet" type="text/css" href="/app/app.css">'
+  );
+
+  body = body.replace(
+    /<!-- scripts -->([^_]+?)<!-- \/scripts -->/gm,
+    '<script type="text/javascript" src="/app/vendors.js"></script>' +
+    '<script type="text/javascript" src="/app/app.js"></script>'
+  );
+
+  fs.writeFileSync(templatePath, body);
+  console.log('Layout updated');
 });
 
 // internal functions
