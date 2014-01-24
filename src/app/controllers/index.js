@@ -26,6 +26,9 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjJira) {
    * @return {*}
    */
   $scope.workspaceRefresh = function () {
+    // reset the failed flag of the api
+    $scope.jiraRequestFailed = false;
+
     // displaying the loader
     $scope.loading = true;
 
@@ -62,9 +65,6 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjJira) {
    * @param {Number} index
    */
   $scope.workspaceSwitchTo = function (index) {
-    // reset the failed flag of the api
-    $scope.jiraRequestFailed = false;
-
     // index validation
     index = $scope.workspaces[index] ? index : 0;
 
