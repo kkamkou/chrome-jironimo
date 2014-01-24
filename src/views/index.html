@@ -3,6 +3,11 @@
   <p>No matching entries according the current JIRA&trade; query</p>
 </div>
 
+<div class="error-bar" ng-show="jiraRequestFailed">
+  <h3 class="fg-white" ng-bind="jiraRequestFailed.0"></h3>
+  <p class="fg-white" ng-bind="jiraRequestFailed.1"></p>
+</div>
+
 <div class="container">
   <div class="tiles">
     <div id="loading" ng-show="loading"><i class="icon-clock"></i></div>

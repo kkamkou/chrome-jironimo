@@ -87,11 +87,11 @@ task('pack-css', ['copy-sources'], {async: true}, function () {
     }
   );
 
-  console.log('- Styles are packed');
+  console.log('- Styles were packed');
 });
 
 // copy-sources
-desc('Copying sources to the build folder');
+desc('Copies sources to the build folder');
 task('copy-sources', function () {
   wrench.copyDirSyncRecursive(
     CONSTANTS.DIR_SRC, CONSTANTS.DIR_BUILD, {
@@ -103,7 +103,7 @@ task('copy-sources', function () {
       }
     }
   );
-  console.log('- Copying sources to the build folder is complete');
+  console.log('- Sources were copied to the build folder');
 });
 
 // copy-metro
@@ -119,7 +119,14 @@ task('copy-metro', ['copy-sources'], function () {
     csso.justDoIt(fs.readFileSync(pathMetroCssIn, {encoding: 'utf-8'}))
   );
 
-  console.log('- Metro styles are copied');
+  console.log('- Metro styles were copied');
+
+  wrench.copyDirSyncRecursive(
+    path.join(CONSTANTS.DIR_VENDORS, 'Metro-UI-CSS', 'fonts'),
+    path.join(CONSTANTS.DIR_BUILD, 'fonts')
+  );
+
+  console.log('- Metro fonts were copied');
 });
 
 // copy-background
@@ -129,7 +136,7 @@ task('copy-background', ['copy-sources'], {async: true}, function () {
     btIn = path.join(CONSTANTS.DIR_APP, 'background.js');
 
   fs.writeFile(btOut, uglify.minify(btIn).code, function () {
-    console.log('- background.js is copied');
+    console.log('- background.js was copied');
     complete();
   });
 });
@@ -153,16 +160,26 @@ task('layout-modify', ['copy-sources', 'pack-app', 'pack-vendors', 'pack-css', '
   );
 
   fs.writeFileSync(templatePath, body);
-  console.log('- The default.html is updated');
+  console.log('- The default.html was updated');
 });
 
 // version-number
 desc('Adds a version number to the about template');
 task('version-number', ['copy-sources'], function () {
   var templatePath = path.join(CONSTANTS.DIR_BUILD, 'views', 'options-about.html'),
-    body = fs.readFileSync(templatePath, {encoding: 'utf-8'});
-  fs.writeFileSync(templatePath, body.replace('##VERSION##', process.env['version']));
-  console.log('- Version number is changed');
+    manifestPath = path.join(CONSTANTS.DIR_BUILD, 'manifest.json');
+
+  fs.writeFileSync(
+    templatePath, fs.readFileSync(templatePath, {encoding: 'utf-8'})
+      .replace('##VERSION##', process.env['version'])
+  );
+
+  fs.writeFileSync(
+    manifestPath, fs.readFileSync(manifestPath, {encoding: 'utf-8'})
+      .replace('0.0.0', process.env['version'])
+  );
+
+  console.log('- Version number was changed');
 });
 
 // internal functions

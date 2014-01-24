@@ -62,6 +62,10 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjJira) {
    * @param {Number} index
    */
   $scope.workspaceSwitchTo = function (index) {
+    // reset the failed flag of the api
+    $scope.jiraRequestFailed = false;
+
+    // index validation
     index = $scope.workspaces[index] ? index : 0;
 
     $scope.workspaceActive = $scope.workspaces[index];
@@ -238,11 +242,8 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjJira) {
   });
 
   $rootScope.$on('jiraRequestFail', function (event, args) {
-    $('body').prepend(
-      '<div class="error-bar">' +
-        '<h3 class="fg-white">' + S(args[0]).capitalize().s + '</h3>' +
-        '<p class="fg-white">' + args[1].join(';') + '</p>' +
-      '</div>'
-    );
+    $scope.$apply(function () {
+      $scope.jiraRequestFailed = [S(args[0]).capitalize().s, args[1].join(';')];
+    });
   });
 }
