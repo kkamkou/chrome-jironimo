@@ -30,7 +30,7 @@ angular
         2: {fg: 'white', bg: 'orange', bd: 'white', ot: 'orange'},
         3: {fg: 'white', bg: 'lightOlive', bd: 'white', ot: 'lightOlive'},
         4: {fg: 'white', bg: 'gray', bd: 'white', ot: 'gray'},
-        5: {fg: 'darken', bg: 'lightBlue', bd: 'white', ot: 'lightBlue'}
+        5: {fg: 'white', bg: 'lightBlue', bd: 'white', ot: 'lightBlue'}
       }
     };
 
