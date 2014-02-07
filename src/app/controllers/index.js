@@ -110,14 +110,13 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjJira) {
   /**
    * Opens issue in the JIRA
    *
-   * @param {Number} index
+   * @param {Object} index
    * @return {Boolean}
    */
-  $scope.tabOpen = function (index) {
+  $scope.tabOpen = function (issue) {
     chrome.tabs.create({
       active: false,
-      url: cjSettings.account.url +
-        '/browse/' + $scope.issues[index].key
+      url: cjSettings.account.url + '/browse/' + issue.key
     });
     return false;
   };
