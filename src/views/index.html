@@ -47,7 +47,7 @@
 
     <div class="tile padding10 {{issue._size}} bg-{{issue._colors.bg}} border-{{issue._colors.bd}} outline-{{issue._colors.ot}}"
       ng-repeat="issue in issues | filter:filterText"
-      ng-dblclick="tabOpen($index)"
+      ng-dblclick="tabOpen(issue)"
       ng-class="{selected: issue._isClosed}">
 
       <div class="issue-icon bg-{{issue._colors.bd}}"><img ng-src="{{issue.fields.status.iconUrl}}"
@@ -87,7 +87,7 @@
             ng-show="issue._transitions && !timer.isStarted(issue)"><i class="icon-list"></i></button>
 
           <button title="Open this issue in JIRA&trade;" class="active"
-            ng-click="tabOpen($index)"><i class="icon-new-tab"></i></button>
+            ng-click="tabOpen(issue)"><i class="icon-new-tab"></i></button>
         </div>
       </div>
 
