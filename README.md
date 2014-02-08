@@ -1,7 +1,6 @@
 Jironimo
 ===============
-
-JIRA&trade; extension for the Chrome browser with balls.
+JIRA&trade; tickets in your Google Chrome browser (Extension)
 
 ## Chrome Web Store
 [jironimo](https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl) (if you have the "download was not a CRX" message, just search this extension with google chrome marketplace)
