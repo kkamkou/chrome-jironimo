@@ -3,7 +3,8 @@ Jironimo
 JIRA&trade; tickets in your Google Chrome browser (Extension)
 
 ## Chrome Web Store
-[jironimo](https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl) (if you have the "download was not a CRX" message, just search this extension with google chrome marketplace)
+[jironimo at google play](https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl)
+(if you have the "download was not a CRX" message, just search this extension with google chrome marketplace)
 
 ## Manual installation
 *Right-click* one the "[chrome-jironimo-latest.crx](https://raw.github.com/kkamkou/chrome-jironimo/master/packed/chrome-jironimo-latest.crx)" link and select "*Save Link As*" to download the extension to your desktop.
@@ -11,6 +12,9 @@ JIRA&trade; tickets in your Google Chrome browser (Extension)
 Open Chrome's extensions page in your browser by pasting chrome://chrome/extensions/ into your address bar and pressing Enter. Or open the "Tools -> Extensions" section.
 
 Click on the "*Developer mode*" checkbox at the top-right corner. Drag and drop the extension you just downloaded into the Chrome extensions page.
+
+### Hot to use it?
+[Please, check the documentation project](http://chrome-jironimo.readthedocs.org/)
 
 ### Frontend
 ![Frontend](https://raw.github.com/kkamkou/chrome-jironimo/gh-pages/images/jironimo-frontend.jpg)
