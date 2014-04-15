@@ -61,15 +61,15 @@
 
       <div class="brand">
         <span class="name fg-{{issue._colors.fg}}" ng-hide="timer.isStarted(issue)">
-          {{issue.fields.issuetype.name}}
           <sup ng-show="issue.fields.timeestimate">{{issue.fields.timeestimate}}</sup>
+          {{issue.fields.issuetype.name}}
         </span>
         <span class="name" ng-show="timer.canBeStopped(issue)" ng-bind="timer.elapsedTime(issue)"></span>
         <span class="badge bg-lightRed" ng-show="timer.isStarted(issue)"><i class="icon-play"></i></span>
       </div>
 
-      <div class="progress-bar" ng-show="issue.fields.progress.percent">
-        <div class="bar bg-{{issue._colors.fg}}" style="width: {{issue.fields.progress.percent}}%"></div>
+      <div class="progress-bar" ng-show="issue.fields.progress.percent > 0 && issue.fields.progress.percent < 100">
+        <div class="bar bg-{{issue._colors.bg}}" style="width: {{issue.fields.progress.percent}}%"></div>
       </div>
 
       <div class="toolbar">
