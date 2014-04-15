@@ -6,7 +6,10 @@
  * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
  */
 angular
-  .module('jironimo', ['ngRoute', 'jironimo.settings', 'jironimo.jira', 'jironimo.timer'])
+  .module(
+      'jironimo',
+      ['ngRoute', 'ngSanitize', 'jironimo.settings', 'jironimo.jira', 'jironimo.timer']
+  )
   .config(function ($routeProvider) {
       // default action
       $routeProvider.when('/', {
