@@ -14,7 +14,7 @@ Open Chrome's extensions page in your browser by pasting chrome://chrome/extensi
 Click on the "*Developer mode*" checkbox at the top-right corner. Drag and drop the extension you just downloaded into the Chrome extensions page.
 
 ### Hot to use it?
-[Please, check the documentation project](http://chrome-jironimo.readthedocs.org/)
+[Please, check the documentation project](http://chrome-jironimo.readthedocs.org/) (*not ready yet*)
 
 ### Frontend
 ![Frontend](https://raw.github.com/kkamkou/chrome-jironimo/gh-pages/images/jironimo-frontend.jpg)
