@@ -73,6 +73,11 @@ angular
 
         self.__defineSetter__(name, function (val) {
           _data[name] = angular.toJson(val);
+
+          // chrome storage update
+          var obj = {};
+          obj[name] = _data[name];
+          chrome.storage.sync.set(obj);
         });
       }
     );
@@ -83,6 +88,17 @@ angular
       delete _data.timer;
       delete _data.colors;
     }
+
+    this.getStorageData = function () {
+      return _.assign({}, _data);
+    };
+
+    this.setStorageData = function (items) {
+      _.keys(items).forEach(function (key) {
+        _data[key] = items[key];
+      });
+      return this;
+    };
 
     return this;
   });

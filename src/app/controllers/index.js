@@ -17,7 +17,10 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjJira) {
 
   // the active workspace
   $scope.workspaceActive = _.find($scope.workspaces, function (dataSet, index) {
-    return (cjSettings.workspaceLast === index || dataSet.isDefault);
+    if (_.isNumber(cjSettings.workspaceLast)) {
+      return (cjSettings.workspaceLast === index);
+    }
+    return dataSet.isDefault;
   });
 
   /**

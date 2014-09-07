@@ -51,4 +51,14 @@ angular
       // fallback action
       $routeProvider.otherwise({redirectTo: '/'});
     }
+  )
+  .run(
+    function (cjSettings) {
+      // synchronise settings
+      if (cjSettings.account.sync) {
+        chrome.storage.sync.get(cjSettings.getStorageData(), function (items) {
+          cjSettings.setStorageData(items);
+        });
+      }
+    }
   );
