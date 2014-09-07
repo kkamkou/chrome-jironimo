@@ -10,7 +10,8 @@ angular
       'jironimo',
       ['ngRoute', 'ngSanitize', 'jironimo.settings', 'jironimo.jira', 'jironimo.timer']
   )
-  .config(function ($routeProvider) {
+  .config(
+    function ($routeProvider) {
       // default action
       $routeProvider.when('/', {
         templateUrl: '/views/index.html',

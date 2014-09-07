@@ -23,6 +23,7 @@
   "permissions": [
     "http://*/",
     "https://*/",
+    "storage",
     "tabs",
     "alarms"
   ]

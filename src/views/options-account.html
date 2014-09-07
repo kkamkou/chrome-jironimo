@@ -55,6 +55,22 @@
           <input type="password" ng-model="account.http.password" placeholder="Password">
         </div>
       </div>
+
+      <div class="span6">
+        <h2>Synchronise settings</h2>
+
+        <label class="input-control switch">
+            <input type="checkbox" ng-model="account.sync">
+            <span class="check"></span>
+        </label>
+
+        <blockquote>
+          <p>
+            Settings for the current extension will be available on different devices
+            (the chrome sync is used)
+          </p>
+        </blockquote>
+      </div>
     </div>
 
     <hr>
