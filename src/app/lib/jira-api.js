@@ -8,14 +8,37 @@
 angular
   .module('jironimo.jira', ['jironimo.settings'])
   .service('cjJira', function ($rootScope, cjSettings) {
+    /** @type {Object} */
+    var cache = {};
+
+    /**
+     * Information about myself
+     *
+     * @public
+     * @return {Object}
+     */
+    this.me = function () {
+      if (!cache.authSession) {
+        throw new Error('The cache does not have such an entry');
+      }
+      return cache.authSession;
+    };
+
     /**
      * Check if use is authenticated or not
      *
      * @public
      * @param {Function} callback
      */
-    this.isAuthenticated = function (callback) {
+    this.authSession = function (callback) {
+      if (cache.authSession) {
+        return callback(null, cache.authSession);
+      }
+
       this._makeRequest('/auth/latest/session', {}, function (err, data) {
+        if (!err) {
+          cache.authSession = data;
+        }
         callback(err, data);
       });
     };
@@ -32,13 +55,26 @@ angular
     };
 
     /**
-     * Worklog adjusment
+     * Assigns an issue to a user
+     *
+     * @param {Number} issueId
+     * @param {String} userName
+     * @param {Function} callback
+     */
+    this.issueAssignee = function (issueId, data, callback) {
+      this._makeRequest(
+        '/api/latest/issue/' + issueId + '/assignee', data, callback
+      );
+    };
+
+    /**
+     * Adds a new worklog entry to an issue
      *
      * @param {Number} issueId
      * @param {Object} data
      * @param {Function} callback
      */
-    this.worklog = function (issueId, data, callback) {
+    this.issueWorklog = function (issueId, data, callback) {
       this._makeRequest(
         '/api/latest/issue/' + issueId + '/worklog?adjustEstimate=auto',
         data, callback

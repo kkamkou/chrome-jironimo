@@ -25,6 +25,7 @@
     "https://*/",
     "storage",
     "tabs",
+    "notifications",
     "alarms"
   ]
 }

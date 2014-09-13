@@ -130,7 +130,7 @@ angular
         this.update(issue, {started: false, timestamp: null});
 
         // sending request
-        cjJira.worklog(issue.id, dataSet, function (err) {
+        cjJira.issueWorklog(issue.id, dataSet, function (err) {
           // rollback if error
           if (err) {
             this.update(issue, {started: true, timestamp: issueTimestamp});
