@@ -1,6 +1,7 @@
 v4.3
 - Synchronise settings option
-- A new "assign on me" option
+- Timer start button:
+  An issue will be assigned to you if assignee is empty
 - Multiple issues
 
 v4.0
@@ -19,11 +20,10 @@ v3.0
 v2.0
 - Status change feature.
 - Design changes.
-- Small issues.
+- Multiple issues.
 
 v1.0:
 - Workspaces.
 - Worklog.
 - MetroUI style.
 - OpenSource.
-
