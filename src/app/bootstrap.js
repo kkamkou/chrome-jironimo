@@ -8,9 +8,10 @@
 angular
   .module(
       'jironimo',
-      ['ngRoute', 'ngSanitize', 'jironimo.settings', 'jironimo.jira', 'jironimo.timer']
+      ['ngRoute', 'ngSanitize', 'jironimo.settings', 'jironimo.jira', 'jironimo.notifications', 'jironimo.timer']
   )
-  .config(function ($routeProvider) {
+  .config(
+    function ($routeProvider) {
       // default action
       $routeProvider.when('/', {
         templateUrl: '/views/index.html',
@@ -49,5 +50,15 @@ angular
 
       // fallback action
       $routeProvider.otherwise({redirectTo: '/'});
+    }
+  )
+  .run(
+    function (cjSettings) {
+      // synchronise settings
+      if (cjSettings.account.sync) {
+        chrome.storage.sync.get(cjSettings.getStorageData(), function (items) {
+          cjSettings.setStorageData(items);
+        });
+      }
     }
   );

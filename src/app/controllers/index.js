@@ -5,7 +5,7 @@
  * @{@link http://github.com/kkamkou/chrome-jironimo}
  * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
  */
-function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjJira) {
+function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifications, cjJira) {
   // context storing
   var self = this;
 
@@ -17,7 +17,10 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjJira) {
 
   // the active workspace
   $scope.workspaceActive = _.find($scope.workspaces, function (dataSet, index) {
-    return (cjSettings.workspaceLast === index || dataSet.isDefault);
+    if (_.isNumber(cjSettings.workspaceLast)) {
+      return (cjSettings.workspaceLast === index);
+    }
+    return dataSet.isDefault;
   });
 
   /**
@@ -39,10 +42,12 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjJira) {
     $scope.issues = [];
 
     // deffering issues
-    self._issuesSearch($scope.workspaceActive.query)
+    self._issueSearch($scope.workspaceActive.query)
       .then(
         function (issues) {
-          self._issuesModify(issues);
+          angular.forEach(issues, function (issue) {
+            $scope.issues.push(self._issueModify(issue));
+          });
           $scope.loading = false;
         },
         function () {
@@ -144,44 +149,64 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjJira) {
   };
 
   /**
+   * If an issue is assigned to nobody, we should assign it to us
+   *
+   * @return {void}
+   */
+  $scope.issueTimerStart = function (issue) {
+    if (issue.fields.assignee) {
+      $scope.timer.start(issue);
+      return;
+    }
+
+    var msg = 'The ticket was assigned to me',
+      params = {_method: 'PUT', name: cjJira.me().name};
+
+    cjJira.issueAssignee(issue.key, params, function () {
+      cjNotifications.create(issue.key, issue.key, msg, function () {
+        $scope.$apply(function () {
+          $scope.timer.start(issue);
+        });
+      });
+    });
+  };
+
+  /**
    * Entry set corrections
    *
-   * @param {Array} issues
-   * @return {*}
+   * @param {Object} issue
+   * @return {Object}
    */
-  this._issuesModify = function (issues) {
-    angular.forEach(issues, function (issue) {
-      // the closed status
-      issue._isClosed = (issue.fields.status.name === 'Closed');
+  this._issueModify = function (issue) {
+    // the closed status
+    issue._isClosed = (issue.fields.status.name === 'Closed');
 
-      // timeestimate
-      if (issue.fields.timeestimate) {
-        issue.fields.timeestimate = moment
-          .duration(issue.fields.timeestimate * 1000).humanize();
+    // timeestimate
+    if (issue.fields.timeestimate) {
+      issue.fields.timeestimate = moment
+        .duration(issue.fields.timeestimate * 1000).humanize();
+    }
+
+    // applying custom sizes
+    issue._size = cjSettings.colors
+      .sizes[issue.fields.issuetype.name.toLowerCase()] || cjSettings.colors
+      .sizes.task;
+
+    // applying custom colors
+    issue._colors = cjSettings.colors.priority[issue.fields.priority.id]
+      ? cjSettings.colors.priority[issue.fields.priority.id]
+      : cjSettings.colors.priority[0];
+
+    // lets load some transitions
+    cjJira.transitions(issue.id, {}, function (err, data) {
+      if (!err && data.transitions) {
+        $scope.$apply(function () {
+          issue._transitions = data.transitions;
+        });
       }
-
-      // applying custom sizes
-      issue._size = cjSettings.colors
-        .sizes[issue.fields.issuetype.name.toLowerCase()] || cjSettings.colors
-        .sizes.task;
-
-      // applying custom colors
-      issue._colors = cjSettings.colors.priority[issue.fields.priority.id]
-        ? cjSettings.colors.priority[issue.fields.priority.id]
-        : cjSettings.colors.priority[0];
-
-      // lets load some transitions
-      cjJira.transitions(issue.id, {}, function (err, data) {
-        if (!err && data.transitions) {
-          $scope.$apply(function () {
-            issue._transitions = data.transitions;
-          });
-        }
-      });
-
-      // updating the ui
-      $scope.issues.push(issue);
     });
+
+    return issue;
   };
 
   /**
@@ -191,12 +216,12 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjJira) {
    * @private
    * @return {Object}
    */
-  this._issuesSearch = function (query) {
+  this._issueSearch = function (query) {
     // defaults
     var deferred = $q.defer();
 
     // auth check
-    cjJira.isAuthenticated(function (err, flag) {
+    cjJira.authSession(function (err, flag) {
       // user is not authorized
       if (!flag) {
         return false;

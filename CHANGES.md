@@ -1,3 +1,8 @@
+v4.3
+- Synchronise settings option
+- A new "assign on me" option
+- Multiple issues
+
 v4.0
 - Workspace filter
 - A new option to disable the time-log feature

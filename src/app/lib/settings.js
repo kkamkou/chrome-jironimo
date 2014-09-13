@@ -12,7 +12,7 @@ angular
     var _data = localStorage, self = this, defaults = {};
 
     // default settings for the account tab
-    defaults.account = {timeout: 10};
+    defaults.account = {timeout: 10, sync: false};
 
     // default settings for the colors tab
     defaults.colors = {
@@ -73,6 +73,11 @@ angular
 
         self.__defineSetter__(name, function (val) {
           _data[name] = angular.toJson(val);
+
+          // chrome storage update
+          var obj = {};
+          obj[name] = _data[name];
+          chrome.storage.sync.set(obj);
         });
       }
     );
@@ -83,6 +88,17 @@ angular
       delete _data.timer;
       delete _data.colors;
     }
+
+    this.getStorageData = function () {
+      return _.assign({}, _data);
+    };
+
+    this.setStorageData = function (items) {
+      _.keys(items).forEach(function (key) {
+        _data[key] = items[key];
+      });
+      return this;
+    };
 
     return this;
   });
