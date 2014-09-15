@@ -16,10 +16,10 @@ Click on the "*Developer mode*" checkbox at the top-right corner. Drag and drop 
 ### Hot to use it?
 [Please, check the documentation project](http://chrome-jironimo.readthedocs.org/) (*not ready yet*)
 
-### Frontend
+### Frontend(outdated)
 ![Frontend](https://raw.github.com/kkamkou/chrome-jironimo/gh-pages/images/jironimo-frontend.jpg)
 
-### Options
+### Options(outdated)
 ![Options](https://raw.github.com/kkamkou/chrome-jironimo/gh-pages/images/jironimo-options.jpg)
 
 ### Build
