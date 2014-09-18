@@ -1,3 +1,7 @@
+v4.4
+- Synchronise filters (the options page)
+- Last workspace issue
+
 v4.3
 - Synchronise settings option
 - Timer start button:
