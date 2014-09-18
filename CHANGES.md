@@ -1,9 +1,9 @@
 v4.4
-- Synchronise filters (the options page)
+- Synchronize filters (the options page)
 - Last workspace issue
 
 v4.3
-- Synchronise settings option
+- Synchronize settings option
 - Timer start button:
   An issue will be assigned to you if assignee is empty
 - Multiple issues
