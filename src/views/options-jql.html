@@ -61,6 +61,9 @@
         </div>
       </div>
 
+      <button ng-click="workspaceAdd()" class="success"><i
+          class="icon-plus-2"></i> Add one more</button>
+
       <a href="http://metroui.org.ua/icons.html" class="button link" target="_blank">
         <i class="icon-link"></i>
         Click here to open the list of available icons
@@ -69,9 +72,10 @@
       <hr>
 
       <div>
-        <button ng-click="workspaceAdd()" class="success place-right"><i
-          class="icon-plus-2"></i> Add one more</button>
         <input type="submit" value="Save" class="default">
+
+        <button ng-click="workspaceImport()" class="primary place-right"><i
+          class="icon-spin"></i> Import favourites from JIRA&trade;</button>
       </div>
   </form>
 

@@ -5,7 +5,7 @@
  * @{@link http://github.com/kkamkou/chrome-jironimo}
  * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
  */
-function SettingsController($scope, $location, cjSettings) {
+function SettingsController($scope, $location, cjSettings, cjJira) {
   // defining dynamic data
   angular.forEach(
     ['account', 'colors', 'timer', 'workspaces'], function (name) {
@@ -41,6 +41,25 @@ function SettingsController($scope, $location, cjSettings) {
     if (workspace.isDefault) {
       $scope.workspaceSetAsDefault($scope.workspaces[0]);
     }
+  };
+
+  $scope.workspaceImport = function () {
+    cjJira.filterFavourite(function (err, data) {
+      if (err) {
+        return;
+      }
+
+      var workspaces = _.pluck($scope.workspaces, 'query'),
+        favs = _.pluck(data, 'jql');
+
+      _.difference(favs, workspaces).forEach(function (jql) {
+        $scope.workspaces.push(
+          {title: _.find(data, {jql: jql}).name, query: jql, isDefault: false, icon: 'heart-2'}
+        );
+      });
+
+      $scope.$apply();
+    });
   };
 
   /**

@@ -55,6 +55,16 @@ angular
     };
 
     /**
+     * Returns the favourite filters of the logged-in user
+     *
+     * @public
+     * @param {Function} callback
+     */
+    this.filterFavourite = function (callback) {
+      this._makeRequest('/api/latest/filter/favourite', {}, callback);
+    };
+
+    /**
      * Assigns an issue to a user
      *
      * @param {Number} issueId
