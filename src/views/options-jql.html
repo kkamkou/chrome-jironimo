@@ -30,26 +30,38 @@
                 ng-checked="workspace.isDefault">
               <span class="check"></span> Default
             </label>
+
+            <i class="icon-{{workspace.icon}} place-right" style="margin-top: 11px;"></i>
           </div>
 
-          <div class="span2">
-            <div class="input-control text">
-              <input type="text" placeholder="Label" maxlength="40" required
-                ng-model="workspace.title">
+          <div class="span9">
+            <div class="span3">
+              <div class="input-control text">
+                <input type="text" placeholder="Label" maxlength="40" required
+                  ng-model="workspace.title">
+              </div>
             </div>
-          </div>
 
-          <div class="span6">
+            <div class="span2">
+              <div class="input-control text">
+                <input type="text" placeholder="icon-*" maxlength="18" required
+                  ng-model="workspace.icon">
+              </div>
+            </div>
+
+            <div class="span4">
+              <div class="input-control checkbox">
+                  <label>
+                      <input type="checkbox" ng-model="workspace.changesNotify" />
+                      <span class="check"></span>
+                      To check the changes and notify
+                  </label>
+              </div>
+            </div>
+
             <div class="input-control text">
               <input type="text" placeholder="JQL" required
                 ng-model="workspace.query">
-            </div>
-          </div>
-
-          <div class="span1">
-            <div class="input-control text">
-              <input type="text" placeholder="icon*" maxlength="18" required
-                ng-model="workspace.icon">
             </div>
           </div>
 

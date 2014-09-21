@@ -154,7 +154,10 @@ angular
       // something went wrong
       call.fail(function (err) {
         // defaults
-        var messages = ['Unknown response from the JIRA&trade; API'],
+        var messages = [
+            'Unknown response from the JIRA&trade; API',
+            'Please check the settings!'
+          ],
           loginReason = err.getResponseHeader('X-Seraph-LoginReason'),
           loginReasonSet = {
             'AUTHENTICATION_DENIED': 'The user is not allowed to even attempt a login.',

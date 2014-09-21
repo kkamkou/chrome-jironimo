@@ -267,7 +267,7 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifica
 
   $rootScope.$on('jiraRequestFail', function (event, args) {
     $scope.$apply(function () {
-      $scope.jiraRequestFailed = [S(args[0]).capitalize().s, args[1].join(';')];
+      $scope.jiraRequestFailed = [S(args[0]).capitalize().s, args[1].join('; ')];
     });
   });
 }

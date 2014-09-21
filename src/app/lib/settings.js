@@ -40,13 +40,15 @@ angular
         icon: 'target',
         title: 'My issues',
         query: 'assignee = currentUser() ORDER BY updatedDate DESC',
-        isDefault: true
+        isDefault: true,
+        changesNotify: false
       },
       {
         icon: 'share-2',
         title: 'Created by me',
         query: 'reporter = currentUser() ORDER BY created DESC',
-        isDefault: false
+        isDefault: false,
+        changesNotify: false
       }
     ];
 
