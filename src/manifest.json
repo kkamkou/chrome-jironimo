@@ -18,7 +18,7 @@
   },
   "background": {
     "persistent": false,
-    "scripts": ["app/background.js"]
+    "page": "views/background.html"
   },
   "permissions": [
     "http://*/",
