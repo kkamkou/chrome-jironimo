@@ -14,3 +14,5 @@ angular
 
     }
   );
+
+angular.bootstrap(document, ['jironimo']);
