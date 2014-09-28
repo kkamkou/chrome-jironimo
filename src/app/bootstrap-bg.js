@@ -10,8 +10,21 @@ angular
   .module('jironimo', ['jironimo.settings', 'jironimo.jira', 'jironimo.notifications'])
   //.config()
   .run(
-    function (cjSettings) {
+    function (cjSettings, cjJira, cjNotifications) {
+      _.pluck(cjSettings.workspaces, 'query').forEach(
+        function (query) {
+          cjJira.search(query, function (err, result) {
+            if (err) {
+              return;
+            }
 
+            _.forEach(result.issues, function (issue) {
+              var hash = [issue.id, moment(issue.fields.updated).unix()].join(':');
+              //cjNotifications.create(issue.id, issue.key, '');
+            });
+          });
+        }
+      );
     }
   );
 

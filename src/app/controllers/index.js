@@ -164,9 +164,9 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifica
 
     cjJira.issueAssignee(issue.key, params, function () {
       cjNotifications.create(issue.key, issue.key, msg, function () {
-        $scope.$apply(function () {
+        //$scope.$apply(function () {
           $scope.timer.start(issue);
-        });
+        //});
       });
     });
   };
@@ -200,9 +200,9 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifica
     // lets load some transitions
     cjJira.transitions(issue.id, {}, function (err, data) {
       if (!err && data.transitions) {
-        $scope.$apply(function () {
+        //$scope.$apply(function () {
           issue._transitions = data.transitions;
-        });
+        //});
       }
     });
 
@@ -229,9 +229,9 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifica
 
       // content update after
       cjJira.search(query, function (err, data) {
-        $scope.$apply(function () {
+        //$scope.$apply(function () {
           return err ? deferred.reject(err) : deferred.resolve(data.issues);
-        });
+        //});
       });
     });
 
@@ -266,8 +266,8 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifica
   });
 
   $rootScope.$on('jiraRequestFail', function (event, args) {
-    $scope.$apply(function () {
+    //$scope.$apply(function () {
       $scope.jiraRequestFailed = [S(args[0]).capitalize().s, args[1].join('; ')];
-    });
+    //});
   });
 }

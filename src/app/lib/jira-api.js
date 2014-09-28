@@ -7,7 +7,7 @@
  */
 angular
   .module('jironimo.jira', ['jironimo.settings'])
-  .service('cjJira', function ($rootScope, cjSettings) {
+  .service('cjJira', function ($rootScope, cjSettings, $http) {
     /** @type {Object} */
     var cache = {};
 
@@ -117,12 +117,12 @@ angular
       // defaults
       var call,
         callOptions = {
-          type: 'GET',
+          method: 'GET',
           url: cjSettings.account.url + '/rest' + urn,
           cache: false,
-          data: dataSet,
+          params: dataSet,
           contentType: 'application/json; charset=UTF-8',
-          dataType: 'json',
+          responseType: 'json',
           timeout: cjSettings.account.timeout * 1000,
           headers: {
             Authorization: 'Basic ' +
@@ -131,28 +131,29 @@ angular
         };
 
       // different method
-      if (callOptions.data._method) {
-        callOptions.type = callOptions.data._method.toUpperCase();
-        delete callOptions.data._method;
-        callOptions.data = angular.toJson(callOptions.data);
+      if (callOptions.params._method) {
+        callOptions.method = callOptions.params._method.toUpperCase();
+        delete callOptions.params._method;
+        //callOptions.params = angular.toJson(callOptions.params);
       }
 
       // adding the HTTP Authorization
+      // @todo! is not used?
       if (cjSettings.account.http && cjSettings.account.http.login) {
         callOptions.username = cjSettings.account.http.login;
         callOptions.password = cjSettings.account.http.password || null;
       }
 
       // ajax object
-      call = $.ajax(callOptions);
+      call = $http(callOptions);
 
       // we are ok
-      call.done(function (json) {
+      call.success(function (json) {
         return callback(null, json);
       });
 
       // something went wrong
-      call.fail(function (err) {
+      call.error(function (err) {
         // defaults
         var messages = [
             'Unknown response from the JIRA&trade; API',
