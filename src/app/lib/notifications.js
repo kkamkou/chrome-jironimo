@@ -8,15 +8,41 @@
 angular
   .module('jironimo.notifications', [])
   .service('cjNotifications', function () {
-    var optionsDefault = {
-      type: 'basic',
-      iconUrl: chrome.extension.getURL('icons/128.png')
+    var notifications = [],
+      optionsDefault = {
+        type: 'basic',
+        iconUrl: chrome.extension.getURL('icons/128.png')
+      };
+
+    this.createOrUpdate = function (id, params, cb) {
+      return this[notifications[id] ? 'update': 'create'](id, params, cb);
     };
 
-    this.create = function (id, caption, msg, cb) {
-      var options = _.defaults({}, optionsDefault, {message: msg, title: caption});
-      chrome.notifications.create(id, options, function (ntId) {
-        cb(null, ntId);
+    this.clear = function (id, cb) {
+      chrome.notifications.clear(id, function (wasCleared) {
+        var err = wasCleared ? null : true;
+        if (!err) {
+          delete notifications[id];
+        }
+        cb(err, id);
+      });
+    };
+
+    this.create = function (id, params, cb) {
+      var options = _.defaults({}, optionsDefault, params);
+      chrome.notifications.create(id, options, function (notificationId) {
+        var err = notificationId ? null : true;
+        if (!err) {
+          notifications[id] = true;
+        }
+
+        cb(err, notificationId);
+      });
+    };
+
+    this.update = function (id, params, cb) {
+      chrome.notifications.update(id, params, function (wasUpdated) {
+        cb(wasUpdated ? null : true, id);
       });
     };
 

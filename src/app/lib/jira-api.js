@@ -37,7 +37,7 @@ angular
                   ' is turned ON under Administration > General Configuration.'
                 ];
               } else if (rej.data && rej.data.errorMessages) {
-                messages = data.errorMessages;
+                messages = rej.data.errorMessages;
               }
 
               // debug information
@@ -161,26 +161,30 @@ angular
      */
     this._makeRequest = function (urn, dataSet, callback) {
       // defaults
-      var call,
-        callOptions = {
-          method: 'GET',
-          url: cjSettings.account.url + '/rest' + urn,
-          cache: false,
-          params: dataSet,
-          responseType: 'json',
-          timeout: cjSettings.account.timeout * 1000,
-          headers: {
-            ContentType: 'application/json; charset=UTF-8',
-            Authorization: 'Basic ' +
-              window.btoa(cjSettings.account.login + ':' + cjSettings.account.password)
-          }
-        };
+      var callOptions = {
+        method: 'GET',
+        url: cjSettings.account.url + '/rest' + urn,
+        cache: false,
+        data: dataSet,
+        responseType: 'json',
+        timeout: cjSettings.account.timeout * 1000,
+        headers: {
+          ContentType: 'application/json; charset=UTF-8',
+          Authorization: 'Basic ' +
+            window.btoa(cjSettings.account.login + ':' + cjSettings.account.password)
+        }
+      };
 
       // different method
-      if (callOptions.params._method) {
-        callOptions.method = callOptions.params._method.toUpperCase();
-        delete callOptions.params._method;
-        //callOptions.params = angular.toJson(callOptions.params);
+      if (callOptions.data._method) {
+        callOptions.method = callOptions.data._method.toUpperCase();
+        delete callOptions.data._method;
+      }
+
+      // angular params;data fix
+      if (callOptions.method === 'GET') {
+        callOptions.params = callOptions.data;
+        delete callOptions.data;
       }
 
       // ajax object
