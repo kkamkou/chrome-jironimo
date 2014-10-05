@@ -1,3 +1,6 @@
+v5.0
+- Ticket notifications
+
 v4.4
 - Synchronize filters (the options page)
 - Last workspace issue
