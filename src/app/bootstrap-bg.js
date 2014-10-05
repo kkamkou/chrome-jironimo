@@ -30,13 +30,13 @@ angular
 
           var cache = [];
 
-          _.pluck(cjSettings.workspaces, 'query').forEach(
-            function (query) {
-              query = 'updated > "-%dm" AND '.replace('%d', cjSettings.timer.workspace) + query;
+          _.where(cjSettings.workspaces, {changesNotify: true}).forEach(
+            function (workspace) {
+              var query = 'updated > "-%dm" AND '.replace('%d', cjSettings.timer.workspace) +
+                workspace.query;
+
               cjJira.search(query, function (err, result) {
-                if (err) {
-                  return;
-                }
+                if (err) { return; }
 
                 _.forEach(result.issues, function (issue) {
                   if (cache[issue.id]) {
@@ -52,16 +52,13 @@ angular
                     message: 'Updated at ' + moment(issue.fields.updated).format('LT')
                   };
 
-                  cjNotifications.createOrUpdate(issue.key, params, function (err, id) {
-                    console.log(err, id);
-                  });
+                  cjNotifications.createOrUpdate(issue.key, params);
                 });
               });
             }
           );
         }
       );
-
     }
   );
 

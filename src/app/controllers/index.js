@@ -165,9 +165,13 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifica
         message: 'The ticket was assigned to me'
       };
 
-    cjJira.issueAssignee(issue.key, paramsQuery, function () {
+    cjJira.issueAssignee(issue.key, paramsQuery, function (err) {
+      if (err) { return; }
+
       cjNotifications.createOrUpdate(issue.key, paramsNotify, function () {
-        $scope.timer.start(issue);
+        $scope.$apply(function () {
+          $scope.timer.start(issue);
+        });
       });
     });
   };

@@ -15,7 +15,7 @@ angular
       };
 
     this.createOrUpdate = function (id, params, cb) {
-      return this[notifications[id] ? 'update': 'create'](id, params, cb);
+      return this[notifications[id] ? 'update': 'create'](id, params, cb || function () {});
     };
 
     this.clear = function (id, cb) {
