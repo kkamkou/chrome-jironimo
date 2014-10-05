@@ -17,7 +17,7 @@ function SettingsController($scope, $location, cjSettings, cjJira) {
     if ($scope.workspaces.length > 10) {
       return false;
     }
-    $scope.workspaces.push({title: null, query: null, isDefault: false});
+    $scope.workspaces.push({title: null, query: null, isDefault: false, icon: 'bug'});
   };
 
   $scope.workspaceSetAsDefault = function (workspace) {

@@ -7,7 +7,53 @@
  */
 angular
   .module('jironimo.jira', ['jironimo.settings'])
-  .service('cjJira', function ($rootScope, cjSettings) {
+  .config(
+    function ($httpProvider) {
+      // registering of a custom interceptor
+      $httpProvider.interceptors.push(
+        function ($q, $rootScope) {
+          return {
+            responseError: function (rej) {
+              var messages = [
+                  'Unknown response from the JIRA&trade; API',
+                  'Please check the settings!'
+                ],
+                loginReason = rej.headers()['x-seraph-loginreason'],
+                loginReasonSet = {
+                  'AUTHENTICATION_DENIED': 'The user is not allowed to even attempt a login.',
+                  'AUTHENTICATED_FAILED': 'The user could not be authenticated.',
+                  'AUTHORISATION_FAILED': 'The user could not be authorised.',
+                  'OUT': 'The user has in fact logged "out"'
+                };
+
+              // error messages
+              if (rej.headers()['x-authentication-denied-reason']) {
+                messages = [rej.headers()['x-authentication-denied-reason']];
+              } else if (loginReason && rej.status > 400 && rej.status < 500) {
+                messages = [loginReasonSet[loginReason]];
+              } else if (rej.status === 500) {
+                messages = [
+                  'Check the JIRA&trade; configuration. Make sure the "Allow Remote API Calls"' +
+                  ' is turned ON under Administration > General Configuration.'
+                ];
+              } else if (rej.data && rej.data.errorMessages) {
+                messages = rej.data.errorMessages;
+              }
+
+              // debug information
+              console.error(rej);
+
+              // custom message
+              $rootScope.$emit('jiraRequestFail', [rej.statusText, messages]);
+
+              return $q.reject(rej);
+            }
+          };
+        }
+      );
+    }
+  )
+  .service('cjJira', function ($rootScope, cjSettings, $http) {
     /** @type {Object} */
     var cache = {};
 
@@ -115,80 +161,39 @@ angular
      */
     this._makeRequest = function (urn, dataSet, callback) {
       // defaults
-      var call,
-        callOptions = {
-          type: 'GET',
-          url: cjSettings.account.url + '/rest' + urn,
-          cache: false,
-          data: dataSet,
-          contentType: 'application/json; charset=UTF-8',
-          dataType: 'json',
-          timeout: cjSettings.account.timeout * 1000,
-          headers: {
-            Authorization: 'Basic ' +
-              window.btoa(cjSettings.account.login + ':' + cjSettings.account.password)
-          }
-        };
+      var callOptions = {
+        method: 'GET',
+        url: cjSettings.account.url + '/rest' + urn,
+        cache: false,
+        data: dataSet,
+        responseType: 'json',
+        timeout: cjSettings.account.timeout * 1000,
+        headers: {
+          ContentType: 'application/json; charset=UTF-8',
+          Authorization: 'Basic ' +
+            window.btoa(cjSettings.account.login + ':' + cjSettings.account.password)
+        }
+      };
 
       // different method
       if (callOptions.data._method) {
-        callOptions.type = callOptions.data._method.toUpperCase();
+        callOptions.method = callOptions.data._method.toUpperCase();
         delete callOptions.data._method;
-        callOptions.data = angular.toJson(callOptions.data);
       }
 
-      // adding the HTTP Authorization
-      if (cjSettings.account.http && cjSettings.account.http.login) {
-        callOptions.username = cjSettings.account.http.login;
-        callOptions.password = cjSettings.account.http.password || null;
+      // angular params;data fix
+      if (callOptions.method === 'GET') {
+        callOptions.params = callOptions.data;
+        delete callOptions.data;
       }
 
       // ajax object
-      call = $.ajax(callOptions);
-
-      // we are ok
-      call.done(function (json) {
-        return callback(null, json);
-      });
-
-      // something went wrong
-      call.fail(function (err) {
-        // defaults
-        var messages = ['Unknown response from the JIRA&trade; API'],
-          loginReason = err.getResponseHeader('X-Seraph-LoginReason'),
-          loginReasonSet = {
-            'AUTHENTICATION_DENIED': 'The user is not allowed to even attempt a login.',
-            'AUTHENTICATED_FAILED': 'The user could not be authenticated.',
-            'AUTHORISATION_FAILED': 'The user could not be authorised.',
-            'OUT': 'The user has in fact logged "out"'
-          };
-
-        // error messages
-        if (loginReason && err.status > 400 && err.status < 500) {
-          messages = [loginReasonSet[loginReason]];
-        } else if (err.status === 500) {
-          messages = [
-            'Check the JIRA&trade; configuration. Make sure the "Allow Remote API Calls"' +
-            ' is turned ON under Administration > General Configuration.'
-          ];
-        } else {
-          if (err.responseText) {
-            try {
-              messages = angular.fromJson(err.responseText).errorMessages;
-            } catch (e) {
-              // nothing here, default message shown
-            }
-          }
-        }
-
-        // debug information
-        console.error(err);
-
-        // custom message
-        $rootScope.$emit('jiraRequestFail', [err.statusText, messages]);
-
-        // lets notice parents
-        return callback(err);
-      });
+      $http(callOptions)
+        .success(function (json) {
+          return callback(null, json);
+        })
+        .error(function () {
+          return callback(true);
+        });
     };
   });

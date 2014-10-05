@@ -18,7 +18,16 @@
   },
   "background": {
     "persistent": false,
-    "scripts": ["app/background.js"]
+    "scripts": [
+      "/vendors/angularjs/1.angular.js",
+      "/vendors/stringjs/string-latest.js",
+      "/vendors/lodash/lodash-latest.js",
+      "/vendors/momentjs/moment-latest.js",
+      "/app/lib/settings.js",
+      "/app/lib/jira-api.js",
+      "/app/lib/notifications.js",
+      "/app/bootstrap-bg.js"
+    ]
   },
   "permissions": [
     "http://*/",

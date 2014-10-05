@@ -30,7 +30,8 @@ angular
         2: {fg: 'white', bg: 'orange', bd: 'white', ot: 'orange'},
         3: {fg: 'white', bg: 'lightOlive', bd: 'white', ot: 'lightOlive'},
         4: {fg: 'white', bg: 'gray', bd: 'white', ot: 'gray'},
-        5: {fg: 'white', bg: 'lightBlue', bd: 'white', ot: 'lightBlue'}
+        5: {fg: 'white', bg: 'cyan', bd: 'white', ot: 'lightBlue'},
+        6: {fg: 'white', bg: 'lightBlue', bd: 'white', ot: 'lightBlue'}
       }
     };
 
@@ -40,13 +41,15 @@ angular
         icon: 'target',
         title: 'My issues',
         query: 'assignee = currentUser() ORDER BY updatedDate DESC',
-        isDefault: true
+        isDefault: true,
+        changesNotify: false
       },
       {
         icon: 'share-2',
         title: 'Created by me',
         query: 'reporter = currentUser() ORDER BY created DESC',
-        isDefault: false
+        isDefault: false,
+        changesNotify: false
       }
     ];
 
@@ -82,23 +85,25 @@ angular
       }
     );
 
-    // migrations
-    if (!_data.version) {
-      _data.version = 4;
-      delete _data.timer;
-      delete _data.colors;
-    }
-
+    // returns data as an object
     this.getStorageData = function () {
       return _.assign({}, _data);
     };
 
+    // updates the settings object
     this.setStorageData = function (items) {
       _.keys(items).forEach(function (key) {
         _data[key] = items[key];
       });
       return this;
     };
+
+    // migrations
+    if (!_data.migration) {
+      _data.migration = 1;
+      delete _data.version;
+      delete _data.colors;
+    }
 
     return this;
   });
