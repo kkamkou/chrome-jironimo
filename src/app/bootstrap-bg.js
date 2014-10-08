@@ -9,7 +9,7 @@
 angular
   .module('jironimo', ['jironimo.settings', 'jironimo.jira', 'jironimo.notifications'])
   .config(function () {
-    // chrome.alarms.create('jironimoRefreshIcon', {periodInMinutes: 1});
+    chrome.alarms.create('jironimoRefreshIcon', {periodInMinutes: 1});
     chrome.alarms.create('jironimoStatusCheck', {periodInMinutes: 1});
   })
   .run(
@@ -57,6 +57,27 @@ angular
               });
             }
           );
+        }
+      );
+
+      chrome.alarms.onAlarm.addListener(
+        function (alarm) {
+          // alarm validation
+          if (!alarm || alarm.name !== 'jironimoRefreshIcon') {
+            return;
+          }
+
+          // defaults
+          var timer = _.where(cjSettings.timers || {}, {started: true}).pop();
+          if (!timer) {
+            return;
+          }
+
+          // time difference calculation
+          var diff = moment(moment.unix(timer.timestamp)).diff();
+
+          // badge update
+          chrome.browserAction.setBadgeText({text: moment(diff).format('HH:mm')});
         }
       );
     }
