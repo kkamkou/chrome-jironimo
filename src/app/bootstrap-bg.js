@@ -74,7 +74,7 @@ angular
           }
 
           // time difference calculation
-          var diff = moment(moment.unix(timer.timestamp)).diff();
+          var diff = moment().diff(moment.unix(timer.timestamp + 3600));
 
           // badge update
           chrome.browserAction.setBadgeText({text: moment(diff).format('HH:mm')});
