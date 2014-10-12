@@ -8,19 +8,26 @@
 
 angular
   .module('jironimo', ['jironimo.settings', 'jironimo.jira', 'jironimo.notifications'])
-  .config(function () {
-    chrome.alarms.create('jironimoRefreshIcon', {periodInMinutes: 1});
-    chrome.alarms.create('jironimoStatusCheck', {periodInMinutes: 1});
-  })
   .run(
     function (cjSettings, cjJira, cjNotifications) {
+      chrome.alarms.create('jironimoRefreshIcon', {periodInMinutes: 1});
+      chrome.alarms.create('jironimoStatusCheck', {periodInMinutes: +cjSettings.timer.workspace});
+
+      // notifications.onClicked
       chrome.notifications.onClicked.addListener(function (id) {
         cjNotifications.clear(id, function (err, id) {
           if (err) { return; }
-          chrome.tabs.create({active: false, url: cjSettings.account.url + '/browse/' + id});
+
+          if (id === 'jironimo-update') {
+            chrome.tabs.create({active: true, url: 'http://2ka.by/article/chrome-jironimo'});
+            return;
+          }
+
+          chrome.tabs.create({active: true, url: cjSettings.account.url + '/browse/' + id});
         });
       });
 
+      // alarms.onAlarm
       chrome.alarms.onAlarm.addListener(
         function (alarm) {
           // alarm validation
@@ -60,6 +67,7 @@ angular
         }
       );
 
+      // alarms.onAlarm
       chrome.alarms.onAlarm.addListener(
         function (alarm) {
           // alarm validation
@@ -80,6 +88,18 @@ angular
           chrome.browserAction.setBadgeText({text: moment(diff).format('HH:mm')});
         }
       );
+
+      // runtime.onInstalled
+      chrome.runtime.onInstalled.addListener(function (details) {
+        if (details.reason !== 'update') {
+          return;
+        }
+
+        cjNotifications.create('jironimo-update', {
+          title: 'Jironimo updated!',
+          message: 'The extension extension has been updated, please check the settings page!'
+        });
+      });
     }
   );
 
