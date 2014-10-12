@@ -1,5 +1,6 @@
 v5.0
-- Ticket notifications
+- Ticket notifications (the options page)
+- Internal improvements
 
 v4.4
 - Synchronize filters (the options page)

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "manifest_version": 2,
   "homepage_url": "http://github.com/kkamkou/chrome-jironimo",
-  "description": "Atlassian JIRA workflow in your browser. Adorable open-source extension for passionate techies.",
+  "description": "Atlassian JIRA workflow in your browser. Adorable open-source extension for passionate techies and product owners.",
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "options_page": "views/default.html#settings",
   "minimum_chrome_version": "23",
