@@ -95,7 +95,7 @@ angular
           return;
         }
 
-        cjNotifications.create('jironimo-update', {
+        cjNotifications.createOrUpdate('jironimo-update', {
           title: 'Jironimo updated!',
           message: 'The extension extension has been updated, please check the settings page!'
         });
