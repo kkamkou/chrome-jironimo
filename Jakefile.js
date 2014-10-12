@@ -21,7 +21,7 @@ var CONSTANTS = {
 
 // default
 desc('Default build action');
-task('default', ['layout-modify'], function () {
+task('default', ['cleanup-pre', 'layout-modify', 'cleanup-post'], function () {
   var versionNumber = process.env['version'];
   console.log('Done. Version:', versionNumber);
 });
@@ -31,7 +31,7 @@ desc('Application scripts packing');
 task('pack-app', ['copy-sources'], {async: true}, function () {
   var fileSet = _readDir(CONSTANTS.DIR_APP, 'js').reverse();
 
-  ['background.js'].forEach(function (fileName) {
+  ['bootstrap-bg.js'].forEach(function (fileName) {
     _.remove(fileSet, function (filePath) {
       return (filePath.indexOf(fileName) !== -1);
     });
@@ -129,21 +129,51 @@ task('copy-metro', ['copy-sources'], function () {
   console.log('- Metro fonts were copied');
 });
 
-// copy-background
-desc('Copying background.js to the build folder');
-task('copy-background', ['copy-sources'], {async: true}, function () {
-  var btOut = path.join(CONSTANTS.DIR_BUILD_APP, 'background.js'),
-    btIn = path.join(CONSTANTS.DIR_APP, 'background.js');
+// copy-bootstrap-bg
+desc('Copying bootstrap-bg.js to the build folder');
+task('copy-bootstrap-bg', ['copy-sources'], {async: true}, function () {
+  var fileSet = [
+    CONSTANTS.DIR_SRC + '/vendors/angularjs/1.angular.js',
+    CONSTANTS.DIR_SRC + '/vendors/stringjs/string-latest.js',
+    CONSTANTS.DIR_SRC + '/vendors/lodash/lodash-latest.js',
+    CONSTANTS.DIR_SRC + '/vendors/momentjs/moment-latest.js',
+    CONSTANTS.DIR_SRC + '/app/lib/settings.js',
+    CONSTANTS.DIR_SRC + '/app/lib/jira-api.js',
+    CONSTANTS.DIR_SRC + '/app/lib/notifications.js',
+    CONSTANTS.DIR_SRC + '/app/bootstrap-bg.js'
+  ];
 
-  fs.writeFile(btOut, uglify.minify(btIn).code, function () {
-    console.log('- background.js was copied');
+  fs.writeFile(
+    path.join(CONSTANTS.DIR_BUILD_APP, 'bootstrap-bg.js'),
+    uglify.minify(fileSet, {mangle: false}).code,
+    function () {
+      console.log('- Packed to "bootstrap-bg.js":', "\n", fileSet);
+      complete();
+    }
+  );
+});
+
+// cleanup-pre
+desc('Pre cleanup process');
+task('cleanup-pre', function () {
+  wrench.rmdirSyncRecursive(CONSTANTS.DIR_BUILD);
+  console.log('- "build" folder has been removed');
+});
+
+// cleanup-post
+desc('Post cleanup process');
+task('cleanup-post', ['layout-modify'], {async: true}, function () {
+  fs.rmdir(path.join(CONSTANTS.DIR_BUILD, 'vendors'), function (err) {
+    if (err) { throw err; }
+    console.log('- "vendors" folder has been removed');
     complete();
   });
 });
 
+
 // layout-modify
 desc('Replaces headers in the dafault layout');
-task('layout-modify', ['copy-sources', 'pack-app', 'pack-vendors', 'pack-css', 'copy-metro', 'copy-background', 'version-number'], function () {
+task('layout-modify', ['copy-sources', 'pack-app', 'pack-vendors', 'pack-css', 'copy-metro', 'copy-bootstrap-bg', 'version-number'], function () {
   var templatePath = path.join(CONSTANTS.DIR_BUILD, 'views', 'default.html'),
     body = fs.readFileSync(templatePath, {encoding: 'utf-8'});
 
@@ -160,7 +190,7 @@ task('layout-modify', ['copy-sources', 'pack-app', 'pack-vendors', 'pack-css', '
   );
 
   fs.writeFileSync(templatePath, body);
-  console.log('- The default.html was updated');
+  console.log('- "default.html" has been updated');
 });
 
 // version-number
@@ -174,12 +204,15 @@ task('version-number', ['copy-sources'], function () {
       .replace('##VERSION##', process.env['version'])
   );
 
-  fs.writeFileSync(
-    manifestPath, fs.readFileSync(manifestPath, {encoding: 'utf-8'})
-      .replace('0.0.0', process.env['version'])
-  );
+  console.log('- "options-about.html" has been changed');
 
-  console.log('- Version number was changed');
+  var manifestObj = require(manifestPath);
+  manifestObj.version = process.env['version'] || '0.0';
+  manifestObj.background.scripts = ['app/bootstrap-bg.js'];
+
+  fs.writeFileSync(manifestPath, JSON.stringify(manifestObj));
+
+  console.log('- "manifest.json" has been changed');
 });
 
 // internal functions
