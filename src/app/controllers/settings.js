@@ -82,12 +82,11 @@ function SettingsController($scope, $location, cjSettings, cjJira) {
 
     if (type === 'workspaces') {
       _.where(data, {changesNotify: true}).forEach(function (workspace) {
-        if (/\bupdated(Date)?\b/.test(workspace.query.toLowerCase())) {
+        if (/\bupdated(date)?\b/.test(workspace.query.toLowerCase())) {
           alert(
-            'It is not possible to use "updated" or "updatedDate" in a query ' +
-            'which has the tracking option enabled!'
+            'Please, ensure that "updated" or "updatedDate" are placed after the "ORDER BY" ' +
+            'in the query which you would like to watch!'
           );
-          workspace.changesNotify = false;
         }
       });
     }
