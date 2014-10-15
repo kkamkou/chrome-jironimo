@@ -62,6 +62,12 @@
             <div class="input-control text">
               <input type="text" placeholder="JQL" required
                 ng-model="workspace.query">
+
+              <span class="label info"
+                ng-if="workspace.changesNotify && workspaceQueryIsValidForWatch(workspace.query)">
+                Please, ensure that "<b>updated</b>" or "<b>updatedDate</b>" are placed
+                after the "<b>ORDER BY</b>"
+              </span>
             </div>
           </div>
 

@@ -62,6 +62,10 @@ function SettingsController($scope, $location, cjSettings, cjJira) {
     });
   };
 
+  $scope.workspaceQueryIsValidForWatch = function (query) {
+    return /\bupdated(date)?\b/.test(query.toLowerCase());
+  };
+
   /**
    * Saves settings
    *
@@ -78,17 +82,6 @@ function SettingsController($scope, $location, cjSettings, cjJira) {
     if (type === 'account') {
       data.url = data.url.replace(/\/$/, '');
       data.timeout = parseInt(data.timeout, 10) || 10;
-    }
-
-    if (type === 'workspaces') {
-      _.where(data, {changesNotify: true}).forEach(function (workspace) {
-        if (/\bupdated(date)?\b/.test(workspace.query.toLowerCase())) {
-          alert(
-            'Please, ensure that "updated" or "updatedDate" are placed after the "ORDER BY" ' +
-            'in the query which you would like to watch!'
-          );
-        }
-      });
     }
 
     cjSettings[type] = angular.copy(data);
