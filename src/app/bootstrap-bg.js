@@ -39,7 +39,7 @@ angular
 
           _.where(cjSettings.workspaces, {changesNotify: true}).forEach(
             function (workspace) {
-              var query = 'updated > "-%dm" AND '.replace('%d', cjSettings.timer.workspace) +
+              var query = 'updated > "-%dm" AND '.replace('%d', cjSettings.timer.workspace + 1) +
                 workspace.query;
 
               cjJira.search(query, function (err, result) {
