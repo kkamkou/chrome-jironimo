@@ -10,8 +10,17 @@ angular
   .module('jironimo', ['jironimo.settings', 'jironimo.jira', 'jironimo.notifications'])
   .run(
     function (cjSettings, cjJira, cjNotifications) {
-      chrome.alarms.create('jironimoRefreshIcon', {periodInMinutes: 1});
-      chrome.alarms.create('jironimoStatusCheck', {periodInMinutes: +cjSettings.timer.workspace});
+      chrome.alarms.get('jironimoRefreshIcon', function (alarm) {
+        if (!alarm) {
+          chrome.alarms.create('jironimoRefreshIcon', {periodInMinutes: 1});
+        }
+      });
+
+      chrome.alarms.get('jironimoStatusCheck', function (alarm) {
+        if (!alarm) {
+          chrome.alarms.create('jironimoStatusCheck', {periodInMinutes: +cjSettings.timer.workspace});
+        }
+      });
 
       // notifications.onClicked
       chrome.notifications.onClicked.addListener(function (id) {

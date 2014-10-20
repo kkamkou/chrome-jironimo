@@ -17,7 +17,7 @@
     "default_popup": "views/default.html"
   },
   "background": {
-    "persistent": true,
+    "persistent": false,
     "scripts": [
       "/vendors/angularjs/1.angular.js",
       "/vendors/stringjs/string-latest.js",
