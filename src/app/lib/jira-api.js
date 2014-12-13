@@ -41,7 +41,7 @@ angular
               }
 
               // debug information
-              console.error(rej);
+              console.error('Exception:', rej);
 
               // custom message
               $rootScope.$emit('jiraRequestFail', [rej.statusText, messages]);
@@ -192,8 +192,8 @@ angular
         .success(function (json) {
           return callback(null, json);
         })
-        .error(function () {
-          return callback(true);
+        .error(function (err) {
+          return callback(err);
         });
     };
   });
