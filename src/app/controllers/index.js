@@ -166,7 +166,9 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifica
       };
 
     cjJira.issueAssignee(issue.key, paramsQuery, function (err) {
-      if (err) { return; }
+      if (err) {
+        return;
+      }
 
       cjNotifications.createOrUpdate(issue.key, paramsNotify, function () {
         $scope.$apply(function () {
