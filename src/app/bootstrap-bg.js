@@ -65,7 +65,8 @@ angular
                     title: issue.key,
                     eventTime: moment(issue.fields.updated).valueOf(),
                     isClickable: true,
-                    message: 'Updated at ' + moment(issue.fields.updated).format('LT')
+                    message: issue.fields.summary + ' (updated at ' +
+                      moment(issue.fields.updated).format('LT') + ')'
                   };
 
                   cjNotifications.createOrUpdate(issue.key, params);
