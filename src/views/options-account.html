@@ -44,20 +44,6 @@
     </div>
 
     <div class="row">
-      <!--
-        <div class="span6">
-          <h2>HTTP Authorization</h2>
-
-          <div class="input-control text">
-            <input type="text" ng-model="account.http.login" placeholder="Login">
-          </div>
-
-          <div class="input-control text">
-            <input type="password" ng-model="account.http.password" placeholder="Password">
-          </div>
-        </div>
-      -->
-
       <div class="span6">
         <h2>Synchronise settings</h2>
 
@@ -72,6 +58,15 @@
             (the chrome sync is used)
           </p>
         </blockquote>
+      </div>
+
+      <div class="span6">
+        <div class="notice marker-on-right bg-white">
+          To use transition features please ensure that your JIRA instance has
+          <a href="https://www.atlassian.com/software/jira/agile" class="fg-green" target="_blank">JIRA Agile</a>
+          add-on installed. Otherwise, <a ng-click="goTo('/settings/timer')" href="javascript:void(0)"
+            class="fg-green">please disable the timelog feature</a>.
+        </div>
       </div>
     </div>
 
