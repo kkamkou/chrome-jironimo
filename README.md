@@ -9,12 +9,6 @@ JIRA&trade; tickets in your Google Chrome browser (Extension)
 ### Hot to use it?
 [Please, check the documentation project](http://chrome-jironimo.readthedocs.org/) (*not ready yet, PR?*)
 
-### Frontend(outdated)
-![Frontend](https://raw.github.com/kkamkou/chrome-jironimo/gh-pages/images/jironimo-frontend.jpg)
-
-### Options(outdated)
-![Options](https://raw.github.com/kkamkou/chrome-jironimo/gh-pages/images/jironimo-options.jpg)
-
 ### Build
 ```sh
 npm install && ./node_modules/.bin/jake version='4.0'
