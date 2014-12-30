@@ -51,7 +51,7 @@ angular
               var query = 'updated > "-%dm" AND '.replace('%d', cjSettings.timer.workspace + 1) +
                 workspace.query;
 
-              cjJira.search(query, function (err, result) {
+              cjJira.search({jql: query}, function (err, result) {
                 if (err) { return; }
 
                 _.forEach(result.issues, function (issue) {

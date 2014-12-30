@@ -93,11 +93,11 @@ angular
      * Executes query
      *
      * @public
-     * @param {String} query
+     * @param {Object} data
      * @param {Function} callback
      */
-    this.search = function (query, callback) {
-      this._makeRequest('/api/latest/search', {jql: query}, callback);
+    this.search = function (data, callback) {
+      this._makeRequest('/api/latest/search', data, callback);
     };
 
     /**

@@ -5,15 +5,17 @@
  * @{@link http://github.com/kkamkou/chrome-jironimo}
  * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
  */
+
 function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifications, cjJira) {
-  // context storing
   var self = this;
 
-  // workspaces
+  $scope.timer = cjTimer;
   $scope.workspaces = cjSettings.workspaces;
 
-  // timer
-  $scope.timer = cjTimer;
+  $scope.issues = [];
+  $scope.searchTotal = 0;
+  $scope.searchStartAt = 0;
+  $scope.searchMaxResults = 25;
 
   // the active workspace
   $scope.workspaceActive = _.find($scope.workspaces, function (dataSet, index, list) {
@@ -25,37 +27,32 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifica
 
   /**
    * Loads issues for an another workspace
-   *
-   * @return {*}
+   * @param {Integer} offset
+   * @param {Integer} limit
+   * @return {void}
    */
-  $scope.workspaceRefresh = function () {
-    // reset the failed flag of the api
+  $scope.workspaceRefresh = function (offset, limit) {
     $scope.jiraRequestFailed = false;
-
-    // displaying the loader
-    $scope.loading = true;
-
-    // removing the filter field
     $scope.filterFieldDisplay = false;
-
-    // issues cleanup
+    $scope.loading = true;
     $scope.issues = [];
 
-    // deffering issues
-    self._issueSearch($scope.workspaceActive.query)
+    self._issueSearch($scope.workspaceActive.query, offset, limit)
       .then(
-        function (issues) {
-          angular.forEach(issues, function (issue) {
+        function (data) {
+          $scope.loading = false;
+          $scope.searchTotal = data.total;
+          $scope.searchStartAt = data.startAt;
+
+          angular.forEach(data.issues, function (issue) {
             $scope.issues.push(self._issueModify(issue));
           });
-          $scope.loading = false;
         },
         function () {
           $scope.loading = false;
         }
       );
 
-    // refresh interval
     if (cjSettings.timer.workspace > 0) {
       setTimeout(
         $scope.workspaceRefresh,
@@ -65,70 +62,76 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifica
   };
 
   /**
-   * Makes another workspace active
-   *
+   * Marks another workspace as active
    * @param {Number} index
    */
   $scope.workspaceSwitchTo = function (index) {
-    // index validation
     index = $scope.workspaces[index] ? index : 0;
 
     $scope.workspaceActive = $scope.workspaces[index];
     $scope.workspaceRefresh();
 
-    // updating the active workspace
     if (cjSettings.workspaceLast !== index) {
       cjSettings.workspaceLast = index;
     }
   };
 
   /**
+   * Calculates the previous page number
+   * @return {Integer}
+   */
+  $scope.pagePrev = function () {
+    var result = $scope.searchStartAt - $scope.searchMaxResults;
+    return (result < 0 ? 0 : result);
+  };
+
+  /**
+   * Calculates the next page number
+   * @return {Integer}
+   */
+  $scope.pageNext = function () {
+    var result = $scope.searchStartAt + $scope.searchMaxResults;
+    return (result > $scope.searchTotal ? $scope.searchTotal - 1 : result);
+  };
+
+  /**
    * Executes transition for the current ticket
-   *
    * @param {Object} issue
    * @param {Object} transition
-   * @return false
+   * @return {void}
    */
   $scope.transition = function (issue, transition) {
-    // we have no transition
     if (!issue) {
       $(event.target).parent().hide();
       return false;
     }
 
-    // the data object
     var dataSet = {
       _method: 'POST',
       transition: {id: transition.id}
     };
 
-    // lets update the entry
     cjJira.transitions(issue.id, dataSet, function (err) {
       if (!err) {
         $scope.workspaceRefresh();
       }
     });
-
-    return false;
   };
 
   /**
    * Opens issue in the JIRA
-   *
    * @param {Object} index
-   * @return {Boolean}
+   * @return {void}
    */
   $scope.tabOpen = function (issue) {
     chrome.tabs.create({
       active: false,
       url: cjSettings.account.url + '/browse/' + issue.key
     });
-    return false;
   };
 
   /**
    * Opens this extension in a window
-   *
    * @return {void}
    */
   $scope.detachWindow = function () {
@@ -150,7 +153,6 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifica
 
   /**
    * If an issue is assigned to nobody, we should assign it to us
-   *
    * @return {void}
    */
   $scope.issueTimerStart = function (issue) {
@@ -180,7 +182,7 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifica
 
   /**
    * Entry set corrections
-   *
+   * @private
    * @param {Object} issue
    * @return {Object}
    */
@@ -217,32 +219,31 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifica
 
   /**
    * Loads issues from the API
-   *
-   * @param {String} query
    * @private
+   * @param {String} query
    * @return {Object}
    */
-  this._issueSearch = function (query) {
-    // defaults
-    var deferred = $q.defer();
+  this._issueSearch = function (query, offset, limit) {
+    var deferred = $q.defer(),
+      searchData = {
+        jql: query,
+        startAt: +offset || 0,
+        maxResults: +limit || 25
+      };
 
-    // auth check
     cjJira.authSession(function (err, flag) {
-      // user is not authorized
       if (!flag) {
         return false;
       }
-
-      // content update after
-      cjJira.search(query, function (err, data) {
-        return err ? deferred.reject(err) : deferred.resolve(data.issues);
+      cjJira.search(searchData, function (err, data) {
+        return err ? deferred.reject(err) : deferred.resolve(data);
       });
     });
 
     return deferred.promise;
   };
 
-  // DOM playground(should be moved somewhere)
+  // DOM playground (should be moved somewhere)
   $scope.$on('$viewContentLoaded', function () {
     var $tiles = $('div.tiles');
 
