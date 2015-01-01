@@ -5,6 +5,7 @@
  * @{@link http://github.com/kkamkou/chrome-jironimo}
  * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
  */
+
 angular
   .module('jironimo.settings', [])
   .service('cjSettings', function () {
@@ -66,6 +67,7 @@ angular
 
     // getters and setters override
     angular.forEach(
+      /*jshint camelcase: false */
       Object.keys(defaults), function (name) {
         self.__defineGetter__(name, function () {
           if (!_data[name] && defaults[name]) {
@@ -83,6 +85,7 @@ angular
           chrome.storage.sync.set(obj);
         });
       }
+      /*jshint camelcase: true */
     );
 
     // returns data as an object

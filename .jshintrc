@@ -4,7 +4,8 @@
     "angular": true,
     "_": true,
     "S": true,
-    "moment": true
+    "moment": true,
+    "console": true
   },
 
   "es5": true,

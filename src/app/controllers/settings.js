@@ -63,7 +63,7 @@ function SettingsController($scope, $location, cjSettings, cjJira) {
   };
 
   $scope.workspaceQueryIsValidForWatch = function (query) {
-    return /\bupdated(date)?\b/.test(query.toLowerCase());
+    return (/\bupdated(date)?\b/).test(query.toLowerCase());
   };
 
   /**

@@ -18,7 +18,10 @@ angular
 
       chrome.alarms.get('jironimoStatusCheck', function (alarm) {
         if (!alarm) {
-          chrome.alarms.create('jironimoStatusCheck', {periodInMinutes: +cjSettings.timer.workspace});
+          chrome.alarms.create(
+            'jironimoStatusCheck',
+            {periodInMinutes: +cjSettings.timer.workspace}
+          );
         }
       });
 
