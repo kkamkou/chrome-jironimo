@@ -14,6 +14,17 @@
 
     <h3 ng-show="issues.length">{{workspaceActive.title}}</h3>
 
+    <div id="limit-per-page" class="input-control select" ng-show="!loading">
+      <select ng-model="searchMaxResults" ng-change="workspaceRefresh(searchStartAt, searchMaxResults)">
+        <option>25</option>
+        <option>50</option>
+        <option>100</option>
+        <option>150</option>
+        <option>200</option>
+        <option>500</option>
+      </select>
+    </div>
+
     <div class="toolbar-vertical" id="home-workspaces"
       ng-hide="workspaces.length < 2 || loading">
       <div>
@@ -101,17 +112,7 @@
       </div>
     </div>
 
-    <div class="pagination" ng-show="!loading">
-      <div class="input-control select">
-        <select ng-model="searchMaxResults" ng-change="workspaceRefresh(searchStartAt, searchMaxResults)">
-          <option>25</option>
-          <option>50</option>
-          <option>100</option>
-          <option>150</option>
-          <option>200</option>
-          <option>500</option>
-        </select>
-      </div>
+    <div id="pagination" class="pagination" ng-show="!loading">
       <ul ng-show="searchMaxResults <  searchTotal">
         <li class="first"><a ng-click="workspaceRefresh(0, searchMaxResults)"><i class="icon-first-2"></i></a></li>
         <li class="prev"><a ng-click="workspaceRefresh(pagePrev(), searchMaxResults)"><i class="icon-previous"></i></a></li>
