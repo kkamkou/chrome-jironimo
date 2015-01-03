@@ -63,4 +63,14 @@ angular
         });
       }
     }
-  );
+  )
+  .directive('integer', function () {
+    return {
+      require: 'ngModel',
+      link: function (scope, ele, attr, ctrl) {
+        ctrl.$parsers.unshift(function (val) {
+          return parseInt(val, 10);
+        });
+      }
+    };
+  });

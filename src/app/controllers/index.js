@@ -6,7 +6,9 @@
  * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
  */
 
-function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifications, cjJira) {
+function IndexController(
+  $q, $timeout, $rootScope, $scope, cjTimer, cjSettings, cjNotifications, cjJira
+) {
   var self = this;
 
   $scope.timer = cjTimer;
@@ -15,7 +17,7 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifica
   $scope.issues = [];
   $scope.searchTotal = 0;
   $scope.searchStartAt = 0;
-  $scope.searchMaxResults = 25;
+  $scope.searchMaxResults = 16;
 
   // the active workspace
   $scope.workspaceActive = _.find($scope.workspaces, function (dataSet, index, list) {
@@ -32,12 +34,18 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifica
    * @return {void}
    */
   $scope.workspaceRefresh = function (offset, limit) {
-    $scope.jiraRequestFailed = false;
-    $scope.filterFieldDisplay = false;
     $scope.loading = true;
     $scope.issues = [];
 
-    self._issueSearch($scope.workspaceActive.query, offset, limit)
+    if (angular.isUndefined(offset)) {
+      offset = $scope.searchStartAt;
+    }
+
+    if (angular.isUndefined(limit)) {
+      limit = $scope.searchMaxResults;
+    }
+
+    self._issueSearch($scope.workspaceActive.query, +offset, +limit)
       .then(
         function (data) {
           $scope.loading = false;
@@ -80,18 +88,18 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifica
    * Calculates the previous page number
    * @return {Integer}
    */
-  $scope.pagePrev = function () {
-    var result = $scope.searchStartAt - $scope.searchMaxResults;
-    return (result < 0 ? 0 : result);
+  $scope.searchOffsetBackward = function () {
+    var pos = $scope.searchStartAt - $scope.searchMaxResults;
+    return (pos < 0 ? 0 : pos);
   };
 
   /**
    * Calculates the next page number
    * @return {Integer}
    */
-  $scope.pageNext = function () {
-    var result = $scope.searchStartAt + $scope.searchMaxResults;
-    return (result > $scope.searchTotal ? $scope.searchTotal - 1 : result);
+  $scope.searchOffsetForward = function () {
+    var pos = $scope.searchStartAt + $scope.searchMaxResults;
+    return (pos > $scope.searchTotal ? $scope.searchTotal - 1 : pos);
   };
 
   /**
@@ -209,7 +217,7 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifica
 
     // lets load some transitions
     cjJira.transitions(issue.id, {}, function (err, data) {
-      if (!err && data.transitions) {
+      if (!err && data && data.transitions) {
         issue._transitions = data.transitions;
       }
     });
@@ -225,11 +233,7 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifica
    */
   this._issueSearch = function (query, offset, limit) {
     var deferred = $q.defer(),
-      searchData = {
-        jql: query,
-        startAt: +offset || 0,
-        maxResults: +limit || 25
-      };
+      searchData = {jql: query, startAt: +offset, maxResults: +limit};
 
     cjJira.authSession(function (err, flag) {
       if (!flag) {
@@ -262,12 +266,16 @@ function IndexController($q, $rootScope, $scope, cjTimer, cjSettings, cjNotifica
   });
 
   $scope.$watch('filterFieldDisplay', function (value) {
-    if (!value) {
-      return false;
-    }
-    setTimeout(function () {
+    if (!value) { return; }
+    $timeout(function () {
       $('#filter input').focus();
     }, 100);
+  });
+
+  $scope.$watch('loading', function (value) {
+    if (!value) { return; }
+    $scope.jiraRequestFailed = false;
+    $scope.filterFieldDisplay = false;
   });
 
   $rootScope.$on('jiraRequestFail', function (event, args) {
