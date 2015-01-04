@@ -96,7 +96,7 @@
             ng-show="timer.canBeStopped(issue)" ng-click="timer.discard(issue)"><i class="icon-remove"></i></button>
 
           <button title="Actions" class="active transitions"
-            ng-show="issue._transitions.length && !timer.isStarted(issue)"><i class="icon-list"></i></button>
+            ng-show="issue.transitions.length && !timer.isStarted(issue)"><i class="icon-list"></i></button>
 
           <button title="Open this issue in JIRA&trade;" class="active"
             ng-click="tabOpen(issue)"><i class="icon-new-tab"></i></button>
@@ -106,7 +106,7 @@
       <div class="transitions bg-darker">
         <a href="#" ng-click="transition()" class="bg-white close">&times;</a>
         <div class="padding10">
-          <div ng-repeat="trans in issue._transitions">
+          <div ng-repeat="trans in issue.transitions">
             <a href="#" class="fg-orange" ng-click="transition(issue, trans)"><small>{{trans.name}}</small></a>
           </div>
         </div>

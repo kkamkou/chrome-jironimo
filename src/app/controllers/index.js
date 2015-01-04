@@ -195,32 +195,20 @@ function IndexController(
    * @return {Object}
    */
   this._issueModify = function (issue) {
-    // the closed status
     issue._isClosed = (issue.fields.status.name === 'Closed');
-    issue._transitions = [];
+    issue._colors = cjSettings.colors.priority[0];
 
-    // timeestimate
     if (issue.fields.timeestimate) {
-      issue.fields.timeestimate = moment
-        .duration(issue.fields.timeestimate * 1000).humanize();
+      issue.fields.timeestimate = moment.duration(issue.fields.timeestimate * 1000).humanize();
     }
 
-    // applying custom sizes
     issue._size = cjSettings.colors
       .sizes[issue.fields.issuetype.name.toLowerCase()] || cjSettings.colors
       .sizes.task;
 
-    // applying custom colors
-    issue._colors = cjSettings.colors.priority[issue.fields.priority.id]
-      ? cjSettings.colors.priority[issue.fields.priority.id]
-      : cjSettings.colors.priority[0];
-
-    // lets load some transitions
-    cjJira.transitions(issue.id, {}, function (err, data) {
-      if (!err && data && data.transitions) {
-        issue._transitions = data.transitions;
-      }
-    });
+    if (issue.fields.priority && cjSettings.colors.priority[issue.fields.priority.id]) {
+      issue._colors = cjSettings.colors.priority[issue.fields.priority.id];
+    }
 
     return issue;
   };
@@ -233,7 +221,7 @@ function IndexController(
    */
   this._issueSearch = function (query, offset, limit) {
     var deferred = $q.defer(),
-      searchData = {jql: query, startAt: +offset, maxResults: +limit};
+      searchData = {jql: query, startAt: +offset, maxResults: +limit, expand: 'transitions'};
 
     cjJira.authSession(function (err, flag) {
       if (!flag) {
