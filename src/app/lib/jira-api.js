@@ -194,7 +194,7 @@ angular
           return callback(null, json);
         })
         .error(function (err) {
-          return callback(err);
+          return callback(new Error(err || 'Uncategorized exception'));
         });
     };
   });

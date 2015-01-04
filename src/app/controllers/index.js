@@ -221,7 +221,13 @@ function IndexController(
    */
   this._issueSearch = function (query, offset, limit) {
     var deferred = $q.defer(),
-      searchData = {jql: query, startAt: +offset, maxResults: +limit, expand: 'transitions'};
+      searchData = {
+        jql: query,
+        startAt: +offset,
+        maxResults: +limit,
+        expand: 'transitions',
+        fields: '*navigable'
+      };
 
     cjJira.authSession(function (err, flag) {
       if (!flag) {
