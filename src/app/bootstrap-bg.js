@@ -42,7 +42,6 @@ angular
       // alarms.onAlarm
       chrome.alarms.onAlarm.addListener(
         function (alarm) {
-          // alarm validation
           if (!alarm || alarm.name !== 'jironimoStatusCheck') {
             return;
           }
@@ -66,8 +65,8 @@ angular
 
                   var params = {
                     title: issue.key,
-                    eventTime: moment(issue.fields.updated).valueOf(),
                     isClickable: true,
+                    eventTime: moment(issue.fields.updated).valueOf(),
                     message: issue.fields.summary + ' (updated at ' +
                       moment(issue.fields.updated).format('LT') + ')'
                   };
@@ -83,21 +82,16 @@ angular
       // alarms.onAlarm
       chrome.alarms.onAlarm.addListener(
         function (alarm) {
-          // alarm validation
           if (!alarm || alarm.name !== 'jironimoRefreshIcon') {
             return;
           }
 
-          // defaults
           var timer = _.where(cjSettings.timers || {}, {started: true}).pop();
           if (!timer) {
             return;
           }
 
-          // time difference calculation
           var diff = moment().diff(moment.unix(timer.timestamp + 3600));
-
-          // badge update
           chrome.browserAction.setBadgeText({text: moment(diff).format('HH:mm')});
         }
       );
