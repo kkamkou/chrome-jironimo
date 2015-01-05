@@ -14,6 +14,18 @@
 
     <h3 ng-show="issues.length">{{workspaceActive.title}}</h3>
 
+    <div id="limit-per-page" class="input-control select" ng-show="!loading">
+      <select ng-model="searchMaxResults" ng-change="workspaceRefresh()" integer>
+        <option>16</option>
+        <option>25</option>
+        <option>50</option>
+        <option>75</option>
+        <option>100</option>
+        <option>150</option>
+        <option>250</option>
+      </select>
+    </div>
+
     <div class="toolbar-vertical" id="home-workspaces"
       ng-hide="workspaces.length < 2 || loading">
       <div>
@@ -84,7 +96,7 @@
             ng-show="timer.canBeStopped(issue)" ng-click="timer.discard(issue)"><i class="icon-remove"></i></button>
 
           <button title="Actions" class="active transitions"
-            ng-show="issue._transitions.length && !timer.isStarted(issue)"><i class="icon-list"></i></button>
+            ng-show="issue.transitions.length && !timer.isStarted(issue)"><i class="icon-list"></i></button>
 
           <button title="Open this issue in JIRA&trade;" class="active"
             ng-click="tabOpen(issue)"><i class="icon-new-tab"></i></button>
@@ -94,11 +106,21 @@
       <div class="transitions bg-darker">
         <a href="#" ng-click="transition()" class="bg-white close">&times;</a>
         <div class="padding10">
-          <div ng-repeat="trans in issue._transitions">
+          <div ng-repeat="trans in issue.transitions">
             <a href="#" class="fg-orange" ng-click="transition(issue, trans)"><small>{{trans.name}}</small></a>
           </div>
         </div>
       </div>
+    </div>
+
+    <div id="pagination" class="pagination" ng-show="!loading">
+      <ul ng-show="searchMaxResults <  searchTotal">
+        <li class="first"><a ng-click="workspaceRefresh(0, searchMaxResults)"><i class="icon-first-2"></i></a></li>
+        <li class="prev"><a ng-click="workspaceRefresh(searchOffsetBackward(), searchMaxResults)"><i class="icon-previous"></i></a></li>
+        <li class="active"><a>{{ searchStartAt }}–{{ searchStartAt + issues.length }} of {{ searchTotal }}</a></li>
+        <li class="next"><a ng-click="workspaceRefresh(searchOffsetForward(), searchMaxResults)"><i class="icon-next"></i></a></li>
+        <li class="last"><a ng-click="workspaceRefresh(searchTotal - 1, searchMaxResults)"><i class="icon-last-2"></i></a></li>
+      </ul>
     </div>
 
   </div>

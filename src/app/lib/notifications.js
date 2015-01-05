@@ -5,6 +5,7 @@
  * @{@link http://github.com/kkamkou/chrome-jironimo}
  * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
  */
+
 angular
   .module('jironimo.notifications', [])
   .service('cjNotifications', function () {

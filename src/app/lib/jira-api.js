@@ -5,6 +5,7 @@
  * @{@link http://github.com/kkamkou/chrome-jironimo}
  * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
  */
+
 angular
   .module('jironimo.jira', ['jironimo.settings'])
   .config(
@@ -93,11 +94,11 @@ angular
      * Executes query
      *
      * @public
-     * @param {String} query
+     * @param {Object} data
      * @param {Function} callback
      */
-    this.search = function (query, callback) {
-      this._makeRequest('/api/latest/search', {jql: query}, callback);
+    this.search = function (data, callback) {
+      this._makeRequest('/api/latest/search', data, callback);
     };
 
     /**
@@ -193,7 +194,7 @@ angular
           return callback(null, json);
         })
         .error(function (err) {
-          return callback(err);
+          return callback(new Error(err || 'Uncategorized exception'));
         });
     };
   });
