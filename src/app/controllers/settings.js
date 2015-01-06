@@ -57,8 +57,6 @@ angular
               {title: _.find(data, {jql: jql}).name, query: jql, isDefault: false, icon: 'heart-2'}
             );
           });
-
-          $scope.$apply();
         });
       };
 
