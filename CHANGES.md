@@ -1,3 +1,8 @@
+v5.3
+- Added pagination
+- Speed improvements
+- Multiple issues
+
 v5.0
 - Ticket notifications (the options page)
 - Internal improvements
