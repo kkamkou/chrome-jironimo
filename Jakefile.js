@@ -29,7 +29,7 @@ task('default', ['cleanup-pre', 'layout-modify', 'cleanup-post'], function () {
 // pack-app
 desc('Application scripts packing');
 task('pack-app', ['copy-sources'], {async: true}, function () {
-  var fileSet = _readDir(CONSTANTS.DIR_APP, 'js').reverse();
+  var fileSet = _readDir(CONSTANTS.DIR_APP, 'js');
 
   ['bootstrap-bg.js'].forEach(function (fileName) {
     _.remove(fileSet, function (filePath) {
