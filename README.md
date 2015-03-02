@@ -5,16 +5,16 @@ Atlassian JIRA&trade; Agile extension for Chrome
 ## Chrome Web Store
 [jironimo at google play](https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl)
 
-### Hot to use it?
-[Please, check the documentation project](http://chrome-jironimo.readthedocs.org/)(the `docs` branch)  
+## Hot to use it?
+[Please, check the documentation project](http://chrome-jironimo.readthedocs.org/) (`docs` branch)  
 *I have no time for it right now, PR?*
 
-### Build
+## Build
 ```sh
 npm install && ./node_modules/.bin/jake version='4.0'
 ```
 
-#### License
+### License
 **Boost Software License 1.0 (BSL-1.0)**
 
 Permission is hereby granted, free of charge, to any person or organization obtaining a copy of the software and accompanying documentation covered by this license (the "Software") to use, reproduce, display, distribute, execute, and transmit the Software, and to prepare derivative works of the Software, and to permit third-parties to whom the Software is furnished to do so, all subject to the following:
