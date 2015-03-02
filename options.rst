@@ -21,6 +21,8 @@ To enter the **options** section, you can hover your mouse over the extension ic
     :height: 152
     :align: center
 
-**Account**
+*********
+Account
+*********
 
 tbd.
