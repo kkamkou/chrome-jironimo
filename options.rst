@@ -1,11 +1,14 @@
 Options
 =======
 
-*Screenshots you see here might be outdated!*
+.. note::
+    Screenshots you see here might be outdated!
 
-**Basic information**
+*********
+Basic information
+*********
 
-To enter the options section, you can hover your mouse to the extension icon |ExtIconLocation| and click the right button.
+To enter the **options** section, you can hover your mouse over the extension icon |ExtIconLocation| and click the right button.
 
 .. |ExtIconLocation| image:: images/extension-icon-location.jpg
     :alt: Icon
