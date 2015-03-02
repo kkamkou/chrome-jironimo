@@ -1,15 +1,13 @@
 Jironimo
 ===============
-JIRA&trade; tickets in your Google Chrome browser (Extension)
+Atlassian JIRA&trade; Agile extension for Chrome
 
 ## Chrome Web Store
 [jironimo at google play](https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl)
-(if you have the "download was not a CRX" message, just search this extension with google chrome marketplace)
 
 ### Hot to use it?
-
-[Please, check the documentation project](http://chrome-jironimo.readthedocs.org/)  
-(the `docs` branch, *I have no time for it right now, PR?*)
+[Please, check the documentation project](http://chrome-jironimo.readthedocs.org/)(the `docs` branch)  
+*I have no time for it right now, PR?*
 
 ### Build
 ```sh
