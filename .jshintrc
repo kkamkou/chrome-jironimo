@@ -8,7 +8,6 @@
     "console": true
   },
 
-  "es5": true,
   "jquery": true,
   "browser": true,
 
