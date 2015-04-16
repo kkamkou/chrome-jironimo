@@ -17,13 +17,12 @@
 
     <div class="tab-control" data-role="tab-control" data-effect="fade[slide]">
         <ul class="tabs">
-            <li class="active"><a href="#" data-frame="theme">Default theme</a></li>
-            <li><a href="#" data-frame="colors">Priority colors</a></li>
-            <li><a href="#" data-frame="sizes">Priority sizes</a></li>
+          <li ng-repeat="(frameKey, frameTitle) in {colors: 'Priority colors', theme: 'Default theme', sizes: 'Priority sizes'}"
+            ng-class="{active: tabControl.colors === frameKey }"><a ng-click="tabControl.colors = frameKey">{{ frameTitle }}</a></li>
         </ul>
 
         <div class="frames bg-white">
-            <div class="frame" id="frame-theme">
+            <div class="frame" style="display: block" ng-show="tabControl.colors === 'theme'">
               <h2>Default theme</h2>
 
               <div class="input-control select span5">
@@ -32,7 +31,7 @@
                 </select>
               </div>
             </div>
-            <div class="frame" id="frame-colors">
+            <div class="frame" style="display: block" ng-show="tabControl.colors === 'colors'">
               <h2>Priority colors</h2>
 
               <div class="grid">
@@ -72,7 +71,7 @@
                 </a>
               </div>
             </div>
-            <div class="frame" id="frame-sizes">
+            <div class="frame" style="display: block" ng-show="tabControl.colors === 'sizes'">
               <h2>Priority sizes</h2>
 
               <div class="grid">
@@ -107,14 +106,3 @@
   </form>
 
 </div>
-
-<script type="text/javascript">
-  $('div.tab-control ul.tabs a').on('click', function () {
-    $(this).closest('div')
-      .find('div.frame:visible').hide().end()
-      .find('ul.tabs li.active').removeClass('active').end()
-      .find('div.frame[id$="frame-' + $(this).data('frame') + '"]').show()
-    $(this).closest('li').addClass('active');
-    return false;
-  });
-</script>

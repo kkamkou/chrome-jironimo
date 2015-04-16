@@ -15,6 +15,8 @@ angular
         $scope[name] = cjSettings[name];
       });
 
+      $scope.tabControl = {colors: 'theme'};
+
       $scope.workspaceAdd = function () {
         if ($scope.workspaces.length > 10) {
           return;
