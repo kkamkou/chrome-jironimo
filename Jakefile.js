@@ -77,7 +77,7 @@ task('pack-css', ['copy-sources'], {async: true}, function () {
   ).then(function (output) {
     fs.writeFileSync(
       path.join(CONSTANTS.DIR_BUILD_APP, 'app.css'),
-      csso.justDoIt(output)
+      csso.justDoIt(output.css)
     );
     console.log('- Styles were packed');
     complete();
