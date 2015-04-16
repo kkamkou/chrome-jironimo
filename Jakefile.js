@@ -71,23 +71,17 @@ task('pack-vendors', ['copy-sources'], {async: true}, function () {
 // pack-css
 desc('Application styles packing');
 task('pack-css', ['copy-sources'], {async: true}, function () {
-  var cssPath = path.join(CONSTANTS.DIR_APP, 'styles.less'),
-  parser = new(less.Parser)({paths: [CONSTANTS.DIR_SRC]});
-
-  parser.parse(
-    fs.readFileSync(cssPath, {encoding: 'utf-8'}),
-    function (err, tree) {
-      if (!err) {
-        fs.writeFileSync(
-          path.join(CONSTANTS.DIR_BUILD_APP, 'app.css'),
-          csso.justDoIt(tree.toCSS())
-        );
-        complete();
-      }
-    }
-  );
-
-  console.log('- Styles were packed');
+  less.render(
+    fs.readFileSync(path.join(CONSTANTS.DIR_APP, 'styles.less'), {encoding: 'utf-8'}),
+    {paths: [CONSTANTS.DIR_SRC]}
+  ).then(function (output) {
+    fs.writeFileSync(
+      path.join(CONSTANTS.DIR_BUILD_APP, 'app.css'),
+      csso.justDoIt(output)
+    );
+    console.log('- Styles were packed');
+    complete();
+  });
 });
 
 // copy-sources
