@@ -51,6 +51,15 @@ angular
         query: 'reporter = currentUser() ORDER BY created DESC',
         isDefault: false,
         changesNotify: false
+      },
+      {
+        icon: 'eye-2',
+        title: 'Watching',
+        query: '(' +
+          'assignee = currentUser() OR assignee was currentUser() OR reporter = currentUser()' +
+          ') AND status not in (Closed, Resolved) ORDER BY updated DESC',
+        isDefault: false,
+        changesNotify: true
       }
     ];
 
