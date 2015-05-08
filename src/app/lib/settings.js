@@ -65,7 +65,7 @@ angular
 
     // default settings for the timer tab
     defaults.timer = {
-      disabled: false,
+      enabled: true,
       workspace: 5,
       singleton: true
     };
@@ -111,10 +111,9 @@ angular
     };
 
     // migrations
-    if (!_data.migration) {
-      _data.migration = 1;
-      delete _data.version;
-      delete _data.colors;
+    if (typeof _data.timer.disabled !== 'undefined') {
+      _data.timer.enabled = !_data.timer.disabled;
+      delete _data.timer.disabled;
     }
 
     return this;
