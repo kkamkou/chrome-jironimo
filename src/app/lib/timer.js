@@ -55,7 +55,7 @@ angular
        */
       canBeStarted: function (issue) {
         // default flag
-        var flag = !cjSettings.timer.disabled && !this.isStarted(issue) &&
+        var flag = cjSettings.timer.enabled && !this.isStarted(issue) &&
           issue.fields.status.name !== 'Closed'; // @todo! not trusted
 
         // only one active ticket
