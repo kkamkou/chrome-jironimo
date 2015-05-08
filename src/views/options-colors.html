@@ -54,13 +54,21 @@
 
                   <div class="span2">
                     <div class="input-control text">
-                      <input type="text" ng-model="colpri.bd" placeholder="Border (border-*)" maxlength="30" required>
+                      <input type="text" ng-model="colpri.bd" placeholder="Border (bd-*)" maxlength="30" required>
                     </div>
                   </div>
 
-                  <div class="span4">
+                  <div class="span2">
                     <div class="input-control text span2">
-                      <input type="text" ng-model="colpri.ot" placeholder="Outline (outline-*)" maxlength="30" required>
+                      <input type="text" ng-model="colpri.ot" placeholder="Outline (ol-*)" maxlength="30" required>
+                    </div>
+                  </div>
+
+                  <div class="span2">
+                    <div class="input-control text">
+                      <input class="text-center bd-{{ colpri.bd }} ol-{{ colpri.ot }} bg-{{ colpri.bg }} fg-{{ colpri.fg }}"
+                        style="outline-style: solid; outline-width: 1px;"
+                        type="text" value="Example Priority" readonly="readonly">
                     </div>
                   </div>
                 </div>
