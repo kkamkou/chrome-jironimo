@@ -19,7 +19,7 @@ angular
           templateUrl: '/views/index.html',
           controller: 'IndexController'
         })
-        .when('/settings', {
+        .when('/settings/account', {
           templateUrl: '/views/options-account.html',
           controller: 'SettingsController'
         })

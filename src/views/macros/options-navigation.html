@@ -1,0 +1,5 @@
+<div class="toolbar place-right">
+  <button
+    ng-repeat="entry in entries" ng-click="goTo(entry)" ng-disabled="entry.id === current"
+    title="{{ entry.title }}"><i class="icon-{{ entry.icon }}"></i></button>
+</div>

@@ -79,10 +79,29 @@ angular
         cjSettings[type] = angular.copy(data);
         return true;
       };
+    }
+  )
+  .directive(
+    'navigation',
+    function () {
+      return {
+        templateUrl: 'macros/options-navigation.html',
+        restrict: 'E',
+        scope: {current: '@'},
+        controller: function ($scope, $location) {
+          $scope.entries = [
+            {icon: 'key', id: 'account', title: 'Account information'},
+            {icon: 'bug', id: 'jql', title: 'Workspaces'},
+            {icon: 'sun-3', id: 'colors', title: 'Colors'},
+            {icon: 'clock', id: 'timer', title: 'Time logging'},
+            {icon: 'info-2', id: 'about', title: 'About'}
+          ];
 
-      $scope.goTo = function (route) {
-        $location.path(route);
-        return false;
+          $scope.goTo = function (entry) {
+            $location.path('/settings/' + entry.id);
+            return false;
+          };
+        }
       };
     }
   );
