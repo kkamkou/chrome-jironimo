@@ -8,9 +8,9 @@
 
 angular
   .module(
-      'jironimo',
-      ['ngRoute', 'ngSanitize', 'jironimo.settings', 'jironimo.jira',
-       'jironimo.notifications', 'jironimo.timer']
+    'jironimo',
+    ['ngRoute', 'ngSanitize', 'jironimo.settings', 'jironimo.jira',
+     'jironimo.notifications', 'jironimo.timer']
   )
   .config(
     function ($routeProvider) {
@@ -51,13 +51,16 @@ angular
       }
     }
   )
-  .directive('integer', function () {
-    return {
-      require: 'ngModel',
-      link: function (scope, ele, attr, ctrl) {
-        ctrl.$parsers.unshift(function (val) {
-          return parseInt(val, 10);
-        });
-      }
-    };
-  });
+  .directive(
+    'integer',
+    function () {
+      return {
+        require: 'ngModel',
+        link: function (scope, ele, attr, ctrl) {
+          ctrl.$parsers.unshift(function (val) {
+            return parseInt(val, 10);
+          });
+        }
+      };
+    }
+  );
