@@ -1,0 +1,14 @@
+ {
+  "labelOptionsAccountUrl": {
+    "message": "https://jira.yoursite.com or https://yoursite.com/jira"
+  },
+  "labelOptionsAccountTimeout": {
+    "message": "Connection timeout in seconds"
+  },
+  "labelOptionsAccountLogin": {
+    "message": "Login"
+  },
+  "labelOptionsAccountPassword": {
+    "message": "Password"
+  }
+}

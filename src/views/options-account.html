@@ -15,12 +15,14 @@
 
         <div class="input-control text">
           <input type="url" ng-model="account.url" required="required"
-            placeholder="https://jira.atlassian.com or https://website.com/jira">
+            title="{{ 'labelOptionsAccountUrl' | i18n }}"
+            placeholder="{{ 'labelOptionsAccountUrl' | i18n }}">
         </div>
 
         <div class="input-control text">
             <input type="text" maxlength="2" required="required" ng-model="account.timeout"
-              placeholder="Connection timeout in seconds">
+              title="{{ 'labelOptionsAccountTimeout' | i18n }}"
+              placeholder="{{ 'labelOptionsAccountTimeout' | i18n }}">
         </div>
       </div>
 
@@ -28,11 +30,15 @@
         <h2>JIRA&trade; account information</h2>
 
         <div class="input-control text">
-          <input type="text" ng-model="account.login" required="required" placeholder="Login">
+          <input type="text" ng-model="account.login" required="required"
+            title="{{ 'labelOptionsAccountLogin' | i18n }}"
+            placeholder="{{ 'labelOptionsAccountLogin' | i18n }}">
         </div>
 
         <div class="input-control text">
-          <input type="password" ng-model="account.password" placeholder="Password">
+          <input type="password" ng-model="account.password"
+            title="{{ 'labelOptionsAccountPassword' | i18n }}"
+            placeholder="{{ 'labelOptionsAccountPassword' | i18n }}">
         </div>
       </div>
     </div>

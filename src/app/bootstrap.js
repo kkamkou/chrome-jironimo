@@ -10,7 +10,7 @@ angular
   .module(
     'jironimo',
     ['ngRoute', 'ngSanitize', 'jironimo.settings', 'jironimo.jira',
-     'jironimo.notifications', 'jironimo.timer']
+     'jironimo.notifications', 'jironimo.timer', 'jironimo.shared']
   )
   .config(
     function ($routeProvider) {
