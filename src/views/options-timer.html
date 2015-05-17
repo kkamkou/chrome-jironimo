@@ -10,7 +10,9 @@
   <form ng-submit="save('timer', timer)">
     <h2>Workspace</h2>
     <div class="input-control text span6">
-      <input type="text" maxlength="4" placeholder="Refresh interval (min.)" required
+      <input type="text" maxlength="4" required
+        title="{{ 'placeholderOptionsTimerRefreshInterval' | i18n }}"
+        placeholder="{{ 'placeholderOptionsTimerRefreshInterval' | i18n }}"
         ng-model="timer.workspace">
     </div>
 

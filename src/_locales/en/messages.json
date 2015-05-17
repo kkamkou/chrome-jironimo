@@ -1,14 +1,29 @@
  {
-  "labelOptionsAccountUrl": {
+  "placeholderOptionsAccountUrl": {
     "message": "https://jira.yoursite.com or https://yoursite.com/jira"
   },
-  "labelOptionsAccountTimeout": {
+  "placeholderOptionsAccountTimeout": {
     "message": "Connection timeout in seconds"
   },
-  "labelOptionsAccountLogin": {
+  "placeholderOptionsAccountLogin": {
     "message": "Login"
   },
-  "labelOptionsAccountPassword": {
+  "placeholderOptionsAccountPassword": {
     "message": "Password"
+  },
+  "placeholderOptionsTimerRefreshInterval": {
+    "message": "Refresh interval (min.)"
+  },
+  "placeholderOptionsJqlTitle": {
+    "message": "Title"
+  },
+  "placeholderOptionsJqlIcon": {
+    "message": "Icon"
+  },
+  "placeholderOptionsJqlQuery": {
+    "message": "JQL for the current workspace"
+  },
+  "titleOptionsJqlIcon": {
+    "message": "Icon for the workspace. See the list of available icons. Ignore icon-* prefix."
   }
 }
