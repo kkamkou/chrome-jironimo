@@ -3,13 +3,12 @@
  *
  * @author Kanstantsin Kamkou <2ka.by>
  * @{@link http://github.com/kkamkou/chrome-jironimo}
- * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
+ * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0
  */
 
 angular
   .module('jironimo.settings', [])
   .service('cjSettings', function () {
-    // defaults
     var _data = localStorage, self = this, defaults = {};
 
     // default settings for the account tab
@@ -43,14 +42,14 @@ angular
         title: 'My issues',
         query: 'assignee = currentUser() ORDER BY updatedDate DESC',
         isDefault: true,
-        changesNotify: false
+        changesNotify: true
       },
       {
         icon: 'share-2',
         title: 'Created by me',
         query: 'reporter = currentUser() ORDER BY created DESC',
         isDefault: false,
-        changesNotify: false
+        changesNotify: true
       },
       {
         icon: 'eye-2',
@@ -65,7 +64,7 @@ angular
 
     // default settings for the timer tab
     defaults.timer = {
-      disabled: false,
+      enabled: true,
       workspace: 5,
       singleton: true
     };
@@ -97,6 +96,10 @@ angular
       /*jshint camelcase: true */
     );
 
+    this.getOptionsPageUri = function () {
+      return 'views/default.html#/settings/account';
+    };
+
     // returns data as an object
     this.getStorageData = function () {
       return _.assign({}, _data);
@@ -111,10 +114,9 @@ angular
     };
 
     // migrations
-    if (!_data.migration) {
-      _data.migration = 1;
-      delete _data.version;
-      delete _data.colors;
+    if (_data.timer && typeof _data.timer.disabled !== 'undefined') {
+      _data.timer.enabled = !_data.timer.disabled;
+      delete _data.timer.disabled;
     }
 
     return this;

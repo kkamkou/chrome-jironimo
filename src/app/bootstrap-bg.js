@@ -3,7 +3,7 @@
  *
  * @author Kanstantsin Kamkou <2ka.by>
  * @{@link http://github.com/kkamkou/chrome-jironimo}
- * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
+ * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0
  */
 
 angular
@@ -98,14 +98,18 @@ angular
 
       // runtime.onInstalled
       chrome.runtime.onInstalled.addListener(function (details) {
-        if (details.reason !== 'update') {
-          return;
-        }
+        switch (details.reason) {
+          case 'install':
+            chrome.tabs.create({active: true, url: cjSettings.getOptionsPageUri()});
+            break;
 
-        cjNotifications.createOrUpdate('jironimo-update', {
-          title: 'Jironimo updated!',
-          message: 'The extension has been updated, please check the settings page!'
-        });
+          case 'update':
+            cjNotifications.createOrUpdate('jironimo-update', {
+              title: 'Jironimo updated!',
+              message: 'The extension has been updated, please check the settings page!'
+            });
+            break;
+        }
       });
     }
   );

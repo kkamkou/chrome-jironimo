@@ -3,14 +3,14 @@
  *
  * @author Kanstantsin Kamkou <2ka.by>
  * @{@link http://github.com/kkamkou/chrome-jironimo}
- * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
+ * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0
  */
 
 angular
   .module(
-      'jironimo',
-      ['ngRoute', 'ngSanitize', 'jironimo.settings', 'jironimo.jira',
-       'jironimo.notifications', 'jironimo.timer']
+    'jironimo',
+    ['ngRoute', 'ngSanitize', 'jironimo.settings', 'jironimo.jira',
+     'jironimo.notifications', 'jironimo.timer', 'jironimo.shared']
   )
   .config(
     function ($routeProvider) {
@@ -19,7 +19,7 @@ angular
           templateUrl: '/views/index.html',
           controller: 'IndexController'
         })
-        .when('/settings', {
+        .when('/settings/account', {
           templateUrl: '/views/options-account.html',
           controller: 'SettingsController'
         })

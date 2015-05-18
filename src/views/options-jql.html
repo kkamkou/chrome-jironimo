@@ -1,12 +1,6 @@
 <div class="container container-options">
 
-  <div class="toolbar place-right">
-    <button ng-click="goTo('/settings')"><i class="icon-key"></i></button>
-    <button disabled><i class="icon-bug"></i></button>
-    <button ng-click="goTo('/settings/colors')"><i class="icon-sun-3"></i></button>
-    <button ng-click="goTo('/settings/timer')"><i class="icon-clock"></i></button>
-    <button ng-click="goTo('/settings/about')"><i class="icon-info-2"></i></button>
-  </div>
+  <navigation current="jql"></navigation>
 
   <h1>
     Jironimo
@@ -15,11 +9,6 @@
 
   <form class="span12"
     ng-submit="save('workspaces', workspaces)">
-
-      <div class="span12">
-        <h2>JIRA&trade; queries</h2>
-      </div>
-
       <div class="grid">
         <div class="row" ng-repeat="workspace in workspaces">
 
@@ -37,14 +26,18 @@
           <div class="span9">
             <div class="span3">
               <div class="input-control text">
-                <input type="text" placeholder="Label" maxlength="40" required
+                <input type="text" maxlength="40" required
+                  title="{{ 'placeholderOptionsJqlTitle' | i18n }}"
+                  placeholder="{{ 'placeholderOptionsJqlTitle' | i18n }}"
                   ng-model="workspace.title">
               </div>
             </div>
 
             <div class="span2">
               <div class="input-control text">
-                <input type="text" placeholder="icon-*" maxlength="18" required
+                <input type="text" maxlength="18" required
+                  title="{{ 'titleOptionsJqlIcon' | i18n }}"
+                  placeholder="{{ 'placeholderOptionsJqlIcon' | i18n }}"
                   ng-model="workspace.icon">
               </div>
             </div>
@@ -60,7 +53,9 @@
             </div>
 
             <div class="input-control text">
-              <input type="text" placeholder="JQL" required
+              <input type="text" required
+                title="{{ 'placeholderOptionsJqlQuery' | i18n }}"
+                placeholder="{{ 'placeholderOptionsJqlQuery' | i18n }}"
                 ng-model="workspace.query">
 
               <span class="label info"
@@ -82,7 +77,7 @@
       <button ng-click="workspaceAdd()" class="success"><i
           class="icon-plus-2"></i> Add one more</button>
 
-      <a href="http://metroui.org.ua/icons.html" class="button link" target="_blank">
+      <a href="http://metroui.org.ua/v2/icons.html" class="button link" target="_blank">
         <i class="icon-link"></i>
         Click here to open the list of available icons
       </a>
@@ -90,7 +85,7 @@
       <hr>
 
       <div>
-        <input type="submit" value="Save" class="default">
+        <input type="submit" value="{{ 'btnSave' | i18n }}" class="default">
 
         <button ng-click="workspaceImport()" class="primary place-right"><i
           class="icon-spin"></i> Import favorites from JIRA&trade;</button>

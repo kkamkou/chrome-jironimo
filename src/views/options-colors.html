@@ -1,12 +1,6 @@
 <div class="container container-options">
 
-  <div class="toolbar place-right">
-    <button ng-click="goTo('/settings')"><i class="icon-key"></i></button>
-    <button ng-click="goTo('/settings/jql')"><i class="icon-bug"></i></button>
-    <button disabled><i class="icon-sun-3"></i></button>
-    <button ng-click="goTo('/settings/timer')"><i class="icon-clock"></i></button>
-    <button ng-click="goTo('/settings/about')"><i class="icon-info-2"></i></button>
-  </div>
+  <navigation current="colors"></navigation>
 
   <h1>
     Jironimo
@@ -18,7 +12,8 @@
     <div class="tab-control" data-role="tab-control" data-effect="fade[slide]">
         <ul class="tabs">
           <li ng-repeat="(frameKey, frameTitle) in {colors: 'Priority colors', theme: 'Default theme', sizes: 'Priority sizes'}"
-            ng-class="{active: tabControl.colors === frameKey }"><a ng-click="tabControl.colors = frameKey">{{ frameTitle }}</a></li>
+            ng-class="{active: tabControl.colors === frameKey }"
+            style="cursor: pointer;"><a ng-click="tabControl.colors = frameKey">{{ frameTitle }}</a></li>
         </ul>
 
         <div class="frames bg-white">
@@ -54,18 +49,26 @@
 
                   <div class="span2">
                     <div class="input-control text">
-                      <input type="text" ng-model="colpri.bd" placeholder="Border (border-*)" maxlength="30" required>
+                      <input type="text" ng-model="colpri.bd" placeholder="Border (bd-*)" maxlength="30" required>
                     </div>
                   </div>
 
-                  <div class="span4">
+                  <div class="span2">
                     <div class="input-control text span2">
-                      <input type="text" ng-model="colpri.ot" placeholder="Outline (outline-*)" maxlength="30" required>
+                      <input type="text" ng-model="colpri.ot" placeholder="Outline (ol-*)" maxlength="30" required>
+                    </div>
+                  </div>
+
+                  <div class="span2">
+                    <div class="input-control text">
+                      <input class="text-center bd-{{ colpri.bd }} ol-{{ colpri.ot }} bg-{{ colpri.bg }} fg-{{ colpri.fg }}"
+                        style="outline-style: solid; outline-width: 1px;"
+                        type="text" value="Example Priority" readonly="readonly">
                     </div>
                   </div>
                 </div>
 
-                <a href="http://metroui.org.ua/global.html" class="button link" target="_blank">
+                <a href="http://metroui.org.ua/v2/global.html" class="button link" target="_blank">
                   <i class="icon-link"></i>
                   Click here to open the list of available colors
                 </a>
@@ -93,7 +96,7 @@
                   </div>
                 </div>
 
-                <a href="http://metroui.org.ua/tiles.html" class="button link" target="_blank">
+                <a href="http://metroui.org.ua/v2/tiles.html" class="button link" target="_blank">
                   <i class="icon-link"></i>
                   Click here to open the list of available sizes
                 </a>
@@ -102,7 +105,7 @@
         </div>
     </div>
     <br>
-    <input type="submit" value="Save" class="default">
+    <input type="submit" value="{{ 'btnSave' | i18n }}" class="default">
   </form>
 
 </div>

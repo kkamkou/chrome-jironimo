@@ -3,7 +3,7 @@
  *
  * @author Kanstantsin Kamkou <2ka.by>
  * @{@link http://github.com/kkamkou/chrome-jironimo}
- * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
+ * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0
  */
 
 angular
@@ -11,6 +11,11 @@ angular
   .controller(
     'IndexController',
     function ($q, $timeout, $rootScope, $scope, cjTimer, cjSettings, cjNotifications, cjJira) {
+      // jira api required attributes validation
+      if (!cjSettings.account.url || !cjSettings.account.login) {
+        return chrome.tabs.create({active: true, url: cjSettings.getOptionsPageUri()});
+      }
+
       var self = this;
 
       $scope.timer = cjTimer;

@@ -1,12 +1,6 @@
 <div class="container container-options">
 
-  <div class="toolbar place-right">
-    <button ng-click="goTo('/settings')"><i class="icon-key"></i></button>
-    <button ng-click="goTo('/settings/jql')"><i class="icon-bug"></i></button>
-    <button ng-click="goTo('/settings/colors')"><i class="icon-sun-3"></i></button>
-    <button ng-click="goTo('/settings/timer')"><i class="icon-clock"></i></button>
-    <button disabled><i class="icon-info-2"></i></button>
-  </div>
+  <navigation current="about"></navigation>
 
   <h1>
     Jironimo
@@ -19,14 +13,33 @@
         <h2>Version</h2>
         <p>
           <b>##VERSION##</b>
-          &lt;<a href="http://github.com/kkamkou/chrome-jironimo" target="_blank">http://github.com/kkamkou/chrome-jironimo</a>&gt;
+          &lt;<a href="http://github.com/kkamkou/chrome-jironimo"
+            target="_blank">http://github.com/kkamkou/chrome-jironimo</a>&gt;
         </p>
       </div>
       <div class="span6">
+        <h2>Feedback</h2>
+        <p>
+          Please, <a href="https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl"
+            target="_blank">share your opinion here</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="row">
+      <div class="span6">
         <div>
           <h2>Author</h2>
-          <p>Kanstantsin Kamkou &lt;kkamkou@gmail.com&gt;</p>
+          <p>Kanstantsin Kamkou &lt;<a href="http://2ka.by" target="_blank">http://2ka.by</a>&gt;</p>
         </div>
+      </div>
+      <div class="span6">
+        <h2>Contributors<sup><i class="icon-heart fg-red"></i></sup></h2>
+        <p>
+          Anna &lt;<a href="http://github.com/Arany" target="_blank">http://github.com/Arany</a>&gt;
+        </p>
       </div>
     </div>
   </div>
@@ -38,7 +51,7 @@
           <h2>Icons</h2>
           <p>
             Wireframe mono icons<br>
-            &lt;<a href="http://www.gentleface.com/" target="_blank">http://www.gentleface.com/</a>&gt;
+            &lt;<a href="http://www.gentleface.com" target="_blank">http://www.gentleface.com</a>&gt;
           </p>
           <p>
             The Noun Project (National Park Service)<br>
@@ -50,13 +63,13 @@
         <div>
           <h2>Third-party software</h2>
           <p>
-            <a href="http://metroui.org.ua/" target="_blank">Metro-UI-CSS</a>,
+            <a href="http://metroui.org.ua/v2/" target="_blank">Metro-UI-CSS</a>,
             <a href="http://jquery.com/" target="_blank">jQuery</a>,
             <a href="http://lesscss.org/" target="_blank">{less}</a>,
             <a href="http://angularjs.org/" target="_blank">Angular.js</a>,
             <a href="http://momentjs.com/" target="_blank">Moment.js</a>,
             <a href="http://lodash.com/" target="_blank">Lo-Dash</a>,
-            <a href="http://stringjs.com/" target="_blank">string.js</a>
+            <a href="http://stringjs.com/" target="_blank">String.js</a>
           </p>
         </div>
       </div>

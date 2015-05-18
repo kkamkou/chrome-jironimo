@@ -1,12 +1,6 @@
 <div class="container container-options">
 
-  <div class="toolbar place-right">
-    <button ng-click="goTo('/settings')"><i class="icon-key"></i></button>
-    <button ng-click="goTo('/settings/jql')"><i class="icon-bug"></i></button>
-    <button ng-click="goTo('/settings/colors')"><i class="icon-sun-3"></i></button>
-    <button disabled><i class="icon-clock"></i></button>
-    <button ng-click="goTo('/settings/about')"><i class="icon-info-2"></i></button>
-  </div>
+  <navigation current="timer"></navigation>
 
   <h1>
     Jironimo
@@ -16,7 +10,9 @@
   <form ng-submit="save('timer', timer)">
     <h2>Workspace</h2>
     <div class="input-control text span6">
-      <input type="text" maxlength="4" placeholder="Refresh interval (min.)" required
+      <input type="text" maxlength="4" required
+        title="{{ 'placeholderOptionsTimerRefreshInterval' | i18n }}"
+        placeholder="{{ 'placeholderOptionsTimerRefreshInterval' | i18n }}"
         ng-model="timer.workspace">
     </div>
 
@@ -25,13 +21,13 @@
       <div class="row">
         <div class="span6">
           <label class="input-control switch">
-              <input type="checkbox" ng-model="timer.disabled">
+              <input type="checkbox" ng-model="timer.enabled">
               <span class="check"></span>
-              Disable the timelog feature
+              Enable the timelog feature
           </label>
         </div>
 
-        <div class="span6">
+        <div class="span6" ng-show="timer.enabled">
           <label class="input-control switch">
               <input type="checkbox" ng-model="timer.singleton">
               <span class="check"></span>
@@ -44,7 +40,7 @@
 
     <hr>
 
-    <input type="submit" value="Save" class="default">
+    <input type="submit" value="{{ 'btnSave' | i18n }}" class="default">
   </form>
 
 </div>
