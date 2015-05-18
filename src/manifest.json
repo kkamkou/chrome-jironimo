@@ -30,11 +30,12 @@
     ]
   },
   "permissions": [
-    "http://*/",
-    "https://*/",
     "storage",
-    "tabs",
     "notifications",
     "alarms"
+  ],
+  "optional_permissions": [
+    "http://*/",
+    "https://*/"
   ]
 }

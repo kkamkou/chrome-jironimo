@@ -67,17 +67,21 @@ angular
       };
 
       $scope.save = function (type, data) {
-        if (!data) {
-          return false;
+        if (!data) { return; }
+
+        if (type !== 'account') {
+          cjSettings[type] = angular.copy(data);
+          return;
         }
 
-        if (type === 'account') {
-          data.url = data.url.replace(/\/$/, '');
-          data.timeout = parseInt(data.timeout, 10) || 10;
-        }
+        data.url = data.url.replace(/\/+$/, '');
+        data.timeout = parseInt(data.timeout, 10) || 10;
 
-        cjSettings[type] = angular.copy(data);
-        return true;
+        // checking permissions for the url
+        chrome.permissions.request({origins: [data.url + '/']}, function (flag) {
+          if (!flag) { return false; }
+          cjSettings[type] = angular.copy(data);
+        });
       };
     }
   )
