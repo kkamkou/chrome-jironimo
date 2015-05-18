@@ -3,13 +3,12 @@
  *
  * @author Kanstantsin Kamkou <2ka.by>
  * @{@link http://github.com/kkamkou/chrome-jironimo}
- * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
+ * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0
  */
 
 angular
   .module('jironimo.timer', ['jironimo.jira', 'jironimo.settings'])
   .factory('cjTimer', function (cjJira, cjSettings) {
-    // defaults
     var timerSet = cjSettings.timers;
 
     // exports

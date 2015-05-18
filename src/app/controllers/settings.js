@@ -3,7 +3,7 @@
  *
  * @author Kanstantsin Kamkou <2ka.by>
  * @{@link http://github.com/kkamkou/chrome-jironimo}
- * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
+ * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0
  */
 
 angular
@@ -11,17 +11,21 @@ angular
   .controller(
     'SettingsController',
     function ($scope, $location, cjSettings, cjJira) {
-      angular.forEach(['account', 'colors', 'timer', 'workspaces'], function (name) {
-        $scope[name] = cjSettings[name];
-      });
-
       $scope.tabControl = {colors: 'theme'};
 
-      $scope.workspaceAdd = function () {
-        if ($scope.workspaces.length > 10) {
-          return;
+      angular.forEach(
+        ['account', 'colors', 'timer', 'workspaces'],
+        function (name) {
+          $scope[name] = cjSettings[name];
         }
-        $scope.workspaces.push({title: null, query: null, isDefault: false, icon: 'bug'});
+      );
+
+      $scope.workspaceAdd = function () {
+        if ($scope.workspaces.length > 10) { return; }
+
+        $scope.workspaces.push(
+          {title: null, query: null, isDefault: false, icon: 'bug'}
+        );
       };
 
       $scope.workspaceSetAsDefault = function (workspace) {
@@ -34,9 +38,7 @@ angular
       };
 
       $scope.workspaceRemove = function (workspace) {
-        if ($scope.workspaces.length < 2) {
-          return;
-        }
+        if ($scope.workspaces.length < 2) { return; }
 
         $scope.workspaces = _.filter($scope.workspaces, function (entry) {
           return entry !== workspace;
@@ -55,9 +57,12 @@ angular
             favs = _.pluck(data, 'jql');
 
           _.difference(favs, workspaces).forEach(function (jql) {
-            $scope.workspaces.push(
-              {title: _.find(data, {jql: jql}).name, query: jql, isDefault: false, icon: 'heart-2'}
-            );
+            $scope.workspaces.push({
+              isDefault: false,
+              title: _.find(data, {jql: jql}).name,
+              query: jql,
+              icon: 'heart-2'
+            });
           });
         });
       };
@@ -67,9 +72,7 @@ angular
       };
 
       $scope.save = function (type, data) {
-        if (!data) {
-          return false;
-        }
+        if (!data) { return false; }
 
         if (type === 'account') {
           data.url = data.url.replace(/\/$/, '');
@@ -81,27 +84,24 @@ angular
       };
     }
   )
-  .directive(
-    'navigation',
-    function () {
-      return {
-        templateUrl: 'macros/options-navigation.html',
-        restrict: 'E',
-        scope: {current: '@'},
-        controller: function ($scope, $location) {
-          $scope.entries = [
-            {icon: 'key', id: 'account', title: 'Account information'},
-            {icon: 'bug', id: 'jql', title: 'Workspaces'},
-            {icon: 'sun-3', id: 'colors', title: 'Colors'},
-            {icon: 'clock', id: 'timer', title: 'Time logging'},
-            {icon: 'info-2', id: 'about', title: 'About'}
-          ];
+  .directive('navigation', function () {
+    return {
+      templateUrl: 'macros/options-navigation.html',
+      restrict: 'E',
+      scope: {current: '@'},
+      controller: function ($scope, $location) {
+        $scope.entries = [
+          {icon: 'key', id: 'account', title: 'Account information'},
+          {icon: 'bug', id: 'jql', title: 'Workspaces'},
+          {icon: 'sun-3', id: 'colors', title: 'Colors'},
+          {icon: 'clock', id: 'timer', title: 'Time logging'},
+          {icon: 'info-2', id: 'about', title: 'About'}
+        ];
 
-          $scope.goTo = function (entry) {
-            $location.path('/settings/' + entry.id);
-            return false;
-          };
-        }
-      };
-    }
-  );
+        $scope.goTo = function (entry) {
+          $location.path('/settings/' + entry.id);
+          return false;
+        };
+      }
+    };
+  });
