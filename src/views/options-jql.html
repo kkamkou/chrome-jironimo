@@ -9,11 +9,6 @@
 
   <form class="span12"
     ng-submit="save('workspaces', workspaces)">
-
-      <div class="span12">
-        <h2>JIRA&trade; queries</h2>
-      </div>
-
       <div class="grid">
         <div class="row" ng-repeat="workspace in workspaces">
 
@@ -90,7 +85,7 @@
       <hr>
 
       <div>
-        <input type="submit" value="Save" class="default">
+        <input type="submit" value="{{ 'btnSave' | i18n }}" class="default">
 
         <button ng-click="workspaceImport()" class="primary place-right"><i
           class="icon-spin"></i> Import favorites from JIRA&trade;</button>

@@ -23,7 +23,30 @@
   "placeholderOptionsJqlQuery": {
     "message": "JQL for the current workspace"
   },
+  "captionOptionsAccountJiraAddress": {
+    "message": "JIRA address"
+  },
+  "captionOptionsAccountJiraAuth": {
+    "message": "JIRA account information"
+  },
+  "captionOptionsAccountSync": {
+    "message": "Synchronise settings"
+  },
   "titleOptionsJqlIcon": {
     "message": "Icon for the workspace. See the list of available icons. Ignore icon-* prefix."
+  },
+  "hintRequiredJiraAgile": {
+    "message": "To use transition features please ensure that your JIRA instance has the
+      <a href=\"https://www.atlassian.com/software/jira/agile\" class=\"fg-green\" target=\"_blank\">JIRA Agile</a>
+      add-on installed."
+  },
+  "hintHowCredentialsAreStored": {
+    "message": "Jironimo doesn't use any kind of middleware to process the credentials. They are stored only at your machine."
+  },
+  "hintSynchroniseSettings": {
+    "message": "Settings for the current extension will be available on different devices (native Google Chrome sync is used)"
+  },
+  "btnSave": {
+    "message": "Save"
   }
 }

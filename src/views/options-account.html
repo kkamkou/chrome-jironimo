@@ -11,7 +11,7 @@
 
     <div class="row">
       <div class="span6">
-        <h2>JIRA&trade; address</h2>
+        <h2>{{ 'captionOptionsAccountJiraAddress' | i18n }}</h2>
 
         <div class="input-control text">
           <input type="url" ng-model="account.url" required="required"
@@ -27,7 +27,7 @@
       </div>
 
       <div class="span6">
-        <h2>JIRA&trade; account information</h2>
+        <h2>{{ 'captionOptionsAccountJiraAuth' | i18n }}</h2>
 
         <div class="input-control text">
           <input type="text" ng-model="account.login" required="required"
@@ -45,7 +45,7 @@
 
     <div class="row">
       <div class="span6">
-        <h2>Synchronise settings</h2>
+        <h2>{{ 'captionOptionsAccountSync' | i18n }}</h2>
 
         <label class="input-control switch">
             <input type="checkbox" ng-model="account.sync">
@@ -53,26 +53,21 @@
         </label>
 
         <blockquote>
-          <p>
-            Settings for the current extension will be available on different devices
-            (the chrome sync is used)
-          </p>
+          <p ng-bind-html="'hintSynchroniseSettings' | i18n"></p>
         </blockquote>
       </div>
 
       <div class="span6">
         <div class="notice marker-on-right bg-white">
-          To use transition features please ensure that your JIRA instance has
-          <a href="https://www.atlassian.com/software/jira/agile" class="fg-green" target="_blank">JIRA Agile</a>
-          add-on installed. Otherwise, <a href="#/settings/timer"
-            class="fg-green">please disable the timelog feature</a>.
+          <p ng-bind-html="'hintHowCredentialsAreStored' | i18n"></p>
+          <p ng-bind-html="'hintRequiredJiraAgile' | i18n"></p>
         </div>
       </div>
     </div>
 
     <hr>
 
-    <input type="submit" value="Save" class="default">
+    <input type="submit" value="{{ 'btnSave' | i18n }}" class="default">
   </form>
 
 </div>
