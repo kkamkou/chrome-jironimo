@@ -3,13 +3,12 @@
  *
  * @author Kanstantsin Kamkou <2ka.by>
  * @{@link http://github.com/kkamkou/chrome-jironimo}
- * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0 (BSL-1.0)
+ * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0
  */
 
 angular
   .module('jironimo.settings', [])
   .service('cjSettings', function () {
-    // defaults
     var _data = localStorage, self = this, defaults = {};
 
     // default settings for the account tab
@@ -43,14 +42,14 @@ angular
         title: 'My issues',
         query: 'assignee = currentUser() ORDER BY updatedDate DESC',
         isDefault: true,
-        changesNotify: false
+        changesNotify: true
       },
       {
         icon: 'share-2',
         title: 'Created by me',
         query: 'reporter = currentUser() ORDER BY created DESC',
         isDefault: false,
-        changesNotify: false
+        changesNotify: true
       },
       {
         icon: 'eye-2',

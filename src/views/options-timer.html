@@ -10,7 +10,9 @@
   <form ng-submit="save('timer', timer)">
     <h2>Workspace</h2>
     <div class="input-control text span6">
-      <input type="text" maxlength="4" placeholder="Refresh interval (min.)" required
+      <input type="text" maxlength="4" required
+        title="{{ 'placeholderOptionsTimerRefreshInterval' | i18n }}"
+        placeholder="{{ 'placeholderOptionsTimerRefreshInterval' | i18n }}"
         ng-model="timer.workspace">
     </div>
 
@@ -25,7 +27,7 @@
           </label>
         </div>
 
-        <div class="span6">
+        <div class="span6" ng-show="timer.enabled">
           <label class="input-control switch">
               <input type="checkbox" ng-model="timer.singleton">
               <span class="check"></span>
@@ -38,7 +40,7 @@
 
     <hr>
 
-    <input type="submit" value="Save" class="default">
+    <input type="submit" value="{{ 'btnSave' | i18n }}" class="default">
   </form>
 
 </div>

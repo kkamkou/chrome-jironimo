@@ -9,11 +9,6 @@
 
   <form class="span12"
     ng-submit="save('workspaces', workspaces)">
-
-      <div class="span12">
-        <h2>JIRA&trade; queries</h2>
-      </div>
-
       <div class="grid">
         <div class="row" ng-repeat="workspace in workspaces">
 
@@ -31,14 +26,18 @@
           <div class="span9">
             <div class="span3">
               <div class="input-control text">
-                <input type="text" placeholder="Label" maxlength="40" required
+                <input type="text" maxlength="40" required
+                  title="{{ 'placeholderOptionsJqlTitle' | i18n }}"
+                  placeholder="{{ 'placeholderOptionsJqlTitle' | i18n }}"
                   ng-model="workspace.title">
               </div>
             </div>
 
             <div class="span2">
               <div class="input-control text">
-                <input type="text" placeholder="icon-*" maxlength="18" required
+                <input type="text" maxlength="18" required
+                  title="{{ 'titleOptionsJqlIcon' | i18n }}"
+                  placeholder="{{ 'placeholderOptionsJqlIcon' | i18n }}"
                   ng-model="workspace.icon">
               </div>
             </div>
@@ -54,7 +53,9 @@
             </div>
 
             <div class="input-control text">
-              <input type="text" placeholder="JQL" required
+              <input type="text" required
+                title="{{ 'placeholderOptionsJqlQuery' | i18n }}"
+                placeholder="{{ 'placeholderOptionsJqlQuery' | i18n }}"
                 ng-model="workspace.query">
 
               <span class="label info"
@@ -84,7 +85,7 @@
       <hr>
 
       <div>
-        <input type="submit" value="Save" class="default">
+        <input type="submit" value="{{ 'btnSave' | i18n }}" class="default">
 
         <button ng-click="workspaceImport()" class="primary place-right"><i
           class="icon-spin"></i> Import favorites from JIRA&trade;</button>
