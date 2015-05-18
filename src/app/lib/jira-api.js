@@ -55,8 +55,8 @@ angular
     }
   )
   .service('cjJira', function ($rootScope, cjSettings, $http) {
-    /** @type {Object} */
-    var cache = {};
+    var cache = {},
+      config = cjSettings.account;
 
     /**
      * Information about myself
@@ -161,18 +161,20 @@ angular
      * @private
      */
     this._makeRequest = function (urn, dataSet, callback) {
-      // defaults
+      if (!config.url || !config.login) {
+        return callback(new Error('JIRA url and login are required for the service'));
+      }
+
       var callOptions = {
         method: 'GET',
-        url: cjSettings.account.url + '/rest' + urn,
+        url: config.url + '/rest' + urn,
         cache: false,
         data: dataSet,
         responseType: 'json',
-        timeout: cjSettings.account.timeout * 1000,
+        timeout: config.timeout * 1000,
         headers: {
           ContentType: 'application/json; charset=UTF-8',
-          Authorization: 'Basic ' +
-            window.btoa(cjSettings.account.login + ':' + cjSettings.account.password)
+          Authorization: 'Basic ' + window.btoa([config.login, config.password].join(':'))
         }
       };
 

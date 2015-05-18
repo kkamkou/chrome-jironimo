@@ -97,6 +97,10 @@ angular
       /*jshint camelcase: true */
     );
 
+    this.getOptionsPageUri = function () {
+      return 'views/default.html#/settings/account';
+    };
+
     // returns data as an object
     this.getStorageData = function () {
       return _.assign({}, _data);

@@ -98,14 +98,18 @@ angular
 
       // runtime.onInstalled
       chrome.runtime.onInstalled.addListener(function (details) {
-        if (details.reason !== 'update') {
-          return;
-        }
+        switch (details.reason) {
+          case 'install':
+            chrome.tabs.create({active: true, url: cjSettings.getOptionsPageUri()});
+            break;
 
-        cjNotifications.createOrUpdate('jironimo-update', {
-          title: 'Jironimo updated!',
-          message: 'The extension has been updated, please check the settings page!'
-        });
+          case 'update':
+            cjNotifications.createOrUpdate('jironimo-update', {
+              title: 'Jironimo updated!',
+              message: 'The extension has been updated, please check the settings page!'
+            });
+            break;
+        }
       });
     }
   );

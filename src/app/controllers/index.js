@@ -11,6 +11,11 @@ angular
   .controller(
     'IndexController',
     function ($q, $timeout, $rootScope, $scope, cjTimer, cjSettings, cjNotifications, cjJira) {
+      // jira api required attributes validation
+      if (!cjSettings.account.url || !cjSettings.account.login) {
+        return chrome.tabs.create({active: true, url: cjSettings.getOptionsPageUri()});
+      }
+
       var self = this;
 
       $scope.timer = cjTimer;
