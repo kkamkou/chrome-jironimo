@@ -42,14 +42,14 @@ angular
         title: 'My issues',
         query: 'assignee = currentUser() ORDER BY updatedDate DESC',
         isDefault: true,
-        changesNotify: false
+        changesNotify: true
       },
       {
         icon: 'share-2',
         title: 'Created by me',
         query: 'reporter = currentUser() ORDER BY created DESC',
         isDefault: false,
-        changesNotify: false
+        changesNotify: true
       },
       {
         icon: 'eye-2',
