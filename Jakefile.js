@@ -22,8 +22,7 @@ var CONSTANTS = {
 // default
 desc('Default build action');
 task('default', ['cleanup-pre', 'layout-modify', 'cleanup-post'], function () {
-  var versionNumber = process.env['version'];
-  console.log('Done. Version:', versionNumber);
+  console.log('Done. Version:', process.env['version']);
 });
 
 // pack-app
@@ -126,22 +125,20 @@ task('copy-metro', ['copy-sources'], function () {
 // copy-bootstrap-bg
 desc('Copying bootstrap-bg.js to the build folder');
 task('copy-bootstrap-bg', ['copy-sources'], {async: true}, function () {
-  var fileSet = [
-    CONSTANTS.DIR_SRC + '/vendors/angularjs/1.angular.js',
-    CONSTANTS.DIR_SRC + '/vendors/stringjs/string-latest.js',
-    CONSTANTS.DIR_SRC + '/vendors/lodash/lodash-latest.js',
-    CONSTANTS.DIR_SRC + '/vendors/momentjs/moment-latest.js',
-    CONSTANTS.DIR_SRC + '/app/lib/settings.js',
-    CONSTANTS.DIR_SRC + '/app/lib/jira-api.js',
-    CONSTANTS.DIR_SRC + '/app/lib/notifications.js',
-    CONSTANTS.DIR_SRC + '/app/bootstrap-bg.js'
-  ];
+  var manifest = _manifestRead(),
+    fileSet = [];
+
+  manifest.background.scripts.forEach(function (path) {
+    fileSet.push(CONSTANTS.DIR_SRC + path);
+  });
 
   fs.writeFile(
     path.join(CONSTANTS.DIR_BUILD_APP, 'bootstrap-bg.js'),
     uglify.minify(fileSet, {mangle: false}).code,
     function () {
       console.log('- Packed to "bootstrap-bg.js":', "\n", fileSet);
+      manifest.background.scripts = ['app/bootstrap-bg.js'];
+      _manifestUpdate(manifest);
       complete();
     }
   );
@@ -156,7 +153,7 @@ task('cleanup-pre', function () {
 
 // cleanup-post
 desc('Post cleanup process');
-task('cleanup-post', ['layout-modify'], {async: true}, function () {
+task('cleanup-post', {async: true}, function () {
   fs.rmdir(path.join(CONSTANTS.DIR_BUILD, 'vendors'), function (err) {
     if (err) { throw err; }
     console.log('- "vendors" folder has been removed');
@@ -190,8 +187,7 @@ task('layout-modify', ['copy-sources', 'pack-app', 'pack-vendors', 'pack-css', '
 // version-number
 desc('Adds a version number to the about template');
 task('version-number', ['copy-sources'], function () {
-  var templatePath = path.join(CONSTANTS.DIR_BUILD, 'views', 'options-about.html'),
-    manifestPath = path.join(CONSTANTS.DIR_BUILD, 'manifest.json');
+  var templatePath = path.join(CONSTANTS.DIR_BUILD, 'views', 'options-about.html');
 
   fs.writeFileSync(
     templatePath, fs.readFileSync(templatePath, {encoding: 'utf-8'})
@@ -200,16 +196,25 @@ task('version-number', ['copy-sources'], function () {
 
   console.log('- "options-about.html" has been changed');
 
-  var manifestObj = require(manifestPath);
-  manifestObj.version = process.env['version'] || '0.0';
-  manifestObj.background.scripts = ['app/bootstrap-bg.js'];
+  var manifest = _manifestRead();
+  manifest.version = process.env['version'] || '0.0';
 
-  fs.writeFileSync(manifestPath, JSON.stringify(manifestObj));
-
-  console.log('- "manifest.json" has been changed');
+  _manifestUpdate(manifest);
 });
 
 // internal functions
+function _manifestRead() {
+  return require(path.join(CONSTANTS.DIR_BUILD, 'manifest.json'));
+}
+
+function _manifestUpdate(data) {
+  console.log('- updating the "manifest.json" file');
+  return fs.writeFileSync(
+    path.join(CONSTANTS.DIR_BUILD, 'manifest.json'),
+    JSON.stringify(data)
+  );
+}
+
 function _readDir(pathDir, ext) {
   var files = fs.readdirSync(pathDir),
     results = [];
