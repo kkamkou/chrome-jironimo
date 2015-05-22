@@ -263,6 +263,13 @@ angular
           return false;
         });
 
+        $('#home-panel-icon').on('click', function () {
+          $('#home-panel').show().on('mouseleave', function () {
+            $(this).hide();
+          });
+          return false;
+        });
+
         $scope.workspaceRefresh();
       });
 
