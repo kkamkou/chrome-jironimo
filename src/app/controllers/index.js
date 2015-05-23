@@ -16,6 +16,10 @@ angular
         return chrome.tabs.create({active: true, url: cjSettings.getOptionsPageUri()});
       }
 
+      chrome.windows.getCurrent(null, function (win) {
+        $scope.windowDetached = (win.type === 'popup');
+      });
+
       var self = this;
 
       $scope.timer = cjTimer;
@@ -25,6 +29,9 @@ angular
       $scope.searchTotal = 0;
       $scope.searchStartAt = 0;
       $scope.searchMaxResults = 16;
+
+      $scope.loading = false;
+      $scope.windowDetached = false;
 
       // the active workspace
       $scope.workspaceActive = _.find($scope.workspaces, function (dataSet, index, list) {
@@ -134,36 +141,37 @@ angular
       };
 
       /**
-       * Opens issue in the JIRA
-       * @param {Object} index
+       * Opens this extension in a new window
        * @return {void}
        */
-      $scope.tabOpen = function (issue) {
+      $scope.windowDetach = function () {
+        if ($scope.windowDetached) { return; }
+        var w = 1024, h = 768;
+        chrome.windows.create(
+          {
+            url: 'views/default.html',
+            type: 'popup',
+            width: w,
+            height: h,
+            left: Math.round((screen.availWidth - w) / 2),
+            top: Math.round((screen.availHeight - h) / 2)
+          },
+          function () {
+            window.close();
+          }
+        );
+      };
+
+      /**
+       * Opens JIRA with the issue link in a new window
+       * @param {Object} issue
+       * @return {void}
+       */
+      $scope.issueTabOpen = function (issue) {
         chrome.tabs.create({
           active: false,
           url: cjSettings.account.url + '/browse/' + issue.key
         });
-      };
-
-      /**
-       * Opens this extension in a window
-       * @return {void}
-       */
-      $scope.detachWindow = function () {
-        var width = 800,
-          height = 600,
-          cb = function () {
-            window.close();
-          };
-
-        chrome.windows.create({
-          url: 'views/default.html',
-          type: 'popup',
-          width: width,
-          height: height,
-          left: Math.round((screen.availWidth - width) / 2),
-          top: Math.round((screen.availHeight - height) / 2)
-        }, cb);
       };
 
       /**
@@ -260,13 +268,6 @@ angular
 
         $tiles.on('click', 'button.transitions', function () {
           $(this).closest('div.tile').find('div.transitions').show();
-          return false;
-        });
-
-        $('#home-panel-icon').on('click', function () {
-          $('#home-panel').show().on('mouseleave', function () {
-            $(this).hide();
-          });
           return false;
         });
 

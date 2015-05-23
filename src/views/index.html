@@ -35,10 +35,14 @@
         <i class="icon-{{workspace.icon}}"></i>
       </button>
 
-      <button title="Tools" id="home-panel-icon"><i class="icon-mouse"></i></button>
+      <button title="Tools" id="home-panel-icon"
+        ng-click="homePanelVisible = true"><i class="icon-mouse"></i></button>
     </div>
 
-    <div id="home-panel" ng-if="!loading">
+    <div id="home-panel"
+      ng-show="!loading && homePanelVisible"
+      ng-mouseleave="homePanelVisible = false">
+
       <div class="input-control text size3" id="filter"
         ng-show="filterFieldDisplay">
         <input type="text" ng-model="filterText">
@@ -54,18 +58,19 @@
         <i class="icon-spin"></i>
       </button>
 
-      <button title="Detach this window" ng-click="detachWindow()">
+      <button title="Detach the current window" ng-if="!windowDetached" ng-click="windowDetach()">
         <i class="icon-new-tab-2"></i>
       </button>
 
-      <button title="Settings" ng-click="detachWindow()">
+      <button title="Settings">
         <i class="icon-tools"></i>
       </button>
+
     </div>
 
     <div class="tile padding10 {{issue._size}} bg-{{issue._colors.bg}} border-{{issue._colors.bd}} outline-{{issue._colors.ot}}"
       ng-repeat="issue in issues | filter:filterText"
-      ng-dblclick="tabOpen(issue)"
+      ng-dblclick="issueTabOpen(issue)"
       ng-class="{selected: issue._isClosed}">
 
       <div class="issue-icon issue-icon-status bg-{{issue._colors.bd}}" title="{{issue.fields.status.name}}"><img
@@ -105,7 +110,7 @@
             ng-show="issue.transitions.length && !timer.isStarted(issue)"><i class="icon-list"></i></button>
 
           <button title="Open this issue in JIRA&trade;" class="active"
-            ng-click="tabOpen(issue)"><i class="icon-new-tab"></i></button>
+            ng-click="issueTabOpen(issue)"><i class="icon-new-tab"></i></button>
         </div>
       </div>
 
