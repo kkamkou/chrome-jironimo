@@ -11,9 +11,9 @@ angular
   .controller(
     'IndexController',
     function ($q, $timeout, $rootScope, $scope, cjTimer, cjSettings, cjNotifications, cjJira) {
-      // jira api required attributes validation
       if (!cjSettings.account.url || !cjSettings.account.login) {
-        return chrome.tabs.create({active: true, url: cjSettings.getOptionsPageUri()});
+        $scope.tabSettings();
+        return;
       }
 
       chrome.windows.getCurrent(null, function (win) {
@@ -163,11 +163,21 @@ angular
       };
 
       /**
+       * Opens the settings section in a new window
+       * @return {void}
+       */
+      $scope.tabSettings = function () {
+        chrome.tabs.create(
+          {active: true, url: cjSettings.getOptionsPageUri()}
+        );
+      };
+
+      /**
        * Opens JIRA with the issue link in a new window
        * @param {Object} issue
        * @return {void}
        */
-      $scope.issueTabOpen = function (issue) {
+      $scope.tabIssue = function (issue) {
         chrome.tabs.create({
           active: false,
           url: cjSettings.account.url + '/browse/' + issue.key
