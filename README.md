@@ -17,8 +17,15 @@ No way :)
 *I have no time for it right now, PR?*
 
 ## Build
-```sh
+```bash
 npm install && ./node_modules/.bin/jake version='4.0'
+```
+
+## Docker
+```bash
+[sudo] docker build -t jironimo .
+[sudo] docker run -v "`pwd`":/opt/app -it --rm jironimo \
+  node node_modules/jake/bin/cli.js -f app/Jakefile.js version='4.0'
 ```
 
 ### License
