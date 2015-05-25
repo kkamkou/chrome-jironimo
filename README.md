@@ -24,7 +24,7 @@ npm install && ./node_modules/.bin/jake version='4.0'
 ## Docker
 ```bash
 [sudo] docker build -t jironimo .
-[sudo] docker run -v "`pwd`":/opt/app -it --rm jironimo \
+[sudo] docker run -v "${PWD}":/opt/app -it --rm jironimo \
   node node_modules/jake/bin/cli.js -f app/Jakefile.js version='4.0'
 ```
 
