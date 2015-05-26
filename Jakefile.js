@@ -1,6 +1,9 @@
 // @author Kanstantsin Kamkou <2ka.by>
 // MIT license
 
+/* jshint  node:true */
+/* global desc:false, task:false, complete: false */
+
 // defaults
 var uglify = require('uglify-js'),
   fs = require('fs'),
@@ -22,7 +25,7 @@ var CONSTANTS = {
 // default
 desc('Default build action');
 task('default', ['cleanup-pre', 'layout-modify', 'cleanup-post'], function () {
-  console.log('Done. Version:', process.env['version']);
+  console.log('Done. Version:', process.env.version);
 });
 
 // pack-app
@@ -191,13 +194,13 @@ task('version-number', ['copy-sources'], function () {
 
   fs.writeFileSync(
     templatePath, fs.readFileSync(templatePath, {encoding: 'utf-8'})
-      .replace('##VERSION##', process.env['version'])
+      .replace('##VERSION##', process.env.version)
   );
 
   console.log('- "options-about.html" has been changed');
 
   var manifest = _manifestRead();
-  manifest.version = process.env['version'] || '0.0';
+  manifest.version = process.env.version || '0.0';
 
   _manifestUpdate(manifest);
 });
