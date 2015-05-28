@@ -1,17 +1,19 @@
 // @author Kanstantsin Kamkou <2ka.by>
 // MIT license
 
-/* jshint  node:true */
-/* global desc:false, task:false, complete: false */
+/* eslint-env node, mocha */
+/* global desc, task, complete */
 
-// defaults
+'use strict';
+
 var uglify = require('uglify-js'),
   fs = require('fs'),
   path = require('path'),
   wrench = require('wrench'),
   _ = require('lodash'),
   less = require('less'),
-  csso = require('csso');
+  csso = require('csso'),
+  os = require('os');
 
 // constants
 var CONSTANTS = {
@@ -22,6 +24,40 @@ var CONSTANTS = {
   DIR_BUILD_APP: path.join(__dirname, 'build', 'app')
 };
 
+// internal functions
+function manifestRead() {
+  return require(path.join(CONSTANTS.DIR_BUILD, 'manifest.json'));
+}
+
+function manifestUpdate(data) {
+  console.log('- updating the "manifest.json" file');
+  return fs.writeFileSync(
+    path.join(CONSTANTS.DIR_BUILD, 'manifest.json'),
+    JSON.stringify(data)
+  );
+}
+
+function readDir(pathDir, ext) {
+  var files = fs.readdirSync(pathDir),
+    results = [];
+
+  for (var idx in files) {
+    var filePath = path.join(pathDir, files[idx]),
+      stat = fs.statSync(filePath);
+
+    if (stat.isDirectory()) {
+      results = _.union(results, readDir(filePath, ext));
+      continue;
+    }
+
+    if (!ext || (ext && filePath.match(new RegExp('\\.' + ext + '$')))) {
+      results.push(filePath);
+    }
+  }
+
+  return results;
+}
+
 // default
 desc('Default build action');
 task('default', ['cleanup-pre', 'layout-modify', 'cleanup-post'], function () {
@@ -31,19 +67,21 @@ task('default', ['cleanup-pre', 'layout-modify', 'cleanup-post'], function () {
 // pack-app
 desc('Application scripts packing');
 task('pack-app', ['copy-sources'], {async: true}, function () {
-  var fileSet = _readDir(CONSTANTS.DIR_APP, 'js');
+  var files = [];
 
-  ['bootstrap-bg.js'].forEach(function (fileName) {
-    _.remove(fileSet, function (filePath) {
-      return (filePath.indexOf(fileName) !== -1);
-    });
+  ['shared', 'lib', 'bootstrap.js', 'controllers'].forEach(function (p) {
+    if (p.indexOf('.js') !== -1) {
+      files.push(path.join(CONSTANTS.DIR_APP, p));
+      return;
+    }
+    files = files.concat(readDir(path.join(CONSTANTS.DIR_APP, p), 'js').reverse());
   });
 
   fs.writeFile(
     path.join(CONSTANTS.DIR_BUILD_APP, 'app.js'),
-    uglify.minify(fileSet, {mangle: false}).code,
+    uglify.minify(files, {mangle: false}).code,
     function () {
-      console.log('- Packed to "app.js":', "\n", fileSet);
+      console.log('- Packed to "app.js":', os.EOL, files);
       complete();
     }
   );
@@ -52,7 +90,7 @@ task('pack-app', ['copy-sources'], {async: true}, function () {
 // pack-vendors
 desc('Vendors scripts packing');
 task('pack-vendors', ['copy-sources'], {async: true}, function () {
-  var fileSet = _readDir(CONSTANTS.DIR_VENDORS, 'js').sort();
+  var fileSet = readDir(CONSTANTS.DIR_VENDORS, 'js').sort();
 
   ['Metro-UI-CSS', 'less'].forEach(function (libName) {
     _.remove(fileSet, function (folderPath) {
@@ -64,7 +102,7 @@ task('pack-vendors', ['copy-sources'], {async: true}, function () {
     path.join(CONSTANTS.DIR_BUILD_APP, 'vendors.js'),
     uglify.minify(fileSet, {mangle: false}).code,
     function () {
-      console.log('- Packed to "vendors.js":', "\n", fileSet);
+      console.log('- Packed to "vendors.js":', os.EOL, fileSet);
       complete();
     }
   );
@@ -128,20 +166,20 @@ task('copy-metro', ['copy-sources'], function () {
 // copy-bootstrap-bg
 desc('Copying bootstrap-bg.js to the build folder');
 task('copy-bootstrap-bg', ['copy-sources'], {async: true}, function () {
-  var manifest = _manifestRead(),
+  var manifest = manifestRead(),
     fileSet = [];
 
-  manifest.background.scripts.forEach(function (path) {
-    fileSet.push(CONSTANTS.DIR_SRC + path);
+  manifest.background.scripts.forEach(function (p) {
+    fileSet.push(CONSTANTS.DIR_SRC + p);
   });
 
   fs.writeFile(
     path.join(CONSTANTS.DIR_BUILD_APP, 'bootstrap-bg.js'),
     uglify.minify(fileSet, {mangle: false}).code,
     function () {
-      console.log('- Packed to "bootstrap-bg.js":', "\n", fileSet);
+      console.log('- Packed to "bootstrap-bg.js":', os.EOL, fileSet);
       manifest.background.scripts = ['app/bootstrap-bg.js'];
-      _manifestUpdate(manifest);
+      manifestUpdate(manifest);
       complete();
     }
   );
@@ -167,25 +205,30 @@ task('cleanup-post', {async: true}, function () {
 
 // layout-modify
 desc('Replaces headers in the dafault layout');
-task('layout-modify', ['copy-sources', 'pack-app', 'pack-vendors', 'pack-css', 'copy-metro', 'copy-bootstrap-bg', 'version-number'], function () {
-  var templatePath = path.join(CONSTANTS.DIR_BUILD, 'views', 'default.html'),
-    body = fs.readFileSync(templatePath, {encoding: 'utf-8'});
+task(
+  'layout-modify',
+  ['copy-sources', 'pack-app', 'pack-vendors', 'pack-css', 'copy-metro',
+  'copy-bootstrap-bg', 'version-number'],
+  function () {
+    var templatePath = path.join(CONSTANTS.DIR_BUILD, 'views', 'default.html'),
+      body = fs.readFileSync(templatePath, {encoding: 'utf-8'});
 
-  body = body.replace(
-    /<!-- styles -->([^_]+?)<!-- \/styles -->/gm,
-    '<link rel="stylesheet" type="text/css" href="/app/metro.css">' +
-    '<link rel="stylesheet" type="text/css" href="/app/app.css">'
-  );
+    body = body.replace(
+      /<!-- styles -->([^_]+?)<!-- \/styles -->/gm,
+      '<link rel="stylesheet" type="text/css" href="/app/metro.css">' +
+      '<link rel="stylesheet" type="text/css" href="/app/app.css">'
+    );
 
-  body = body.replace(
-    /<!-- scripts -->([^_]+?)<!-- \/scripts -->/gm,
-    '<script type="text/javascript" src="/app/vendors.js"></script>' +
-    '<script type="text/javascript" src="/app/app.js"></script>'
-  );
+    body = body.replace(
+      /<!-- scripts -->([^_]+?)<!-- \/scripts -->/gm,
+      '<script type="text/javascript" src="/app/vendors.js"></script>' +
+      '<script type="text/javascript" src="/app/app.js"></script>'
+    );
 
-  fs.writeFileSync(templatePath, body);
-  console.log('- "default.html" has been updated');
-});
+    fs.writeFileSync(templatePath, body);
+    console.log('- "default.html" has been updated');
+  }
+);
 
 // version-number
 desc('Adds a version number to the about template');
@@ -199,42 +242,8 @@ task('version-number', ['copy-sources'], function () {
 
   console.log('- "options-about.html" has been changed');
 
-  var manifest = _manifestRead();
+  var manifest = manifestRead();
   manifest.version = process.env.version || '0.0';
 
-  _manifestUpdate(manifest);
+  manifestUpdate(manifest);
 });
-
-// internal functions
-function _manifestRead() {
-  return require(path.join(CONSTANTS.DIR_BUILD, 'manifest.json'));
-}
-
-function _manifestUpdate(data) {
-  console.log('- updating the "manifest.json" file');
-  return fs.writeFileSync(
-    path.join(CONSTANTS.DIR_BUILD, 'manifest.json'),
-    JSON.stringify(data)
-  );
-}
-
-function _readDir(pathDir, ext) {
-  var files = fs.readdirSync(pathDir),
-    results = [];
-
-  for (var idx in files) {
-    var filePath = path.join(pathDir, files[idx]),
-      stat = fs.statSync(filePath);
-
-    if (stat.isDirectory()) {
-      results = _.union(results, _readDir(filePath, ext));
-      continue;
-    }
-
-    if (!ext || (ext && filePath.match(new RegExp('\\.' + ext + '$')))) {
-      results.push(filePath);
-    }
-  }
-
-  return results;
-}
