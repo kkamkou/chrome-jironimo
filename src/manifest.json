@@ -33,9 +33,7 @@
   "permissions": [
     "storage",
     "notifications",
-    "alarms"
-  ],
-  "optional_permissions": [
+    "alarms",
     "http://*/",
     "https://*/"
   ]

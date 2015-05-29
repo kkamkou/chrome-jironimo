@@ -83,10 +83,13 @@ angular
         data.timeout = parseInt(data.timeout, 10) || 10;
 
         // checking permissions for the url
-        chrome.permissions.request({origins: [data.url + '/']}, function (flag) {
-          if (!flag) { return false; }
-          cjSettings[type] = angular.copy(data);
-        });
+        cjSettings[type] = angular.copy(data); // issue #70
+        /* issue #70
+          chrome.permissions.request({origins: [data.url + '/']}, function (flag) {
+            if (!flag) { return false; }
+            cjSettings[type] = angular.copy(data);
+          });
+        */
       };
     }
   )

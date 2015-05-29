@@ -11,15 +11,6 @@ angular
   .controller(
     'IndexController',
     function ($q, $timeout, $rootScope, $scope, cjTimer, cjSettings, cjNotifications, cjJira) {
-      if (!cjSettings.account.url || !cjSettings.account.login) {
-        $scope.tabSettings();
-        return;
-      }
-
-      chrome.windows.getCurrent(null, function (win) {
-        $scope.windowDetached = (win.type === 'popup');
-      });
-
       var self = this;
 
       $scope.timer = cjTimer;
@@ -32,6 +23,18 @@ angular
 
       $scope.loading = false;
       $scope.windowDetached = false;
+
+      // init
+      $scope.$on('$routeChangeSuccess', function () {
+        if (!cjSettings.account.url || !cjSettings.account.login) {
+          $scope.tabSettings();
+          return;
+        }
+
+        chrome.windows.getCurrent(null, function (win) {
+          $scope.windowDetached = (win.type === 'popup');
+        });
+      });
 
       // the active workspace
       $scope.workspaceActive = _.find($scope.workspaces, function (dataSet, index, list) {
@@ -201,10 +204,7 @@ angular
           };
 
         cjJira.issueAssignee(issue.key, paramsQuery, function (err) {
-          if (err) {
-            return;
-          }
-
+          if (err) { return; }
           cjNotifications.createOrUpdate(issue.key, paramsNotify, function () {
             $scope.$apply(function () {
               $scope.timer.start(issue);
