@@ -242,6 +242,8 @@ angular
        * Loads issues from the API
        * @private
        * @param {String} query
+       * @param {Number} offset
+       * @param {Number} limit
        * @return {Object}
        */
       this._issueSearch = function (query, offset, limit) {
@@ -255,11 +257,15 @@ angular
           };
 
         cjJira.authSession(function (err, flag) {
-          if (!flag) {
+          if (err || !flag) {
+            if (err) {
+              deferred.reject(err);
+            }
             return false;
           }
-          cjJira.search(searchData, function (err, data) {
-            return err ? deferred.reject(err) : deferred.resolve(data);
+
+          cjJira.search(searchData, function (serr, data) {
+            return serr ? deferred.reject(serr) : deferred.resolve(data);
           });
         });
 
