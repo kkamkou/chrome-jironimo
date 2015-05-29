@@ -62,7 +62,7 @@ rules:
   space-before-blocks: [2, "always"]
   ## require parens for Constructor
   new-parens: 2
-  ## max 80 length
+  ## max 100 length
   max-len:
     - 2
     - 100
@@ -75,10 +75,10 @@ rules:
     - 2
     - "global"
 
-  # Global scoped method and vars
-  globals:
-    chrome: true
-    angular: true
-    _: true
-    S: true
-    moment: true
+# Global scoped method and vars
+globals:
+  chrome: true
+  angular: true
+  _: true
+  S: true
+  moment: true

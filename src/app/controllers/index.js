@@ -11,15 +11,6 @@ angular
   .controller(
     'IndexController',
     function ($q, $timeout, $rootScope, $scope, cjTimer, cjSettings, cjNotifications, cjJira) {
-      if (!cjSettings.account.url || !cjSettings.account.login) {
-        $scope.tabSettings();
-        return;
-      }
-
-      chrome.windows.getCurrent(null, function (win) {
-        $scope.windowDetached = (win.type === 'popup');
-      });
-
       var self = this;
 
       $scope.timer = cjTimer;
@@ -32,6 +23,18 @@ angular
 
       $scope.loading = false;
       $scope.windowDetached = false;
+
+      // init
+      $scope.$on('$routeChangeSuccess', function () {
+        if (!cjSettings.account.url || !cjSettings.account.login) {
+          $scope.tabSettings();
+          return;
+        }
+
+        chrome.windows.getCurrent(null, function (win) {
+          $scope.windowDetached = (win.type === 'popup');
+        });
+      });
 
       // the active workspace
       $scope.workspaceActive = _.find($scope.workspaces, function (dataSet, index, list) {
@@ -201,10 +204,7 @@ angular
           };
 
         cjJira.issueAssignee(issue.key, paramsQuery, function (err) {
-          if (err) {
-            return;
-          }
-
+          if (err) { return; }
           cjNotifications.createOrUpdate(issue.key, paramsNotify, function () {
             $scope.$apply(function () {
               $scope.timer.start(issue);
@@ -242,6 +242,8 @@ angular
        * Loads issues from the API
        * @private
        * @param {String} query
+       * @param {Number} offset
+       * @param {Number} limit
        * @return {Object}
        */
       this._issueSearch = function (query, offset, limit) {
@@ -255,11 +257,15 @@ angular
           };
 
         cjJira.authSession(function (err, flag) {
-          if (!flag) {
+          if (err || !flag) {
+            if (err) {
+              deferred.reject(err);
+            }
             return false;
           }
-          cjJira.search(searchData, function (err, data) {
-            return err ? deferred.reject(err) : deferred.resolve(data);
+
+          cjJira.search(searchData, function (serr, data) {
+            return serr ? deferred.reject(serr) : deferred.resolve(data);
           });
         });
 
