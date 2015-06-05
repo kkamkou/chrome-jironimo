@@ -261,7 +261,7 @@ angular
             fields: '*navigable'
           };
 
-        cjJira.session(function (err, flag) {
+        cjJira.myself(function (err, flag) {
           if (err || !flag) {
             if (err) {
               deferred.reject(err);
