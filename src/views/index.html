@@ -35,25 +35,26 @@
         <i class="icon-{{workspace.icon}}"></i>
       </button>
 
-      <button title="Tools" id="advanced-panel-icon"
-        ng-click="homePanelVisible = true"><i class="icon-mouse"></i></button>
-    </div>
-
-    <div id="advanced-panel"
-      ng-show="!loading && homePanelVisible"
-      ng-mouseleave="homePanelVisible = false">
-
       <div class="input-control text size3" id="filter"
         ng-show="filterFieldDisplay">
-        <input type="text" ng-model="filterText">
+        <input type="text" ng-model="filterText" class="bd-darkBlue">
       </div>
 
       <button title="Filter"
         ng-click="filterFieldDisplay = !filterFieldDisplay"
         ng-class="{inverse: filterFieldDisplay || filterText}">
         <i class="icon-filter"></i>
-      </button>
+      </button><!--
 
+    --><button title="Tools" id="advanced-panel-icon"
+        ng-class="{inverse: homePanelVisible}"
+        ng-click="homePanelVisible = !homePanelVisible">
+        <i class="icon-mouse"></i>
+      </button>
+    </div>
+
+    <div id="advanced-panel"
+      ng-show="!loading && homePanelVisible">
       <button title="Refresh" ng-click="workspaceRefresh()">
         <i class="icon-spin"></i>
       </button>
@@ -67,7 +68,6 @@
       <button title="Settings" ng-click="tabSettings()">
         <i class="icon-tools"></i>
       </button>
-
     </div>
 
     <div class="tile padding10 {{issue._size}} bg-{{issue._colors.bg}} border-{{issue._colors.bd}} outline-{{issue._colors.ot}}"
