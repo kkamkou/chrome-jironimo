@@ -10,8 +10,10 @@ angular
   .module('jironimo')
   .controller(
     'SettingsController',
-    function ($scope, $location, cjSettings, cjJira) {
+    function ($scope, $location, $filter, cjSettings, cjJira) {
       $scope.tabControl = {colors: 'theme'};
+
+      $scope.notifications = [];
 
       angular.forEach(
         ['account', 'colors', 'timer', 'workspaces'],
@@ -73,6 +75,8 @@ angular
 
       $scope.save = function (type, data) {
         if (!data) { return; }
+
+        $scope.notifications.push({type: 'success', message: $filter('i18n')('xxx')});
 
         if (type !== 'account') {
           cjSettings[type] = angular.copy(data);
