@@ -23,7 +23,7 @@ angular
             }
 
             var $elem = elem.show().find('div.notify-entry:hidden:last')
-              .hide().fadeIn('fast');
+              .hide().slideDown('fast');
 
             $timeout(function () {
               $elem.slideUp('fast', $scope.entries.shift);
