@@ -178,7 +178,7 @@ angular
           return callback(null, json);
         })
         .error(function (err) {
-          return callback(new Error(err || 'Uncategorized exception'));
+          return callback(new Error(err || 'Connection problem'));
         });
     };
   });
