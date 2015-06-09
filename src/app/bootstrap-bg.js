@@ -55,7 +55,7 @@ angular
               jql: 'updated > "-%dm" AND '.replace('%d', cjSettings.timer.workspace + 1) +
                 workspace.query,
               expand: 'changelog',
-              fields: 'updated'
+              fields: 'updated,summary'
             };
 
             cjJira.search(query, function (err2, result) {
