@@ -56,15 +56,22 @@ angular
           if (err) { return; }
 
           var workspaces = _.pluck($scope.workspaces, 'query'),
-            favs = _.pluck(data, 'jql');
+            favs = _.pluck(data, 'jql'),
+            count = 0;
 
           _.difference(favs, workspaces).forEach(function (jql) {
+            count++;
             $scope.workspaces.push({
               isDefault: false,
               title: _.find(data, {jql: jql}).name,
               query: jql,
               icon: 'heart-2'
             });
+          });
+
+          $scope.notifications.push({
+            type: 'success',
+            message: $filter('i18n')('msgWorkspaceImportSuccess', [count])
           });
         });
       };
@@ -76,18 +83,18 @@ angular
       $scope.save = function (type, data) {
         if (!data) { return; }
 
-        $scope.notifications.push({type: 'success', message: $filter('i18n')('xxx')});
-
-        if (type !== 'account') {
-          cjSettings[type] = angular.copy(data);
-          return;
+        if (type === 'account') {
+          data.url = data.url.replace(/\/+$/, '');
+          data.timeout = parseInt(data.timeout, 10) || 10;
         }
 
-        data.url = data.url.replace(/\/+$/, '');
-        data.timeout = parseInt(data.timeout, 10) || 10;
+        cjSettings[type] = angular.copy(data);
+
+        $scope.notifications.push(
+          {type: 'success', message: $filter('i18n')('msgOptionsSaveSuccess')}
+        );
 
         // checking permissions for the url
-        cjSettings[type] = angular.copy(data); // issue #70
         /* issue #70
           chrome.permissions.request({origins: [data.url + '/']}, function (flag) {
             if (!flag) { return false; }
