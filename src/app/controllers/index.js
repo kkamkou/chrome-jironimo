@@ -295,15 +295,18 @@ angular
         $scope.workspaceRefresh();
       });
 
-      $scope.$watch('filterFieldDisplay', function (value) {
-        if (!value) { return; }
+      $scope.$watch('filterFieldDisplay', function (flag) {
+        if (!flag) { return; }
         $timeout(function () {
           $('#filter input').focus();
-        }, 100);
+        }, 100, false);
       });
 
-      $scope.$watch('loading', function (value) {
-        if (!value) { return; }
+      $scope.$watch('loading', function (flag) {
+        var $tiles = $('div.tiles');
+        $('div.container').height($tiles[flag ? 'fadeOut' : 'fadeIn']('fast').height());
+
+        if (!flag) { return; }
         $scope.jiraRequestFailed = false;
         $scope.filterFieldDisplay = false;
       });

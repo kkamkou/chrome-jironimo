@@ -8,67 +8,68 @@
   <p class="fg-white" ng-bind-html="jiraRequestFailed.1"></p>
 </div>
 
-<div class="container">
-  <div class="tiles">
+<div class="container clearfix">
+
+  <div id="limit-per-page" class="input-control select" ng-show="!loading">
+    <select ng-model="searchMaxResults" ng-change="workspaceRefresh()" integer>
+      <option>16</option>
+      <option>25</option>
+      <option>50</option>
+      <option>75</option>
+      <option>100</option>
+      <option>150</option>
+      <option>250</option>
+    </select>
+  </div>
+
+  <div class="toolbar-vertical" id="home-workspaces"
+    ng-hide="workspaces.length < 2 || loading">
+    <button title="{{workspace.title}}"
+      ng-click="$parent.workspaceSwitchTo($index)"
+      ng-repeat="workspace in workspaces"
+      ng-class="{default: workspace == workspaceActive}">
+      <i class="icon-{{workspace.icon}}"></i>
+    </button>
+
+    <div class="input-control text size3" id="filter"
+      ng-show="filterFieldDisplay">
+      <input type="text" ng-model="filterText" class="bd-darkBlue">
+    </div>
+
+    <button title="Filter"
+      ng-click="filterFieldDisplay = !filterFieldDisplay"
+      ng-class="{inverse: filterFieldDisplay || filterText}">
+      <i class="icon-filter"></i>
+    </button><!--
+
+  --><button title="Tools" id="advanced-panel-icon"
+      ng-class="{inverse: homePanelVisible}"
+      ng-click="homePanelVisible = !homePanelVisible">
+      <i class="icon-mouse"></i>
+    </button>
+  </div>
+
+  <div id="advanced-panel"
+    ng-show="!loading && homePanelVisible">
+    <button title="Refresh" ng-click="workspaceRefresh()">
+      <i class="icon-spin"></i>
+    </button>
+
+    <button title="Detach the current window"
+      ng-if="!windowDetached"
+      ng-click="windowDetach()">
+      <i class="icon-new-tab-2"></i>
+    </button>
+
+    <button title="Settings" ng-click="tabSettings()">
+      <i class="icon-tools"></i>
+    </button>
+  </div>
+
+  <div class="tiles clearfix">
     <div id="loading" ng-show="loading"><i class="icon-clock"></i></div>
 
     <h3 ng-show="issues.length">{{workspaceActive.title}}</h3>
-
-    <div id="limit-per-page" class="input-control select" ng-show="!loading">
-      <select ng-model="searchMaxResults" ng-change="workspaceRefresh()" integer>
-        <option>16</option>
-        <option>25</option>
-        <option>50</option>
-        <option>75</option>
-        <option>100</option>
-        <option>150</option>
-        <option>250</option>
-      </select>
-    </div>
-
-    <div class="toolbar-vertical" id="home-workspaces"
-      ng-hide="workspaces.length < 2 || loading">
-      <button title="{{workspace.title}}"
-        ng-click="$parent.workspaceSwitchTo($index)"
-        ng-repeat="workspace in workspaces"
-        ng-class="{default: workspace == workspaceActive}">
-        <i class="icon-{{workspace.icon}}"></i>
-      </button>
-
-      <div class="input-control text size3" id="filter"
-        ng-show="filterFieldDisplay">
-        <input type="text" ng-model="filterText" class="bd-darkBlue">
-      </div>
-
-      <button title="Filter"
-        ng-click="filterFieldDisplay = !filterFieldDisplay"
-        ng-class="{inverse: filterFieldDisplay || filterText}">
-        <i class="icon-filter"></i>
-      </button><!--
-
-    --><button title="Tools" id="advanced-panel-icon"
-        ng-class="{inverse: homePanelVisible}"
-        ng-click="homePanelVisible = !homePanelVisible">
-        <i class="icon-mouse"></i>
-      </button>
-    </div>
-
-    <div id="advanced-panel"
-      ng-show="!loading && homePanelVisible">
-      <button title="Refresh" ng-click="workspaceRefresh()">
-        <i class="icon-spin"></i>
-      </button>
-
-      <button title="Detach the current window"
-        ng-if="!windowDetached"
-        ng-click="windowDetach()">
-        <i class="icon-new-tab-2"></i>
-      </button>
-
-      <button title="Settings" ng-click="tabSettings()">
-        <i class="icon-tools"></i>
-      </button>
-    </div>
 
     <div class="tile padding10 {{issue._size}} bg-{{issue._colors.bg}} border-{{issue._colors.bd}} outline-{{issue._colors.ot}}"
       ng-repeat="issue in issues | filter:filterText"
@@ -79,7 +80,7 @@
         ng-src="{{issue.fields.status.iconUrl}}" alt=""></div>
 
       <div class="tile-content">
-        <h4 class="fg-{{issue._colors.fg}}">{{issue.key}}</h4>
+        <h5 class="fg-{{issue._colors.fg}}">{{issue.key}}</h5>
         <h6 class="fg-{{issue._colors.fg}}">{{issue.fields.reporter.displayName | limitTo: 16}}</h6>
         <p class="fg-{{issue._colors.fg}}">{{issue.fields.summary}}</p>
       </div>
@@ -135,6 +136,6 @@
         <li class="last"><a ng-click="workspaceRefresh(searchTotal - 1, searchMaxResults)"><i class="icon-last-2"></i></a></li>
       </ul>
     </div>
-
   </div>
+
 </div>
