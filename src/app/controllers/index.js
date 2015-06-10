@@ -303,16 +303,9 @@ angular
       });
 
       $scope.$watch('loading', function (flag) {
-        var $container = $('div.container'),
-          height = $('div.tiles').height();
+        $('div.container').height($('div.tiles').height());
 
-        if (!flag) {
-          $container.height(height);
-          return;
-        }
-
-        $container.height(height);
-
+        if (!flag) { return; }
         $scope.jiraRequestFailed = false;
         $scope.filterFieldDisplay = false;
       });
