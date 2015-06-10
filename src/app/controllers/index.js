@@ -94,11 +94,21 @@ angular
         index = $scope.workspaces[index] ? index : 0;
 
         $scope.workspaceActive = $scope.workspaces[index];
-        $scope.workspaceRefresh();
+        $scope.searchReset().workspaceRefresh();
 
         if (cjSettings.workspaceLast !== index) {
           cjSettings.workspaceLast = index;
         }
+      };
+
+      /**
+       * Resets the pagination data
+       * @return {void}
+       */
+      $scope.searchReset = function () {
+        $scope.searchTotal = 0;
+        $scope.searchStartAt = 0;
+        return this;
       };
 
       /**
