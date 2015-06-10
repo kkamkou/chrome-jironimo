@@ -53,7 +53,10 @@ angular
 
       $scope.workspaceImport = function () {
         cjJira.filterFavourite(function (err, data) {
-          if (err) { return; }
+          if (err) {
+            $scope.notifications.push({type: 'error', message: err.message});
+            return;
+          }
 
           var workspaces = _.pluck($scope.workspaces, 'query'),
             favs = _.pluck(data, 'jql'),
