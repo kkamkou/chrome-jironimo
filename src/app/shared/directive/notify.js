@@ -27,7 +27,7 @@ angular
 
             $timeout(function () {
               $elem.slideUp('fast', $scope.entries.shift);
-            }, 5000);
+            }, 5000, false);
           });
         }
       };
