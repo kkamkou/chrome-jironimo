@@ -303,7 +303,8 @@ angular
       });
 
       $scope.$watch('loading', function (flag) {
-        $('div.container').height($('div.tiles').height());
+        var $tiles = $('div.tiles');
+        $('div.container').height($tiles[flag ? 'fadeOut' : 'fadeIn']('fast').height());
 
         if (!flag) { return; }
         $scope.jiraRequestFailed = false;
