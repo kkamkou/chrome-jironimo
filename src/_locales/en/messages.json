@@ -46,5 +46,11 @@
   },
   "btnSave": {
     "message": "Save"
+  },
+  "msgOptionsSaveSuccess": {
+    "message": "Settings were changed"
+  },
+  "msgWorkspaceImportSuccess": {
+    "message": "$1 workspaces were successfully imported"
   }
 }

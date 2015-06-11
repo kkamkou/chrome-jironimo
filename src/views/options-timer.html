@@ -8,6 +8,8 @@
   </h1>
 
   <form ng-submit="save('timer', timer)">
+    <notify entries="notifications"></notify>
+
     <h2>Workspace</h2>
     <div class="input-control text span6">
       <input type="text" maxlength="4" required

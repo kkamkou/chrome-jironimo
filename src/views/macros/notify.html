@@ -1,0 +1,7 @@
+<div class="notify-container">
+  <div class="notify-entry padding20 text-center"
+      ng-class="{'bg-green': entry.type === 'success', 'bg-red': entry.type === 'error', 'bg-amber': entry.type === 'notice'}"
+      ng-repeat="entry in entries">
+    <h2 class="fg-white">{{entry.message}}</h2>
+  </div>
+</div>

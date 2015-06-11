@@ -94,7 +94,7 @@ angular
         index = $scope.workspaces[index] ? index : 0;
 
         $scope.workspaceActive = $scope.workspaces[index];
-        $scope.workspaceRefresh();
+        $scope.searchReset().workspaceRefresh();
 
         if (cjSettings.workspaceLast !== index) {
           cjSettings.workspaceLast = index;
@@ -102,21 +102,13 @@ angular
       };
 
       /**
-       * Calculates the previous page number
-       * @return {Integer}
+       * Resets the pagination data
+       * @return {void}
        */
-      $scope.searchOffsetBackward = function () {
-        var pos = $scope.searchStartAt - $scope.searchMaxResults;
-        return (pos < 0 ? 0 : pos);
-      };
-
-      /**
-       * Calculates the next page number
-       * @return {Integer}
-       */
-      $scope.searchOffsetForward = function () {
-        var pos = $scope.searchStartAt + $scope.searchMaxResults;
-        return (pos > $scope.searchTotal ? $scope.searchTotal - 1 : pos);
+      $scope.searchReset = function () {
+        $scope.searchTotal = 0;
+        $scope.searchStartAt = 0;
+        return this;
       };
 
       /**
@@ -197,17 +189,22 @@ angular
           return;
         }
 
-        var paramsQuery = {_method: 'PUT', name: cjJira.me().name},
+        cjJira.myself(function (err1, info) {
+          if (err1) { return; }
+
+          var paramsQuery = {_method: 'PUT', name: info.name},
           paramsNotify = {
             title: issue.key,
             message: 'The ticket was assigned to me'
           };
 
-        cjJira.issueAssignee(issue.key, paramsQuery, function (err) {
-          if (err) { return; }
-          cjNotifications.createOrUpdate(issue.key, paramsNotify, function () {
-            $scope.$apply(function () {
-              $scope.timer.start(issue);
+          cjJira.issueAssignee(issue.key, paramsQuery, function (err2) {
+            if (err2) { return; }
+
+            cjNotifications.createOrUpdate(issue.key, paramsNotify, function () {
+              $scope.$apply(function () {
+                $scope.timer.start(issue);
+              });
             });
           });
         });
@@ -256,7 +253,7 @@ angular
             fields: '*navigable'
           };
 
-        cjJira.authSession(function (err, flag) {
+        cjJira.myself(function (err, flag) {
           if (err || !flag) {
             if (err) {
               deferred.reject(err);
@@ -290,15 +287,18 @@ angular
         $scope.workspaceRefresh();
       });
 
-      $scope.$watch('filterFieldDisplay', function (value) {
-        if (!value) { return; }
+      $scope.$watch('filterFieldDisplay', function (flag) {
+        if (!flag) { return; }
         $timeout(function () {
           $('#filter input').focus();
-        }, 100);
+        }, 100, false);
       });
 
-      $scope.$watch('loading', function (value) {
-        if (!value) { return; }
+      $scope.$watch('loading', function (flag) {
+        var $tiles = $('div.tiles');
+        $('div.container').height($tiles[flag ? 'fadeOut' : 'fadeIn']('fast').height());
+
+        if (!flag) { return; }
         $scope.jiraRequestFailed = false;
         $scope.filterFieldDisplay = false;
       });

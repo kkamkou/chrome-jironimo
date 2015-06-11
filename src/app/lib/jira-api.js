@@ -54,39 +54,26 @@ angular
       config = cjSettings.account;
 
     /**
-     * Information about myself
-     *
-     * @public
-     * @return {Object}
-     */
-    this.me = function () {
-      if (!cache.authSession) {
-        throw new Error('The cache does not have such an entry');
-      }
-      return cache.authSession;
-    };
-
-    /**
-     * Check if use is authenticated or not
+     * Currently logged user
      *
      * @public
      * @param {Function} callback
      */
-    this.authSession = function (callback) {
-      if (cache.authSession) {
-        return callback(null, cache.authSession);
+    this.myself = function (callback) {
+      if (cache.myself) {
+        return callback(null, cache.myself);
       }
 
-      this._makeRequest('/auth/latest/session', {}, function (err, data) {
+      this._makeRequest('/api/latest/myself', {}, function (err, data) {
         if (!err) {
-          cache.authSession = data;
+          cache.myself = data;
         }
         callback(err, data);
       });
     };
 
     /**
-     * Executes query
+     * Searches for issues using JQL
      *
      * @public
      * @param {Object} data
@@ -191,7 +178,7 @@ angular
           return callback(null, json);
         })
         .error(function (err) {
-          return callback(new Error(err || 'Uncategorized exception'));
+          return callback(new Error(err || 'Connection problem'));
         });
     };
   });
