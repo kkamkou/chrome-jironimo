@@ -112,24 +112,6 @@ angular
       };
 
       /**
-       * Calculates the previous page number
-       * @return {Integer}
-       */
-      $scope.searchOffsetBackward = function () {
-        var pos = $scope.searchStartAt - $scope.searchMaxResults;
-        return (pos < 0 ? 0 : pos);
-      };
-
-      /**
-       * Calculates the next page number
-       * @return {Integer}
-       */
-      $scope.searchOffsetForward = function () {
-        var pos = $scope.searchStartAt + $scope.searchMaxResults;
-        return (pos > $scope.searchTotal ? $scope.searchTotal - 1 : pos);
-      };
-
-      /**
        * Executes transition for the current ticket
        * @param {Object} issue
        * @param {Object} transition

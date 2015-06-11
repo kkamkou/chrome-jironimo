@@ -1,0 +1,9 @@
+<div id="pagination" class="pagination">
+  <ul ng-show="limit <  total">
+    <li class="first" ng-show="hasPrev"><a ng-click="first()"><i class="icon-first-2"></i></a></li>
+    <li class="prev" ng-show="hasPrev"><a ng-click="prev()"><i class="icon-previous"></i></a></li>
+    <li class="active"><a>{{ position }}–{{ position + limit }} of {{ total }}</a></li>
+    <li class="next" ng-show="hasNext"><a ng-click="next()"><i class="icon-next"></i></a></li>
+    <li class="last" ng-show="hasNext"><a ng-click="last()"><i class="icon-last-2"></i></a></li>
+  </ul>
+</div>
