@@ -20,7 +20,7 @@
   "background": {
     "persistent": false,
     "scripts": [
-      "/vendors/angularjs/1.angular.js",
+      "/vendors/angularjs/angular.js",
       "/vendors/stringjs/string-latest.js",
       "/vendors/lodash/lodash-latest.js",
       "/vendors/momentjs/moment-latest.js",
