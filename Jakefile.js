@@ -90,13 +90,15 @@ task('pack-app', ['copy-sources'], {async: true}, function () {
 // pack-vendors
 desc('Vendors scripts packing');
 task('pack-vendors', ['copy-sources'], {async: true}, function () {
-  var fileSet = readDir(CONSTANTS.DIR_VENDORS, 'js').sort();
+  var templatePath = path.join(CONSTANTS.DIR_BUILD, 'views', 'default.html'),
+    body = fs.readFileSync(templatePath, {encoding: 'utf-8'}),
+    regex = new RegExp('<script.*src="(.+?)"><\/script>', 'g'),
+    fileSet = [],
+    match;
 
-  ['Metro-UI-CSS', 'less'].forEach(function (libName) {
-    _.remove(fileSet, function (folderPath) {
-      return (folderPath.indexOf(path.join('/', libName, '/')) !== -1);
-    });
-  });
+  while ((match = regex.exec(body)) !== null) {
+    fileSet.push(path.join(CONSTANTS.DIR_SRC, match[1]));
+  }
 
   fs.writeFile(
     path.join(CONSTANTS.DIR_BUILD_APP, 'vendors.js'),
