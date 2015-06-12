@@ -114,7 +114,7 @@ angular
     };
 
     // migrations
-    if (_data.timer && typeof _data.timer.disabled !== 'undefined') {
+    if (_data.timer && !angular.isUndefined(_data.timer.disabled)) {
       _data.timer.enabled = !_data.timer.disabled;
       delete _data.timer.disabled;
     }

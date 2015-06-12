@@ -11,7 +11,8 @@ angular
   .controller(
     'IndexController',
     function ($q, $timeout, $rootScope, $scope, cjTimer, cjSettings, cjNotifications, cjJira) {
-      var self = this;
+      var self = this,
+        timeouts = {workspaceRefresh: null};
 
       $scope.timer = cjTimer;
       $scope.workspaces = cjSettings.workspaces;
@@ -79,9 +80,13 @@ angular
           );
 
         if (cjSettings.timer.workspace > 0) {
-          setTimeout(
-            $scope.workspaceRefresh,
-            parseInt(cjSettings.timer.workspace, 10) * 1000 * 60
+          $timeout.cancel(timeouts.workspaceRefresh);
+          timeouts.workspaceRefresh = $timeout(
+            function () {
+              $scope.workspaceRefresh(offset, limit);
+            },
+            parseInt(cjSettings.timer.workspace, 10) * 1000 * 60,
+            false
           );
         }
       };
