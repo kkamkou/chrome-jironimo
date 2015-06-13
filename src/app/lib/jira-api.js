@@ -50,8 +50,7 @@ angular
     });
   })
   .service('cjJira', function ($rootScope, cjSettings, $http) {
-    var cache = {},
-      config = cjSettings.account;
+    var cache = {};
 
     /**
      * Currently logged user
@@ -143,6 +142,8 @@ angular
      * @private
      */
     this._makeRequest = function (urn, dataSet, callback) {
+      var config = cjSettings.account;
+
       if (!config.url || !config.login) {
         return callback(new Error('JIRA url and login are required for the service'));
       }
