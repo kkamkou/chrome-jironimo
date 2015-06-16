@@ -39,7 +39,7 @@ angular
 
       // the active workspace
       $scope.workspaceActive = _.find($scope.workspaces, function (dataSet, index, list) {
-        if (_.isNumber(cjSettings.workspaceLast) && list.length >= cjSettings.workspaceLast) {
+        if (_.isNumber(cjSettings.workspaceLast) && list.length > cjSettings.workspaceLast) {
           return (cjSettings.workspaceLast === index);
         }
         return dataSet.isDefault;
