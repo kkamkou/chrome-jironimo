@@ -1,0 +1,18 @@
+<div class="toolbar">
+  <div class="button-set">
+    <button title="Start progress" class="active"
+      ng-show="timer.canBeStarted(entry)" ng-click="issueTimerStart(entry)"><i class="icon-play"></i></button>
+
+    <button title="Save time and stop progress" class="active"
+      ng-show="timer.canBeStopped(entry)" ng-click="timer.stop(entry)"><i class="icon-stop"></i></button>
+
+    <button title="Stop progress without time-saving" class="active"
+      ng-show="timer.canBeStopped(entry)" ng-click="timer.discard(entry)"><i class="icon-remove"></i></button>
+
+    <button title="Actions" class="active transitions"
+      ng-show="entry.transitions.length && !timer.isStarted(entry)"><i class="icon-list"></i></button>
+
+    <button title="Open this issue in JIRA&trade;" class="active"
+      ng-click="tabIssue(entry)"><i class="icon-new-tab"></i></button>
+  </div>
+</div>

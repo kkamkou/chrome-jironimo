@@ -3,15 +3,16 @@
  *
  * @author Kanstantsin Kamkou <2ka.by>
  * @link http://github.com/kkamkou/chrome-jironimo
- * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0
+ * @license http://opensource.org/licenses/BSL-1.0
  */
 
 angular
   .module('jironimo.shared')
   .directive('pagination', function () {
     return {
-      templateUrl: 'macros/pagination.html',
+      templateUrl: 'shared/pagination.html',
       restrict: 'E',
+      replace: true,
       scope: {position: '=', limit: '=', total: '=', callback: '='},
       link: function ($scope) {
         function pageAt(pos, limit) {
