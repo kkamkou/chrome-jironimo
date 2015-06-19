@@ -8,11 +8,11 @@
 
 angular
   .module('jironimo.tile')
-  .directive('tileToolbar', function () {
+  .directive('tileProgress', function () {
     return {
       restrict: 'E',
       replace: true,
-      scope: {entry: '=', timer: '='},
-      templateUrl: 'tile/toolbar.html'
+      scope: {percent: '@'},
+      templateUrl: 'tile/progress.html'
     };
   });

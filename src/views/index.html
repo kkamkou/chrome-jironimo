@@ -94,11 +94,9 @@
         <span class="badge bg-lightRed" ng-show="timer.isStarted(issue)"><i class="icon-play"></i></span>
       </div>
 
-      <div class="progress-bar" ng-show="issue.fields.progress.percent > 0 && issue.fields.progress.percent < 100">
-        <div class="bar bg-{{issue._colors.bg}}" style="width: {{issue.fields.progress.percent}}%"></div>
-      </div>
+      <tile-progress percent="{{ issue.fields.progress.percent }}"></tile-progress>
 
-      <tile-toolbar entry="issue"></tile-toolbar>
+      <tile-toolbar entry="issue" timer="timer"></tile-toolbar>
 
       <div class="transitions bg-darker">
         <a href="#" ng-click="transition()" class="bg-white close">&times;</a>
