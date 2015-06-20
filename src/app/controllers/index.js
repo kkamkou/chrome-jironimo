@@ -251,7 +251,6 @@ angular
       };
 
       $scope.$on('issueTransitionChanged', function (event, entry, transition) {
-        event.stopPropagation();
         $scope.workspaceRefresh();
       });
 
