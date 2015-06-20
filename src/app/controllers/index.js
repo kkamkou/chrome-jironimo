@@ -228,8 +228,8 @@ angular
         var deferred = $q.defer(),
           searchData = {
             jql: query,
-            startAt: +offset,
-            maxResults: +limit,
+            startAt: +offset || 0,
+            maxResults: +limit || 10,
             expand: 'transitions',
             fields: '*navigable'
           };
@@ -239,7 +239,7 @@ angular
             if (err) {
               deferred.reject(err);
             }
-            return false;
+            return;
           }
 
           cjJira.search(searchData, function (serr, data) {
@@ -250,8 +250,14 @@ angular
         return deferred.promise;
       };
 
-      $scope.$on('issueTransitionChanged', function (event, entry, transition) {
-        $scope.workspaceRefresh();
+      $scope.$on('issueTransitionChanged', function (event, entry) {
+        self._issueSearch('id = %d'.replace('%d', entry.id))
+          .then(function (data) {
+            data.issues.forEach(function (issue) {
+              var idx = _.findIndex($scope.issues, {id: issue.id});
+              $scope.issues[idx] = self._issueModify(issue);
+            });
+          });
       });
 
       // DOM playground (should be moved somewhere)
