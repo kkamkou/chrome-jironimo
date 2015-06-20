@@ -117,30 +117,6 @@ angular
       };
 
       /**
-       * Executes transition for the current ticket
-       * @param {Object} issue
-       * @param {Object} transition
-       * @return {void}
-       */
-      $scope.transition = function (issue, transition) {
-        if (!issue) {
-          $(event.target).parent().hide();
-          return false;
-        }
-
-        var dataSet = {
-          _method: 'POST',
-          transition: {id: transition.id}
-        };
-
-        cjJira.transitions(issue.id, dataSet, function (err) {
-          if (!err) {
-            $scope.workspaceRefresh();
-          }
-        });
-      };
-
-      /**
        * Opens this extension in a new window
        * @return {void}
        */
@@ -273,6 +249,11 @@ angular
 
         return deferred.promise;
       };
+
+      $scope.$on('issueTransitionChanged', function (event, entry, transition) {
+        event.stopPropagation();
+        $scope.workspaceRefresh();
+      });
 
       // DOM playground (should be moved somewhere)
       $scope.$on('$viewContentLoaded', function () {

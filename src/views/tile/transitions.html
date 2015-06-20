@@ -1,0 +1,10 @@
+<div class="transitions bg-darker">
+  <a href="#" ng-click="close()" class="bg-white close">&times;</a>
+
+  <div class="padding10">
+    <div ng-repeat="transition in entry.transitions">
+      <a href="#" class="fg-orange"
+        ng-click="modify(entry, transition)"><small>{{ transition.name }}</small></a>
+    </div>
+  </div>
+</div>

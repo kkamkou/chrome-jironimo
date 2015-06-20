@@ -98,14 +98,7 @@
 
       <tile-toolbar entry="issue" timer="timer"></tile-toolbar>
 
-      <div class="transitions bg-darker">
-        <a href="#" ng-click="transition()" class="bg-white close">&times;</a>
-        <div class="padding10">
-          <div ng-repeat="trans in issue.transitions">
-            <a href="#" class="fg-orange" ng-click="transition(issue, trans)"><small>{{trans.name}}</small></a>
-          </div>
-        </div>
-      </div>
+      <tile-transitions entry="issue"></tile-transitions>
     </div>
 
     <pagination position="searchStartAt" limit="searchMaxResults" total="searchTotal"
