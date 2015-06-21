@@ -2,28 +2,27 @@
  * chrome-jironimo
  *
  * @author Kanstantsin Kamkou <2ka.by>
- * @{@link http://github.com/kkamkou/chrome-jironimo}
- * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0
+ * @link http://github.com/kkamkou/chrome-jironimo
+ * @license http://opensource.org/licenses/BSL-1.0
  */
 
 angular
   .module('jironimo.timer', ['jironimo.jira', 'jironimo.settings'])
   .factory('cjTimer', function (cjJira, cjSettings) {
-    var timerSet = cjSettings.timers;
+    var self = this,
+      timerSet = cjSettings.timers;
 
-    // exports
     return {
       /**
        * Updates a timer entry for the issue
        *
+       * @public
        * @param {object} issue
        * @param {object} fields
        */
       update: function (issue, fields) {
-        var defaultFields = {started: false, timestamp: null};
-
         if (!timerSet[issue.id]) {
-          timerSet[issue.id] = defaultFields;
+          timerSet[issue.id] = {started: false, timestamp: null};
         }
 
         Object.keys(fields).forEach(function (field) {
@@ -32,13 +31,13 @@ angular
 
         cjSettings.timers = timerSet;
 
-        // updating a timer icon
-        this._iconInit(issue);
+        this.initIcon(issue);
       },
 
       /**
        * Returns true if timer for this issue already started
        *
+       * @public
        * @param {object} issue
        * @return {Boolean}
        */
@@ -49,6 +48,7 @@ angular
       /**
        * Returns true if timer for this issue can be started
        *
+       * @public
        * @param {object} issue
        * @return {Boolean}
        */
@@ -70,6 +70,7 @@ angular
       /**
        * Returns true if timer for this issue can be stopped
        *
+       * @public
        * @param {object} issue
        * @return {Boolean}
        */
@@ -80,6 +81,7 @@ angular
       /**
        * Returns elapsed time for the current issue (humanized)
        *
+       * @public
        * @param {object} issue
        * @return {String}
        */
@@ -92,25 +94,24 @@ angular
       /**
        * Starts timer for the current issue
        *
+       * @public
        * @param {object} issue
        */
       start: function (issue) {
-        // storage update
         this.update(issue, {started: true, timestamp: moment().unix()});
       },
 
       /**
        * Ends timer for the current issue
        *
+       * @public
        * @param {object} issue
        */
       stop: function (issue) {
-        // stop check
         if (!this.canBeStopped(issue)) {
           return;
         }
 
-        // time diff
         var issueTimestamp = timerSet[issue.id].timestamp,
           diff = parseInt(moment().unix() - issueTimestamp, 10);
 
@@ -119,28 +120,26 @@ angular
           return;
         }
 
+        this.update(issue, {started: false, timestamp: null});
+
         // data set for the worklog request
         var dataSet = {
-          _method: 'post',
+          _method: 'POST',
           comment: moment.duration(diff * 1000).humanize(),
           timeSpent: (diff > 60 ? Math.ceil(diff / 60) : 1) + 'm'
         };
 
-        // updating the entry
-        this.update(issue, {started: false, timestamp: null});
-
-        // sending request
         cjJira.issueWorklog(issue.id, dataSet, function (err) {
-          // rollback if error
-          if (err) {
-            this.update(issue, {started: true, timestamp: issueTimestamp});
+          if (err) { // rollback if error
+            self.update(issue, {started: true, timestamp: issueTimestamp});
           }
-        }.bind(this));
+        });
       },
 
       /**
        * Stops timer without time-logging
        *
+       * @public
        * @param {object} issue
        */
       discard: function (issue) {
@@ -152,19 +151,13 @@ angular
       /**
        * Shows a timer stub on the badge for the active issue
        *
-       * @param {object} issue
-       * @return {Boolean}
        * @private
+       * @param {object} issue
        */
-      _iconInit: function (issue) {
-        // if timer is not active, we should cleanup the badge
-        if (!this.isStarted(issue)) {
-          chrome.browserAction.setBadgeText({text: ''});
-          return false;
-        }
-
-        chrome.browserAction.setBadgeText({text: '00:00'});
-        return true;
+      initIcon: function (issue) {
+        chrome.browserAction.setBadgeText({
+          text: this.isStarted(issue) ? '00:00' : ''
+        });
       }
     };
   });

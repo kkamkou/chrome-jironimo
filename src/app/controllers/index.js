@@ -23,6 +23,7 @@ angular
       $scope.searchMaxResults = 16;
 
       $scope.loading = false;
+      $scope.issueFocused = null;
       $scope.windowDetached = false;
 
       // init
@@ -117,30 +118,6 @@ angular
       };
 
       /**
-       * Executes transition for the current ticket
-       * @param {Object} issue
-       * @param {Object} transition
-       * @return {void}
-       */
-      $scope.transition = function (issue, transition) {
-        if (!issue) {
-          $(event.target).parent().hide();
-          return false;
-        }
-
-        var dataSet = {
-          _method: 'POST',
-          transition: {id: transition.id}
-        };
-
-        cjJira.transitions(issue.id, dataSet, function (err) {
-          if (!err) {
-            $scope.workspaceRefresh();
-          }
-        });
-      };
-
-      /**
        * Opens this extension in a new window
        * @return {void}
        */
@@ -184,35 +161,12 @@ angular
         });
       };
 
-      /**
-       * If an issue is assigned to nobody, we should assign it to us
-       * @return {void}
-       */
-      $scope.issueTimerStart = function (issue) {
-        if (issue.fields.assignee) {
-          $scope.timer.start(issue);
+      $scope.issueFocus = function (event, issue) {
+        if (event.which === 2) {
+          $scope.tabIssue(issue);
           return;
         }
-
-        cjJira.myself(function (err1, info) {
-          if (err1) { return; }
-
-          var paramsQuery = {_method: 'PUT', name: info.name},
-          paramsNotify = {
-            title: issue.key,
-            message: 'The ticket was assigned to me'
-          };
-
-          cjJira.issueAssignee(issue.key, paramsQuery, function (err2) {
-            if (err2) { return; }
-
-            cjNotifications.createOrUpdate(issue.key, paramsNotify, function () {
-              $scope.$apply(function () {
-                $scope.timer.start(issue);
-              });
-            });
-          });
-        });
+        $scope.issueFocused = issue;
       };
 
       /**
@@ -252,8 +206,8 @@ angular
         var deferred = $q.defer(),
           searchData = {
             jql: query,
-            startAt: +offset,
-            maxResults: +limit,
+            startAt: +offset || 0,
+            maxResults: +limit || 10,
             expand: 'transitions',
             fields: '*navigable'
           };
@@ -263,7 +217,7 @@ angular
             if (err) {
               deferred.reject(err);
             }
-            return false;
+            return;
           }
 
           cjJira.search(searchData, function (serr, data) {
@@ -273,6 +227,16 @@ angular
 
         return deferred.promise;
       };
+
+      $scope.$on('issueTransitionChanged', function (event, entry) {
+        self._issueSearch('id = %d'.replace('%d', entry.id))
+          .then(function (data) {
+            data.issues.forEach(function (issue) {
+              var idx = _.findIndex($scope.issues, {id: issue.id});
+              $scope.issues[idx] = self._issueModify(issue);
+            });
+          });
+      });
 
       // DOM playground (should be moved somewhere)
       $scope.$on('$viewContentLoaded', function () {
@@ -292,6 +256,10 @@ angular
         $scope.workspaceRefresh();
       });
 
+      $rootScope.$on('jiraRequestFail', function (event, args) {
+        $scope.jiraRequestFailed = [S(args[0]).capitalize().s, args[1].join('; ')];
+      });
+
       $scope.$watch('filterFieldDisplay', function (flag) {
         if (!flag) { return; }
         $timeout(function () {
@@ -306,10 +274,6 @@ angular
         if (!flag) { return; }
         $scope.jiraRequestFailed = false;
         $scope.filterFieldDisplay = false;
-      });
-
-      $rootScope.$on('jiraRequestFail', function (event, args) {
-        $scope.jiraRequestFailed = [S(args[0]).capitalize().s, args[1].join('; ')];
       });
     }
   );
