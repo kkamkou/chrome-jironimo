@@ -71,35 +71,11 @@
 
     <h3 ng-show="issues.length">{{workspaceActive.title}}</h3>
 
-    <div class="tile padding10 {{issue._size}} bg-{{issue._colors.bg}} border-{{issue._colors.bd}} outline-{{issue._colors.ot}}"
+    <tile
       ng-repeat="issue in issues | filter:filterText"
       ng-dblclick="tabIssue(issue)"
-      ng-class="{selected: issue._isClosed}">
-
-      <div class="issue-icon issue-icon-status bg-{{issue._colors.bd}}" title="{{issue.fields.status.name}}"><img
-        ng-src="{{issue.fields.status.iconUrl}}" alt=""></div>
-
-      <div class="tile-content">
-        <h5 class="fg-{{issue._colors.fg}}">{{issue.key}}</h5>
-        <h6 class="fg-{{issue._colors.fg}}">{{issue.fields.reporter.displayName | limitTo: 16}}</h6>
-        <p class="fg-{{issue._colors.fg}}">{{issue.fields.summary}}</p>
-      </div>
-
-      <div class="brand">
-        <span class="name fg-{{issue._colors.fg}}" ng-hide="timer.isStarted(issue)">
-          <sup ng-show="issue.fields.timeestimate">{{issue.fields.timeestimate}}</sup>
-          {{issue.fields.issuetype.name}}
-        </span>
-        <span class="name" ng-show="timer.canBeStopped(issue)" ng-bind="timer.elapsedTime(issue)"></span>
-        <span class="badge bg-lightRed" ng-show="timer.isStarted(issue)"><i class="icon-play"></i></span>
-      </div>
-
-      <tile-progress percent="{{ issue.fields.progress.percent }}"></tile-progress>
-
-      <tile-toolbar entry="issue" timer="timer"></tile-toolbar>
-
-      <tile-transitions entry="issue"></tile-transitions>
-    </div>
+      ng-click="issueFocus($event, issue)"
+      entry="issue"></tile>
 
     <pagination position="searchStartAt" limit="searchMaxResults" total="searchTotal"
       callback="workspaceRefresh" ng-show="!loading"></pagination>

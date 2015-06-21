@@ -23,6 +23,7 @@ angular
       $scope.searchMaxResults = 16;
 
       $scope.loading = false;
+      $scope.issueFocused = null;
       $scope.windowDetached = false;
 
       // init
@@ -160,35 +161,12 @@ angular
         });
       };
 
-      /**
-       * If an issue is assigned to nobody, we should assign it to us
-       * @return {void}
-       */
-      $scope.issueTimerStart = function (issue) {
-        if (issue.fields.assignee) {
-          $scope.timer.start(issue);
+      $scope.issueFocus = function (event, issue) {
+        if (event.which === 2) {
+          $scope.tabIssue(issue);
           return;
         }
-
-        cjJira.myself(function (err1, info) {
-          if (err1) { return; }
-
-          var paramsQuery = {_method: 'PUT', name: info.name},
-          paramsNotify = {
-            title: issue.key,
-            message: 'The ticket was assigned to me'
-          };
-
-          cjJira.issueAssignee(issue.key, paramsQuery, function (err2) {
-            if (err2) { return; }
-
-            cjNotifications.createOrUpdate(issue.key, paramsNotify, function () {
-              $scope.$apply(function () {
-                $scope.timer.start(issue);
-              });
-            });
-          });
-        });
+        $scope.issueFocused = issue;
       };
 
       /**
