@@ -9,7 +9,9 @@
 angular
   .module('jironimo.timer', ['jironimo.jira', 'jironimo.settings'])
   .factory('cjTimer', function (cjJira, cjSettings) {
-    var timerSet = cjSettings.timers;
+    var self = this,
+      timerSet = cjSettings.timers;
+
     return {
       /**
        * Updates a timer entry for the issue
@@ -96,7 +98,6 @@ angular
        * @param {object} issue
        */
       start: function (issue) {
-        // storage update
         this.update(issue, {started: true, timestamp: moment().unix()});
       },
 
@@ -111,7 +112,6 @@ angular
           return;
         }
 
-        // time diff
         var issueTimestamp = timerSet[issue.id].timestamp,
           diff = parseInt(moment().unix() - issueTimestamp, 10);
 
@@ -120,23 +120,20 @@ angular
           return;
         }
 
+        this.update(issue, {started: false, timestamp: null});
+
         // data set for the worklog request
         var dataSet = {
-          _method: 'post',
+          _method: 'POST',
           comment: moment.duration(diff * 1000).humanize(),
           timeSpent: (diff > 60 ? Math.ceil(diff / 60) : 1) + 'm'
         };
 
-        // updating the entry
-        this.update(issue, {started: false, timestamp: null});
-
-        // sending request
         cjJira.issueWorklog(issue.id, dataSet, function (err) {
-          // rollback if error
-          if (err) {
-            this.update(issue, {started: true, timestamp: issueTimestamp});
+          if (err) { // rollback if error
+            self.update(issue, {started: true, timestamp: issueTimestamp});
           }
-        }.bind(this));
+        });
       },
 
       /**
