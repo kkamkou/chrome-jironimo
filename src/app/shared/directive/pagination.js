@@ -23,11 +23,9 @@ angular
           if (page > $scope.pages) {
             page = $scope.pages;
           }
-
-          if (page < 1) {
-            page = 1;
+          if (page < 0) {
+            page = 0;
           }
-
           return page * limit;
         }
 
