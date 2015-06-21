@@ -25,14 +25,10 @@ angular
             if (err1) { return; }
 
             var paramsQuery = {_method: 'PUT', name: info.name},
-            paramsNotify = {
-              title: issue.key,
-              message: 'The ticket was assigned to me'
-            };
+              paramsNotify = {title: issue.key, message: 'The ticket was assigned to me'};
 
             cjJira.issueAssignee(issue.key, paramsQuery, function (err2) {
               if (err2) { return; }
-
               cjNotifications.createOrUpdate(issue.key, paramsNotify, function () {
                 $scope.$apply(function () {
                   $scope.timer.start(issue);

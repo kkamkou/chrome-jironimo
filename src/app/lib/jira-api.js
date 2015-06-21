@@ -2,8 +2,8 @@
  * chrome-jironimo
  *
  * @author Kanstantsin Kamkou <2ka.by>
- * @{@link http://github.com/kkamkou/chrome-jironimo}
- * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0
+ * @link http://github.com/kkamkou/chrome-jironimo
+ * @license http://opensource.org/licenses/BSL-1.0
  */
 
 angular
@@ -95,6 +95,7 @@ angular
     /**
      * Assigns an issue to a user
      *
+     * @public
      * @param {Number} issueId
      * @param {String} userName
      * @param {Function} callback
@@ -108,6 +109,7 @@ angular
     /**
      * Adds a new worklog entry to an issue
      *
+     * @public
      * @param {Number} issueId
      * @param {Object} data
      * @param {Function} callback
@@ -122,6 +124,7 @@ angular
     /**
      * Perform a transition on an issue
      *
+     * @public
      * @param {Number} issueId
      * @param {Object} data
      * @param {Function} callback
@@ -136,10 +139,10 @@ angular
     /**
      * Makes request with the data set
      *
+     * @private
      * @param {String} urn
      * @param {Object} dataSet
      * @param {Function} callback
-     * @private
      */
     this._makeRequest = function (urn, dataSet, callback) {
       var config = cjSettings.account;

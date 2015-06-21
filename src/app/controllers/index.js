@@ -256,6 +256,10 @@ angular
         $scope.workspaceRefresh();
       });
 
+      $rootScope.$on('jiraRequestFail', function (event, args) {
+        $scope.jiraRequestFailed = [S(args[0]).capitalize().s, args[1].join('; ')];
+      });
+
       $scope.$watch('filterFieldDisplay', function (flag) {
         if (!flag) { return; }
         $timeout(function () {
@@ -270,10 +274,6 @@ angular
         if (!flag) { return; }
         $scope.jiraRequestFailed = false;
         $scope.filterFieldDisplay = false;
-      });
-
-      $rootScope.$on('jiraRequestFail', function (event, args) {
-        $scope.jiraRequestFailed = [S(args[0]).capitalize().s, args[1].join('; ')];
       });
     }
   );
