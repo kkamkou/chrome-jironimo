@@ -75,7 +75,7 @@
       ng-repeat="issue in issues | filter:filterText"
       ng-dblclick="tabIssue(issue)"
       ng-click="issueFocus($event, issue)"
-      entry="issue"></tile>
+      entry="issue" timer="timer"></tile>
 
     <pagination position="searchStartAt" limit="searchMaxResults" total="searchTotal"
       callback="workspaceRefresh" ng-show="!loading"></pagination>

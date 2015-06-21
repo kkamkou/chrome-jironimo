@@ -8,14 +8,13 @@
 
 angular
   .module('jironimo.tile')
-  .directive('tileToolbar', function (cjTimer, cjJira, cjNotifications) {
+  .directive('tileToolbar', function (cjJira, cjNotifications) {
     return {
       restrict: 'E',
       replace: true,
-      scope: {entry: '='},
+      scope: {entry: '=', timer: '='},
       templateUrl: 'tile/toolbar.html',
       link: function ($scope) {
-        $scope.timer = cjTimer;
         $scope.timerStart = function (issue) {
           if (issue.fields.assignee) {
             $scope.timer.start(issue);
