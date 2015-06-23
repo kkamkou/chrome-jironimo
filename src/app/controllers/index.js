@@ -228,6 +228,10 @@ angular
         return deferred.promise;
       };
 
+      $scope.$on('tileToolbarOpenInNewTab', function (event, entry) {
+        $scope.tabIssue(entry);
+      });
+
       $scope.$on('issueTransitionChanged', function (event, entry) {
         self._issueSearch('id = %d'.replace('%d', entry.id))
           .then(function (data) {
