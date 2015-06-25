@@ -1,6 +1,6 @@
 <div class="info-bar" ng-show="!issues.length && !loading">
-  <h3 class="fg-darkCobalt">No data provided</h3>
-  <p>No matching entries according the current JIRA&trade; query</p>
+  <h3 class="fg-darkCobalt">{{ 'indexNoDataProvidedTitle' | i18n }}</h3>
+  <p>{{ 'indexNoDataProvidedText' | i18n }}</p>
 </div>
 
 <div class="error-bar" ng-show="jiraRequestFailed">

@@ -1,0 +1,224 @@
+{
+    "account": {
+        "message": "Account"
+    },
+    "captionOptionsAccountJiraAddress": {
+        "message": "JIRA™ Adresse",
+        "description": ""
+    },
+    "btnSave": {
+        "message": "Speichern",
+        "description": ""
+    },
+    "placeholderOptionsAccountLogin": {
+        "message": "Login",
+        "description": ""
+    },
+    "placeholderOptionsJqlQuery": {
+        "message": "JQL für den aktuellen Arbeitsbereich",
+        "description": ""
+    },
+    "captionOptionsAccountSync": {
+        "message": "Einstellungen synchronisieren",
+        "description": ""
+    },
+    "msgWorkspaceImportSuccess": {
+        "message": "$1 Arbeitsbereiche wurden erfolgreich importiert.",
+        "description": ""
+    },
+    "placeholderOptionsAccountTimeout": {
+        "message": "Zeitüberschreitung der Verbindung in Sekunden",
+        "description": ""
+    },
+    "msgOptionsSaveSuccess": {
+        "message": "Einstellungen wurden gespeichert.",
+        "description": ""
+    },
+    "titleOptionsJqlIcon": {
+        "message": "Symbol für den Arbeitsbereich. Finde die Liste aller verfügbaren Symbole. Ignoriere das \"icon-\"-Prefix",
+        "description": ""
+    },
+    "placeholderOptionsJqlTitle": {
+        "message": "Titel",
+        "description": ""
+    },
+    "captionOptionsAccountJiraAuth": {
+        "message": "JIRA™ Account Informationen",
+        "description": ""
+    },
+    "placeholderOptionsAccountUrl": {
+        "message": "https://jira.deineseite.de oder http://deineseite.de/jira",
+        "description": ""
+    },
+    "placeholderOptionsAccountPassword": {
+        "message": "Passwort",
+        "description": ""
+    },
+    "hintHowCredentialsAreStored": {
+        "message": "Jironimo benutzt keine Middleware um deine Benutzerdaten zu speichern. Sie werden nur auf deinem Computer gespeichert.",
+        "description": ""
+    },
+    "placeholderOptionsJqlIcon": {
+        "message": "Symbol",
+        "description": ""
+    },
+    "hintSynchroniseSettings": {
+        "message": "Einstellungen für diese Erweiterung werden auf verschiedenen Geräten verfügbar sein (es wird Google Chrome Sync verwendet).",
+        "description": ""
+    },
+    "hintRequiredJiraAgile": {
+        "message": "Um Transitions-Features zu benutzen, versichere dich, dass in deiner JIRA™-Instanz das <a href=\"https://www.atlassian.com/software/jira/agile\" class=\"fg-green\" target=\"_blank\">JIRA™ Agile</a> Add-On installiert ist.",
+        "description": ""
+    },
+    "placeholderOptionsTimerRefreshInterval": {
+        "message": "Aktualisierungsintervall (min.)",
+        "description": ""
+    },
+    "settingsColorsDefaultTheme": {
+        "message": "Standard Thema"
+    },
+    "settingsColorsPriorityColors": {
+        "message": "Farben für Prioritäten"
+    },
+    "settingsColorsPriority": {
+        "message": "Priorität:"
+    },
+    "settingsColorExamplePriority": {
+        "message": "Beispiel Priorität"
+    },
+    "settingsColorsAvailableColors": {
+        "message": "Öffne eine Liste aller Verfügbarer Farben"
+    },
+    "settingsColorsPrioritySizes": {
+        "message": "Größen für Prioritäten"
+    },
+    "settingsColorsSizeHalf": {
+        "message": "Halbiert"
+    },
+    "settingsColorsSizeDefault": {
+        "message": "Normal"
+    },
+    "settingsColorsSizeDouble": {
+        "message": "Doppelt"
+    },
+    "settingsColorsSizeTriple": {
+        "message": "Dreifach"
+    },
+    "settingsColorsSizeQuadruple": {
+        "message": "Vierfach"
+    },
+    "settingsColorsAvailableSizes": {
+        "message": "Öffne eine Liste aller Verfügbaren Größen"
+    },
+    "optionsAboutTitle": {
+        "message": "Über Jironimo"
+    },
+    "optionsAboutVersion": {
+        "message": "Version"
+    },
+    "optionsAboutFeedback": {
+        "message": "Feedback"
+    },
+    "optionsAboutShareOpinion": {
+        "message": "Bitte, <a href=\"https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl\" target=\"_blank\">teile deine Meinung</a>."
+    },
+    "optionsAboutAuthor": {
+        "message": "Author"
+    },
+    "optionsAboutContributors": {
+        "message": "Mitwirkende"
+    },
+    "optionsAboutIcons": {
+        "message": "Symbole"
+    },
+    "optionsAboutThirdParty": {
+        "message": "Fremdsoftware"
+    },
+    "optionsAboutLicense": {
+        "message": "Lizenz"
+    },
+    "optionsAboutLicenseText": {
+        "message": "<h4 class=\"fg-white\">Boost Software License 1.0 (BSL-1.0)</h4>\n<p class=\"fg-lime\">Permission is hereby granted, free of charge, to any person or organization obtaining a copy of the software and accompanying documentation covered by this license (the \"Software\") to use, reproduce, display, distribute, execute, and transmit the Software, and to prepare derivative works of the Software, and to permit third-parties to whom the Software is furnished to do so, all subject to the following:</p>\n<p class=\"fg-lime\">The copyright notices in the Software and this entire statement, including the above license grant, this restriction and the following disclaimer, must be included in all copies of the Software, in whole or in part, and all derivative works of the Software, unless such copies or derivative works are solely in the form of machine-executable object code generated by a source language processor.</p>\n<p class=\"fg-lime\">THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR ANYONE DISTRIBUTING THE SOFTWARE BE LIABLE FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>"
+    },
+    "optionsJqlWorkspacesTitle": {
+        "message": "Arbeitsbereiche"
+    },
+    "optionsJqlDefault": {
+        "message": "Standard"
+    },
+    "optionsJqlCheckUpdates": {
+        "message": "Auf Aktualisierungen prüfen und benachrichtigen"
+    },
+    "optionsJqlDateHint": {
+        "message": "Bitte versichere dich, dass \"<b>updated</b>\" oder \"<b>updatedDate</b>\" nach dem \"<b>ORDER BY</b>\" plaziert sind."
+    },
+    "optionsJqlAddOne": {
+        "message": "Einen hinzufügen"
+    },
+    "optionsJqlAvailableIcons": {
+        "message": "Öffne eine Liste aller verfügbaren Symbole"
+    },
+    "optionsJqlImportFavorites": {
+        "message": "Importiere Favoriten aus JIRA™"
+    },
+    "optionsTimerTitle": {
+        "message": "Aktualisierung"
+    },
+    "optionsTimerWorkspaces": {
+        "message": "Arbeitsbereiche"
+    },
+    "optionsTimerTimelog": {
+        "message": "Zeitmessung"
+    },
+    "optionsTimerEnableTimelog": {
+        "message": "Aktiviere die Zeitmessung"
+    },
+    "optionsTimerTimelogOnlyOneActive": {
+        "message": "Nur einen aktiven Vorgang erlauben"
+    },
+    "settingsColorTypeepic": {
+        "message": "Epic"
+    },
+    "settingsColorTypestory": {
+        "message": "Story"
+    },
+    "settingsColorTypetask": {
+        "message": "Aufgabe"
+    },
+    "settingsColorTypesub_task": {
+        "message": "Unteraufgabe"
+    },
+    "settingsColorTypebug": {
+        "message": "Bug"
+    },
+    "settingsColorTypeimprovement": {
+        "message": "Verbesserung"
+    },
+    "indexNoDataProvidedTitle": {
+        "message": "Keine Daten Eingegeben"
+    },
+    "indexNoDataProvidedText": {
+        "message": "Keine passenden Einträge mit der jetzigen JIRA™ Anfrage"
+    },
+    "optionsAccount": {
+        "message": "Account Informationen"
+    },
+    "optionsWorkspaces": {
+        "message": "Arbeitsbereiche"
+    },
+    "optionsColors": {
+        "message": "Farben & Größen"
+    },
+    "optionsTimeLogging": {
+        "message": "Zeitmessung"
+    },
+    "optionsAbout": {
+        "message": "Über Jironimo"
+    },
+    "messageJironimoUpdatedTitle": {
+        "message": "Jironimo aktualisiert!"
+    },
+    "messageJironimoUpdatedText": {
+        "message": "Die Erweiterung wurde aktualisiert, bitte überprüfe deine Einstellungen."
+    }
+}

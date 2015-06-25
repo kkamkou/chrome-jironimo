@@ -4,7 +4,7 @@
 
   <h1>
     Jironimo
-    <small>Workspaces</small>
+    <small>{{ 'optionsJqlWorkspacesTitle' | i18n }}</small>
   </h1>
 
   <form class="span12" ng-submit="save('workspaces', workspaces)">
@@ -18,7 +18,7 @@
             <input type="radio" name="isDefault"
               ng-click="workspaceSetAsDefault(workspace)"
               ng-checked="workspace.isDefault">
-            <span class="check"></span> Default
+            <span class="check"></span> {{ 'optionsJqlDefault' | i18n }}
           </label>
 
           <i class="icon-{{workspace.icon}} place-right" style="margin-top: 11px;"></i>
@@ -48,7 +48,7 @@
                 <label>
                     <input type="checkbox" ng-model="workspace.changesNotify" />
                     <span class="check"></span>
-                    Check for updates and notify
+                    {{ 'optionsJqlCheckUpdates' | i18n }}
                 </label>
             </div>
           </div>
@@ -60,9 +60,8 @@
               ng-model="workspace.query">
 
             <span class="label info"
-              ng-if="workspace.changesNotify && workspaceQueryIsValidForWatch(workspace.query)">
-              Please, ensure that "<b>updated</b>" or "<b>updatedDate</b>" are placed
-              after the "<b>ORDER BY</b>"
+              ng-if="workspace.changesNotify && workspaceQueryIsValidForWatch(workspace.query)"
+              ng-bind-html="'optionsJqlDateHint' | i18n">
             </span>
           </div>
         </div>
@@ -76,11 +75,11 @@
     </div>
 
     <button ng-click="workspaceAdd()" class="success"><i
-        class="icon-plus-2"></i> Add one more</button>
+        class="icon-plus-2"></i> {{ 'optionsJqlAddOne' | i18n }}</button>
 
     <a href="http://metroui.org.ua/v2/icons.html" class="button link" target="_blank">
       <i class="icon-link"></i>
-      Click here to open the list of available icons
+      {{ 'optionsJqlAvailableIcons' | i18n }}
     </a>
 
     <hr>
@@ -90,7 +89,7 @@
 
       <button type='button' class="primary place-right"
         ng-click="workspaceImport();">
-        <i class="icon-spin"></i> Import favorites from JIRA&trade;</button>
+        <i class="icon-spin"></i> {{ 'optionsJqlImportFavorites' | i18n }}</button>
     </div>
   </form>
 

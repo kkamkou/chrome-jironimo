@@ -113,8 +113,8 @@ angular
 
           case 'update':
             cjNotifications.createOrUpdate('jironimo-update', {
-              title: 'Jironimo updated!',
-              message: 'The extension has been updated, please check the settings page!'
+              title: chrome.i18n.getMessage('messageJironimoUpdatedTitle'),
+              message: chrome.i18n.getMessage('messageJironimoUpdatedText')
             });
             break;
         }
