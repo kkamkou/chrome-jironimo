@@ -1,0 +1,74 @@
+{
+    "captionOptionsAccountJiraAddress": {
+        "message": "JIRA Adresse",
+        "description": ""
+    },
+    "btnSave": {
+        "message": "Speichern",
+        "description": ""
+    },
+    "placeholderOptionsAccountLogin": {
+        "message": "Login",
+        "description": ""
+    },
+    "placeholderOptionsJqlQuery": {
+        "message": "JQL für den aktuellen Arbeitsbereich",
+        "description": ""
+    },
+    "captionOptionsAccountSync": {
+        "message": "Einstellungen synchronisieren",
+        "description": ""
+    },
+    "msgWorkspaceImportSuccess": {
+        "message": "$1 Arbeitsbereiche wurden erfolgreich importiert.",
+        "description": ""
+    },
+    "placeholderOptionsAccountTimeout": {
+        "message": "Zeitüberschreitung der Verbindung in Sekunden",
+        "description": ""
+    },
+    "msgOptionsSaveSuccess": {
+        "message": "Einstellungen wurden gespeichert.",
+        "description": ""
+    },
+    "titleOptionsJqlIcon": {
+        "message": "Symbol für den Arbeitsbereich. Finde die Liste aller verfügbaren Symbole. Ignoriere das \"icon-\"-Prefix",
+        "description": ""
+    },
+    "placeholderOptionsJqlTitle": {
+        "message": "Titel",
+        "description": ""
+    },
+    "captionOptionsAccountJiraAuth": {
+        "message": "JIRA Account Informationen",
+        "description": ""
+    },
+    "placeholderOptionsAccountUrl": {
+        "message": "https://jira.deineseite.de oder http://deineseite.de/jira",
+        "description": ""
+    },
+    "placeholderOptionsAccountPassword": {
+        "message": "Passwort",
+        "description": ""
+    },
+    "hintHowCredentialsAreStored": {
+        "message": "Jironimo benutzt keine Middleware um deine Benutzerdaten zu speichern. Sie werden nur auf deinem Computer gespeichert.",
+        "description": ""
+    },
+    "placeholderOptionsJqlIcon": {
+        "message": "Symbol",
+        "description": ""
+    },
+    "hintSynchroniseSettings": {
+        "message": "Einstellungen für diese Erweiterung werden auf verschiedenen Geräten verfügbar sein (es wird Google Chrome Sync verwendet).",
+        "description": ""
+    },
+    "hintRequiredJiraAgile": {
+        "message": "Um Transitions-Features zu benutzen, versichere dich, dass in deiner JIRA-Instanz das <a href=\"https://www.atlassian.com/software/jira/agile\" class=\"fg-green\" target=\"_blank\">JIRA Agile</a> Add-On installiert ist.",
+        "description": ""
+    },
+    "placeholderOptionsTimerRefreshInterval": {
+        "message": "Aktualisierungsintervall (min.)",
+        "description": ""
+    }
+}
