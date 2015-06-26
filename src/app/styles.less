@@ -11,53 +11,205 @@ body {
 
 /* Css framework corrections */
 html{ height: auto; }
-.error-bar, .warning-bar, .info-bar { z-index: 1002; height: 100%; }
+
+.metro {
+  .error-bar, .warning-bar, .info-bar {
+    padding-top: 40px;
+    z-index: 1002;
+    height: 100%;
+  }
+}
 
 /* Custom styles */
-div.container-options{ width: 1000px; }
-div.container-options label.radio{ margin-top: 6px; }
+div.container-options {
+  width: 1000px;
 
-div.notify-container{ position: fixed; width: 100%; bottom: 0; left: 0; z-index: 999999; }
-div.notify-entry{ display: none; }
+  label.radio {
+    margin-top: 6px;
+  }
 
-.metro .tile{ box-shadow: none!important; -webkit-touch-callout: none; -webkit-user-select: none; }
-.metro .tile.selected{ border: 0; }
+  .tile {
+    box-shadow: none !important;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
 
-.tile .tile-content{ display: block!important; padding: 10px!important; height: 98px!important; }
-  .tile .tile-content h5, .tile .tile-content h6{ margin: 0!important; }
-  .tile .tile-content h5, .tile .tile-content h6, .tile .tile-content p{ line-height: 18px!important; }
-  .tile .tile-content h6{ font-size: 12px!important; white-space: nowrap; }
-  .tile .tile-content p{ height: 70px; font-size: 12px; line-height: 13px!important; }
-  .tile .name{ white-space: nowrap; }
-  .tile .name sup{ float: right; margin-top: 6px; }
+    &.selected {
+      border: 0;
+    }
 
-.tile div.toolbar{ margin-bottom: 0; display: none; position: absolute; bottom: 0; background-color: rgba(0,0,0,0.6); width: 100%; height: 31px; z-index: 1; padding: 2px; }
+    .tile-content {
+      display: block !important;
+      padding: 10px !important;
+      height: 98px !important;
 
-.tile div.transitions{ display: none; position: absolute; bottom: 0; left: 0; z-index: 1; width: 100%; height: 120px; overflow: auto; }
-.tile div.transitions a.close{ padding: 2px 10px; margin-bottom: 10px; }
-.tile div.transitions a:hover{ color: #f0a30a!important; }
+      h5, h6 {
+        margin: 0 !important;
+        line-height: 18px!important;
+      }
+      h6 {
+        font-size: 12px !important;
+        white-space: nowrap;
+      }
 
-.tile .progress-bar{ position: relative; top: -7px; }
-.tile .badge{ z-index: 1; }
-.tile .brand{ min-height: inherit!important; }
-.tile .issue-icon{ position: absolute; top: 0; width: 13px; height: 13px; text-align: center; z-index: 1; }
-  .tile .issue-icon img{ vertical-align: top; width: 12px; height: 12px; }
-  .tile .issue-icon-status{ right: 0; }
+      p {
+        height: 70px;
+        font-size: 12px;
+        line-height: 13px !important;
+      }
 
-#limit-per-page{ width: auto; position: absolute; right: 8px; top: 1px; z-index: 1051; }
-  #limit-per-page select{ height: 26px; font-size: 50%; }
+      .name {
+        white-space: nowrap;
 
-#pagination{ float: right; clear: left; margin-right: 5px; }
+        sup {
+          float: right;
+          margin-top: 6px;
+        }
+      }
 
-#advanced-panel{ position: absolute; width: 44px; text-align: center; padding-top: 2px; top: 28px; right: 64px; z-index: 1051; }
-  #advanced-panel button{ width: 40px; margin-bottom: 2px; }
-  #advanced-panel button:focus, #advanced-panel-icon:focus{ border-color: transparent; border-style: solid; }
-  #advanced-panel, #filter{ background-color: rgba(0, 0, 0, 0.5); }
+      div.toolbar {
+        margin-bottom: 0;
+        display: none;
+        position: absolute;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.6);
+        width: 100%;
+        height: 31px;
+        z-index: 1;
+        padding: 2px;
+      }
 
-#home-workspaces, #filter{ position: absolute; }
-#home-workspaces{ right: 66px; top: 1px; z-index: 1051; }
-#filter{ right: 40px; top: 27px; z-index: 1; padding: 2px; }
-#loading{ font-size: 32px!important; text-align: center; width: 100%; position: absolute; top: 50%; transform: translateY(-50%); }
+      div.transitions {
+        display: none;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        width: 100%;
+        height: 120px;
+        overflow: auto;
+
+        a {
+          &.close {
+            padding: 2px 10px;
+            margin-bottom: 10px;
+          }
+          &:hover {
+            color: #f0a30a!important;
+          }
+        }
+      }
+
+      .progress-bar {
+        position: relative;
+        top: -7px;
+      }
+
+      .badge {
+        z-index: 1;
+      }
+
+      .brand {
+        min-height: inherit!important;
+      }
+
+      .issue-icon {
+        position: absolute;
+        top: 0;
+        width: 13px;
+        height: 13px;
+        text-align: center;
+        z-index: 1;
+
+        img {
+          vertical-align: top;
+          width: 12px;
+          height: 12px;
+        }
+      }
+
+      .issue-icon-status {
+        right: 0;
+      }
+    }
+  }
+}
+
+div.notify-container {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  z-index: 999999;
+}
+div.notify-entry {
+  display: none;
+}
+
+#limit-per-page {
+  width: auto;
+  position: absolute;
+  right: 8px;
+  top: 1px;
+  z-index: 1051;
+
+  select {
+    height: 26px;
+    font-size: 0.8em;
+  }
+}
+
+#pagination {
+  float: right;
+  clear: left;
+  margin-right: 5px;
+}
+
+#advanced-panel {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  width: 44px;
+  text-align: center;
+  padding-top: 2px;
+  top: 28px;
+  right: 64px;
+  z-index: 1051;
+
+  button {
+    width: 40px;
+    margin-bottom: 2px;
+
+    &:focus {
+      &:extend(#advanced-panel-icon:focus);
+    }
+  }
+}
+#advanced-panel-icon:focus {
+  border-color: transparent;
+  border-style: solid;
+}
+#filter {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  right: 40px;
+  top: 27px;
+  z-index: 1;
+  padding: 2px;
+}
+#home-workspaces {
+  position: absolute;
+  right: 66px;
+  top: 1px;
+  z-index: 1051;
+}
+
+#loading {
+  font-size: 32px !important;
+  text-align: center;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
 
 ::-webkit-scrollbar{ width: 4px; }
 ::-webkit-scrollbar-button{ width: 0; height: 0; }
