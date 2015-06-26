@@ -1,0 +1,30 @@
+<div class="tile padding10 {{ entry._size }} bg-{{ entry._colors.bg }} border-{{ entry._colors.bd }} outline-{{ entry._colors.ot }}"
+  ng-class="{selected: entry._isClosed}">
+
+  <div class="issue-icon issue-icon-status bg-{{ entry._colors.bd }}" title="{{ entry.fields.status.name }}">
+    <img ng-src="{{ entry.fields.status.iconUrl }}" alt=""></div>
+
+  <div class="tile-content">
+    <h5 class="fg-{{ entry._colors.fg }}">{{ entry.key }}</h5>
+    <h6 class="fg-{{ entry._colors.fg }}">{{ entry.fields.reporter.displayName | limitTo: 16 }}</h6>
+    <p class="fg-{{ entry._colors.fg }}">{{ entry.fields.summary }}</p>
+  </div>
+
+  <div class="brand">
+    <span class="name fg-{{ entry._colors.fg }}" ng-hide="timer.isStarted(entry)">
+      <sup ng-show="entry.fields.timeestimate">{{ entry.fields.timeestimate }}</sup>
+      {{ entry.fields.issuetype.name }}
+    </span>
+    <span class="name" ng-show="timer.canBeStopped(entry)" ng-bind="timer.elapsedTime(entry)"></span>
+    <span class="badge bg-lightRed" ng-show="timer.isStarted(entry)"><i class="icon-play"></i></span>
+  </div>
+
+  <tile-progress
+    ng-if="entry.fields.progress.percent > 0"
+    percent="{{ entry.fields.progress.percent }}"
+    color-bg="{{ entry._colors.bg }}"></tile-progress>
+
+  <tile-toolbar entry="entry" timer="timer"></tile-toolbar>
+
+  <tile-transitions entry="entry"></tile-transitions>
+</div>
