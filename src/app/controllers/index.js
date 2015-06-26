@@ -228,7 +228,7 @@ angular
         return deferred.promise;
       };
 
-      $scope.$on('tileToolbarOpenInNewTab', function (event, entry) {
+      $scope.$on('issueOpenInNewTab', function (event, entry) {
         $scope.tabIssue(entry);
       });
 
