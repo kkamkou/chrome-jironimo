@@ -220,5 +220,19 @@
     },
     "messageJironimoUpdatedText": {
         "message": "Die Erweiterung wurde aktualisiert, bitte überprüfe deine Einstellungen."
+    },
+    "paginationPosition": {
+        "message": "$POSITION$–$LIMIT$ von $TOTAL$",
+        "placeholders": {
+            "position": {
+                "content": "$1"
+            },
+            "limit": {
+                "content": "$2"
+            },
+            "total": {
+                "content": "$3"
+            }
+        }
     }
 }

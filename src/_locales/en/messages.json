@@ -202,5 +202,19 @@
    },
    "messageJironimoUpdatedText": {
      "message": "The extension has been updated, please check the settings page!"
+   },
+   "paginationPosition": {
+     "message": "$POSITION$–$LIMIT$ of $TOTAL$",
+     "placeholders": {
+       "position": {
+         "content": "$1"
+       },
+       "limit": {
+         "content": "$2"
+       },
+       "total": {
+         "content": "$3"
+       }
+     }
    }
 }
