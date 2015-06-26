@@ -52,7 +52,7 @@ angular
 
           _.where(cjSettings.workspaces, {changesNotify: true}).forEach(function (workspace) {
             var query = {
-              jql: 'updated > "-%dm" AND '.replace('%d', cjSettings.timer.workspace + 1) +
+              jql: 'updated > "-%dm" AND '.replace('%d', +cjSettings.timer.workspace) +
                 workspace.query,
               expand: 'changelog',
               fields: 'updated,summary'
