@@ -4,13 +4,13 @@
 
   <h1>
     Jironimo
-    <small>Timer</small>
+    <small>{{ 'optionsTimerTitle' | i18n }}</small>
   </h1>
 
   <form ng-submit="save('timer', timer)">
     <notify entries="notifications"></notify>
 
-    <h2>Workspace</h2>
+    <h2>{{ 'optionsTimerWorkspaces' | i18n }}</h2>
     <div class="input-control text span6">
       <input type="text" maxlength="4" required
         title="{{ 'placeholderOptionsTimerRefreshInterval' | i18n }}"
@@ -18,14 +18,14 @@
         ng-model="timer.workspace">
     </div>
 
-    <h2>Timelog</h2>
+    <h2>{{ 'optionsTimerTimelog' | i18n }}</h2>
     <div class="grid">
       <div class="row">
         <div class="span6">
           <label class="input-control switch">
               <input type="checkbox" ng-model="timer.enabled">
               <span class="check"></span>
-              Enable the timelog feature
+              {{ 'optionsTimerEnableTimelog' | i18n }}
           </label>
         </div>
 
@@ -33,7 +33,7 @@
           <label class="input-control switch">
               <input type="checkbox" ng-model="timer.singleton">
               <span class="check"></span>
-              Allow only one active issue
+              {{ 'optionsTimerTimelogOnlyOneActive' | i18n }}
           </label>
         </div>
 

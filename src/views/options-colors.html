@@ -4,7 +4,7 @@
 
   <h1>
     Jironimo
-    <small>Colors</small>
+    <small>{{ 'settingsColorsTitle' | i18n }}</small>
   </h1>
 
   <form ng-submit="save('colors', colors)">
@@ -12,14 +12,14 @@
 
     <div class="tab-control" data-role="tab-control" data-effect="fade[slide]">
         <ul class="tabs">
-          <li ng-repeat="(frameKey, frameTitle) in {colors: 'Priority colors', theme: 'Default theme', sizes: 'Priority sizes'}"
+          <li ng-repeat="(frameKey, frameTitle) in {colors: 'settingsColorsPriorityColors', theme: 'settingsColorsDefaultTheme', sizes: 'settingsColorsPrioritySizes'}"
             ng-class="{active: tabControl.colors === frameKey }"
-            style="cursor: pointer;"><a ng-click="tabControl.colors = frameKey">{{ frameTitle }}</a></li>
+            style="cursor: pointer;"><a ng-click="tabControl.colors = frameKey">{{ frameTitle | i18n}}</a></li>
         </ul>
 
         <div class="frames bg-white">
             <div class="frame" style="display: block" ng-show="tabControl.colors === 'theme'">
-              <h2>Default theme</h2>
+              <h2>{{ 'settingsColorsDefaultTheme' | i18n }}</h2>
 
               <div class="input-control select span5">
                 <select ng-model="colors.theme">
@@ -28,12 +28,12 @@
               </div>
             </div>
             <div class="frame" style="display: block" ng-show="tabControl.colors === 'colors'">
-              <h2>Priority colors</h2>
+              <h2>{{ 'settingsColorsPriorityColors' | i18n }}</h2>
 
               <div class="grid">
                 <div class="row" ng-repeat="colpri in colors.priority">
                   <div class="span2 text-right">
-                    <h5>{{$index+1}} <small>priority:</small></h5>
+                    <h5>{{$index+1}} <small>{{ 'settingsColorsPriority' | i18n }}</small></h5>
                   </div>
 
                   <div class="span2">
@@ -64,34 +64,34 @@
                     <div class="input-control text">
                       <input class="text-center bd-{{ colpri.bd }} ol-{{ colpri.ot }} bg-{{ colpri.bg }} fg-{{ colpri.fg }}"
                         style="outline-style: solid; outline-width: 1px;"
-                        type="text" value="Example Priority" readonly="readonly">
+                        type="text" ng-value="'settingsColorExamplePriority' | i18n" readonly="readonly">
                     </div>
                   </div>
                 </div>
 
                 <a href="http://metroui.org.ua/v2/global.html" class="button link" target="_blank">
                   <i class="icon-link"></i>
-                  Click here to open the list of available colors
+                  {{ 'settingsColorsAvailableColors' | i18n }}
                 </a>
               </div>
             </div>
             <div class="frame" style="display: block" ng-show="tabControl.colors === 'sizes'">
-              <h2>Priority sizes</h2>
+              <h2>{{ 'settingsColorsPrioritySizes' | i18n }}</h2>
 
               <div class="grid">
                 <div class="row" ng-repeat="(sizkey, sizval) in colors.sizes">
                   <div class="span2 text-right">
-                    <h5>{{sizkey}}:</h5>
+                    <h5>{{ 'settingsColorType' + sizkey.replace('-', '_') | i18n }}:</h5>
                   </div>
 
                   <div class="span10">
                     <div class="input-control select span4">
                       <select ng-model="colors.sizes[sizkey]">
-                        <option value="half">Half</option>
-                        <option value="default">Default</option>
-                        <option value="double">Double</option>
-                        <option value="triple">Triple</option>
-                        <option value="quadro">Quadro</option>
+                        <option value="half">{{ 'settingsColorsSizeHalf' | i18n }}</option>
+                        <option value="default">{{ 'settingsColorsSizeDefault' | i18n}}</option>
+                        <option value="double">{{ 'settingsColorsSizeDouble' | i18n}}</option>
+                        <option value="triple">{{ 'settingsColorsSizeTriple' | i18n}}</option>
+                        <option value="quadro">{{ 'settingsColorsSizeQuadruple' | i18n}}</option>
                       </select>
                     </div>
                   </div>
@@ -99,7 +99,7 @@
 
                 <a href="http://metroui.org.ua/v2/tiles.html" class="button link" target="_blank">
                   <i class="icon-link"></i>
-                  Click here to open the list of available sizes
+                  {{ 'settingsColorsAvailableSizes' | i18n}}
                 </a>
               </div>
             </div>
