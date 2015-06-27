@@ -1,6 +1,6 @@
 <div class="info-bar" ng-show="!issues.length && !loading">
-  <h3 class="fg-darkCobalt">No data provided</h3>
-  <p>No matching entries according the current JIRA&trade; query</p>
+  <h3 class="fg-darkCobalt">{{ 'indexNoDataProvidedTitle' | i18n }}</h3>
+  <p>{{ 'indexNoDataProvidedText' | i18n }}</p>
 </div>
 
 <div class="error-bar" ng-show="jiraRequestFailed">
@@ -36,13 +36,13 @@
       <input type="text" ng-model="filterText" class="bd-darkBlue">
     </div>
 
-    <button title="Filter"
+    <button title="{{ 'indexTooltipFilters' | i18n }}"
       ng-click="filterFieldDisplay = !filterFieldDisplay"
       ng-class="{inverse: filterFieldDisplay || filterText}">
       <i class="icon-filter"></i>
     </button><!--
 
-  --><button title="Tools" id="advanced-panel-icon"
+  --><button title="{{ 'indexTooltipTools' | i18n }}" id="advanced-panel-icon"
       ng-class="{inverse: homePanelVisible}"
       ng-click="homePanelVisible = !homePanelVisible">
       <i class="icon-mouse"></i>
@@ -51,17 +51,17 @@
 
   <div id="advanced-panel"
     ng-show="!loading && homePanelVisible">
-    <button title="Refresh" ng-click="workspaceRefresh()">
+    <button title="{{ 'indexTooltipRefresh' | i18n }}" ng-click="workspaceRefresh()">
       <i class="icon-spin"></i>
     </button>
 
-    <button title="Detach the current window"
+    <button title="{{ 'indexTooltipDetachWindow' | i18n }}"
       ng-if="!windowDetached"
       ng-click="windowDetach()">
       <i class="icon-new-tab-2"></i>
     </button>
 
-    <button title="Settings" ng-click="tabSettings()">
+    <button title="{{ 'indexTooltipSettings' | i18n }}" ng-click="tabSettings()">
       <i class="icon-tools"></i>
     </button>
   </div>

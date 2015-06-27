@@ -10,7 +10,7 @@ angular
   .module('jironimo')
   .controller(
     'IndexController',
-    function ($q, $timeout, $rootScope, $scope, cjTimer, cjSettings, cjNotifications, cjJira) {
+    function ($q, $timeout, $rootScope, $scope, cjTimer, cjSettings, cjNotifications, cjJira, $filter) {
       var self = this,
         timeouts = {workspaceRefresh: null};
 

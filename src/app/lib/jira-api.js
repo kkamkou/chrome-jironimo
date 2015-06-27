@@ -9,30 +9,29 @@
 angular
   .module('jironimo.jira', ['jironimo.settings'])
   .config(function ($httpProvider) {
-    $httpProvider.interceptors.push(function ($q, $rootScope) {
+    $httpProvider.interceptors.push(function ($q, $rootScope, $filter) {
       return {
         responseError: function (rej) {
           var messages = [
-            'Unknown response from the JIRA&trade; API',
-            'Please check the settings!'
+                $filter('i18n')('jiraApiUknownResponse'),
+                $filter('i18n')('jiraApiCheckSettings')
           ],
           loginReason = rej.headers()['x-seraph-loginreason'],
           loginReasonSet = {
-            AUTHENTICATION_DENIED: 'The user is not allowed to even attempt a login.',
-            AUTHENTICATED_FAILED: 'The user could not be authenticated.',
-            AUTHORISATION_FAILED: 'The user could not be authorised.',
-            OUT: 'The user has in fact logged "out"'
+            AUTHENTICATION_DENIED: 'jiraApiAuthenticationDenied',
+            AUTHENTICATED_FAILED: 'jiraApiAuthenticationFailed',
+            AUTHORISATION_FAILED: 'jiraApiAuthorizationFailed',
+            OUT: 'jiraApiLoggedOut'
           };
 
           // error messages
           if (rej.headers()['x-authentication-denied-reason']) {
             messages = [rej.headers()['x-authentication-denied-reason']];
           } else if (loginReason && rej.status > 400 && rej.status < 500) {
-            messages = [loginReasonSet[loginReason]];
+            messages = [$filter('i18n')(loginReasonSet[loginReason])];
           } else if (rej.status === 500) {
             messages = [
-              'Check the JIRA&trade; configuration. Make sure the "Allow Remote API Calls"' +
-              ' is turned ON under Administration > General Configuration.'
+              $filter('i18n')('jiraApiCheckConfig')
             ];
           } else if (rej.data && rej.data.errorMessages) {
             messages = rej.data.errorMessages;
@@ -42,14 +41,14 @@ angular
           console.error('Exception:', rej);
 
           // custom message
-          $rootScope.$emit('jiraRequestFail', [rej.statusText, messages]);
+          $rootScope.$emit('jiraRequestFail', [$filter('i18n')('statusCode' + rej.status), messages]);
 
           return $q.reject(rej);
         }
       };
     });
   })
-  .service('cjJira', function ($rootScope, cjSettings, $http) {
+  .service('cjJira', function ($rootScope, cjSettings, $http, $filter) {
     var cache = {};
 
     /**
@@ -148,7 +147,7 @@ angular
       var config = cjSettings.account;
 
       if (!config.url || !config.login) {
-        return callback(new Error('JIRA url and login are required for the service'));
+        return callback(new Error($filter('i18n')('jiraApiUrlRequired')));
       }
 
       var callOptions = {
@@ -182,7 +181,7 @@ angular
           return callback(null, json);
         })
         .error(function (err) {
-          return callback(new Error(err || 'Connection problem'));
+          return callback(new Error(err || $filter('i18n')('jiraApiConnectionProblem')));
         });
     };
   });

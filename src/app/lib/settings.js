@@ -8,7 +8,7 @@
 
 angular
   .module('jironimo.settings', [])
-  .service('cjSettings', function () {
+  .service('cjSettings', function ($filter) {
     var _data = localStorage, self = this, defaults = {};
 
     // default settings for the account tab
@@ -39,21 +39,21 @@ angular
     defaults.workspaces = [
       {
         icon: 'target',
-        title: 'My issues',
+        title: $filter('i18n')('settingsColorWorkspaceMyIssues'),
         query: 'assignee = currentUser() ORDER BY updatedDate DESC',
         isDefault: true,
         changesNotify: true
       },
       {
         icon: 'share-2',
-        title: 'Created by me',
+        title: $filter('i18n')('settingsColorWorkspaceCreatedByMe'),
         query: 'reporter = currentUser() ORDER BY created DESC',
         isDefault: false,
         changesNotify: true
       },
       {
         icon: 'eye-2',
-        title: 'Watching',
+        title: $filter('i18n')('settingsColorWorkspaceWatching'),
         query: '(' +
           'assignee = currentUser() OR assignee was currentUser() OR reporter = currentUser()' +
           ') AND status not in (Closed, Resolved) ORDER BY updated DESC',
