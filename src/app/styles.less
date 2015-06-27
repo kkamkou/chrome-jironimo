@@ -40,16 +40,16 @@ div.container-options {
 
   .tile-content {
     display: block !important;
-    padding: 10px !important;
+    padding: 8px !important;
     height: 98px !important;
 
     h5, h6 {
       margin: 0 !important;
       line-height: 18px!important;
+      white-space: nowrap;
     }
     h6 {
       font-size: 12px !important;
-      white-space: nowrap;
     }
 
     p {
@@ -57,9 +57,14 @@ div.container-options {
       font-size: 12px;
       line-height: 13px !important;
     }
+  }
+
+  .brand {
+    min-height: inherit!important;
 
     .name {
       white-space: nowrap;
+      margin-right: 0!important;
 
       sup {
         float: right;
@@ -109,10 +114,6 @@ div.container-options {
 
   .badge {
     z-index: 1;
-  }
-
-  .brand {
-    min-height: inherit!important;
   }
 
   .issue-icon {
