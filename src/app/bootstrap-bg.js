@@ -9,7 +9,7 @@
 angular
   .module('jironimo', ['jironimo.settings', 'jironimo.jira', 'jironimo.notifications'])
   .run(
-    function (cjSettings, cjJira, cjNotifications) {
+    function (cjSettings, cjJira, cjNotifications, $filter) {
       chrome.alarms.get('jironimoRefreshIcon', function (alarm) {
         if (!alarm) {
           chrome.alarms.create('jironimoRefreshIcon', {periodInMinutes: 1});
@@ -113,8 +113,8 @@ angular
 
           case 'update':
             cjNotifications.createOrUpdate('jironimo-update', {
-              title: chrome.i18n.getMessage('messageJironimoUpdatedTitle'),
-              message: chrome.i18n.getMessage('messageJironimoUpdatedText')
+              title: $filter('i18n')('messageJironimoUpdatedTitle'),
+              message: $filter('i18n')('messageJironimoUpdatedText')
             });
             break;
         }

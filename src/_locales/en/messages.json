@@ -216,5 +216,92 @@
          "content": "$3"
        }
      }
+   },
+   "notificationAssignedToMe": {
+     "message": "The ticket was assigned to me"
+   },
+   "jiraApiUknownResponse": {
+     "message": "Unknown response from the JIRA™ API"
+   },
+   "jiraApiCheckSettings": {
+     "message": "Please check the settings!"
+   },
+   "jiraApiAuthenticationDenied": {
+     "message": "The user is not allowed to even attempt a login."
+   },
+   "jiraApiAuthenticationFailed": {
+     "message": "The user could not be authenticated."
+   },
+   "jiraApiAuthorizationFailed": {
+     "message": "The user could not be authorised."
+   },
+   "jiraApiLoggedOut": {
+     "message": "The user has in fact logged out."
+   },
+   "jiraApiCheckConfig": {
+     "message": "Check the JIRA™ configuration. Make sure the \"Allow Remote API Calls\" is turned ON under Administration > General Configuration."
+   },
+   "jiraApiUrlRequired": {
+     "message": "JIRA™ url and login are required for the service"
+   },
+   "jiraApiConnectionProblem": {
+     "message": "Connection Problem"
+   },
+   "settingsColorWorkspaceMyIssues": {
+     "message": "My Issues"
+   },
+   "settingsColorWorkspaceCreatedByMe": {
+     "message": "Created By Me"
+   },
+   "settingsColorWorkspaceWatching": {
+     "message": "Watching"
+   },
+   "statusCode400": {
+     "message": "Bad request"
+   },
+   "statusCode401": {
+     "message": "Unauthorized"
+   },
+   "statusCode403": {
+     "message": "Forbidden"
+   },
+   "statusCode404": {
+     "message": "Not Found"
+   },
+   "statusCode409": {
+     "message": "Not supported"
+   },
+   "statusCode500": {
+     "message": "Internal Server Error"
+   },
+   "indexTooltipDetachWindow": {
+     "message": "Detach this window"
+   },
+   "indexTooltipTools": {
+     "message": "Tools"
+   },
+   "indexTooltipFilters": {
+     "message": "Filters"
+   },
+   "indexTooltipSettings": {
+     "message": "Settings"
+   },
+   "indexTooltipRefresh": {
+     "message": "Refresh"
+   },
+   "indexTooltipStartProgress": {
+     "message": "Start progress"
+   },
+   "indexTooltipSaveTime": {
+     "message": "Save time and stop progress"
+   },
+   "indexTooltipStopProgress": {
+     "message": "Stop progress without time-saving"
+   },
+   "indexTooltipActions": {
+     "message": "Actions"
+   },
+   "indexTooltipOpenIssue": {
+     "message": "Open this issue in JIRA™"
    }
 }

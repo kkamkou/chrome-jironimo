@@ -10,7 +10,7 @@ angular
   .module('jironimo')
   .controller(
     'IndexController',
-    function ($q, $timeout, $rootScope, $scope, cjTimer, cjSettings, cjNotifications, cjJira) {
+    function ($q, $timeout, $rootScope, $scope, cjTimer, cjSettings, cjNotifications, cjJira, $filter) {
       var self = this,
         timeouts = {workspaceRefresh: null};
 
@@ -200,7 +200,7 @@ angular
           var paramsQuery = {_method: 'PUT', name: info.name},
           paramsNotify = {
             title: issue.key,
-            message: 'The ticket was assigned to me'
+            message: $filter('i18n')('notificationAssignedToMe')
           };
 
           cjJira.issueAssignee(issue.key, paramsQuery, function (err2) {

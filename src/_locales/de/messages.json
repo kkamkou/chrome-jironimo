@@ -234,5 +234,92 @@
                 "content": "$3"
             }
         }
+    },
+    "notificationAssignedToMe": {
+        "message": "Das Ticket wurde mir zugewiesen"
+    },
+    "jiraApiUknownResponse": {
+        "message": "Unbekannte Antwort von der JIRA™ API"
+    },
+    "jiraApiCheckSettings": {
+        "message": "Bitte überprüfe deine Einstellungen!"
+    },
+    "jiraApiAuthenticationDenied": {
+        "message": "Dem Benutzer ist es nicht erlaubt sich anzumelden."
+    },
+    "jiraApiAuthenticationFailed": {
+        "message": "Der Benutzer konnte nicht authentifiziert werden."
+    },
+    "jiraApiAuthorizationFailed": {
+        "message": "Der Benutzer konnte nicht authorisiert werden."
+    },
+    "jiraApiLoggedOut": {
+        "message": "Der Benutzer wurde ausgeloggt."
+    },
+    "jiraApiCheckConfig": {
+        "message": "Überprüfe die JIRA™ Einstellungen. Stelle sicher, dass die Einstellung \"Remote-API-Aufrufe akzeptieren\" unter Administration > Allgemeine Einstellungen angeschaltet ist."
+    },
+    "jiraApiUrlRequired": {
+        "message": "JIRA™ URL und Benutzerdaten werden benötigt um den Service zu verwenden"
+    },
+    "jiraApiConnectionProblem": {
+        "message": "Verbindungsproblem"
+    },
+    "settingsColorWorkspaceMyIssues": {
+        "message": "Meine Vorgänge"
+    },
+    "settingsColorWorkspaceCreatedByMe": {
+        "message": "Von mir erstellt"
+    },
+    "settingsColorWorkspaceWatching": {
+        "message": "Unter Beobachtung"
+    },
+    "statusCode400": {
+        "message": "Anfrage Fehlerhaft"
+    },
+    "statusCode401": {
+        "message": "Nicht Authorisiert"
+    },
+    "statusCode403": {
+        "message": "Verbotene Anfrage"
+    },
+    "statusCode404": {
+        "message": "Nicht Gefunden"
+    },
+    "statusCode409": {
+        "message": "Nicht Unterstützt"
+    },
+    "statusCode500": {
+        "message": "Interner Serverfehler"
+    },
+    "indexTooltipDetachWindow": {
+        "message": "In seperatem Fenster anzeigen"
+    },
+    "indexTooltipTools": {
+        "message": "Werkzeuge"
+    },
+    "indexTooltipFilters": {
+        "message": "Filter"
+    },
+    "indexTooltipSettings": {
+        "message": "Einstellungen"
+    },
+    "indexTooltipRefresh": {
+        "message": "Aktualisieren"
+    },
+    "indexTooltipStartProgress": {
+        "message": "Starte Arbeit"
+    },
+    "indexTooltipSaveTime": {
+        "message": "Zeit speichern und Arbeit stoppen"
+    },
+    "indexTooltipStopProgress": {
+        "message": "Arbeit stoppen ohne Zeit zu speichern"
+    },
+    "indexTooltipActions": {
+        "message": "Aktionen"
+    },
+    "indexTooltipOpenIssue": {
+        "message": "Diesen Vorgang in JIRA™ öffnen"
     }
 }
