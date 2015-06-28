@@ -2,7 +2,7 @@
   "name": "jironimo",
   "version": "0.0.0",
   "manifest_version": 2,
-  "homepage_url": "http://github.com/kkamkou/chrome-jironimo",
+  "homepage_url": "https://plus.google.com/communities/108001372997677649751",
   "description": "Atlassian JIRA Agile in your browser. Adorable open-source extension for passionate techies and product owners.",
   "default_locale": "en",
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
