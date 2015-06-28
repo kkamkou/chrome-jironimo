@@ -13,8 +13,8 @@ angular
       return {
         responseError: function (rej) {
           var messages = [
-                $filter('i18n')('jiraApiUknownResponse'),
-                $filter('i18n')('jiraApiCheckSettings')
+            $filter('i18n')('jiraApiUknownResponse'),
+            $filter('i18n')('jiraApiCheckSettings')
           ],
           loginReason = rej.headers()['x-seraph-loginreason'],
           loginReasonSet = {
