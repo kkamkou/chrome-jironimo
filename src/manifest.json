@@ -24,6 +24,8 @@
       "/vendors/stringjs/string-latest.js",
       "/vendors/lodash/lodash-latest.js",
       "/vendors/momentjs/moment-latest.js",
+      "/app/shared/module.js",
+      "/app/shared/filter/i18n.js",
       "/app/lib/settings.js",
       "/app/lib/jira-api.js",
       "/app/lib/notifications.js",

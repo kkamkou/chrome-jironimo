@@ -41,7 +41,10 @@ angular
           console.error('Exception:', rej);
 
           // custom message
-          $rootScope.$emit('jiraRequestFail', [$filter('i18n')('statusCode' + rej.status), messages]);
+          $rootScope.$emit(
+            'jiraRequestFail',
+            [$filter('i18n')('statusCode' + rej.status), messages]
+          );
 
           return $q.reject(rej);
         }
