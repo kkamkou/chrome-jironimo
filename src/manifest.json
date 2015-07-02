@@ -34,7 +34,7 @@
   },
   "commands": {
     "_execute_browser_action": {
-      "suggested_key": {"default": "Alt+J"}
+      "suggested_key": {"default": "Alt+J", "mac": "Command+J"}
     }
   },
   "permissions": [
