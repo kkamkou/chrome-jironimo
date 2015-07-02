@@ -40,7 +40,8 @@ angular
       {
         icon: 'target',
         title: $filter('i18n')('settingsWorkspaceMyIssues'),
-        query: 'assignee = currentUser() ORDER BY updatedDate DESC',
+        query: 'assignee = currentUser() AND status not in (Closed, Resolved)' +
+          ' ORDER BY updatedDate DESC',
         isDefault: true,
         changesNotify: true
       },
