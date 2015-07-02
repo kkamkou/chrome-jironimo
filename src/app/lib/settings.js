@@ -39,21 +39,21 @@ angular
     defaults.workspaces = [
       {
         icon: 'target',
-        title: $filter('i18n')('settingsColorWorkspaceMyIssues'),
+        title: $filter('i18n')('settingsWorkspaceMyIssues'),
         query: 'assignee = currentUser() ORDER BY updatedDate DESC',
         isDefault: true,
         changesNotify: true
       },
       {
         icon: 'share-2',
-        title: $filter('i18n')('settingsColorWorkspaceCreatedByMe'),
+        title: $filter('i18n')('settingsWorkspaceCreatedByMe'),
         query: 'reporter = currentUser() ORDER BY created DESC',
         isDefault: false,
         changesNotify: true
       },
       {
         icon: 'eye-2',
-        title: $filter('i18n')('settingsColorWorkspaceWatching'),
+        title: $filter('i18n')('settingsWorkspaceWatching'),
         query: '(' +
           'assignee = currentUser() OR assignee was currentUser() OR reporter = currentUser()' +
           ') AND status not in (Closed, Resolved) ORDER BY updated DESC',

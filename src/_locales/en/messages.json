@@ -244,13 +244,13 @@
   "jiraApiConnectionProblem": {
     "message": "Connection Problem"
   },
-  "settingsColorWorkspaceMyIssues": {
+  "settingsWorkspaceMyIssues": {
     "message": "My Issues"
   },
-  "settingsColorWorkspaceCreatedByMe": {
+  "settingsWorkspaceCreatedByMe": {
     "message": "Created By Me"
   },
-  "settingsColorWorkspaceWatching": {
+  "settingsWorkspaceWatching": {
     "message": "Watching"
   },
   "statusCode400": {
