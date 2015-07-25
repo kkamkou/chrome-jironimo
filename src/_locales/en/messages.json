@@ -9,7 +9,7 @@
     "message": "Connection timeout in seconds"
   },
   "placeholderOptionsAccountLogin": {
-    "message": "Login or E-mail"
+    "message": "Username or E-mail"
   },
   "placeholderOptionsAccountPassword": {
     "message": "Password"
