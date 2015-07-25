@@ -162,7 +162,9 @@ angular
         timeout: config.timeout * 1000,
         headers: {
           ContentType: 'application/json; charset=UTF-8',
-          Authorization: 'Basic ' + window.btoa([config.login, config.password].join(':'))
+          Authorization: 'Basic ' + window.btoa(
+            unescape(encodeURIComponent([config.login, config.password].join(':')))
+          )
         }
       };
 
