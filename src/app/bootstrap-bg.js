@@ -2,8 +2,8 @@
  * chrome-jironimo
  *
  * @author Kanstantsin Kamkou <2ka.by>
- * @{@link http://github.com/kkamkou/chrome-jironimo}
- * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0
+ * @link http://github.com/kkamkou/chrome-jironimo
+ * @license http://opensource.org/licenses/BSL-1.0
  */
 
 angular
@@ -20,10 +20,7 @@ angular
 
     chrome.alarms.get('jironimoStatusCheck', function (alarm) {
       if (!alarm) {
-        chrome.alarms.create(
-          'jironimoStatusCheck',
-          {periodInMinutes: +cjSettings.timer.workspace}
-        );
+        chrome.alarms.create('jironimoStatusCheck', {periodInMinutes: +cjSettings.timer.workspace});
       }
     });
 
@@ -111,6 +108,13 @@ angular
       switch (details.reason) {
         case 'install':
           chrome.tabs.create({active: true, url: cjSettings.getOptionsPageUri()});
+
+          if (chrome.runtime.setUninstallURL) { // since chrome 41
+            chrome.runtime.setUninstallURL(
+              'https://docs.google.com/forms/d/17O-B8lTvqvsLIgsLrUJjOJ_1arlDFkPYZ4UAuFv7zDo' +
+              '/viewform?usp=send_form'
+            );
+          }
           break;
 
         case 'update':
@@ -121,14 +125,6 @@ angular
           break;
       }
     });
-
-    // runtime.setUninstallURL
-    if (chrome.runtime.setUninstallURL) { // since chrome 41
-      chrome.runtime.setUninstallURL(
-        'https://docs.google.com/forms/d/17O-B8lTvqvsLIgsLrUJjOJ_1arlDFkPYZ4UAuFv7zDo' +
-        '/viewform?usp=send_form'
-      );
-    }
   });
 
 angular.bootstrap(document, ['jironimo']);
