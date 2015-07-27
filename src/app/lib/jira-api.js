@@ -37,9 +37,6 @@ angular
             messages = rej.data.errorMessages;
           }
 
-          // debug information
-          console.error('Exception:', rej);
-
           // custom message
           $rootScope.$emit(
             'jiraRequestFail',
