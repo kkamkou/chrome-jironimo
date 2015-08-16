@@ -8,6 +8,8 @@
   <p class="fg-white" ng-bind-html="jiraRequestFailed[1]"></p>
 </div>
 
+<div id="loading" ng-show="loading"><i class="icon-clock"></i></div>
+
 <div class="container clearfix">
 
   <div id="limit-per-page" class="input-control select" ng-show="!loading">
@@ -67,8 +69,6 @@
   </div>
 
   <div class="tiles clearfix">
-    <div id="loading" ng-show="loading"><i class="icon-clock"></i></div>
-
     <h3 ng-show="issues.length">{{workspaceActive.title}}</h3>
 
     <tile
