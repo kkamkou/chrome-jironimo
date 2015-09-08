@@ -30,7 +30,9 @@ angular
         if (err) { return; }
 
         if (id === 'jironimo-update') {
-          chrome.tabs.create({active: true, url: 'http://2ka.by/article/chrome-jironimo'});
+          chrome.tabs.create(
+            {active: true, url: 'http://2ka.by/article/chrome-jironimo#changelog'}
+          );
           return;
         }
 
