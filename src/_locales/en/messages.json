@@ -1,7 +1,4 @@
 {
-  "account": {
-    "message": "Account"
-  },
   "placeholderOptionsAccountUrl": {
     "message": "https://jira.yoursite.com or https://yoursite.com/jira"
   },
@@ -122,6 +119,9 @@
   "optionsJqlWorkspacesTitle": {
     "message": "Workspaces"
   },
+  "optionsJqlWorkspacesRefreshInterval": {
+    "message": "Refresh interval settings are located in the timer section"
+  },
   "optionsJqlDefault": {
     "message": "Default"
   },
@@ -179,20 +179,14 @@
   "indexNoDataProvidedText": {
     "message": "No matching entries according the current JIRA™ query"
   },
-  "optionsAccount": {
+  "optionsAccountTitle": {
     "message": "Account information"
   },
-  "optionsWorkspaces": {
-    "message": "Workspaces"
-  },
-  "optionsColors": {
+  "optionsColorsTitle": {
     "message": "Colors & Sizes"
   },
-  "optionsTimeLogging": {
-    "message": "Time Logging"
-  },
-  "optionsAbout": {
-    "message": "About Jironimo"
+  "optionsTimer": {
+    "message": "Timer"
   },
   "messageJironimoUpdatedTitle": {
     "message": "Jironimo updated!"
