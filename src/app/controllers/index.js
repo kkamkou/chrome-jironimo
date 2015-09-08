@@ -140,13 +140,19 @@ angular
       };
 
       /**
-       * Opens the settings section in a new window
+       * Opens the settings section in a new tab
        * @return {void}
        */
       $scope.tabSettings = function () {
-        chrome.tabs.create(
-          {active: true, url: cjSettings.getOptionsPageUri()}
-        );
+        chrome.tabs.create({active: true, url: cjSettings.getUriSettings()});
+      };
+
+      /**
+       * Opens the feedback form in a new tab
+       * @return {void}
+       */
+      $scope.tabFeedback = function () {
+        chrome.tabs.create({active: true, url: cjSettings.getUriFeedback()});
       };
 
       /**

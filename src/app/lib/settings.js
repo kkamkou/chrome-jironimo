@@ -97,8 +97,13 @@ angular
       /*jshint camelcase: true */
     );
 
-    this.getOptionsPageUri = function () {
+    this.getUriSettings = function () {
       return 'views/default.html#/settings/account';
+    };
+
+    this.getUriFeedback = function () {
+      return 'https://docs.google.com/forms/d/17O-B8lTvqvsLIgsLrUJjOJ_1arlDFkPYZ4UAuFv7zDo' +
+        '/viewform?usp=send_form';
     };
 
     // returns data as an object
