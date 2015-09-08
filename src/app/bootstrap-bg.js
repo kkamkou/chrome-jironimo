@@ -107,13 +107,10 @@ angular
     chrome.runtime.onInstalled.addListener(function (details) {
       switch (details.reason) {
         case 'install':
-          chrome.tabs.create({active: true, url: cjSettings.getOptionsPageUri()});
+          chrome.tabs.create({active: true, url: cjSettings.getUriSettings()});
 
           if (chrome.runtime.setUninstallURL) { // since chrome 41
-            chrome.runtime.setUninstallURL(
-              'https://docs.google.com/forms/d/17O-B8lTvqvsLIgsLrUJjOJ_1arlDFkPYZ4UAuFv7zDo' +
-              '/viewform?usp=send_form'
-            );
+            chrome.runtime.setUninstallURL(cjSettings.getUriFeedback());
           }
           break;
 
