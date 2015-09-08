@@ -114,11 +114,11 @@ angular
       scope: {current: '@'},
       controller: function ($scope, $location) {
         $scope.entries = [
-          {icon: 'key', id: 'account', title: 'optionsAccount'},
-          {icon: 'bug', id: 'jql', title: 'optionsWorkspaces'},
-          {icon: 'sun-3', id: 'colors', title: 'optionsColors'},
-          {icon: 'clock', id: 'timer', title: 'optionsTimeLogging'},
-          {icon: 'info-2', id: 'about', title: 'optionsAbout'}
+          {icon: 'key', id: 'account', title: 'optionsAccountTitle'},
+          {icon: 'bug', id: 'jql', title: 'optionsJqlWorkspacesTitle'},
+          {icon: 'sun-3', id: 'colors', title: 'optionsColorsTitle'},
+          {icon: 'clock', id: 'timer', title: 'optionsTimerTitle'},
+          {icon: 'info-2', id: 'about', title: 'optionsAboutTitle'}
         ];
 
         $scope.goTo = function (entry) {
