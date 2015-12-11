@@ -8,7 +8,7 @@
 
 angular
   .module('jironimo.tile')
-  .directive('tileTransitions', function (cjJira) {
+  .directive('tileTransitions', ['cjJira', function (cjJira) {
     return {
       restrict: 'E',
       replace: true,
@@ -35,4 +35,4 @@ angular
         };
       }
     };
-  });
+  }]);

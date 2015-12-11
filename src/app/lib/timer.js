@@ -8,7 +8,7 @@
 
 angular
   .module('jironimo.timer', ['jironimo.jira', 'jironimo.settings'])
-  .factory('cjTimer', function (cjJira, cjSettings) {
+  .factory('cjTimer', ['cjJira', 'cjSettings', function (cjJira, cjSettings) {
     var self = this,
       timerSet = cjSettings.timers;
 
@@ -159,4 +159,4 @@ angular
         });
       }
     };
-  });
+  }]);

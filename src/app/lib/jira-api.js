@@ -8,8 +8,8 @@
 
 angular
   .module('jironimo.jira', ['jironimo.settings'])
-  .config(function ($httpProvider) {
-    $httpProvider.interceptors.push(function ($q, $rootScope, $filter) {
+  .config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.interceptors.push(['$q', '$rootScope', '$filter', function ($q, $rootScope, $filter) {
       return {
         responseError: function (rej) {
           var messages = [
@@ -46,9 +46,9 @@ angular
           return $q.reject(rej);
         }
       };
-    });
-  })
-  .service('cjJira', function ($rootScope, cjSettings, $http, $filter) {
+    }]);
+  }])
+  .service('cjJira', ['$rootScope', 'cjSettings', '$http', '$filter', function ($rootScope, cjSettings, $http, $filter) {
     var cache = {};
 
     /**
@@ -186,4 +186,4 @@ angular
           return callback(new Error(err || $filter('i18n')('jiraApiConnectionProblem')));
         });
     };
-  });
+  }]);
