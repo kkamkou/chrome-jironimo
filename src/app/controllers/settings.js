@@ -8,8 +8,8 @@
 
 angular
   .module('jironimo')
-  .controller(
-    'SettingsController',
+  .controller('SettingsController', [
+    '$scope', '$location', '$filter', 'cjSettings', 'cjJira',
     function ($scope, $location, $filter, cjSettings, cjJira) {
       $scope.tabControl = {colors: 'theme'};
 
@@ -105,14 +105,14 @@ angular
           });
         */
       };
-    }
+    }]
   )
   .directive('navigation', function () {
     return {
       templateUrl: 'macros/options-navigation.html',
       restrict: 'E',
       scope: {current: '@'},
-      controller: function ($scope, $location) {
+      controller: ['$scope', '$location', function ($scope, $location) {
         $scope.entries = [
           {icon: 'key', id: 'account', title: 'optionsAccountTitle'},
           {icon: 'bug', id: 'jql', title: 'optionsJqlWorkspacesTitle'},
@@ -125,6 +125,6 @@ angular
           $location.path('/settings/' + entry.id);
           return false;
         };
-      }
+      }]
     };
   });

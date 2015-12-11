@@ -8,8 +8,8 @@
 
 angular
   .module('jironimo')
-  .controller(
-    'IndexController',
+  .controller('IndexController', [
+    '$q', '$timeout', '$rootScope', '$scope', 'cjTimer', 'cjSettings', 'cjNotifications', 'cjJira',
     function ($q, $timeout, $rootScope, $scope, cjTimer, cjSettings, cjNotifications, cjJira) {
       var self = this,
         timeouts = {workspaceRefresh: null};
@@ -285,5 +285,5 @@ angular
         $scope.jiraRequestFailed = false;
         $scope.filterFieldDisplay = false;
       });
-    }
+    }]
   );

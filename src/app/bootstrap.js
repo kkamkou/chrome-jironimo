@@ -14,7 +14,8 @@ angular
      'jironimo.tile']
   )
   .config(
-    function ($routeProvider) {
+    ['$routeProvider', '$compileProvider', function ($routeProvider, $compileProvider) {
+      $compileProvider.debugInfoEnabled(false);
       $routeProvider
         .when('/', {
           templateUrl: '/views/index.html',
@@ -41,16 +42,16 @@ angular
           controller: 'SettingsController'
         })
         .otherwise({redirectTo: '/'});
-    }
+    }]
   )
   .run(
-    function (cjSettings) {
+    ['cjSettings', function (cjSettings) {
       if (cjSettings.account.sync) {
         chrome.storage.sync.get(cjSettings.getStorageData(), function (items) {
           cjSettings.setStorageData(items);
         });
       }
-    }
+    }]
   )
   .directive('integer', function () {
     return {

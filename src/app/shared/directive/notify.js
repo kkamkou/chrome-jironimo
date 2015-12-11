@@ -8,7 +8,7 @@
 
 angular
   .module('jironimo.shared')
-  .directive('notify', function ($timeout) {
+  .directive('notify', ['$timeout', function ($timeout) {
     return {
       templateUrl: 'shared/notify.html',
       restrict: 'E',
@@ -30,4 +30,4 @@ angular
         });
       }
     };
-  });
+  }]);

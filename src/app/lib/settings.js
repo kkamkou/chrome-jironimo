@@ -8,7 +8,7 @@
 
 angular
   .module('jironimo.settings', [])
-  .service('cjSettings', function ($filter) {
+  .service('cjSettings', ['$filter', function ($filter) {
     var _data = localStorage, self = this, defaults = {};
 
     // default settings for the account tab
@@ -126,4 +126,4 @@ angular
     }
 
     return this;
-  });
+  }]);
