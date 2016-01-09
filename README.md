@@ -13,9 +13,6 @@ Mac: `Command + J`
 * [Help with translations](https://www.transifex.com/projects/p/chrome-jironimo/)
 * Help by coding: fork the repo; do your stuff; create a new Pull Request.
 
-### Donation
-No way :)
-
 ### Hot to use it?
 [Please, check the documentation project](http://chrome-jironimo.readthedocs.org/) (`docs` branch)
 *I have no time for it right now, PR?*
