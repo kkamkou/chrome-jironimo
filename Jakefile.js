@@ -119,7 +119,7 @@ task('pack-css', ['copy-sources'], {async: true}, function () {
   ).then(function (output) {
     fs.writeFileSync(
       path.join(CONSTANTS.DIR_BUILD_APP, 'app.css'),
-      csso.justDoIt(output.css)
+      csso.minify(output.css).css
     );
     console.log('- Styles were packed');
     complete();
@@ -152,7 +152,7 @@ task('copy-metro', ['copy-sources'], function () {
 
   fs.writeFileSync(
     pathMetroCssOut,
-    csso.justDoIt(fs.readFileSync(pathMetroCssIn, {encoding: 'utf-8'}))
+    csso.minify(fs.readFileSync(pathMetroCssIn, {encoding: 'utf-8'})).css
   );
 
   console.log('- Metro styles were copied');
