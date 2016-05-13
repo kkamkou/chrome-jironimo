@@ -1,382 +1,298 @@
 {
     "statusCode403": {
-        "message": "Verbotene Anfrage",
-        "description": ""
+        "message": "Verbotene Anfrage"
     },
     "settingsColorsSizeDouble": {
-        "message": "Doppelt",
-        "description": ""
+        "message": "Doppelt"
     },
     "jiraApiCheckSettings": {
-        "message": "Bitte überprüfe deine Einstellungen!",
-        "description": ""
+        "message": "Bitte überprüfe deine Einstellungen!"
     },
     "captionOptionsAccountJiraAddress": {
-        "message": "JIRA™ Adresse",
-        "description": ""
+        "message": "JIRA™ Adresse"
     },
     "jiraApiUrlRequired": {
-        "message": "JIRA™ URL und Benutzerdaten werden benötigt um den Service zu verwenden",
-        "description": ""
+        "message": "JIRA™ URL und Benutzerdaten werden benötigt um den Service zu verwenden"
     },
     "optionsAboutIcons": {
-        "message": "Symbole",
-        "description": ""
+        "message": "Symbole"
     },
     "btnSave": {
-        "message": "Speichern",
-        "description": ""
+        "message": "Speichern"
     },
     "optionsTimerEnableTimelog": {
-        "message": "Aktiviere die Zeitmessung",
-        "description": ""
+        "message": "Aktiviere die Zeitmessung"
     },
     "optionsColorsTitle": {
-        "message": "Farben & Größen",
-        "description": ""
+        "message": "Farben & Größen"
     },
     "statusCode500": {
-        "message": "Interner Serverfehler",
-        "description": ""
+        "message": "Interner Serverfehler"
     },
     "indexTooltipDetachWindow": {
-        "message": "In seperatem Fenster anzeigen",
-        "description": ""
+        "message": "In seperatem Fenster anzeigen"
     },
     "optionsAboutTitle": {
-        "message": "Über Jironimo",
-        "description": ""
+        "message": "Über Jironimo"
     },
     "notificationAssignedToMe": {
-        "message": "Das Ticket wurde mir zugewiesen",
-        "description": ""
+        "message": "Das Ticket wurde mir zugewiesen"
     },
     "optionsAboutThirdParty": {
-        "message": "Fremdsoftware",
-        "description": ""
+        "message": "Fremdsoftware"
     },
     "indexTooltipSettings": {
-        "message": "Einstellungen",
-        "description": ""
+        "message": "Einstellungen"
     },
     "paginationPosition": {
         "message": "$POSITION$–$LIMIT$ von $TOTAL$",
-        "description": ""
+        "placeholders": {
+          "position": {
+            "content": "$1"
+          },
+          "limit": {
+            "content": "$2"
+          },
+          "total": {
+            "content": "$3"
+          }
+        }
     },
     "placeholderOptionsAccountLogin": {
-        "message": "Benutzername oder E-mail",
-        "description": ""
+        "message": "Benutzername oder E-mail"
     },
     "placeholderOptionsJqlQuery": {
-        "message": "JQL für den aktuellen Arbeitsbereich",
-        "description": ""
+        "message": "JQL für den aktuellen Arbeitsbereich"
     },
     "indexTooltipRefresh": {
-        "message": "Aktualisieren",
-        "description": ""
+        "message": "Aktualisieren"
     },
     "indexTooltipActions": {
-        "message": "Aktionen",
-        "description": ""
+        "message": "Aktionen"
     },
     "settingsColorsPriorityColors": {
-        "message": "Farben für Prioritäten",
-        "description": ""
+        "message": "Farben für Prioritäten"
     },
     "statusCode409": {
-        "message": "Nicht Unterstützt",
-        "description": ""
+        "message": "Nicht Unterstützt"
     },
     "captionOptionsAccountSync": {
-        "message": "Einstellungen synchronisieren",
-        "description": ""
+        "message": "Einstellungen synchronisieren"
     },
     "jiraApiConnectionProblem": {
-        "message": "Verbindungsproblem",
-        "description": ""
+        "message": "Verbindungsproblem"
     },
     "settingsColorsAvailableColors": {
-        "message": "Öffne eine Liste aller Verfügbarer Farben",
-        "description": ""
+        "message": "Öffne eine Liste aller Verfügbarer Farben"
     },
     "indexTooltipTools": {
-        "message": "Werkzeuge",
-        "description": ""
+        "message": "Werkzeuge"
     },
     "indexTooltipSaveTime": {
-        "message": "Zeit speichern und Arbeit stoppen",
-        "description": ""
+        "message": "Zeit speichern und Arbeit stoppen"
     },
     "settingsColorsSizeHalf": {
-        "message": "Halbiert",
-        "description": ""
+        "message": "Halbiert"
     },
     "optionsJqlDateHint": {
-        "message": "Bitte versichere dich, dass \"<b>updated</b>\" oder \"<b>updatedDate</b>\" nach dem \"<b>ORDER BY</b>\" plaziert sind.",
-        "description": ""
+        "message": "Bitte versichere dich, dass \"<b>updated</b>\" oder \"<b>updatedDate</b>\" nach dem \"<b>ORDER BY</b>\" plaziert sind."
     },
     "indexTooltipStopProgress": {
-        "message": "Arbeit stoppen ohne Zeit zu speichern",
-        "description": ""
+        "message": "Arbeit stoppen ohne Zeit zu speichern"
     },
     "settingsColorsPrioritySizes": {
-        "message": "Größen für Prioritäten",
-        "description": ""
+        "message": "Größen für Prioritäten"
     },
     "jiraApiAuthenticationDenied": {
-        "message": "Dem Benutzer ist es nicht erlaubt sich anzumelden.",
-        "description": ""
+        "message": "Dem Benutzer ist es nicht erlaubt sich anzumelden."
     },
     "settingsColorTypesub_task": {
-        "message": "Unteraufgabe",
-        "description": ""
+        "message": "Unteraufgabe"
     },
     "jiraApiAuthorizationFailed": {
-        "message": "Der Benutzer konnte nicht authorisiert werden.",
-        "description": ""
+        "message": "Der Benutzer konnte nicht authorisiert werden."
     },
     "messageJironimoUpdatedTitle": {
-        "message": "Jironimo aktualisiert!",
-        "description": ""
+        "message": "Jironimo aktualisiert!"
     },
     "optionsTimerTitle": {
-        "message": "Aktualisierung",
-        "description": ""
+        "message": "Aktualisierung"
     },
     "settingsColorsDefaultTheme": {
-        "message": "Standard Thema",
-        "description": ""
+        "message": "Standard Thema"
     },
     "msgWorkspaceImportSuccess": {
-        "message": "$1 Arbeitsbereiche wurden erfolgreich importiert.",
-        "description": ""
+        "message": "$1 Arbeitsbereiche wurden erfolgreich importiert."
     },
     "statusCode401": {
-        "message": "Nicht Authorisiert",
-        "description": ""
+        "message": "Nicht Authorisiert"
     },
     "optionsTimerTimelogOnlyOneActive": {
-        "message": "Nur einen aktiven Vorgang erlauben",
-        "description": ""
+        "message": "Nur einen aktiven Vorgang erlauben"
     },
     "settingsColorTypetask": {
-        "message": "Aufgabe",
-        "description": ""
+        "message": "Aufgabe"
     },
     "placeholderOptionsAccountTimeout": {
-        "message": "Zeitüberschreitung der Verbindung in Sekunden",
-        "description": ""
+        "message": "Zeitüberschreitung der Verbindung in Sekunden"
     },
     "msgOptionsSaveSuccess": {
-        "message": "Einstellungen wurden gespeichert.",
-        "description": ""
+        "message": "Einstellungen wurden gespeichert."
     },
     "titleOptionsJqlIcon": {
-        "message": "Symbol für den Arbeitsbereich. Finde die Liste aller verfügbaren Symbole. Ignoriere das \"icon-\"-Prefix",
-        "description": ""
+        "message": "Symbol für den Arbeitsbereich. Finde die Liste aller verfügbaren Symbole. Ignoriere das \"icon-\"-Prefix"
     },
     "jiraApiUknownResponse": {
-        "message": "Unbekannte Antwort von der JIRA™ API",
-        "description": ""
+        "message": "Unbekannte Antwort von der JIRA™ API"
     },
     "settingsColorTypeimprovement": {
-        "message": "Verbesserung",
-        "description": ""
+        "message": "Verbesserung"
     },
     "optionsTimerWorkspaces": {
-        "message": "Arbeitsbereiche",
-        "description": ""
+        "message": "Arbeitsbereiche"
     },
     "settingsColorsSizeDefault": {
-        "message": "Normal",
-        "description": ""
+        "message": "Normal"
     },
     "statusCode404": {
-        "message": "Nicht Gefunden",
-        "description": ""
+        "message": "Nicht Gefunden"
     },
     "settingsColorTypestory": {
-        "message": "Story",
-        "description": ""
+        "message": "Story"
     },
     "settingsColorTypebug": {
-        "message": "Bug",
-        "description": ""
+        "message": "Bug"
     },
     "optionsTimer": {
-        "message": "Aktualisierung",
-        "description": ""
+        "message": "Aktualisierung"
     },
     "indexTooltipStartProgress": {
-        "message": "Starte Arbeit",
-        "description": ""
+        "message": "Starte Arbeit"
     },
     "placeholderOptionsJqlTitle": {
-        "message": "Titel",
-        "description": ""
+        "message": "Titel"
     },
     "optionsJqlWorkspacesRefreshInterval": {
-        "message": "Refresh Interval Einstellungen finden sich in der Timer Sektion",
-        "description": ""
+        "message": "Refresh Interval Einstellungen finden sich in der Timer Sektion"
     },
     "settingsWorkspaceWatching": {
-        "message": "Unter Beobachtung",
-        "description": ""
+        "message": "Unter Beobachtung"
     },
     "captionOptionsAccountJiraAuth": {
-        "message": "JIRA™ Account Informationen",
-        "description": ""
+        "message": "JIRA™ Account Informationen"
     },
     "optionsJqlDefault": {
-        "message": "Standard",
-        "description": ""
+        "message": "Standard"
     },
     "settingsWorkspaceMyIssues": {
-        "message": "Meine Vorgänge",
-        "description": ""
+        "message": "Meine Vorgänge"
     },
     "settingsWorkspaceCreatedByMe": {
-        "message": "Von mir erstellt",
-        "description": ""
+        "message": "Von mir erstellt"
     },
     "placeholderOptionsAccountUrl": {
-        "message": "https://jira.deineseite.de oder http://deineseite.de/jira",
-        "description": ""
+        "message": "https://jira.deineseite.de oder http://deineseite.de/jira"
     },
     "statusCode400": {
-        "message": "Anfrage Fehlerhaft",
-        "description": ""
+        "message": "Anfrage Fehlerhaft"
     },
     "optionsAboutVersion": {
-        "message": "Version",
-        "description": ""
+        "message": "Version"
     },
     "placeholderOptionsAccountPassword": {
-        "message": "Passwort",
-        "description": ""
+        "message": "Passwort"
     },
     "indexTooltipFilters": {
-        "message": "Filter",
-        "description": ""
+        "message": "Filter"
     },
     "settingsColorTypeepic": {
-        "message": "Epic",
-        "description": ""
+        "message": "Epic"
     },
     "optionsAboutShareOpinion": {
-        "message": "Bitte, <a href=\"https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl\" target=\"_blank\">teile deine Meinung</a>.",
-        "description": ""
+        "message": "Bitte, <a href=\"https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl\" target=\"_blank\">teile deine Meinung</a>."
     },
     "optionsAccountTitle": {
-        "message": "Account Informationen",
-        "description": ""
+        "message": "Account Informationen"
     },
     "hintHowCredentialsAreStored": {
-        "message": "Jironimo benutzt keine Middleware um deine Benutzerdaten zu speichern. Sie werden nur auf deinem Computer gespeichert.",
-        "description": ""
+        "message": "Jironimo benutzt keine Middleware um deine Benutzerdaten zu speichern. Sie werden nur auf deinem Computer gespeichert."
     },
     "optionsJqlWorkspacesTitle": {
-        "message": "Arbeitsbereiche",
-        "description": ""
+        "message": "Arbeitsbereiche"
     },
     "placeholderOptionsJqlIcon": {
-        "message": "Symbol",
-        "description": ""
+        "message": "Symbol"
     },
     "optionsJqlAvailableIcons": {
-        "message": "Öffne eine Liste aller verfügbaren Symbole",
-        "description": ""
+        "message": "Öffne eine Liste aller verfügbaren Symbole"
     },
     "settingsColorsSizeTriple": {
-        "message": "Dreifach",
-        "description": ""
+        "message": "Dreifach"
     },
     "hintSynchroniseSettings": {
-        "message": "Einstellungen für diese Erweiterung werden auf verschiedenen Geräten verfügbar sein (es wird Google Chrome Sync verwendet).",
-        "description": ""
+        "message": "Einstellungen für diese Erweiterung werden auf verschiedenen Geräten verfügbar sein (es wird Google Chrome Sync verwendet)."
     },
     "optionsAboutFeedback": {
-        "message": "Feedback",
-        "description": ""
+        "message": "Feedback"
     },
     "messageJironimoUpdatedText": {
-        "message": "Die Erweiterung wurde aktualisiert, bitte überprüfe deine Einstellungen.",
-        "description": ""
+        "message": "Die Erweiterung wurde aktualisiert, bitte überprüfe deine Einstellungen."
     },
     "settingsColorsAvailableSizes": {
-        "message": "Öffne eine Liste aller Verfügbaren Größen",
-        "description": ""
+        "message": "Öffne eine Liste aller Verfügbaren Größen"
     },
     "optionsJqlImportFavorites": {
-        "message": "Importiere Favoriten aus JIRA™",
-        "description": ""
+        "message": "Importiere Favoriten aus JIRA™"
     },
     "hintRequiredJiraAgile": {
-        "message": "Um Transitions-Features zu benutzen, versichere dich, dass in deiner JIRA™-Instanz das <a href=\"https://www.atlassian.com/software/jira/agile\" class=\"fg-green\" target=\"_blank\">JIRA™ Agile</a> Add-On installiert ist.",
-        "description": ""
+        "message": "Um Transitions-Features zu benutzen, versichere dich, dass in deiner JIRA™-Instanz das <a href=\"https://www.atlassian.com/software/jira/agile\" class=\"fg-green\" target=\"_blank\">JIRA™ Agile</a> Add-On installiert ist."
     },
     "settingsColorsPriority": {
-        "message": "Priorität:",
-        "description": ""
+        "message": "Priorität:"
     },
     "optionsAboutAuthor": {
-        "message": "Author",
-        "description": ""
+        "message": "Author"
     },
     "optionsJqlCheckUpdates": {
-        "message": "Auf Aktualisierungen prüfen und benachrichtigen",
-        "description": ""
+        "message": "Auf Aktualisierungen prüfen und benachrichtigen"
     },
     "optionsJqlAddOne": {
-        "message": "Einen hinzufügen",
-        "description": ""
+        "message": "Einen hinzufügen"
     },
     "optionsAboutContributors": {
-        "message": "Mitwirkende",
-        "description": ""
+        "message": "Mitwirkende"
     },
     "jiraApiLoggedOut": {
-        "message": "Der Benutzer wurde ausgeloggt.",
-        "description": ""
+        "message": "Der Benutzer wurde ausgeloggt."
     },
     "placeholderOptionsTimerRefreshInterval": {
-        "message": "Aktualisierungsintervall (min.)",
-        "description": ""
+        "message": "Aktualisierungsintervall (min.)"
     },
     "jiraApiAuthenticationFailed": {
-        "message": "Der Benutzer konnte nicht authentifiziert werden.",
-        "description": ""
+        "message": "Der Benutzer konnte nicht authentifiziert werden."
     },
     "jiraApiCheckConfig": {
-        "message": "Überprüfe die JIRA™ Einstellungen. Stelle sicher, dass die Einstellung \"Remote-API-Aufrufe akzeptieren\" unter Administration > Allgemeine Einstellungen angeschaltet ist.",
-        "description": ""
+        "message": "Überprüfe die JIRA™ Einstellungen. Stelle sicher, dass die Einstellung \"Remote-API-Aufrufe akzeptieren\" unter Administration > Allgemeine Einstellungen angeschaltet ist."
     },
     "settingsColorsSizeQuadruple": {
-        "message": "Vierfach",
-        "description": ""
+        "message": "Vierfach"
     },
     "indexNoDataProvidedTitle": {
-        "message": "Keine Daten Eingegeben",
-        "description": ""
+        "message": "Keine Daten Eingegeben"
     },
     "indexNoDataProvidedText": {
-        "message": "Keine passenden Einträge mit der jetzigen JIRA™ Anfrage",
-        "description": ""
+        "message": "Keine passenden Einträge mit der jetzigen JIRA™ Anfrage"
     },
     "indexTooltipOpenIssue": {
-        "message": "Diesen Vorgang in JIRA™ öffnen",
-        "description": ""
+        "message": "Diesen Vorgang in JIRA™ öffnen"
     },
     "optionsTimerTimelog": {
-        "message": "Zeitmessung",
-        "description": ""
+        "message": "Zeitmessung"
     },
     "settingsColorExamplePriority": {
-        "message": "Beispiel Priorität",
-        "description": ""
+        "message": "Beispiel Priorität"
     },
     "optionsAboutLicense": {
-        "message": "Lizenz",
-        "description": ""
+        "message": "Lizenz"
     }
 }
