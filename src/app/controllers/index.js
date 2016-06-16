@@ -109,7 +109,7 @@ angular
 
       /**
        * Resets the pagination data
-       * @return {void}
+       * @return {this}
        */
       $scope.searchReset = function () {
         $scope.searchTotal = 0;
