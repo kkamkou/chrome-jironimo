@@ -19,6 +19,8 @@ Mac: `Command + J`
 
 ### Build
 ```bash
+git clone --recursive https://github.com/kkamkou/chrome-jironimo.git
+cd chrome-jironimo
 npm install && ./node_modules/.bin/jake version='4.0'
 ```
 
