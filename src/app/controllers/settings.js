@@ -58,8 +58,8 @@ angular
             return;
           }
 
-          var workspaces = _.pluck($scope.workspaces, 'query'),
-            favs = _.pluck(data, 'jql'),
+          var workspaces = _.map($scope.workspaces, 'query'),
+            favs = _.map(data, 'jql'),
             count = 0;
 
           _.difference(favs, workspaces).forEach(function (jql) {
