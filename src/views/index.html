@@ -39,13 +39,13 @@
     </div>
 
     <button title="{{ 'indexTooltipFilters' | i18n }}"
-      ng-click="filterFieldDisplay = !filterFieldDisplay"
+      ng-click="filterFieldDisplay = !filterFieldDisplay" ng-init="filterFieldDisplay=false"
       ng-class="{inverse: filterFieldDisplay || filterText}">
       <i class="icon-filter"></i>
     </button><!--
 
   --><button title="{{ 'indexTooltipTools' | i18n }}" id="advanced-panel-icon"
-      ng-class="{inverse: homePanelVisible}"
+      ng-class="{inverse: homePanelVisible}" ng-init="homePanelVisible=false"
       ng-click="homePanelVisible = !homePanelVisible">
       <i class="icon-mouse"></i>
     </button>
