@@ -60,6 +60,9 @@ angular
         ctrl.$parsers.unshift(function (val) {
           return parseInt(val, 10);
         });
+        ctrl.$formatters.push(function (val) {
+          return '' + val;
+        });
       }
     };
   });

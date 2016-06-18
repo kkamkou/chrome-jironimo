@@ -267,7 +267,7 @@ angular
       });
 
       $rootScope.$on('jiraRequestFail', function (event, args) {
-        $scope.jiraRequestFailed = [S(args[0]).capitalize().s, args[1].join('; ')];
+        $scope.jiraRequestFailed = [_.capitalize(args[0]), args[1].join('; ')];
       });
 
       $scope.$watch('filterFieldDisplay', function (flag) {

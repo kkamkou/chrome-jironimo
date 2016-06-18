@@ -21,7 +21,6 @@
     "persistent": false,
     "scripts": [
       "/vendors/angularjs/angular.js",
-      "/vendors/stringjs/string-latest.js",
       "/vendors/lodash/lodash-latest.js",
       "/vendors/momentjs/moment-latest.js",
       "/app/shared/module.js",
