@@ -53,7 +53,7 @@ angular
 
           var cache = [];
 
-          _.where(cjSettings.workspaces, {changesNotify: true}).forEach(function (workspace) {
+          _.filter(cjSettings.workspaces, {changesNotify: true}).forEach(function (workspace) {
             var query = {
               jql: 'updated > "-%dm" AND '.replace('%d', +cjSettings.timer.workspace) +
                 workspace.query,
@@ -98,7 +98,7 @@ angular
           return;
         }
 
-        var timer = _.where(cjSettings.timers || {}, {started: true}).pop();
+        var timer = _.filter(cjSettings.timers || {}, {started: true}).pop();
         if (!timer) {
           return;
         }
