@@ -27,7 +27,7 @@
     "message": "JIRA™ address"
   },
   "captionOptionsAccountJiraAuth": {
-    "message": "JIRA™ account information"
+    "message": "JIRA™ login credentials"
   },
   "captionOptionsAccountSync": {
     "message": "Synchronise settings"
