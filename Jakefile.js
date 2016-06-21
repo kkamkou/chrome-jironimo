@@ -97,12 +97,14 @@ task('pack-vendors', ['copy-sources'], {async: true}, function () {
     match;
 
   while ((match = regex.exec(body)) !== null) {
-    fileSet.push(path.join(CONSTANTS.DIR_SRC, match[1]));
+    if (!~match[1].indexOf('less/')) {
+      fileSet.push(path.join(CONSTANTS.DIR_SRC, match[1]));
+    }
   }
 
   fs.writeFile(
     path.join(CONSTANTS.DIR_BUILD_APP, 'vendors.js'),
-    uglify.minify(fileSet, {mangle: false}).code,
+    uglify.minify(fileSet).code,
     function () {
       console.log('- Packed to "vendors.js":', os.EOL, fileSet);
       complete();
