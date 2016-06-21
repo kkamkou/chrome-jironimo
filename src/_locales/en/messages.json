@@ -44,6 +44,12 @@
   "hintSynchroniseSettings": {
     "message": "Settings for the current extension will be available on different devices (native Google Chrome sync is used)"
   },
+  "hintWhereToFindCredentials": {
+    "message": "<p>You can determine your JIRA&trade; username as follows:</p><p>Left mouse click on your avatar at the navigation bar and select the <i>Profile</i> option. Use the value in front of <i>Username</i>.</p>"
+  },
+  "hintWhereToFindJiraAddress": {
+    "message": "<p>Open a JIRA ticket in a new tab. Copy URL of the ticket and paste it here. Remove everything starting from <i>/browse</i> until the end of the string. For example: <i>https://issues.apache.org/jira/browse/PROJ-3319</i> becomes <i>https://issues.apache.org/jira</i></p>"
+  },
   "btnSave": {
     "message": "Save"
   },

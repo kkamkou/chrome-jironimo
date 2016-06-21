@@ -1,4 +1,4 @@
-<div class="container container-options">
+<div class="container container-options bg-white padding20">
 
   <navigation current="account"></navigation>
 
@@ -40,10 +40,8 @@
       </div>
 
       <div class="span6">
-        <div class="notice marker-on-left bg-white">
-          <p>Username is displayed here (JIRA navigation panel): Profile -> Username.</p>
-          <p>More logical is to use the e-mail address, but that is not how JIRA works.</p>
-        </div>
+        <div class="notice marker-on-left bg-white"
+          ng-bind-html="'hintWhereToFindJiraAddress' | i18n"></div>
       </div>
     </div>
 
@@ -65,10 +63,8 @@
       </div>
 
       <div class="span6">
-        <div class="notice marker-on-left bg-white">
-          <p>Username is displayed here (JIRA navigation panel): Profile -> Username.</p>
-          <p>More logical is to use the e-mail address, but that is not how JIRA works.</p>
-        </div>
+        <div class="notice marker-on-left bg-white"
+          ng-bind-html="'hintWhereToFindCredentials' | i18n"></div>
       </div>
     </div>
 
