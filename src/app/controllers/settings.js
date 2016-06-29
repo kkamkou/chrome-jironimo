@@ -86,24 +86,26 @@ angular
       $scope.save = function (type, data) {
         if (!data) { return; }
 
-        if (type === 'account') {
-          data.url = data.url.replace(/\/+$/, '');
-          data.timeout = parseInt(data.timeout, 10) || 10;
-        }
+        var ok = function () {
+          $scope.notifications.push(
+            {type: 'success', message: $filter('i18n')('msgOptionsSaveSuccess')}
+          );
+        };
 
-        cjSettings[type] = angular.copy(data);
-
-        $scope.notifications.push(
-          {type: 'success', message: $filter('i18n')('msgOptionsSaveSuccess')}
-        );
-
-        // checking permissions for the url
-        /* issue #70
-          chrome.permissions.request({origins: [data.url + '/']}, function (flag) {
-            if (!flag) { return false; }
+        switch (type) {
+          case 'account':
+            data.url = data.url.replace(/\/+$/, '');
+            data.timeout = parseInt(data.timeout, 10) || 10;
+            chrome.permissions.request({origins: [data.url + '/']}, function (flag) {
+              if (!flag) { return false; }
+              cjSettings[type] = angular.copy(data);
+              $scope.$apply(ok);
+            });
+            break;
+          default:
             cjSettings[type] = angular.copy(data);
-          });
-        */
+            ok();
+        }
       };
     }]
   )
