@@ -17,10 +17,19 @@ Mac: `Command + J`
 [Please, check the documentation project](http://chrome-jironimo.readthedocs.org/) (`docs` branch)
 *I have no time for it right now, PR?*
 
-### Build
-```bash
+### Repository clone
+```
 git clone --recursive https://github.com/kkamkou/chrome-jironimo.git
 cd chrome-jironimo
+```
+
+### Use the source code
+- Navigate to `chrome://extensions`
+- Expand the developer dropdown menu and click `Load Unpacked Extension`
+- Navigate to local folder `/src`
+
+### Build
+```bash
 npm install && ./node_modules/.bin/jake version='4.0'
 ```
 
