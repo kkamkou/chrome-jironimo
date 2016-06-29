@@ -7,7 +7,7 @@
   "default_locale": "en",
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "options_page": "views/default.html#/settings/account",
-  "minimum_chrome_version": "28",
+  "minimum_chrome_version": "40",
   "icons": {
     "16": "icons/16.png",
     "48": "icons/48.png",
@@ -36,11 +36,13 @@
       "suggested_key": {"default": "Alt+J", "mac": "Command+J"}
     }
   },
+  "optional_permissions": [
+    "http://*/",
+    "https://*/"
+  ],
   "permissions": [
     "storage",
     "notifications",
-    "alarms",
-    "http://*/",
-    "https://*/"
+    "alarms"
   ]
 }
