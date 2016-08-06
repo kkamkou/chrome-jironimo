@@ -12,6 +12,11 @@ angular
     $httpProvider.interceptors.push(['$q', '$rootScope', '$filter', function ($q, $rootScope, $filter) {
       return {
         responseError: function (rej) {
+          // ignore the 401 error without authorization
+          if (rej.status === 401 && !rej.config.headers.Authorization) {
+            return $q.reject(rej);
+          }
+
           var messages = [
             $filter('i18n')('jiraApiUknownResponse'),
             $filter('i18n')('jiraApiCheckSettings')
@@ -49,7 +54,7 @@ angular
     }]);
   }])
   .service('cjJira', ['$rootScope', 'cjSettings', '$http', '$filter', function ($rootScope, cjSettings, $http, $filter) {
-    var cache = {};
+    const cache = {};
 
     /**
      * Currently logged user
@@ -157,13 +162,16 @@ angular
         data: dataSet,
         responseType: 'json',
         timeout: config.timeout * 1000,
-        headers: {
-          ContentType: 'application/json; charset=UTF-8',
-          Authorization: 'Basic ' + window.btoa(
-            unescape(encodeURIComponent([config.login, config.password].join(':')))
-          )
-        }
+        headers: {ContentType: 'application/json; charset=UTF-8'}
       };
+
+      // auth is needed
+      if (callOptions.data._forceAuth) {
+        callOptions.headers.Authorization = 'Basic ' + window.btoa(
+          unescape(encodeURIComponent([config.login, config.password].join(':')))
+        );
+        delete callOptions.data._forceAuth;
+      }
 
       // different method
       if (callOptions.data._method) {
@@ -179,10 +187,11 @@ angular
 
       // ajax object
       $http(callOptions)
-        .success(function (json) {
-          return callback(null, json);
-        })
-        .error(function (err) {
+        .success(json => callback(null, json))
+        .error((err, status) => {
+          if (status === 401 && !callOptions.headers.Authorization) {
+            return this._makeRequest(urn, Object.assign({_forceAuth: true}, dataSet), callback);
+          }
           return callback(new Error(err || $filter('i18n')('jiraApiConnectionProblem')));
         });
     };
