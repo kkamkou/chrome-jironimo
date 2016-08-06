@@ -144,7 +144,7 @@ angular
     this._makeRequest = function (urn, dataSet, callback) {
       var config = cjSettings.account;
 
-      if (!config.url || !config.login) {
+      if (!config.url) {
         return callback(new Error($filter('i18n')('jiraApiUrlRequired')));
       }
 
