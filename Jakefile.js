@@ -6,7 +6,7 @@
 
 'use strict';
 
-var uglify = require('uglify-js'),
+var uglify = require('uglify-js-harmony'),
   fs = require('fs'),
   path = require('path'),
   wrench = require('wrench'),
@@ -58,6 +58,17 @@ function readDir(pathDir, ext) {
   return results;
 }
 
+function minify (fileSet) {
+  let output = '';
+  fileSet.forEach(f => {
+    output += ~f.indexOf('/vendors/')
+      ? fs.readFileSync(f)
+      : uglify.minify(f, {mangle: false}).code;
+    output += os.EOL;
+  });
+  return output;
+}
+
 // default
 desc('Default build action');
 task('default', ['cleanup-pre', 'layout-modify', 'cleanup-post'], function () {
@@ -103,9 +114,7 @@ task('pack-vendors', ['copy-sources'], {async: true}, function () {
   }
 
   fs.writeFile(
-    path.join(CONSTANTS.DIR_BUILD_APP, 'vendors.js'),
-    uglify.minify(fileSet).code,
-    function () {
+    path.join(CONSTANTS.DIR_BUILD_APP, 'vendors.js'), minify(fileSet), () => {
       console.log('- Packed to "vendors.js":', os.EOL, fileSet);
       complete();
     }
@@ -178,9 +187,7 @@ task('copy-bootstrap-bg', ['copy-sources'], {async: true}, function () {
   });
 
   fs.writeFile(
-    path.join(CONSTANTS.DIR_BUILD_APP, 'bootstrap-bg.js'),
-    uglify.minify(fileSet, {mangle: false}).code,
-    function () {
+    path.join(CONSTANTS.DIR_BUILD_APP, 'bootstrap-bg.js'), minify(fileSet), function () {
       console.log('- Packed to "bootstrap-bg.js":', os.EOL, fileSet);
       manifest.background.scripts = ['app/bootstrap-bg.js'];
       manifestUpdate(manifest);
