@@ -49,7 +49,7 @@ angular
     }]);
   }])
   .service('cjJira', ['$rootScope', 'cjSettings', '$http', '$filter', function ($rootScope, cjSettings, $http, $filter) {
-    var cache = {};
+    const cache = {};
 
     /**
      * Currently logged user
@@ -62,9 +62,7 @@ angular
         return callback(null, cache.myself);
       }
 
-      this._makeRequest('/api/latest/myself', {}, function (err, data) {
-      });
-      this._makeRequest('/api/latest/myself', {}, function (err, data) {
+      this._makeRequest('/api/latest/myself', {}, (err, data) => {
         if (!err) {
           cache.myself = data;
         }
@@ -102,9 +100,7 @@ angular
      * @param {Function} callback
      */
     this.issueAssignee = function (issueId, data, callback) {
-      this._makeRequest(
-        '/api/latest/issue/' + issueId + '/assignee', data, callback
-      );
+      this._makeRequest('/api/latest/issue/' + issueId + '/assignee', data, callback);
     };
 
     /**
@@ -148,7 +144,7 @@ angular
     this._makeRequest = function (urn, dataSet, callback) {
       var config = cjSettings.account;
 
-      if (!config.url || !config.login) {
+      if (!config.url) {
         return callback(new Error($filter('i18n')('jiraApiUrlRequired')));
       }
 
@@ -159,12 +155,7 @@ angular
         data: dataSet,
         responseType: 'json',
         timeout: config.timeout * 1000,
-        headers: {
-          ContentType: 'application/json; charset=UTF-8',
-          Authorization: 'Basic ' + window.btoa(
-            unescape(encodeURIComponent([config.login, config.password].join(':')))
-          )
-        }
+        headers: {ContentType: 'application/json; charset=UTF-8'}
       };
 
       // different method
@@ -181,12 +172,7 @@ angular
 
       // ajax object
       $http(callOptions)
-        .success(function (json, status, headers) {
-          console.log(headers);
-          return callback(null, json);
-        })
-        .error(function (err) {
-          return callback(new Error(err || $filter('i18n')('jiraApiConnectionProblem')));
-        });
+        .success(json => callback(null, json))
+        .error(err => callback(new Error(err || $filter('i18n')('jiraApiConnectionProblem'))));
     };
   }]);

@@ -31,6 +31,8 @@ cd chrome-jironimo
 ### Build
 ```bash
 npm install && ./node_modules/.bin/jake version='4.0'
+# example for windows
+# npm install && C:\...\chrome-jironimo\node_modules\.bin\jake version='4.0'
 ```
 
 ### Docker

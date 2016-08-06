@@ -8,7 +8,7 @@
   "private": true,
   "dependencies": {
     "jake": "latest",
-    "uglify-js": "latest",
+    "uglify-js-harmony": "latest",
     "less": "latest",
     "csso": "latest",
     "lodash": "latest",

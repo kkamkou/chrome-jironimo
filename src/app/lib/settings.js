@@ -11,6 +11,8 @@ angular
   .service('cjSettings', ['$filter', function ($filter) {
     var _data = localStorage, self = this, defaults = {};
 
+    defaults.version = 570;
+
     // default settings for the account tab
     //defaults.account = {timeout: 10, sync: true};
     defaults.general = {sync: true};
@@ -123,11 +125,11 @@ angular
     };
 
     // migrations
-    if (_data.account) {
-      _data.accounts = angular.toJson(
-        [_.assign({}, defaults.accounts[0], angular.fromJson(_data.account))]
-      );
-      _data.removeItem('account');
+    if (this['version'] < 580) {
+      const acc = this['account'];
+      delete acc.url;
+      this['account'] = acc;
+      this['version'] = 580;
     }
 
     return this;
