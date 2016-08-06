@@ -119,11 +119,5 @@ angular
       return this;
     };
 
-    // migrations
-    if (_data.timer && !angular.isUndefined(_data.timer.disabled)) {
-      _data.timer.enabled = !_data.timer.disabled;
-      delete _data.timer.disabled;
-    }
-
     return this;
   }]);

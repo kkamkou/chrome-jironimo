@@ -5,12 +5,6 @@
   "placeholderOptionsAccountTimeout": {
     "message": "Connection timeout in seconds"
   },
-  "placeholderOptionsAccountLogin": {
-    "message": "Username or E-mail"
-  },
-  "placeholderOptionsAccountPassword": {
-    "message": "Password"
-  },
   "placeholderOptionsTimerRefreshInterval": {
     "message": "Refresh interval (min.)"
   },
@@ -26,9 +20,6 @@
   "captionOptionsAccountJiraAddress": {
     "message": "JIRA™ address"
   },
-  "captionOptionsAccountJiraAuth": {
-    "message": "JIRA™ login credentials"
-  },
   "captionOptionsAccountSync": {
     "message": "Synchronise settings"
   },
@@ -38,14 +29,11 @@
   "hintRequiredJiraAgile": {
     "message": "To use transition features please ensure that your JIRA™ instance has the <a href=\"https://www.atlassian.com/software/jira/agile\" class=\"fg-green\" target=\"_blank\">JIRA™ Agile</a> add-on installed."
   },
-  "hintHowCredentialsAreStored": {
-    "message": "Jironimo doesn't use any kind of middleware to process the credentials. They are stored only at your machine."
+  "hintHowDataIsStored": {
+    "message": "Jironimo doesn't use any kind of middleware to process the data. It is stored only at your machine."
   },
   "hintSynchroniseSettings": {
     "message": "Settings for the current extension will be available on different devices (native Google Chrome sync is used)"
-  },
-  "hintWhereToFindCredentials": {
-    "message": "<p>You can determine your JIRA&trade; username as follows:</p><p>Left mouse click on your avatar at the navigation bar and select the <i>Profile</i> option. Use the value in front of <i>Username</i>.</p>"
   },
   "hintWhereToFindJiraAddress": {
     "message": "<p>Open a JIRA ticket in a new tab. Copy URL of the ticket and paste it here. Remove everything starting from <i>/browse</i> until the end of the string. For example: <i>https://issues.apache.org/jira/browse/PROJ-3319</i> becomes <i>https://issues.apache.org/jira</i></p>"

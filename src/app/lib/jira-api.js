@@ -12,11 +12,6 @@ angular
     $httpProvider.interceptors.push(['$q', '$rootScope', '$filter', function ($q, $rootScope, $filter) {
       return {
         responseError: function (rej) {
-          // ignore the 401 error without authorization
-          if (rej.status === 401 && !rej.config.headers.Authorization) {
-            return $q.reject(rej);
-          }
-
           var messages = [
             $filter('i18n')('jiraApiUknownResponse'),
             $filter('i18n')('jiraApiCheckSettings')
@@ -67,7 +62,7 @@ angular
         return callback(null, cache.myself);
       }
 
-      this._makeRequest('/api/latest/myself', {}, function (err, data) {
+      this._makeRequest('/api/latest/myself', {}, (err, data) => {
         if (!err) {
           cache.myself = data;
         }
@@ -105,9 +100,7 @@ angular
      * @param {Function} callback
      */
     this.issueAssignee = function (issueId, data, callback) {
-      this._makeRequest(
-        '/api/latest/issue/' + issueId + '/assignee', data, callback
-      );
+      this._makeRequest('/api/latest/issue/' + issueId + '/assignee', data, callback);
     };
 
     /**
@@ -165,14 +158,6 @@ angular
         headers: {ContentType: 'application/json; charset=UTF-8'}
       };
 
-      // auth is needed
-      if (callOptions.data._forceAuth) {
-        callOptions.headers.Authorization = 'Basic ' + window.btoa(
-          unescape(encodeURIComponent([config.login, config.password].join(':')))
-        );
-        delete callOptions.data._forceAuth;
-      }
-
       // different method
       if (callOptions.data._method) {
         callOptions.method = callOptions.data._method.toUpperCase();
@@ -188,11 +173,6 @@ angular
       // ajax object
       $http(callOptions)
         .success(json => callback(null, json))
-        .error((err, status) => {
-          if (status === 401 && !callOptions.headers.Authorization) {
-            return this._makeRequest(urn, Object.assign({_forceAuth: true}, dataSet), callback);
-          }
-          return callback(new Error(err || $filter('i18n')('jiraApiConnectionProblem')));
-        });
+        .error(err => callback(new Error(err || $filter('i18n')('jiraApiConnectionProblem'))));
     };
   }]);

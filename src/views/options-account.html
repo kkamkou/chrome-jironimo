@@ -43,29 +43,6 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="span6" style="position: relative">
-        <h2>{{ 'captionOptionsAccountJiraAuth' | i18n }}</h2>
-
-        <div class="input-control text">
-          <input type="text" ng-model="account.login" required="required"
-            title="{{ 'placeholderOptionsAccountLogin' | i18n }}"
-            placeholder="{{ 'placeholderOptionsAccountLogin' | i18n }}">
-        </div>
-
-        <div class="input-control text">
-          <input type="password" ng-model="account.password"
-            title="{{ 'placeholderOptionsAccountPassword' | i18n }}"
-            placeholder="{{ 'placeholderOptionsAccountPassword' | i18n }}">
-        </div>
-      </div>
-
-      <div class="span6">
-        <div class="notice marker-on-left bg-white"
-          ng-bind-html="'hintWhereToFindCredentials' | i18n"></div>
-      </div>
-    </div>
-
     <hr>
 
     <div class="row">
@@ -84,7 +61,7 @@
 
       <div class="span6">
         <div class="notice marker-on-left bg-white">
-          <p ng-bind-html="'hintHowCredentialsAreStored' | i18n"></p>
+          <p ng-bind-html="'hintHowDataIsStored' | i18n"></p>
           <p ng-bind-html="'hintRequiredJiraAgile' | i18n"></p>
         </div>
       </div>
