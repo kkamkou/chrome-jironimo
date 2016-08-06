@@ -12,7 +12,10 @@ angular
     var _data = localStorage, self = this, defaults = {};
 
     // default settings for the account tab
-    defaults.account = {timeout: 10, sync: true};
+    //defaults.account = {timeout: 10, sync: true};
+    defaults.general = {sync: true};
+
+    defaults.accounts = [{type: 'basic', label: 'Default', timeout: 10, isDefault: true}];
 
     // default settings for the colors tab
     defaults.colors = {
@@ -120,9 +123,11 @@ angular
     };
 
     // migrations
-    if (_data.timer && !angular.isUndefined(_data.timer.disabled)) {
-      _data.timer.enabled = !_data.timer.disabled;
-      delete _data.timer.disabled;
+    if (_data.account) {
+      _data.accounts = angular.toJson(
+        [_.assign({}, defaults.accounts[0], angular.fromJson(_data.account))]
+      );
+      _data.removeItem('account');
     }
 
     return this;

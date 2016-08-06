@@ -63,6 +63,8 @@ angular
       }
 
       this._makeRequest('/api/latest/myself', {}, function (err, data) {
+      });
+      this._makeRequest('/api/latest/myself', {}, function (err, data) {
         if (!err) {
           cache.myself = data;
         }
@@ -179,7 +181,8 @@ angular
 
       // ajax object
       $http(callOptions)
-        .success(function (json) {
+        .success(function (json, status, headers) {
+          console.log(headers);
           return callback(null, json);
         })
         .error(function (err) {

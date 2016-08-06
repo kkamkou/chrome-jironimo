@@ -1,21 +1,26 @@
 <div class="container container-options bg-white padding20">
 
-  <navigation current="account"></navigation>
+  <navigation current="general"></navigation>
 
   <h1>
     Jironimo
-    <small>{{ 'optionsAccountTitle' | i18n }}</small>
+    <small>{{ 'optionsGeneralTitle' | i18n }}</small>
   </h1>
 
-  <form ng-submit="save('account', account)" class="grid">
+  <form ng-submit="save()" class="grid">
     <notify entries="notifications"></notify>
 
     <div class="row">
-      <div class="span12">
+      <div class="span9">
         <div class="input-control select">
-          <select name="s1" class="bg-white" disabled="disabled">
-            <option>Default account</option>
-          </select>
+          <select class="bg-white" ng-model="account"
+            ng-options="item as item.label for item in accounts track by item.label"></select>
+        </div>
+      </div>
+      <div class="span3">
+        <div class="button-set" style="margin-top: 2px">
+          <button><i class="icon-plus-2 on-left"></i> Add</button>
+          <button><i class="icon-cancel-2 on-left"></i> Delete</button>
         </div>
       </div>
     </div>
@@ -31,7 +36,7 @@
         </div>
 
         <div class="input-control text">
-            <input type="text" maxlength="2" required="required" ng-model="account.timeout"
+            <input type="number" min="5" max="60" maxlength="2" required="required" ng-model="account.timeout"
               title="{{ 'placeholderOptionsAccountTimeout' | i18n }}"
               placeholder="{{ 'placeholderOptionsAccountTimeout' | i18n }}">
         </div>
@@ -73,7 +78,7 @@
         <h2>{{ 'captionOptionsAccountSync' | i18n }}</h2>
 
         <label class="input-control switch">
-            <input type="checkbox" ng-model="account.sync">
+            <input type="checkbox" ng-model="sync">
             <span class="check"></span>
         </label>
 

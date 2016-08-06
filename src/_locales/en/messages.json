@@ -185,8 +185,8 @@
   "indexNoDataProvidedText": {
     "message": "No matching entries according the current JIRA™ query"
   },
-  "optionsAccountTitle": {
-    "message": "Account information"
+  "optionsGeneralTitle": {
+    "message": "General information"
   },
   "optionsColorsTitle": {
     "message": "Colors & Sizes"

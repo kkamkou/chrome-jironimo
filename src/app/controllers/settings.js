@@ -6,6 +6,8 @@
  * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0
  */
 
+'use strict';
+
 angular
   .module('jironimo')
   .controller('SettingsController', [
@@ -16,10 +18,8 @@ angular
       $scope.notifications = [];
 
       angular.forEach(
-        ['account', 'colors', 'timer', 'workspaces'],
-        function (name) {
-          $scope[name] = cjSettings[name];
-        }
+        ['general', 'accounts', 'colors', 'timer', 'workspaces'],
+        k => $scope[k] = cjSettings[k]
       );
 
       $scope.workspaceAdd = function () {
@@ -42,9 +42,7 @@ angular
       $scope.workspaceRemove = function (workspace) {
         if ($scope.workspaces.length < 2) { return; }
 
-        $scope.workspaces = _.filter($scope.workspaces, function (entry) {
-          return entry !== workspace;
-        });
+        $scope.workspaces = $scope.workspaces.filter(w => w !== workspace);
 
         if (workspace.isDefault) {
           $scope.workspaceSetAsDefault($scope.workspaces[0]);
@@ -93,7 +91,7 @@ angular
         };
 
         switch (type) {
-          case 'account':
+          case 'accounts':
             data.url = data.url.replace(/\/+$/, '');
             data.timeout = parseInt(data.timeout, 10) || 10;
             chrome.permissions.request({origins: [data.url + '/']}, function (flag) {
@@ -116,7 +114,7 @@ angular
       scope: {current: '@'},
       controller: ['$scope', '$location', function ($scope, $location) {
         $scope.entries = [
-          {icon: 'key', id: 'account', title: 'optionsAccountTitle'},
+          {icon: 'key', id: 'general', title: 'optionsGeneralTitle'},
           {icon: 'bug', id: 'jql', title: 'optionsJqlWorkspacesTitle'},
           {icon: 'sun-3', id: 'colors', title: 'optionsColorsTitle'},
           {icon: 'clock', id: 'timer', title: 'optionsTimerTitle'},

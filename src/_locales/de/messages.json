@@ -211,8 +211,8 @@
     "optionsAboutShareOpinion": {
         "message": "Bitte, <a href=\"https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl\" target=\"_blank\">teile deine Meinung</a>."
     },
-    "optionsAccountTitle": {
-        "message": "Account Informationen"
+    "optionsGeneralTitle": {
+        "message": "Allgemeine Information"
     },
     "hintHowCredentialsAreStored": {
         "message": "Jironimo benutzt keine Middleware um deine Benutzerdaten zu speichern. Sie werden nur auf deinem Computer gespeichert."
