@@ -32,7 +32,7 @@ class RouteSettingsGeneral extends RouteAbstract {
         return false;
       }
 
-      this.settings.accounts = this.settings.accounts
+      this.settings.accounts = this.scope.accountList
         .map((a, idx) => a.label === account.label ? account : a);
 
       this.scope.$apply(() =>
@@ -43,8 +43,8 @@ class RouteSettingsGeneral extends RouteAbstract {
   }
 
   add() {
-    const len = this.scope.accountList.length,
-      account = Object.assign(this.settings.accounts[0], {url: '', label: 'Account #' + len});
+    const num = this.scope.accountList.length + 1,
+      account = Object.assign(this.settings.accounts[0], {url: '', label: 'Account #' + num});
     this.scope.accountList.push(account);
     this.scope.accountSelected = account;
   }

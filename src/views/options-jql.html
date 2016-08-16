@@ -61,10 +61,11 @@
               placeholder="{{ 'placeholderOptionsJqlQuery' | i18n }}"
               ng-model="workspace.query">
 
-            <span class="label info"
-              ng-if="workspace.changesNotify && workspaceQueryIsValidForWatch(workspace.query)"
-              ng-bind-html="'optionsJqlDateHint' | i18n">
-            </span>
+            <div class="label info"
+              ng-if="workspace.changesNotify && workspaceQueryIsValidForWatch(workspace.query)">
+              <i class="icon-lamp-2 place-left"></i>&nbsp;
+              <span ng-bind-html="'optionsJqlDateHint' | i18n"></span>
+            </div>
           </div>
         </div>
 
