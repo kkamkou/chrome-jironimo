@@ -11,13 +11,12 @@ angular
   .service('cjSettings', ['$filter', function ($filter) {
     var _data = localStorage, self = this, defaults = {};
 
-    defaults.version = 570;
+    defaults.version = 580;
 
     // default settings for the account tab
-    //defaults.account = {timeout: 10, sync: true};
     defaults.general = {sync: true};
 
-    defaults.accounts = [{type: 'basic', label: 'Default', timeout: 10, isDefault: true}];
+    defaults.accounts = [{type: 'basic', label: 'Default', timeout: 10}];
 
     // default settings for the colors tab
     defaults.colors = {

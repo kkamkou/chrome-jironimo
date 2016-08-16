@@ -15,7 +15,7 @@ angular
      'jironimo.notifications', 'jironimo.timer', 'jironimo.shared',
      'jironimo.tile']
   )
-  .controller('RouteSettingsGeneral', ['$scope', 'cjSettings', RouteSettingsGeneral])
+  .controller('RouteSettingsGeneral', ['$scope', RouteSettingsGeneral])
   .config(
     ['$routeProvider', '$compileProvider', function ($routeProvider, $compileProvider) {
       $compileProvider.debugInfoEnabled(false);

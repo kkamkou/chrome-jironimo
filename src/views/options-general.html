@@ -13,14 +13,14 @@
     <div class="row">
       <div class="span9">
         <div class="input-control select">
-          <select class="bg-white" ng-model="account"
-            ng-options="item as item.label for item in accounts track by item.label"></select>
+          <select class="bg-white" ng-model="accountSelected"
+            ng-options="item as item.label for item in accountList track by item.label"></select>
         </div>
       </div>
       <div class="span3">
         <div class="button-set" style="margin-top: 2px">
-          <button><i class="icon-plus-2 on-left"></i> Add</button>
-          <button><i class="icon-cancel-2 on-left"></i> Delete</button>
+          <button type="button" ng-click="add()"><i class="icon-plus-2 on-left"></i> Add</button>
+          <button type="button" ng-click="removeSelected()"><i class="icon-cancel-2 on-left"></i> Delete</button>
         </div>
       </div>
     </div>
@@ -30,13 +30,15 @@
         <h2>{{ 'captionOptionsAccountJiraAddress' | i18n }}</h2>
 
         <div class="input-control text">
-          <input type="url" ng-model="account.url" required="required"
+          <input type="url" required="required"
+            ng-required="true" ng-model="accountSelected.url" ng-pattern='^http(s)?:\/\/.+*'
             title="{{ 'placeholderOptionsAccountUrl' | i18n }}"
             placeholder="{{ 'placeholderOptionsAccountUrl' | i18n }}">
         </div>
 
         <div class="input-control text">
-            <input type="number" min="5" max="60" maxlength="2" required="required" ng-model="account.timeout"
+            <input type="number" min="5" max="60" maxlength="2" required="required"
+              ng-model="accountSelected.timeout"
               title="{{ 'placeholderOptionsAccountTimeout' | i18n }}"
               placeholder="{{ 'placeholderOptionsAccountTimeout' | i18n }}">
         </div>

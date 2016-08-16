@@ -1,9 +1,11 @@
 'use strict';
 
 class RouteAbstract {
-  constructor($scope, $settings) {
+  constructor($scope) {
+    this.services = angular.injector(['jironimo']);
     this.scope = $scope;
-    this.settings = $settings;
+
+    // reset notifications
     $scope.notifications = [];
   }
 }

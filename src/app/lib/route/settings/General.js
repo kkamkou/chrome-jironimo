@@ -1,29 +1,56 @@
 'use strict';
 
 class RouteSettingsGeneral extends RouteAbstract {
-  constructor($scope, $settings) {
-    super($scope, $settings);
-    $scope.accounts = $settings.accounts;
-    $scope.account = this.account;
-    $scope.save = this.save.bind(this);
-    $scope.sync = $settings.general.sync;
-  }
+  constructor($scope) {
+    super($scope);
+    this.settings = this.services.get('cjSettings');
+    this.i18n = this.services.get('$filter')('i18n');
 
-  get account() {
-    const account = this.settings.accounts.find(a => a.isDefault === true);
-    return account ? account : this.settings.accounts[0];
+    $scope.accountList = this.settings.accounts;
+    $scope.accountSelected = this.settings.accounts[0];
+
+    $scope.add = this.add.bind(this);
+    $scope.save = this.save.bind(this);
+    $scope.sync = this.settings.general.sync;
+    $scope.removeSelected = this.removeSelected.bind(this);
   }
 
   save() {
-    const account = this.scope.account;
+    this.settings.general = Object.assign(this.settings.general, {sync: this.scope.sync});
+
+    const account = this.scope.accountSelected;
     account.url = account.url.replace(/\/+$/, '');
     account.timeout = parseInt(account.timeout, 10) || 10;
+
+    if (!account.url || account.url.indexOf('http') !== 0) {
+      this.scope.notifications
+        .push({type: 'error', message: this.i18n('placeholderOptionsAccountUrl')});
+    }
+
     chrome.permissions.request({origins: [account.url + '/']}, flag => {
-      if (!flag) { return false; }
-      cjSettings[type] = angular.copy(data);
-      $this.scope.notifications.push(
-        {type: 'success', message: $filter('i18n')('msgOptionsSaveSuccess')}
+      if (!flag) {
+        return false;
+      }
+
+      this.settings.accounts = this.settings.accounts
+        .map((a, idx) => a.label === account.label ? account : a);
+
+      this.scope.$apply(() =>
+        this.scope.notifications
+          .push({type: 'success', message: this.i18n('msgOptionsSaveSuccess')})
       );
     });
+  }
+
+  add() {
+    const len = this.scope.accountList.length,
+      account = Object.assign(this.settings.accounts[0], {url: '', label: 'Account #' + len});
+    this.scope.accountList.push(account);
+    this.scope.accountSelected = account;
+  }
+
+  removeSelected() {
+    this.scope.accountList.pop(this.scope.accountSelected);
+    debugger;
   }
 }
