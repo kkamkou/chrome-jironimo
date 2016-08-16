@@ -40,6 +40,10 @@ angular
       };
 
       $scope.workspaceRemove = function (workspace) {
+        if (!confirm($filter('i18n')('msgGeneralActionConfirm'))) {
+          return false;
+        }
+
         if ($scope.workspaces.length < 2) { return; }
 
         $scope.workspaces = $scope.workspaces.filter(w => w !== workspace);

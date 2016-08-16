@@ -19,8 +19,12 @@
       </div>
       <div class="span3">
         <div class="button-set" style="margin-top: 2px">
-          <button type="button" ng-click="add()"><i class="icon-plus-2 on-left"></i> Add</button>
-          <button type="button" ng-click="removeSelected()"><i class="icon-cancel-2 on-left"></i> Delete</button>
+          <button type="button"
+            ng-if="accountList.length < 10"
+            ng-click="add()"><i class="icon-plus-2 on-left"></i> Add</button>
+          <button type="button" class="danger"
+            ng-if="accountList.length > 1"
+            ng-click="removeSelected()"><i class="icon-cancel-2 on-left"></i> Delete</button>
         </div>
       </div>
     </div>
@@ -31,7 +35,7 @@
 
         <div class="input-control text">
           <input type="url" required="required"
-            ng-required="true" ng-model="accountSelected.url" ng-pattern='^http(s)?:\/\/.+*'
+            ng-required="true" ng-model="accountSelected.url"
             title="{{ 'placeholderOptionsAccountUrl' | i18n }}"
             placeholder="{{ 'placeholderOptionsAccountUrl' | i18n }}">
         </div>
@@ -52,7 +56,7 @@
 
     <hr>
 
-    <div class="row">
+    <div class="row" style="background-color: #FBFBFB">
       <div class="span6">
         <h2>{{ 'captionOptionsAccountSync' | i18n }}</h2>
 

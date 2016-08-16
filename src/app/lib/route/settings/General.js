@@ -43,14 +43,23 @@ class RouteSettingsGeneral extends RouteAbstract {
   }
 
   add() {
-    const num = this.scope.accountList.length + 1,
-      account = Object.assign(this.settings.accounts[0], {url: '', label: 'Account #' + num});
+    const account = Object.assign(this.settings.accounts[0], {url: undefined});
+
+    account.label = prompt('Label:') || '';
+    if (!account.label.length) {
+      return false;
+    }
+
     this.scope.accountList.push(account);
     this.scope.accountSelected = account;
   }
 
   removeSelected() {
-    this.scope.accountList.pop(this.scope.accountSelected);
-    debugger;
+    if (!confirm(this.i18n('msgGeneralActionConfirm'))) {
+      return false;
+    }
+    this.scope.accountList = this.scope.accountList
+      .filter(a => a.label !== this.scope.accountSelected.label);
+    this.scope.accountSelected = _.last(this.scope.accountList);
   }
 }

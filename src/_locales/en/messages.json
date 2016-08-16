@@ -44,6 +44,9 @@
   "msgOptionsSaveSuccess": {
     "message": "Settings were changed"
   },
+  "msgGeneralActionConfirm": {
+    "message": "Please, confirm the action!"
+  },
   "msgWorkspaceImportSuccess": {
     "message": "$1 workspaces were successfully imported"
   },
