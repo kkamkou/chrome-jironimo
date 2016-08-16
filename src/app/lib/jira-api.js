@@ -30,9 +30,7 @@ angular
           } else if (loginReason && rej.status > 400 && rej.status < 500) {
             messages = [$filter('i18n')(loginReasonSet[loginReason])];
           } else if (rej.status === 500) {
-            messages = [
-              $filter('i18n')('jiraApiCheckConfig')
-            ];
+            messages = [$filter('i18n')('jiraApiCheckConfig')];
           } else if (rej.data && rej.data.errorMessages) {
             messages = rej.data.errorMessages;
           }
@@ -100,7 +98,7 @@ angular
      * @param {Function} callback
      */
     this.issueAssignee = function (issueId, data, callback) {
-      this._makeRequest('/api/latest/issue/' + issueId + '/assignee', data, callback);
+      this._makeRequest(`/api/latest/issue/${issueId}/assignee`, data, callback);
     };
 
     /**
@@ -113,7 +111,7 @@ angular
      */
     this.issueWorklog = function (issueId, data, callback) {
       this._makeRequest(
-        '/api/latest/issue/' + issueId + '/worklog?adjustEstimate=auto',
+        `/api/latest/issue/${issueId}/worklog?adjustEstimate=auto`,
         data, callback
       );
     };
@@ -128,7 +126,7 @@ angular
      */
     this.transitions = function (issueId, data, callback) {
       this._makeRequest(
-        '/api/latest/issue/' + issueId + '/transitions?expand=transitions.fields',
+        `/api/latest/issue/${issueId}/transitions?expand=transitions.fields`,
         data, callback
       );
     };
