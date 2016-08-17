@@ -42,6 +42,7 @@ angular
     // default settings for the workspaces tab
     defaults.workspaces = [
       {
+        account: 'ALL',
         icon: 'target',
         title: $filter('i18n')('settingsWorkspaceMyIssues'),
         query: 'assignee = currentUser() AND status not in (Closed, Resolved)' +
@@ -50,6 +51,7 @@ angular
         changesNotify: true
       },
       {
+        account: 'ALL',
         icon: 'share-2',
         title: $filter('i18n')('settingsWorkspaceCreatedByMe'),
         query: 'reporter = currentUser() ORDER BY created DESC',
@@ -57,6 +59,7 @@ angular
         changesNotify: true
       },
       {
+        account: 'ALL',
         icon: 'eye-2',
         title: $filter('i18n')('settingsWorkspaceWatching'),
         query: '(' +
@@ -124,11 +127,16 @@ angular
     };
 
     // migrations
-    if (this['version'] < 580) {
-      const acc = this['account'];
+    if (this.version < 580) {
+      const acc = this.account;
       delete acc.url;
-      this['account'] = acc;
-      this['version'] = 580;
+      this.account = acc;
+      this.version = 580;
+    }
+
+    if (this.version < 600) {
+      this.workspaces = this.workspaces.map(w => { w.account = 'ALL'; return w; });
+      this.version = 600;
     }
 
     return this;

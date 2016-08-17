@@ -12,7 +12,7 @@
 
     <div class="tab-control" data-role="tab-control" data-effect="fade[slide]">
         <ul class="tabs">
-          <li ng-repeat="(frameKey, frameTitle) in {colors: 'settingsColorsPriorityColors', theme: 'settingsColorsDefaultTheme', sizes: 'settingsColorsPrioritySizes'}"
+          <li ng-repeat="(frameKey, frameTitle) in {theme: 'settingsColorsDefaultTheme', colors: 'settingsColorsPriorityColors', sizes: 'settingsColorsPrioritySizes'}"
             ng-class="{active: tabControl.colors === frameKey }"
             style="cursor: pointer;"><a ng-click="tabControl.colors = frameKey">{{ frameTitle | i18n}}</a></li>
         </ul>
