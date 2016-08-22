@@ -50,6 +50,9 @@
   "msgWorkspaceImportSuccess": {
     "message": "$1 workspaces were successfully imported"
   },
+  "settingsAccountLabelPrompt": {
+    "message": "Label for a new account:"
+  },
   "settingsColorsDefaultTheme": {
     "message": "Default Theme"
   },

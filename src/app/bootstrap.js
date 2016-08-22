@@ -16,6 +16,7 @@ angular
      'jironimo.tile']
   )
   .controller('RouteSettingsGeneral', ['$scope', RouteSettingsGeneral])
+  .controller('RouteSettingsWorkspace', ['$scope', RouteSettingsWorkspace])
   .config(
     ['$routeProvider', '$compileProvider', function ($routeProvider, $compileProvider) {
       $compileProvider.debugInfoEnabled(false);
@@ -34,7 +35,7 @@ angular
         })
         .when('/settings/jql', {
           templateUrl: '/views/options-jql.html',
-          controller: 'SettingsController'
+          controller: 'RouteSettingsWorkspace'
         })
         .when('/settings/timer', {
           templateUrl: '/views/options-timer.html',

@@ -12,6 +12,14 @@
   <form class="span12" ng-submit="save('workspaces', workspaces)">
     <notify entries="notifications"></notify>
 
+    <div class="tab-control" data-role="tab-control" data-effect="fade[slide]">
+      <ul class="tabs">
+        <li ng-repeat="item in workspaces track by item.title"
+          ng-class="{active: item.isDefault}"
+          style="cursor: pointer;"><a ng-click="tabControl.colors = frameKey">{{ ::item.account }}</a></li>
+      </ul>
+    </div>
+
     <div class="grid">
       <div class="row" ng-repeat="workspace in workspaces">
 

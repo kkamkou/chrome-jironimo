@@ -115,6 +115,9 @@
   "optionsTimerTitle": {
     "message": "Aktualisierung"
   },
+  "settingsAccountLabelPrompt": {
+    "message": "Label for a new account:"
+  },
   "settingsColorsDefaultTheme": {
     "message": "Standard Thema"
   },

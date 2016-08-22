@@ -79,7 +79,11 @@ angular
 
     // defaults for the personal data
     defaults.timers = {};
-    defaults.workspaceLast = 0;
+
+    defaults.activity = {
+      lastAccount: 0,
+      lastWorkspace: 0
+    };
 
     // getters and setters override
     angular.forEach(
@@ -137,6 +141,8 @@ angular
     if (this.version < 600) {
       this.workspaces = this.workspaces.map(w => { w.account = 'ALL'; return w; });
       this.version = 600;
+      this.activity = Object.assign({lastWorkspace: this.workspaceLast || 0}, this.activity);
+      delete _data.workspaceLast;
     }
 
     return this;

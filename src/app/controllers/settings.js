@@ -22,68 +22,7 @@ angular
         k => $scope[k] = cjSettings[k]
       );
 
-      $scope.workspaceAdd = function () {
-        if ($scope.workspaces.length > 10) { return; }
 
-        $scope.workspaces.push(
-          {title: null, query: null, isDefault: false, icon: 'bug'}
-        );
-      };
-
-      $scope.workspaceSetAsDefault = function (workspace) {
-        angular.forEach($scope.workspaces, function (entry) {
-          if (entry.isDefault) {
-            entry.isDefault = false;
-          }
-          entry.isDefault = (entry === workspace);
-        });
-      };
-
-      $scope.workspaceRemove = function (workspace) {
-        if (!confirm($filter('i18n')('msgGeneralActionConfirm'))) {
-          return false;
-        }
-
-        if ($scope.workspaces.length < 2) { return; }
-
-        $scope.workspaces = $scope.workspaces.filter(w => w !== workspace);
-
-        if (workspace.isDefault) {
-          $scope.workspaceSetAsDefault($scope.workspaces[0]);
-        }
-      };
-
-      $scope.workspaceImport = function () {
-        cjJira.filterFavourite(function (err, data) {
-          if (err) {
-            $scope.notifications.push({type: 'error', message: err.message});
-            return;
-          }
-
-          var workspaces = _.map($scope.workspaces, 'query'),
-            favs = _.map(data, 'jql'),
-            count = 0;
-
-          _.difference(favs, workspaces).forEach(function (jql) {
-            count++;
-            $scope.workspaces.push({
-              isDefault: false,
-              title: _.find(data, {jql: jql}).name,
-              query: jql,
-              icon: 'heart-2'
-            });
-          });
-
-          $scope.notifications.push({
-            type: 'success',
-            message: $filter('i18n')('msgWorkspaceImportSuccess', [count])
-          });
-        });
-      };
-
-      $scope.workspaceQueryIsValidForWatch = function (query) {
-        return (/\bupdated(date)?\b/).test(query.toLowerCase());
-      };
 
       $scope.save = function (type, data) {
         if (!data) { return; }

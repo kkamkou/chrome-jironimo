@@ -8,11 +8,11 @@ class RouteSettingsGeneral extends RouteAbstract {
 
     $scope.accountList = this.settings.accounts;
     $scope.accountSelected = this.settings.accounts[0];
-
-    $scope.add = this.add.bind(this);
-    $scope.save = this.save.bind(this);
     $scope.sync = this.settings.general.sync;
-    $scope.removeSelected = this.removeSelected.bind(this);
+
+    $scope.save = this.save.bind(this);
+    $scope.accountAdd = this.accountAdd.bind(this);
+    $scope.accountRemoveSelected = this.accountRemoveSelected.bind(this);
   }
 
   save() {
@@ -42,10 +42,10 @@ class RouteSettingsGeneral extends RouteAbstract {
     });
   }
 
-  add() {
+  accountAdd() {
     const account = Object.assign(this.settings.accounts[0], {url: undefined});
 
-    account.label = prompt('Label:') || '';
+    account.label = prompt(this.i18n('settingsAccountLabelPrompt')) || '';
     if (!account.label.length) {
       return false;
     }
@@ -54,7 +54,7 @@ class RouteSettingsGeneral extends RouteAbstract {
     this.scope.accountSelected = account;
   }
 
-  removeSelected() {
+  accountRemoveSelected() {
     if (!confirm(this.i18n('msgGeneralActionConfirm'))) {
       return false;
     }
