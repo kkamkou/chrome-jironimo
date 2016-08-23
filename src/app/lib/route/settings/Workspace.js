@@ -5,22 +5,45 @@ class RouteSettingsWorkspace extends RouteAbstract {
     super($scope);
     this.settings = this.services.get('cjSettings');
     this.i18n = this.services.get('$filter')('i18n');
+    this.jira = this.services.get('cjJira');
 
-    $scope.workspaces = this.settings.workspaces;
+    $scope.accounts = this.settings.accounts;
 
+    $scope.add = this.add.bind(this);
     $scope.save = this.save.bind(this);
+    $scope.remove = this.remove.bind(this);
+    $scope.import = this.import.bind(this);
+    $scope.setAsDefault = this.setAsDefault.bind(this);
+    $scope.accountSwitch = this.accountSwitch.bind(this);
+    $scope.queryIsValidForWatch = this.queryIsValidForWatch.bind(this);
+
+    this.accountSwitch('ALL');
+  }
+
+  accountSwitch(account) {
+    this.scope.accountSelected = account;
+    this.scope.workspaces = this.settings.workspaces
+      .filter(w => w.account === this.accountLabel(account));
+  }
+
+  accountLabel(account) {
+    return (account === 'ALL' ? 'ALL' : account.label);
   }
 
   add() {
     if (this.scope.workspaces.length > 10) { return; }
 
-    this.scope.workspaces.push(
-      {title: null, query: null, isDefault: false, icon: 'bug'}
-    );
+    this.scope.workspaces.push({
+      account: this.accountLabel(this.scope.accountSelected),
+      title: null,
+      query: null,
+      isDefault: false,
+      icon: 'bug'
+    });
   }
 
   setAsDefault(workspace) {
-    this.scope.workspaces.forEach(entry => entry.isDefault = (entry === workspace));
+    this.scope.workspaces.forEach(w => w.isDefault = (w === workspace));
   }
 
   remove(workspace) {
@@ -38,7 +61,7 @@ class RouteSettingsWorkspace extends RouteAbstract {
   }
 
   import() {
-    cjJira.filterFavourite((err, data) => {
+    this.jira.filterFavourite((err, data) => {
       if (err) {
         this.scope.notifications.push({type: 'error', message: err.message});
         return;
@@ -69,6 +92,8 @@ class RouteSettingsWorkspace extends RouteAbstract {
     return (/\bupdated(date)?\b/).test(query.toLowerCase());
   }
 
-  save() {
+  save(a) {
+    this.scope.accountSelected = a;
+    console.log(a);
   }
 }

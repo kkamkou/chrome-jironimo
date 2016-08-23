@@ -116,6 +116,9 @@
   "optionsAboutLicense": {
     "message": "License"
   },
+  "settingsWorkspaceAccountShared": {
+    "message": "Shared"
+  },
   "optionsJqlWorkspacesTitle": {
     "message": "Workspaces"
   },

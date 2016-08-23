@@ -148,6 +148,9 @@
   "jiraApiUknownResponse": {
     "message": "Unbekannte Antwort von der JIRA™ API"
   },
+  "settingsWorkspaceAccountShared": {
+    "message": "Shared"
+  },
   "settingsColorTypeimprovement": {
     "message": "Verbesserung"
   },

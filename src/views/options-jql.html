@@ -7,26 +7,30 @@
     <small>{{ 'optionsJqlWorkspacesTitle' | i18n }}</small>
   </h1>
 
-  <p><i class="icon-info"></i> {{ 'optionsJqlWorkspacesRefreshInterval' | i18n }}</p>
+  <p class="place-right"><i class="icon-info"></i> {{ 'optionsJqlWorkspacesRefreshInterval' | i18n }}</p>
+
+  <div class="span12">
+    <div class="button-set">
+      <button type="button"
+        ng-class="{success: accountSelected === 'ALL'}"
+        ng-click="accountSwitch('ALL')">{{ 'settingsWorkspaceAccountShared' | i18n }}</button>
+      <button type="button"
+        ng-repeat="account in accounts track by account.label"
+        ng-class="{success: accountSelected === account}"
+        ng-click="accountSwitch(account)">{{ ::account.label }}</button>
+    </div>
+  </div>
 
   <form class="span12" ng-submit="save('workspaces', workspaces)">
     <notify entries="notifications"></notify>
 
-    <div class="tab-control" data-role="tab-control" data-effect="fade[slide]">
-      <ul class="tabs">
-        <li ng-repeat="item in workspaces track by item.title"
-          ng-class="{active: item.isDefault}"
-          style="cursor: pointer;"><a ng-click="tabControl.colors = frameKey">{{ ::item.account }}</a></li>
-      </ul>
-    </div>
-
     <div class="grid">
-      <div class="row" ng-repeat="workspace in workspaces">
+      <div class="row" ng-class="{'fg-darkGreen': workspace.isDefault}" ng-repeat="workspace in workspaces">
 
         <div class="span2">
           <label class="input-control radio">
             <input type="radio" name="isDefault"
-              ng-click="workspaceSetAsDefault(workspace)"
+              ng-click="setAsDefault(workspace)"
               ng-checked="workspace.isDefault">
             <span class="check"></span> {{ 'optionsJqlDefault' | i18n }}
           </label>
@@ -35,21 +39,21 @@
         </div>
 
         <div class="span9">
-          <div class="span3">
-            <div class="input-control text">
-              <input type="text" maxlength="40" required
-                title="{{ 'placeholderOptionsJqlTitle' | i18n }}"
-                placeholder="{{ 'placeholderOptionsJqlTitle' | i18n }}"
-                ng-model="workspace.title">
-            </div>
-          </div>
-
           <div class="span2">
             <div class="input-control text">
               <input type="text" maxlength="18" required
                 title="{{ 'titleOptionsJqlIcon' | i18n }}"
                 placeholder="{{ 'placeholderOptionsJqlIcon' | i18n }}"
                 ng-model="workspace.icon">
+            </div>
+          </div>
+
+          <div class="span3">
+            <div class="input-control text">
+              <input type="text" maxlength="40" required
+                title="{{ 'placeholderOptionsJqlTitle' | i18n }}"
+                placeholder="{{ 'placeholderOptionsJqlTitle' | i18n }}"
+                ng-model="workspace.title">
             </div>
           </div>
 
@@ -63,14 +67,14 @@
             </div>
           </div>
 
-          <div class="input-control text">
-            <input type="text" required
+          <div class="input-control textarea">
+            <textarea required style="min-height: 50px;"
               title="{{ 'placeholderOptionsJqlQuery' | i18n }}"
               placeholder="{{ 'placeholderOptionsJqlQuery' | i18n }}"
-              ng-model="workspace.query">
+              ng-model="workspace.query"></textarea>
 
             <div class="label info"
-              ng-if="workspace.changesNotify && workspaceQueryIsValidForWatch(workspace.query)">
+              ng-if="workspace.changesNotify && queryIsValidForWatch(workspace.query)">
               <i class="icon-lamp-2 place-left"></i>&nbsp;
               <span ng-bind-html="'optionsJqlDateHint' | i18n"></span>
             </div>
@@ -79,14 +83,15 @@
 
         <div class="span1 text-center">
           <button type="button" class="danger" style="margin-top: 5px;"
-            ng-click="workspaceRemove(workspace)"><i class="icon-cancel-2"></i></button>
+            ng-click="remove(workspace)"><i class="icon-cancel-2"></i></button>
         </div>
 
       </div>
     </div>
 
-    <button ng-click="workspaceAdd()" class="success"><i
-        class="icon-plus-2"></i> {{ 'optionsJqlAddOne' | i18n }}</button>
+    <button ng-click="add()" class="success">
+      <i class="icon-plus-2"></i> {{ 'optionsJqlAddOne' | i18n }}
+    </button>
 
     <a href="http://metroui.org.ua/v2/icons.html" class="button link" target="_blank">
       <i class="icon-link"></i>
@@ -98,9 +103,9 @@
     <div>
       <input type="submit" value="{{ 'btnSave' | i18n }}" class="default">
 
-      <button type='button' class="primary place-right"
-        ng-click="workspaceImport();">
-        <i class="icon-spin"></i> {{ 'optionsJqlImportFavorites' | i18n }}</button>
+      <button type='button' class="primary place-right" ng-click="import();">
+        <i class="icon-spin"></i> {{ 'optionsJqlImportFavorites' | i18n }}
+      </button>
     </div>
   </form>
 
