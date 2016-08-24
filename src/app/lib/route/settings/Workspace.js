@@ -8,6 +8,8 @@ class RouteSettingsWorkspace extends RouteAbstract {
     this.jira = this.services.get('cjJira');
 
     $scope.accounts = this.settings.accounts;
+    $scope.accountSelected = '';
+    $scope.workspaces = [];
 
     $scope.add = this.add.bind(this);
     $scope.save = this.save.bind(this);
@@ -20,10 +22,23 @@ class RouteSettingsWorkspace extends RouteAbstract {
     this.accountSwitch('ALL');
   }
 
-  accountSwitch(account) {
-    this.scope.accountSelected = account;
+  accountSwitch(label) {
+    if (this.scope.accountSelected === label) { return; }
+
+    const filtered = this.settings.workspaces
+      .filter(w => w.account === this.accountLabel(this.scope.accountSelected));
+
+    if (
+      (filtered.length !== this.scope.workspaces.length
+      || _.differenceWith(this.scope.workspaces, filtered, _.isEqual).length)
+      && !confirm('Your changes will be lost if you switch the tab now! Proceed?')
+    ) {
+      return;
+    }
+
+    this.scope.accountSelected = label;
     this.scope.workspaces = this.settings.workspaces
-      .filter(w => w.account === this.accountLabel(account));
+      .filter(w => w.account === this.accountLabel(label));
   }
 
   accountLabel(account) {

@@ -25,7 +25,15 @@
     <notify entries="notifications"></notify>
 
     <div class="grid">
-      <div class="row" ng-class="{'fg-darkGreen': workspace.isDefault}" ng-repeat="workspace in workspaces">
+      <div class="row" ng-if="!workspaces.length">
+        <div class="span12 balloon top">
+          <p class="padding10">
+            Hey! It looks like your list is empty. Click the button below to add a new workspace.
+          </p>
+        </div>
+      </div>
+
+      <div class="row" ng-repeat="workspace in workspaces track by $index">
 
         <div class="span2">
           <label class="input-control radio">
@@ -81,7 +89,7 @@
           </div>
         </div>
 
-        <div class="span1 text-center">
+        <div class="span1 text-center" ng-if="workspaces.length > 1">
           <button type="button" class="danger" style="margin-top: 5px;"
             ng-click="remove(workspace)"><i class="icon-cancel-2"></i></button>
         </div>
