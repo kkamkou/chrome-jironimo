@@ -2,22 +2,18 @@
 
 class RouteSettingsWorkspace extends RouteAbstract {
   constructor($scope) {
-    super($scope);
-    this.settings = this.services.get('cjSettings');
-    this.i18n = this.services.get('$filter')('i18n');
-    this.jira = this.services.get('cjJira');
+    super(
+      $scope,
+      ['add', 'save', 'remove', 'import', 'setAsDefault', 'accountSwitch', 'queryIsValidForWatch']
+    );
+
+    this.settings = this.service('cjSettings');
+    this.i18n = this.service('$filter')('i18n');
+    this.jira = this.service('cjJira');
 
     $scope.accounts = this.settings.accounts;
     $scope.accountSelected = '';
     $scope.workspaces = [];
-
-    $scope.add = this.add.bind(this);
-    $scope.save = this.save.bind(this);
-    $scope.remove = this.remove.bind(this);
-    $scope.import = this.import.bind(this);
-    $scope.setAsDefault = this.setAsDefault.bind(this);
-    $scope.accountSwitch = this.accountSwitch.bind(this);
-    $scope.queryIsValidForWatch = this.queryIsValidForWatch.bind(this);
 
     this.accountSwitch('ALL');
   }
@@ -107,8 +103,13 @@ class RouteSettingsWorkspace extends RouteAbstract {
     return (/\bupdated(date)?\b/).test(query.toLowerCase());
   }
 
-  save(a) {
-    this.scope.accountSelected = a;
-    console.log(a);
+  save() {
+    this.settings.workspaces = this.settings.workspaces
+      .filter(w => w.account !== this.accountLabel(this.scope.accountSelected))
+      .concat(this.scope.workspaces);
+    this.scope.notifications.push({
+      type: 'success',
+      message: this.i18n('msgWorkspaceImportSuccess', [1])
+    });
   }
 }

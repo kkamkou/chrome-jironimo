@@ -2,17 +2,13 @@
 
 class RouteSettingsGeneral extends RouteAbstract {
   constructor($scope) {
-    super($scope);
-    this.settings = this.services.get('cjSettings');
-    this.i18n = this.services.get('$filter')('i18n');
+    super($scope, ['save', 'accountAdd', 'accountRemoveSelected']);
+    this.settings = this.service('cjSettings');
+    this.i18n = this.service('$filter')('i18n');
 
     $scope.accountList = this.settings.accounts;
     $scope.accountSelected = this.settings.accounts[0];
     $scope.sync = this.settings.general.sync;
-
-    $scope.save = this.save.bind(this);
-    $scope.accountAdd = this.accountAdd.bind(this);
-    $scope.accountRemoveSelected = this.accountRemoveSelected.bind(this);
   }
 
   save() {
