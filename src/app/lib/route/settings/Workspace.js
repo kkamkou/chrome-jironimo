@@ -107,9 +107,6 @@ class RouteSettingsWorkspace extends RouteAbstract {
     this.settings.workspaces = this.settings.workspaces
       .filter(w => w.account !== this.accountLabel(this.scope.accountSelected))
       .concat(this.scope.workspaces);
-    this.scope.notifications.push({
-      type: 'success',
-      message: this.i18n('msgWorkspaceImportSuccess', [1])
-    });
+    this.scope.notifications.push({type: 'success', message: this.i18n('msgOptionsSaveSuccess')});
   }
 }
