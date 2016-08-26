@@ -50,7 +50,7 @@ angular
     const adapter = new Jira();
 
     console.log('adapter');
-
+return adapter;
     if (!config.url) {
       return callback(new Error($filter('i18n')('jiraApiUrlRequired')));
     }

@@ -24,6 +24,7 @@
       "/vendors/angularjs/angular.js",
       "/vendors/lodash/lodash-latest.js",
       "/vendors/momentjs/moment-latest.js",
+      "/app/lib/adapter/jira.js",
       "/app/shared/module.js",
       "/app/shared/filter/i18n.js",
       "/app/lib/settings.js",

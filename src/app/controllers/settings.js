@@ -13,40 +13,20 @@ angular
   .controller('SettingsController', [
     '$scope', '$location', '$filter', 'cjSettings', 'cjJira',
     function ($scope, $location, $filter, cjSettings, cjJira) {
+      angular.forEach(['colors', 'timer', 'workspaces'], k => $scope[k] = cjSettings[k]);
+
       $scope.tabControl = {colors: 'theme'};
 
       $scope.notifications = [];
 
-      angular.forEach(
-        ['general', 'accounts', 'colors', 'timer', 'workspaces'],
-        k => $scope[k] = cjSettings[k]
-      );
-
-
-
       $scope.save = function (type, data) {
         if (!data) { return; }
 
-        var ok = function () {
-          $scope.notifications.push(
-            {type: 'success', message: $filter('i18n')('msgOptionsSaveSuccess')}
-          );
-        };
+        cjSettings[type] = angular.copy(data);
 
-        switch (type) {
-          case 'accounts':
-            data.url = data.url.replace(/\/+$/, '');
-            data.timeout = parseInt(data.timeout, 10) || 10;
-            chrome.permissions.request({origins: [data.url + '/']}, function (flag) {
-              if (!flag) { return false; }
-              cjSettings[type] = angular.copy(data);
-              $scope.$apply(ok);
-            });
-            break;
-          default:
-            cjSettings[type] = angular.copy(data);
-            ok();
-        }
+        $scope.notifications.push(
+          {type: 'success', message: $filter('i18n')('msgOptionsSaveSuccess')}
+        );
       };
     }]
   )
