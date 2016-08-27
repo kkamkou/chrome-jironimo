@@ -47,17 +47,21 @@ angular
     }]);
   }])
   .service('cjJira', ['$rootScope', 'cjSettings', '$http', '$filter', function ($rootScope, cjSettings, $http, $filter) {
-    const adapter = new Jira();
+    const adapter = new Jira(
+      new Request($http), cjSettings.accounts[0].url, cjSettings.accounts[0].timeout * 1000
+    );
 
-    console.log('adapter');
+/*console.log('adapter');
 return adapter;
     if (!config.url) {
       return callback(new Error($filter('i18n')('jiraApiUrlRequired')));
-    }
+    }*/
 
-    $http(callOptions)
+
+
+    /*$http(callOptions)
       .success(json => callback(null, json))
-      .error(err => callback(new Error(err || $filter('i18n')('jiraApiConnectionProblem'))));
+      .error(err => callback(new Error(err || $filter('i18n')('jiraApiConnectionProblem'))));*/
 
     return adapter;
   }]);

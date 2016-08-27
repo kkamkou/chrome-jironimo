@@ -30,7 +30,7 @@ angular
 
       // init
       $scope.$on('$routeChangeSuccess', function () {
-        if (!cjSettings.account.url) {
+        if (!cjSettings.accounts[0].url) {
           $scope.tabSettings();
           return;
         }

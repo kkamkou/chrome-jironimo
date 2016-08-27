@@ -113,6 +113,6 @@
 
     this._request.fetch(callOptions)
       .then(r => callback(null, r.toJson()))
-      .catch(e => callback(e));
+      .catch(e => callback(e.toJson()));
   }
 }

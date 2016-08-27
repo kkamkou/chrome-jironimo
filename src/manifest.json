@@ -25,6 +25,8 @@
       "/vendors/lodash/lodash-latest.js",
       "/vendors/momentjs/moment-latest.js",
       "/app/lib/adapter/jira.js",
+      "/app/lib/http/request.js",
+      "/app/lib/http/response.js",
       "/app/shared/module.js",
       "/app/shared/filter/i18n.js",
       "/app/lib/settings.js",
