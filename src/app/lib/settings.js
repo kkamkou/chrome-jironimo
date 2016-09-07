@@ -109,7 +109,7 @@ angular
     );
 
     this.getUriSettings = function () {
-      return 'views/default.html#/settings/account';
+      return 'views/default.html#/settings/general';
     };
 
     this.getUriFeedback = function () {
