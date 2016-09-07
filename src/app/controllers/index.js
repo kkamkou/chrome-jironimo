@@ -6,6 +6,8 @@
  * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0
  */
 
+'use strict';
+
 angular
   .module('jironimo')
   .controller('IndexController', [
@@ -28,7 +30,7 @@ angular
 
       // init
       $scope.$on('$routeChangeSuccess', function () {
-        if (!cjSettings.account.url) {
+        if (!cjSettings.accounts[0].url) {
           $scope.tabSettings();
           return;
         }

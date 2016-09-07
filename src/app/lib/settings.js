@@ -11,10 +11,12 @@ angular
   .service('cjSettings', ['$filter', function ($filter) {
     var _data = localStorage, self = this, defaults = {};
 
-    defaults.version = 570;
+    defaults.version = 580;
 
     // default settings for the account tab
-    defaults.account = {timeout: 10, sync: true};
+    defaults.general = {sync: true};
+
+    defaults.accounts = [{type: 'basic', label: 'Default', timeout: 10}];
 
     // default settings for the colors tab
     defaults.colors = {
@@ -40,6 +42,7 @@ angular
     // default settings for the workspaces tab
     defaults.workspaces = [
       {
+        account: 'ALL',
         icon: 'target',
         title: $filter('i18n')('settingsWorkspaceMyIssues'),
         query: 'assignee = currentUser() AND status not in (Closed, Resolved)' +
@@ -48,6 +51,7 @@ angular
         changesNotify: true
       },
       {
+        account: 'ALL',
         icon: 'share-2',
         title: $filter('i18n')('settingsWorkspaceCreatedByMe'),
         query: 'reporter = currentUser() ORDER BY created DESC',
@@ -55,6 +59,7 @@ angular
         changesNotify: true
       },
       {
+        account: 'ALL',
         icon: 'eye-2',
         title: $filter('i18n')('settingsWorkspaceWatching'),
         query: '(' +
@@ -74,7 +79,11 @@ angular
 
     // defaults for the personal data
     defaults.timers = {};
-    defaults.workspaceLast = 0;
+
+    defaults.activity = {
+      lastAccount: 0,
+      lastWorkspace: 0
+    };
 
     // getters and setters override
     angular.forEach(
@@ -100,7 +109,7 @@ angular
     );
 
     this.getUriSettings = function () {
-      return 'views/default.html#/settings/account';
+      return 'views/default.html#/settings/general';
     };
 
     this.getUriFeedback = function () {
@@ -122,11 +131,18 @@ angular
     };
 
     // migrations
-    if (this['version'] < 580) {
-      const acc = this['account'];
+    if (this.version < 580) {
+      const acc = this.account;
       delete acc.url;
-      this['account'] = acc;
-      this['version'] = 580;
+      this.account = acc;
+      this.version = 580;
+    }
+
+    if (this.version < 600) {
+      this.workspaces = this.workspaces.map(w => { w.account = 'ALL'; return w; });
+      this.version = 600;
+      this.activity = Object.assign({lastWorkspace: this.workspaceLast || 0}, this.activity);
+      delete _data.workspaceLast;
     }
 
     return this;

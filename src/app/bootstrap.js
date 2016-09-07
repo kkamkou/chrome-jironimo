@@ -6,6 +6,8 @@
  * @license http://opensource.org/licenses/BSL-1.0 Boost Software License 1.0
  */
 
+'use strict';
+
 angular
   .module(
     'jironimo',
@@ -13,6 +15,8 @@ angular
      'jironimo.notifications', 'jironimo.timer', 'jironimo.shared',
      'jironimo.tile']
   )
+  .controller('RouteSettingsGeneral', ['$scope', RouteSettingsGeneral])
+  .controller('RouteSettingsWorkspace', ['$scope', RouteSettingsWorkspace])
   .config(
     ['$routeProvider', '$compileProvider', function ($routeProvider, $compileProvider) {
       $compileProvider.debugInfoEnabled(false);
@@ -21,9 +25,9 @@ angular
           templateUrl: '/views/index.html',
           controller: 'IndexController'
         })
-        .when('/settings/account', {
-          templateUrl: '/views/options-account.html',
-          controller: 'SettingsController'
+        .when('/settings/general', {
+          templateUrl: '/views/options-general.html',
+          controller: 'RouteSettingsGeneral'
         })
         .when('/settings/colors', {
           templateUrl: '/views/options-colors.html',
@@ -31,7 +35,7 @@ angular
         })
         .when('/settings/jql', {
           templateUrl: '/views/options-jql.html',
-          controller: 'SettingsController'
+          controller: 'RouteSettingsWorkspace'
         })
         .when('/settings/timer', {
           templateUrl: '/views/options-timer.html',
@@ -46,7 +50,7 @@ angular
   )
   .run(
     ['cjSettings', function (cjSettings) {
-      if (cjSettings.account.sync) {
+      if (cjSettings.general.sync) {
         chrome.storage.sync.get(cjSettings.getStorageData(), function (items) {
           cjSettings.setStorageData(items);
         });

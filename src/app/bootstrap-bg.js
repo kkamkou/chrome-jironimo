@@ -6,6 +6,8 @@
  * @license http://opensource.org/licenses/BSL-1.0
  */
 
+'use strict';
+
 angular
   .module(
     'jironimo',
@@ -22,7 +24,10 @@ angular
 
       chrome.alarms.get('jironimoStatusCheck', function (alarm) {
         if (!alarm) {
-          chrome.alarms.create('jironimoStatusCheck', {periodInMinutes: +cjSettings.timer.workspace});
+          chrome.alarms.create(
+            'jironimoStatusCheck',
+            {periodInMinutes: +cjSettings.timer.workspace}
+          );
         }
       });
 

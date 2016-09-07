@@ -24,9 +24,7 @@ angular
           var $elem = elem.show().find('div.notify-entry:hidden:last')
             .hide().slideDown('fast');
 
-          $timeout(function () {
-            $elem.slideUp('fast', $scope.entries.shift);
-          }, 5000, false);
+          $timeout(() => $elem.slideUp('fast', $scope.entries.shift), 5000, false);
         });
       }
     };

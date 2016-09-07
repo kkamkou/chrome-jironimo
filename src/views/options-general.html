@@ -1,21 +1,30 @@
 <div class="container container-options bg-white padding20">
 
-  <navigation current="account"></navigation>
+  <navigation current="general"></navigation>
 
   <h1>
     Jironimo
-    <small>{{ 'optionsAccountTitle' | i18n }}</small>
+    <small>{{ 'optionsGeneralTitle' | i18n }}</small>
   </h1>
 
-  <form ng-submit="save('account', account)" class="grid">
+  <form ng-submit="save()" class="grid">
     <notify entries="notifications"></notify>
 
     <div class="row">
-      <div class="span12">
+      <div class="span9">
         <div class="input-control select">
-          <select name="s1" class="bg-white" disabled="disabled">
-            <option>Default account</option>
-          </select>
+          <select class="bg-white" ng-model="accountSelected"
+            ng-options="::item as item.label for item in accountList track by item.label"></select>
+        </div>
+      </div>
+      <div class="span3">
+        <div class="button-set" style="margin-top: 2px">
+          <button type="button"
+            ng-if="accountList.length < 10"
+            ng-click="accountAdd()"><i class="icon-plus-2 on-left"></i> Add</button>
+          <button type="button" class="danger"
+            ng-if="accountList.length > 1"
+            ng-click="accountRemoveSelected()"><i class="icon-cancel-2 on-left"></i> Delete</button>
         </div>
       </div>
     </div>
@@ -25,13 +34,15 @@
         <h2>{{ 'captionOptionsAccountJiraAddress' | i18n }}</h2>
 
         <div class="input-control text">
-          <input type="url" ng-model="account.url" required="required"
+          <input type="url" required="required"
+            ng-required="true" ng-model="accountSelected.url"
             title="{{ 'placeholderOptionsAccountUrl' | i18n }}"
             placeholder="{{ 'placeholderOptionsAccountUrl' | i18n }}">
         </div>
 
         <div class="input-control text">
-            <input type="text" maxlength="2" required="required" ng-model="account.timeout"
+            <input type="number" min="5" max="60" maxlength="2" required="required"
+              ng-model="accountSelected.timeout"
               title="{{ 'placeholderOptionsAccountTimeout' | i18n }}"
               placeholder="{{ 'placeholderOptionsAccountTimeout' | i18n }}">
         </div>
@@ -45,12 +56,12 @@
 
     <hr>
 
-    <div class="row">
+    <div class="row" style="background-color: #FBFBFB">
       <div class="span6">
         <h2>{{ 'captionOptionsAccountSync' | i18n }}</h2>
 
         <label class="input-control switch">
-            <input type="checkbox" ng-model="account.sync">
+            <input type="checkbox" ng-model="sync">
             <span class="check"></span>
         </label>
 

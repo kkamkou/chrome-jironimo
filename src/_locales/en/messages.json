@@ -44,8 +44,14 @@
   "msgOptionsSaveSuccess": {
     "message": "Settings were changed"
   },
+  "msgGeneralActionConfirm": {
+    "message": "Please, confirm the action!"
+  },
   "msgWorkspaceImportSuccess": {
     "message": "$1 workspaces were successfully imported"
+  },
+  "settingsAccountLabelPrompt": {
+    "message": "Label for a new account:"
   },
   "settingsColorsDefaultTheme": {
     "message": "Default Theme"
@@ -84,7 +90,7 @@
     "message": "Click here to open the list of available sizes"
   },
   "optionsAboutTitle": {
-    "message": "About Jironimo"
+    "message": "About"
   },
   "optionsAboutVersion": {
     "message": "Version"
@@ -109,6 +115,9 @@
   },
   "optionsAboutLicense": {
     "message": "License"
+  },
+  "settingsWorkspaceAccountShared": {
+    "message": "Shared"
   },
   "optionsJqlWorkspacesTitle": {
     "message": "Workspaces"
@@ -173,8 +182,8 @@
   "indexNoDataProvidedText": {
     "message": "No matching entries according the current JIRA™ query"
   },
-  "optionsAccountTitle": {
-    "message": "Account information"
+  "optionsGeneralTitle": {
+    "message": "General information"
   },
   "optionsColorsTitle": {
     "message": "Colors & Sizes"
