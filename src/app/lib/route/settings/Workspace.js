@@ -96,6 +96,8 @@ class RouteSettingsWorkspace extends RouteAbstract {
         type: 'success',
         message: this.i18n('msgWorkspaceImportSuccess', [count])
       });
+
+      this.scope.$digest();
     });
   }
 
