@@ -86,7 +86,7 @@ angular
                   title: issue.key,
                   isClickable: true,
                   eventTime: moment(issue.fields.updated).valueOf(),
-                  message: issue.fields.summary + ' (updated at ' +
+                  message: issue.fields.summary.trim() + ' (updated at ' +
                     moment(issue.fields.updated).format('LT') + ')'
                 };
 

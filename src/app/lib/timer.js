@@ -6,6 +6,8 @@
  * @license http://opensource.org/licenses/BSL-1.0
  */
 
+'use strict';
+
 angular
   .module('jironimo.timer', ['jironimo.jira', 'jironimo.settings'])
   .factory('cjTimer', ['cjJira', 'cjSettings', function (cjJira, cjSettings) {

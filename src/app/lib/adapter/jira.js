@@ -6,6 +6,8 @@
  * @license http://opensource.org/licenses/BSL-1.0
  */
 
+'use strict';
+
 /*final public*/class Jira {
   constructor(request, url, timeout) {
     this._request = request;

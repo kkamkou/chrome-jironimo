@@ -6,6 +6,8 @@
  * @license http://opensource.org/licenses/BSL-1.0
  */
 
+'use strict';
+
 /*final public*/class Response {
   constructor(data, code) {
     this._body = data;
