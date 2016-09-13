@@ -24,6 +24,7 @@ cd chrome-jironimo
 ```
 
 ### Use the source code
+- Switch to a release tag (see the releases section)
 - Navigate to `chrome://extensions`
 - Expand the developer dropdown menu and click `Load Unpacked Extension`
 - Navigate to local folder `/src`
