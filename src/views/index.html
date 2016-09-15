@@ -10,45 +10,55 @@
 
 <div id="loading" ng-show="loading"><i class="icon-clock"></i></div>
 
-<div class="container clearfix">
+<div class="container container-widget clearfix">
 
-  <div id="limit-per-page" class="input-control select" ng-show="!loading">
-    <select ng-model="searchMaxResults" ng-change="workspaceRefresh()" integer>
-      <option>16</option>
-      <option>25</option>
-      <option>50</option>
-      <option>75</option>
-      <option>100</option>
-      <option>150</option>
-      <option>250</option>
-    </select>
-  </div>
+  <div class="clearfix">
 
-  <div class="toolbar-vertical" id="home-workspaces"
-    ng-hide="workspaces.length < 2 || loading">
-    <button title="{{workspace.title}}"
-      ng-click="$parent.workspaceSwitchTo($index)"
-      ng-repeat="workspace in workspaces"
-      ng-class="{default: workspace == workspaceActive}">
-      <i class="icon-{{workspace.icon}}"></i>
-    </button>
-
-    <div class="input-control text size3" id="filter"
-      ng-show="filterFieldDisplay">
-      <input type="text" ng-model="filterText" class="bd-darkBlue">
+    <div id="limit-per-page" class="input-control select" ng-show="!loading">
+      <select ng-model="searchMaxResults" ng-change="workspaceRefresh()" integer>
+        <option>16</option>
+        <option>25</option>
+        <option>50</option>
+        <option>75</option>
+        <option>100</option>
+        <option>150</option>
+        <option>250</option>
+      </select>
     </div>
 
-    <button title="{{ 'indexTooltipFilters' | i18n }}"
-      ng-click="filterFieldDisplay = !filterFieldDisplay" ng-init="filterFieldDisplay=false"
-      ng-class="{inverse: filterFieldDisplay || filterText}">
-      <i class="icon-filter"></i>
-    </button><!--
+    <div id="account-switch" class="input-control select" ng-show="!loading && accounts.length > 1">
+      <select
+        ng-options="::account.label for account in accounts | orderBy: 'label' track by account.label"
+        ng-model="account"></select>
+    </div>
 
-  --><button title="{{ 'indexTooltipTools' | i18n }}" id="advanced-panel-icon"
-      ng-class="{inverse: homePanelVisible}" ng-init="homePanelVisible=false"
-      ng-click="homePanelVisible = !homePanelVisible">
-      <i class="icon-mouse"></i>
-    </button>
+    <div class="toolbar-vertical" id="home-workspaces"
+      ng-hide="workspaces.length < 2 || loading">
+      <button title="{{workspace.title}}"
+        ng-click="$parent.workspaceSwitchTo($index)"
+        ng-repeat="workspace in workspaces"
+        ng-class="{default: workspace == workspaceActive}">
+        <i class="icon-{{workspace.icon}}"></i>
+      </button>
+
+      <div class="input-control text size3" id="filter"
+        ng-show="filterFieldDisplay">
+        <input type="text" ng-model="filterText" class="bd-darkBlue">
+      </div>
+
+      <button title="{{ 'indexTooltipFilters' | i18n }}"
+        ng-click="filterFieldDisplay = !filterFieldDisplay" ng-init="filterFieldDisplay=false"
+        ng-class="{inverse: filterFieldDisplay || filterText}">
+        <i class="icon-filter"></i>
+      </button><!--
+
+    --><button title="{{ 'indexTooltipTools' | i18n }}" id="advanced-panel-icon"
+        ng-class="{inverse: homePanelVisible}" ng-init="homePanelVisible=false"
+        ng-click="homePanelVisible = !homePanelVisible">
+        <i class="icon-mouse"></i>
+      </button>
+    </div>
+
   </div>
 
   <div id="advanced-panel"

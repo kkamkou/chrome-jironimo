@@ -84,7 +84,7 @@ angular
 
     defaults.activity = {
       lastAccount: 0,
-      lastWorkspace: 0
+      lastWorkspace: {'default': 0}
     };
 
     // getters and setters override

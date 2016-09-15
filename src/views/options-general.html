@@ -14,7 +14,7 @@
       <div class="span9">
         <div class="input-control select">
           <select class="bg-white" ng-model="accountSelected"
-            ng-options="::item as item.label for item in accountList track by item.label"></select>
+            ng-options="::item as item.label for item in accountList track by $index"></select>
         </div>
       </div>
       <div class="span3">

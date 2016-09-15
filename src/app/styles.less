@@ -14,7 +14,7 @@ html{ height: auto; }
 
 .metro {
   .error-bar, .warning-bar, .info-bar {
-    padding-top: 15px;
+    padding-top: 32px;
     z-index: 1002;
     height: 100%;
   }
@@ -33,6 +33,45 @@ div.container-options {
   div.toolbar {
     button, a {
       width: 50px!important;
+    }
+  }
+}
+
+div.container-widget {
+  div.tiles {
+    h3 {
+      transform: rotate(-90deg) translate(-100%, 0);
+      transform-origin: 0 0;
+      position: absolute;
+      left: -7px;
+      text-transform: uppercase;
+      font-size: 11px;
+      top: 25px;
+    }
+  }
+
+  div#account-switch {
+    top: 1px;
+    float: left;
+    width: 120px;
+    z-index: 1051;
+
+    select {
+      height: 26px;
+      font-size: 0.8em;
+    }
+  }
+
+  div#limit-per-page {
+    width: auto;
+    position: absolute;
+    right: 8px;
+    top: 1px;
+    z-index: 1051;
+
+    select {
+      height: 26px;
+      font-size: 0.8em;
     }
   }
 }
@@ -158,19 +197,6 @@ div.notify-entry {
 div.tab-control {
   li {
     cursor: pointer;
-  }
-}
-
-#limit-per-page {
-  width: auto;
-  position: absolute;
-  right: 8px;
-  top: 1px;
-  z-index: 1051;
-
-  select {
-    height: 26px;
-    font-size: 0.8em;
   }
 }
 

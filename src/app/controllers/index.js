@@ -16,17 +16,54 @@ angular
       var self = this,
         timeouts = {workspaceRefresh: null};
 
-      $scope.timer = cjTimer;
-      $scope.workspaces = cjSettings.workspaces;
-
+      $scope.accounts = cjSettings.accounts;
+      $scope.issueFocused = null;
       $scope.issues = [];
-      $scope.searchTotal = 0;
-      $scope.searchStartAt = 0;
-      $scope.searchMaxResults = 16;
 
       $scope.loading = false;
-      $scope.issueFocused = null;
+
+      $scope.searchMaxResults = 16;
+      $scope.searchStartAt = 0;
+      $scope.searchTotal = 0;
+
+      $scope.timer = cjTimer;
+
       $scope.windowDetached = false;
+
+      $scope.workspaceActive = cjSettings.workspaces[0];
+      $scope.workspaces = cjSettings.workspaces;
+
+      $scope.$watch('account', account => {
+        const activity = _.get(cjSettings.activity, 'lastAccount'),
+          idx = _.findIndex($scope.accounts, account);
+
+        if (activity !== idx) {
+          cjSettings.activity = _.set(cjSettings.activity, 'lastAccount', idx);
+        }
+
+        $scope.workspaces = _workspaceListByAccount(account);
+        $scope.workspaceActive = _workspaceActiveByAccount(account);
+        $scope.workspaceRefresh();
+      });
+
+      $scope.account = $scope.accounts[_.get(cjSettings.activity, 'lastAccount', 0)]
+        || $scope.accounts[0];
+
+      /** @access private */
+      function _workspaceListByAccount(account) {
+        return cjSettings.workspaces.filter(a => ~['ALL', account.label].indexOf(a.account));
+      }
+
+      /** @access private */
+      function _workspaceActiveByAccount(account) {
+        return _.find($scope.workspaces, function (dataSet, index, list) {
+          const activity = _.get(
+            cjSettings.activity, 'lastWorkspace.' + _.snakeCase(account.label)
+          );
+          return (_.isNumber(activity) && list.length > activity)
+            ? (activity === index) : dataSet.isDefault;
+        });
+      }
 
       // init
       $scope.$on('$routeChangeSuccess', function () {
@@ -34,24 +71,15 @@ angular
           $scope.tabSettings();
           return;
         }
-
         chrome.windows.getCurrent(null, function (win) {
           $scope.windowDetached = (win.type === 'popup');
         });
       });
 
-      // the active workspace
-      $scope.workspaceActive = _.find($scope.workspaces, function (dataSet, index, list) {
-        if (_.isNumber(cjSettings.workspaceLast) && list.length > cjSettings.workspaceLast) {
-          return (cjSettings.workspaceLast === index);
-        }
-        return dataSet.isDefault;
-      });
-
       /**
        * Loads issues for an another workspace
-       * @param {Integer} offset
-       * @param {Integer} limit
+       * @param [Integer] offset
+       * @param [Integer] limit
        * @return {void}
        */
       $scope.workspaceRefresh = function (offset, limit) {
@@ -96,27 +124,29 @@ angular
 
       /**
        * Marks another workspace as active
-       * @param {Number} index
+       * @param {Number} idx
        */
-      $scope.workspaceSwitchTo = function (index) {
-        index = $scope.workspaces[index] ? index : 0;
+      $scope.workspaceSwitchTo = function (idx) {
+        idx = $scope.workspaces[idx] ? idx : 0;
 
-        $scope.workspaceActive = $scope.workspaces[index];
+        $scope.workspaceActive = $scope.workspaces[idx];
         $scope.searchReset().workspaceRefresh();
 
-        if (cjSettings.workspaceLast !== index) {
-          cjSettings.workspaceLast = index;
+        const label = _.snakeCase($scope.account.label),
+          activity = _.get(cjSettings.activity, 'lastWorkspace.' + label);
+        if (activity !== idx) {
+          cjSettings.activity = _.set(cjSettings.activity, 'lastWorkspace.' + label, idx);
         }
       };
 
       /**
        * Resets the pagination data
-       * @return {this}
+       * @return {$scope}
        */
       $scope.searchReset = function () {
         $scope.searchTotal = 0;
         $scope.searchStartAt = 0;
-        return this;
+        return $scope;
       };
 
       /**
@@ -165,7 +195,7 @@ angular
       $scope.tabIssue = function (issue) {
         chrome.tabs.create({
           active: false,
-          url: cjSettings.account.url + '/browse/' + issue.key
+          url: [$scope.account.url, 'browse', issue.key].join('/')
         });
       };
 
@@ -222,15 +252,10 @@ angular
 
         cjJira.myself(function (err, flag) {
           if (err || !flag) {
-            if (err) {
-              deferred.reject(err);
-            }
-            return;
+            return deferred.reject(err ? err : new Error('Unable to identify myself'));
           }
-
-          cjJira.search(searchData, function (serr, data) {
-            return serr ? deferred.reject(serr) : deferred.resolve(data);
-          });
+          cjJira.search(searchData, (err, data) =>
+            err ? deferred.reject(err) : deferred.resolve(data));
         });
 
         return deferred.promise;
@@ -264,8 +289,6 @@ angular
           $(this).closest('div.tile').find('div.transitions').show();
           return false;
         });
-
-        $scope.workspaceRefresh();
       });
 
       $rootScope.$on('jiraRequestFail', function (event, args) {
@@ -273,10 +296,9 @@ angular
       });
 
       $scope.$watch('filterFieldDisplay', function (flag) {
-        if (!flag) { return; }
-        $timeout(function () {
-          $('#filter input').focus();
-        }, 100, false);
+        if (flag) {
+          $timeout(() => $('#filter input').focus(), 100, false);
+        }
       });
 
       $scope.$watch('loading', function (flag) {
