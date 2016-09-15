@@ -46,6 +46,8 @@ class RouteSettingsGeneral extends RouteAbstract {
       return false;
     }
 
+    account.id = _.snakeCase(account.label);
+
     this.scope.accountList.push(account);
     this.scope.accountSelected = account;
   }
