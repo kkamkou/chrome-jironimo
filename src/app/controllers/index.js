@@ -43,11 +43,20 @@ angular
 
         $scope.workspaces = _workspaceListByAccount(account);
         $scope.workspaceActive = _workspaceActiveByAccount(account);
+        $scope.searchMaxResults = _workspaceSearchMaxResults(account);
+
         $scope.workspaceRefresh();
       });
 
       $scope.account = $scope.accounts[_.get(cjSettings.activity, 'lastAccount', 0)]
         || $scope.accounts[0];
+
+      /** @access private */
+      function _workspaceSearchMaxResults(account) {
+        return _.get(
+          cjSettings.activity, `lastWorkspace.${account.id}.searchMaxResults`, 16
+        );
+      }
 
       /** @access private */
       function _workspaceListByAccount(account) {
@@ -57,9 +66,7 @@ angular
       /** @access private */
       function _workspaceActiveByAccount(account) {
         return _.find($scope.workspaces, function (dataSet, index, list) {
-          const activity = _.get(
-            cjSettings.activity, 'lastWorkspace.' + _.snakeCase(account.label)
-          );
+          const activity = _.get(cjSettings.activity, `lastWorkspace.${account.id}.index`);
           return (_.isNumber(activity) && list.length > activity)
             ? (activity === index) : dataSet.isDefault;
         });
@@ -86,36 +93,34 @@ angular
         $scope.loading = true;
         $scope.issues = [];
 
-        if (angular.isUndefined(offset)) {
+        if (_.isUndefined(offset)) {
           offset = $scope.searchStartAt;
         }
 
-        if (angular.isUndefined(limit)) {
+        if (_.isUndefined(limit)) {
           limit = $scope.searchMaxResults;
         }
 
         self._issueSearch($scope.workspaceActive.query, +offset, +limit)
           .then(
-            function (data) {
+            data => {
               $scope.loading = false;
               $scope.searchTotal = data.total;
               $scope.searchStartAt = data.startAt;
-
-              angular.forEach(data.issues, function (issue) {
-                $scope.issues.push(self._issueModify(issue));
-              });
+              (data.issues || []).forEach(issue => $scope.issues.push(self._issueModify(issue)));
             },
-            function () {
-              $scope.loading = false;
-            }
+            () => $scope.loading = false
           );
+
+        const searchMaxResultsKey = `lastWorkspace.${$scope.account.id}.searchMaxResults`;
+        if (_.get(cjSettings.activity, searchMaxResultsKey) !== limit) {
+          cjSettings.activity = _.set(cjSettings.activity, searchMaxResultsKey, limit);
+        }
 
         if (cjSettings.timer.workspace > 0) {
           $timeout.cancel(timeouts.workspaceRefresh);
           timeouts.workspaceRefresh = $timeout(
-            function () {
-              $scope.workspaceRefresh(offset, limit);
-            },
+            () => $scope.workspaceRefresh(offset, limit),
             parseInt(cjSettings.timer.workspace, 10) * 1000 * 60,
             false
           );
@@ -132,10 +137,11 @@ angular
         $scope.workspaceActive = $scope.workspaces[idx];
         $scope.searchReset().workspaceRefresh();
 
-        const label = _.snakeCase($scope.account.label),
-          activity = _.get(cjSettings.activity, 'lastWorkspace.' + label);
+        const activity = _.get(cjSettings.activity, `lastWorkspace.${$scope.account.id}.index`);
         if (activity !== idx) {
-          cjSettings.activity = _.set(cjSettings.activity, 'lastWorkspace.' + label, idx);
+          cjSettings.activity = _.set(
+            cjSettings.activity, `lastWorkspace.${$scope.account.id}.index`, idx
+          );
         }
       };
 
