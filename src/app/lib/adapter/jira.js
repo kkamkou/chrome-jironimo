@@ -17,6 +17,14 @@
   }
 
   /**
+   * The status of the authorisation
+   * @param {Function} callback
+   */
+  authenticated(callback) {
+    this.myself((err, flag) => callback(null, !err && !!flag));
+  }
+
+  /**
    * Currently logged user
    * @param {Function} callback
    */
@@ -115,6 +123,6 @@
 
     this._request.fetch(callOptions)
       .then(r => callback(null, r.toJson()))
-      .catch(e => callback(e.toJson()));
+      .catch(e => callback(e.code));
   }
 }

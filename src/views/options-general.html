@@ -14,7 +14,7 @@
       <div class="span9">
         <div class="input-control select">
           <select class="bg-white" ng-model="accountSelected"
-            ng-options="::item as item.label for item in accountList track by $index"></select>
+            ng-options="::item as item.label for item in accountList track by item.id"></select>
         </div>
       </div>
       <div class="span3">
@@ -33,11 +33,22 @@
       <div class="span6">
         <h2>{{ 'captionOptionsAccountJiraAddress' | i18n }}</h2>
 
-        <div class="input-control text">
+        <div class="input-control text span5">
           <input type="url" required="required"
-            ng-required="true" ng-model="accountSelected.url"
+            ng-required="true"
+            ng-model="accountSelected.url"
             title="{{ 'placeholderOptionsAccountUrl' | i18n }}"
             placeholder="{{ 'placeholderOptionsAccountUrl' | i18n }}">
+        </div>
+
+        <div class="span1" style="margin-top: 4px">
+          <button type="button" class="button bg-fg-darkBlue"
+            ng-click="accountAuthVerify(accountSelected.url, accountSelected.timeout)">
+            <i class="icon-help fg-white" ng-show="accountSelectedAuthStatus < 0"></i>
+            <i class="icon-link-2 fg-red" ng-show="accountSelectedAuthStatus === 0"></i>
+            <i class="icon-link fg-green" ng-show="accountSelectedAuthStatus === 1"></i>
+            <i class="icon-clock fg-orange" ng-show="accountSelectedAuthStatus === 2"></i>
+          </button>
         </div>
 
         <div class="input-control text">

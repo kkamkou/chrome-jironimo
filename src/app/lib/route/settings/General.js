@@ -2,13 +2,17 @@
 
 class RouteSettingsGeneral extends RouteAbstract {
   constructor($scope) {
-    super($scope, ['save', 'accountAdd', 'accountRemoveSelected']);
+    super($scope, ['save', 'accountAdd', 'accountRemoveSelected', 'accountAuthVerify']);
     this.settings = this.service('cjSettings');
     this.i18n = this.service('$filter')('i18n');
 
     $scope.accountList = this.settings.accounts;
     $scope.accountSelected = this.settings.accounts[0];
     $scope.sync = this.settings.general.sync;
+
+    $scope.$watch('accountSelected', () => {
+      $scope.accountSelectedAuthStatus = -1;
+    });
   }
 
   save() {
@@ -47,6 +51,9 @@ class RouteSettingsGeneral extends RouteAbstract {
     }
 
     account.id = _.snakeCase(account.label);
+    if (~this.scope.accountList.findIndex(a => a.id === account.id)) {
+      return false;
+    }
 
     this.scope.accountList.push(account);
     this.scope.accountSelected = account;
@@ -56,8 +63,20 @@ class RouteSettingsGeneral extends RouteAbstract {
     if (!confirm(this.i18n('msgGeneralActionConfirm'))) {
       return false;
     }
+
     this.scope.accountList = this.scope.accountList
-      .filter(a => a.label !== this.scope.accountSelected.label);
+      .filter(a => a.id !== this.scope.accountSelected.id);
+
     this.scope.accountSelected = _.last(this.scope.accountList);
+  }
+
+  accountAuthVerify(url, timeout) {
+    if (!url) { return; }
+
+    this.scope.accountSelectedAuthStatus = 2;
+
+    (new Jira(new Request(this.service('$http')), url, timeout * 1000)).authenticated(
+      (err, flag) => this.scope.$apply(() => this.scope.accountSelectedAuthStatus = +flag)
+    );
   }
 }
