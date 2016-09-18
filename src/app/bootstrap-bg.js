@@ -49,9 +49,7 @@ angular
 
       // alarms.onAlarm
       chrome.alarms.onAlarm.addListener(function (alarm) {
-        if (!alarm || alarm.name !== 'jironimoStatusCheck') {
-          return;
-        }
+        if (!alarm || alarm.name !== 'jironimoStatusCheck') { return; }
 
         cjJira.myself(function (err1, info) {
           if (err1) { return; }
@@ -67,30 +65,25 @@ angular
             };
 
             cjJira.search(query, function (err2, result) {
-              if (err2) { return; }
+              if (err2 || !result) { return; }
 
               _.forEach(result.issues, function (issue) {
-                if (cache.indexOf(issue.id) !== -1) {
-                  return;
-                }
+                if (~cache.indexOf(issue.id)) { return; }
 
                 cache.push(issue.id);
 
-                if (_.get(issue, 'changelog.histories')) {
-                  if (_.get(_.last(issue.changelog.histories), 'author.name') === info.name) {
+                if (_.get(issue, 'changelog.histories')
+                  && _.get(_.last(issue.changelog.histories), 'author.name') === info.name) {
                     return;
-                  }
                 }
 
-                var params = {
+                cjNotifications.createOrUpdate(issue.key, {
                   title: issue.key,
                   isClickable: true,
                   eventTime: moment(issue.fields.updated).valueOf(),
                   message: issue.fields.summary.trim() + ' (updated at ' +
-                    moment(issue.fields.updated).format('LT') + ')'
-                };
-
-                cjNotifications.createOrUpdate(issue.key, params);
+                  moment(issue.fields.updated).format('LT') + ')'
+                });
               });
             });
           });
@@ -99,16 +92,12 @@ angular
 
       // alarms.onAlarm
       chrome.alarms.onAlarm.addListener(function (alarm) {
-        if (!alarm || alarm.name !== 'jironimoRefreshIcon') {
-          return;
-        }
+        if (!alarm || alarm.name !== 'jironimoRefreshIcon') { return; }
 
-        var timer = _.filter(cjSettings.timers || {}, {started: true}).pop();
-        if (!timer) {
-          return;
-        }
+        const timer = _.filter(cjSettings.timers || {}, {started: true}).pop();
+        if (!timer) { return; }
 
-        var diff = moment().diff(moment.unix(timer.timestamp + 3600));
+        const diff = moment().diff(moment.unix(timer.timestamp + 3600));
         chrome.browserAction.setBadgeText({text: moment(diff).format('HH:mm')});
       });
 
@@ -117,10 +106,7 @@ angular
         switch (details.reason) {
           case 'install':
             chrome.tabs.create({active: true, url: cjSettings.getUriSettings()});
-
-            if (chrome.runtime.setUninstallURL) { // since chrome 41
-              chrome.runtime.setUninstallURL(cjSettings.getUriFeedback());
-            }
+            chrome.runtime.setUninstallURL(cjSettings.getUriFeedback());
             break;
 
           case 'update':
