@@ -4,7 +4,7 @@ class RouteSettingsWorkspace extends RouteAbstract {
   constructor($scope) {
     super(
       $scope,
-      ['add', 'save', 'remove', 'import', 'setAsDefault', 'accountSwitch', 'queryIsValidForWatch']
+      ['add', 'save', 'remove', 'import', 'setAsDefault', 'accountSwitch', 'isQueryValidForWatch']
     );
 
     this.settings = this.service('cjSettings');
@@ -22,7 +22,7 @@ class RouteSettingsWorkspace extends RouteAbstract {
     if (this.scope.accountSelected === label) { return; }
 
     const filtered = this.settings.workspaces
-      .filter(w => w.account === this.accountLabel(this.scope.accountSelected));
+      .filter(w => w.account === this._accountLabel(this.scope.accountSelected));
 
     if (
       (filtered.length !== this.scope.workspaces.length
@@ -34,18 +34,14 @@ class RouteSettingsWorkspace extends RouteAbstract {
 
     this.scope.accountSelected = label;
     this.scope.workspaces = this.settings.workspaces
-      .filter(w => w.account === this.accountLabel(label));
-  }
-
-  accountLabel(account) {
-    return (account === 'ALL' ? 'ALL' : account.label);
+      .filter(w => w.account === this._accountLabel(label));
   }
 
   add() {
     if (this.scope.workspaces.length > 10) { return; }
 
     this.scope.workspaces.push({
-      account: this.accountLabel(this.scope.accountSelected),
+      account: this._accountLabel(this.scope.accountSelected),
       title: null,
       query: null,
       isDefault: false,
@@ -101,14 +97,19 @@ class RouteSettingsWorkspace extends RouteAbstract {
     });
   }
 
-  queryIsValidForWatch(query) {
+  isQueryValidForWatch(query) {
     return (/\bupdated(date)?\b/).test(query.toLowerCase());
   }
 
   save() {
     this.settings.workspaces = this.settings.workspaces
-      .filter(w => w.account !== this.accountLabel(this.scope.accountSelected))
+      .filter(w => w.account !== this._accountLabel(this.scope.accountSelected))
       .concat(this.scope.workspaces);
     this.scope.notifications.push({type: 'success', message: this.i18n('msgOptionsSaveSuccess')});
+  }
+
+  /** @access private */
+  _accountLabel(account) {
+    return (account === 'ALL' ? 'ALL' : account.label);
   }
 }

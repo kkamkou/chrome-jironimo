@@ -82,7 +82,7 @@
               ng-model="workspace.query"></textarea>
 
             <div class="label info"
-              ng-if="workspace.changesNotify && queryIsValidForWatch(workspace.query)">
+              ng-if="workspace.changesNotify && isQueryValidForWatch(workspace.query)">
               <i class="icon-lamp-2 place-left"></i>&nbsp;
               <span ng-bind-html="'optionsJqlDateHint' | i18n"></span>
             </div>
