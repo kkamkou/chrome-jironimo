@@ -25,6 +25,7 @@ class RouteSettingsGeneral extends RouteAbstract {
     if (!account.url || account.url.indexOf('http') !== 0) {
       this.scope.notifications
         .push({type: 'error', message: this.i18n('placeholderOptionsAccountUrl')});
+      return;
     }
 
     chrome.permissions.request({origins: [account.url + '/']}, flag => {
