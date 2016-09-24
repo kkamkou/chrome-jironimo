@@ -18,7 +18,9 @@ angular
     // default settings for the account tab
     defaults.general = {sync: true};
 
-    defaults.accounts = [{type: 'basic', label: 'Default', id: 'default', timeout: 10}];
+    defaults.accounts = [
+      {type: 'basic', label: 'Default', id: 'default', enabled: true, timeout: 10}
+    ];
 
     // default settings for the colors tab
     defaults.colors = {
@@ -85,10 +87,7 @@ angular
     defaults.activity = {
       lastAccount: 0,
       lastWorkspace: {
-        'default': {
-          index: 0,
-          searchMaxResults: 16
-        }
+        'default': {index: 0, searchMaxResults: 16}
       }
     };
 
@@ -148,7 +147,10 @@ angular
     if (this.version < 600) {
       this.workspaces = this.workspaces.map(w => { w.account = 'ALL'; return w; });
       this.version = 600;
-      this.activity = _.set(this.activity, 'lastWorkspace.default.index', this.workspaceLast || 0);
+      this.activity = _.set(this.activity, 'lastWorkspace.default.index', {
+        index: this.workspaceLast || 0,
+        enabled: true
+      });
       delete _data.workspaceLast;
     }
 

@@ -9,13 +9,35 @@
 'use strict';
 
 angular
-  .module(
-    'jironimo',
-    ['jironimo.settings', 'jironimo.jira', 'jironimo.notifications', 'jironimo.shared']
-  )
+  .module('jironimo', ['jironimo.settings', 'jironimo.notifications', 'jironimo.shared'])
   .run([
-    'cjSettings', 'cjJira', 'cjNotifications', '$filter',
-    function (cjSettings, cjJira, cjNotifications, $filter) {
+    '$http', 'cjSettings', 'cjNotifications', '$filter',
+    function ($http, cjSettings, cjNotifications, $filter) {
+
+      const accountList = [];
+      cjSettings.accounts.filter(a => a.enabled).forEach(account => {
+        const api = new Jira(new Request($http), account.url, account.timeout * 1000);
+        api.authenticated((err, flag) => {
+          if (flag) {
+            accountList.push({account: account, api: api});
+            return;
+          }
+
+          cjNotifications.createOrUpdate(`auth-${account.id}`, {
+            title: 'Unauthorized',
+            isClickable: true,
+            message: `Please, authorize the "${account.label}" account!`,
+            priority: 2,
+            requireInteraction: true,
+            iconUrl: chrome.extension.getURL('icons/contact-128.png'),
+            buttons: [{
+              title: 'Disable account',
+              iconUrl: chrome.extension.getURL('icons/cancel-32.png')
+            }]
+          });
+        });
+      });
+
       chrome.alarms.get('jironimoRefreshIcon', function (alarm) {
         if (!alarm) {
           chrome.alarms.create('jironimoRefreshIcon', {periodInMinutes: 1});
@@ -31,63 +53,103 @@ angular
         }
       });
 
-      // notifications.onClicked
-      chrome.notifications.onClicked.addListener(function (tid) {
-        cjNotifications.clear(tid, function (err, id) {
-          if (err) { return; }
-
-          if (id === 'jironimo-update') {
-            chrome.tabs.create(
-              {active: true, url: 'http://2ka.by/article/chrome-jironimo#changelog'}
-            );
-            return;
-          }
-
-          chrome.tabs.create({active: true, url: cjSettings.account.url + '/browse/' + id});
-        });
-      });
-
       // alarms.onAlarm
       chrome.alarms.onAlarm.addListener(function (alarm) {
         if (!alarm || alarm.name !== 'jironimoStatusCheck') { return; }
 
-        cjJira.myself(function (err1, info) {
-          if (err1) { return; }
+        accountList.forEach(entry => {
+          entry.api.myself((err, info) => {
+            if (err) { return; }
 
-          var cache = [];
+            const cache = [];
 
-          _.filter(cjSettings.workspaces, {changesNotify: true}).forEach(function (workspace) {
-            var query = {
-              jql: 'updated > "-%dm" AND '.replace('%d', +cjSettings.timer.workspace) +
-                workspace.query,
-              expand: 'changelog',
-              fields: 'updated,summary'
-            };
+            _.filter(cjSettings.workspaces, {account: entry.account.id, changesNotify: true})
+              .forEach(workspace => {
+                const query = {
+                  jql: 'updated > "-%dm" AND '.replace('%d', +cjSettings.timer.workspace) +
+                  workspace.query,
+                  expand: 'changelog',
+                  fields: 'updated,summary'
+                };
 
-            cjJira.search(query, function (err2, result) {
-              if (err2 || !result) { return; }
+                entry.api.search(query, (err, result) => {
+                  if (err || !result || !Array.isArray(result.issues)) { return; }
 
-              _.forEach(result.issues, function (issue) {
-                if (~cache.indexOf(issue.id)) { return; }
+                  result.issues.forEach(issue => {
+                    if (~cache.indexOf(issue.id)) { return; }
+                    cache.push(issue.id);
 
-                cache.push(issue.id);
+                    if (_.get(issue, 'changelog.histories')
+                        && _.get(_.last(issue.changelog.histories), 'author.name') === info.name) {
+                      return;
+                    }
 
-                if (_.get(issue, 'changelog.histories')
-                  && _.get(_.last(issue.changelog.histories), 'author.name') === info.name) {
-                    return;
-                }
-
-                cjNotifications.createOrUpdate(issue.key, {
-                  title: issue.key,
-                  isClickable: true,
-                  eventTime: moment(issue.fields.updated).valueOf(),
-                  message: issue.fields.summary.trim() + ' (updated at ' +
-                  moment(issue.fields.updated).format('LT') + ')'
+                    cjNotifications.createOrUpdate(
+                      ['issue', entry.account.id, issue.key].join('-'),
+                      {
+                        eventTime: moment(issue.fields.updated).valueOf(),
+                        isClickable: true,
+                        message: issue.fields.summary.trim() +
+                        ' (updated at ' + moment(issue.fields.updated).format('LT') + ')',
+                        title: issue.key
+                      }
+                    );
+                  });
                 });
               });
-            });
           });
         });
+      });
+
+      // notifications.onClicked
+      chrome.notifications.onClicked.addListener(nId => {
+        cjNotifications.clear(nId, (err, id) => {
+          if (err) { return; }
+
+          switch (nId) {
+            case 'jironimo-update':
+              chrome.tabs.create({active: true, url: cjSettings.getUriSettings()});
+              break;
+            default:
+              const matches = nId.split('-');
+              switch (matches[0]) {
+                case 'auth':
+                  chrome.tabs.create({
+                    active: true,
+                    url: cjSettings.accounts.find(a => a.id === matches[1]).url
+                  });
+                  break;
+
+                case 'issue':
+                  const url = cjSettings.accounts.find(a => a.id === matches[1]).url;
+                  chrome.tabs.create({active: true, url: `${url}/browse/${id}`});
+                  break;
+
+                default:
+                  console.error('Unknown subtype');
+              }
+          }
+        });
+      });
+
+      chrome.notifications.onButtonClicked.addListener((nId, btnIdx) => {
+        switch (nId) {
+          case 'jironimo-update':
+            chrome.tabs
+              .create({active: true, url: 'http://2ka.by/article/chrome-jironimo#changelog'});
+            break;
+          default:
+            const matches = nId.split('-');
+            switch (matches[0]) {
+              case 'auth':
+                cjSettings.accounts = cjSettings.accounts.map(a => {
+                  if (a.id === matches[1]) { a.enabled = false; }
+                  return a;
+                });
+                cjNotifications.clear(nId);
+                break;
+            }
+        }
       });
 
       // alarms.onAlarm
@@ -111,6 +173,10 @@ angular
 
           case 'update':
             cjNotifications.createOrUpdate('jironimo-update', {
+              buttons: [{
+                title: 'Changelog',
+                iconUrl: chrome.extension.getURL('icons/eye-32.png')
+              }],
               title: $filter('i18n')('messageJironimoUpdatedTitle'),
               message: $filter('i18n')('messageJironimoUpdatedText')
             });

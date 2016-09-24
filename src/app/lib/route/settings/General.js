@@ -44,7 +44,7 @@ class RouteSettingsGeneral extends RouteAbstract {
   }
 
   accountAdd() {
-    const account = Object.assign(this.settings.accounts[0], {url: undefined});
+    const account = Object.assign(this.settings.accounts[0], {url: undefined, enabled: true});
 
     account.label = prompt(this.i18n('settingsAccountLabelPrompt')) || '';
     if (!account.label.length) {

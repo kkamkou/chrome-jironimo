@@ -21,7 +21,7 @@
    * @param {Function} callback
    */
   authenticated(callback) {
-    this.myself((err, flag) => callback(null, !err && !!flag));
+    this.myself((err, flag) => callback(null, !err && _.get(flag, 'active', false)));
   }
 
   /**
@@ -34,7 +34,7 @@
     }
     this._makeRequest('/api/latest/myself', {}, (err, data) => {
       if (!err) { this._cache.myself = data; }
-      callback(err, data);
+      return callback(err, data);
     });
   }
 
@@ -123,6 +123,9 @@
 
     this._request.fetch(callOptions)
       .then(r => callback(null, r.toJson()))
-      .catch(e => callback(e.code));
+      .catch(e => {
+        console.error(e);
+        callback(e.code);
+      });
   }
 }

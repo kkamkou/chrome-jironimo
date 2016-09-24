@@ -14,32 +14,27 @@ angular
     var notifications = [],
       optionsDefault = {
         type: 'basic',
-        iconUrl: chrome.extension.getURL('icons/128.png')
+        iconUrl: chrome.extension.getURL('icons/app-128.png')
       };
 
     this.createOrUpdate = function (id, params, cb) {
-      return this[notifications[id] ? 'update' : 'create'](id, params, cb || function () {});
+      return this[notifications[id] ? 'update' : 'create'](id, params, cb || _.noop);
     };
 
     this.clear = function (id, cb) {
-      chrome.notifications.clear(id, function (wasCleared) {
-        var err = wasCleared ? null : true;
-        if (!err) {
-          delete notifications[id];
-        }
-        cb(err, id);
+      chrome.notifications.clear(id, wasCleared => {
+        const err = wasCleared ? null : true;
+        if (!err) { delete notifications[id]; }
+        if (cb) { cb(err, id); }
       });
     };
 
     this.create = function (id, params, cb) {
-      var options = _.defaults({}, optionsDefault, params);
-      chrome.notifications.create(id, options, function (notificationId) {
-        var err = notificationId ? null : true;
-        if (!err) {
-          notifications[id] = true;
-        }
-
-        cb(err, notificationId);
+      var options = _.defaults({}, params, optionsDefault);
+      chrome.notifications.create(id, options, nId => {
+        var err = nId ? null : true;
+        if (!err) { notifications[id] = true; }
+        cb(err, nId);
       });
     };
 

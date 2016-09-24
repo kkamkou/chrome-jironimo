@@ -12,7 +12,7 @@
 
 <div class="container container-widget clearfix">
 
-  <div class="clearfix">
+  <div class="clearfix" id="tiles-toolbar">
 
     <div id="limit-per-page" class="input-control select" ng-show="!loading">
       <select ng-model="searchMaxResults" ng-change="workspaceRefresh()" integer>
@@ -32,7 +32,7 @@
         ng-model="account"></select>
     </div>
 
-    <div class="toolbar-vertical" id="home-workspaces"
+    <div id="home-workspaces"
       ng-hide="workspaces.length < 2 || loading">
       <button title="{{workspace.title}}"
         ng-click="$parent.workspaceSwitchTo($index)"

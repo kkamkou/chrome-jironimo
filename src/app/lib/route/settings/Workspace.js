@@ -11,7 +11,7 @@ class RouteSettingsWorkspace extends RouteAbstract {
     this.i18n = this.service('$filter')('i18n');
     this.jira = this.service('cjJira');
 
-    $scope.accounts = this.settings.accounts;
+    $scope.accounts = this.settings.accounts.filter(a => a.enabled);
     $scope.accountSelected = '';
     $scope.workspaces = [];
 
