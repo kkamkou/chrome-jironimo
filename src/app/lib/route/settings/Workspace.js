@@ -13,6 +13,7 @@ class RouteSettingsWorkspace extends RouteAbstract {
 
     $scope.accounts = this.settings.accounts.filter(a => a.enabled);
     $scope.accountSelected = '';
+    $scope.importingFavorites = false;
     $scope.workspaces = [];
 
     this.accountSwitch('ALL');
@@ -68,9 +69,12 @@ class RouteSettingsWorkspace extends RouteAbstract {
   }
 
   import() {
+    this.scope.importingFavorites = true;
+
     this.jira.filterFavourite((err, data) => {
       if (err) {
         this.scope.notifications.push({type: 'error', message: err.message});
+        this.scope.importingFavorites = false;
         return;
       }
 
@@ -81,13 +85,15 @@ class RouteSettingsWorkspace extends RouteAbstract {
       _.difference(favs, workspaces).forEach(jql => {
         count++;
         this.scope.workspaces.push({
+          account: this.scope.accountSelected.id,
+          icon: 'heart-2',
           isDefault: false,
-          title: _.find(data, {jql: jql}).name,
           query: jql,
-          icon: 'heart-2'
+          title: _.find(data, {jql: jql}).name
         });
       });
 
+      this.scope.importingFavorites = false;
       this.scope.notifications.push({
         type: 'success',
         message: this.i18n('msgWorkspaceImportSuccess', [count])

@@ -111,7 +111,8 @@
     <div>
       <input type="submit" value="{{ 'btnSave' | i18n }}" class="default">
 
-      <button type='button' class="primary place-right" ng-click="import();">
+      <button type='button' class="primary place-right"
+        ng-click="import()" ng-disabled="importingFavorites">
         <i class="icon-spin"></i> {{ 'optionsJqlImportFavorites' | i18n }}
       </button>
     </div>
