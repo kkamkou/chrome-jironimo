@@ -17,19 +17,23 @@ angular
 
       Promise
         .all(
-          cjSettings.accounts.filter(a => a.enabled)
-            .map(account => new Promise((resolve, reject) => {
-              const api = new Jira(new Request($http), account.url, account.timeout * 1000);
-              api.myself(
-                (err, myself) => (myself && myself.active)
-                  ? resolve({account, api, myself})
-                  : reject({account, err})
-              );
-            }))
+          cjSettings.accounts
+            .filter(a => a.enabled)
+            .map(account =>
+              new Promise(resolve => {
+                const api = new Jira(new Request($http), account.url, account.timeout * 1000);
+                api.myself((err, myself) => resolve(
+                  {problem: err === 401 || (myself && !myself.active), account, api, myself}
+                ));
+              })
+            )
         )
-        .then(entries => entries.forEach(entry => accountList.push(entry)))
-        .catch(entries => {
-          entries.filter(e => e.err === 401).forEach(entry => {
+        .then(entries => {
+          entries.forEach(entry => {
+            if (!entry.problem) {
+              accountList.push(entry);
+              return;
+            }
             cjNotifications.createOrUpdate(`auth-${entry.account.id}`, {
               title: 'Unauthorized',
               isClickable: true,
