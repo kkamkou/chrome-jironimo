@@ -23,7 +23,7 @@ class RouteSettingsWorkspace extends RouteAbstract {
     if (this.scope.accountSelected === label) { return; }
 
     const filtered = this.settings.workspaces
-      .filter(w => w.account === this._accountLabel(this.scope.accountSelected));
+      .filter(w => w.account === this._accountId(this.scope.accountSelected));
 
     if (
       (filtered.length !== this.scope.workspaces.length
@@ -35,14 +35,14 @@ class RouteSettingsWorkspace extends RouteAbstract {
 
     this.scope.accountSelected = label;
     this.scope.workspaces = this.settings.workspaces
-      .filter(w => w.account === this._accountLabel(label));
+      .filter(w => w.account === this._accountId(label));
   }
 
   add() {
     if (this.scope.workspaces.length > 10) { return; }
 
     this.scope.workspaces.push({
-      account: this._accountLabel(this.scope.accountSelected),
+      account: this._accountId(this.scope.accountSelected),
       title: null,
       query: null,
       isDefault: false,
@@ -85,7 +85,7 @@ class RouteSettingsWorkspace extends RouteAbstract {
       _.difference(favs, workspaces).forEach(jql => {
         count++;
         this.scope.workspaces.push({
-          account: this.scope.accountSelected.id,
+          account: this._accountId(this.scope.accountSelected),
           icon: 'heart-2',
           isDefault: false,
           query: jql,
@@ -109,13 +109,13 @@ class RouteSettingsWorkspace extends RouteAbstract {
 
   save() {
     this.settings.workspaces = this.settings.workspaces
-      .filter(w => w.account !== this._accountLabel(this.scope.accountSelected))
+      .filter(w => w.account !== this._accountId(this.scope.accountSelected))
       .concat(this.scope.workspaces);
     this.scope.notifications.push({type: 'success', message: this.i18n('msgOptionsSaveSuccess')});
   }
 
   /** @access private */
-  _accountLabel(account) {
-    return (account === 'ALL' ? 'ALL' : account.label);
+  _accountId(account) {
+    return (account === 'ALL' ? 'ALL' : account.id);
   }
 }

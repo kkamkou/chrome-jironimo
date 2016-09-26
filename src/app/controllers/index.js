@@ -60,7 +60,7 @@ angular
 
       /** @access private */
       function _workspaceListByAccount(account) {
-        return cjSettings.workspaces.filter(a => ~['ALL', account.label].indexOf(a.account));
+        return cjSettings.workspaces.filter(a => ~['ALL', account.id].indexOf(a.account));
       }
 
       /** @access private */
