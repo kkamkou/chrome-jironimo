@@ -13,30 +13,37 @@ angular
   .run([
     '$http', 'cjSettings', 'cjNotifications', '$filter',
     function ($http, cjSettings, cjNotifications, $filter) {
-
       const accountList = [];
-      cjSettings.accounts.filter(a => a.enabled).forEach(account => {
-        const api = new Jira(new Request($http), account.url, account.timeout * 1000);
-        api.authenticated((err, flag) => {
-          if (flag) {
-            accountList.push({account: account, api: api});
-            return;
-          }
 
-          cjNotifications.createOrUpdate(`auth-${account.id}`, {
-            title: 'Unauthorized',
-            isClickable: true,
-            message: `Please, authorize the "${account.label}" account!`,
-            priority: 2,
-            requireInteraction: true,
-            iconUrl: chrome.extension.getURL('icons/contact-128.png'),
-            buttons: [{
-              title: 'Disable account',
-              iconUrl: chrome.extension.getURL('icons/cancel-32.png')
-            }]
+      Promise
+        .all(
+          cjSettings.accounts.filter(a => a.enabled)
+            .map(account => new Promise((resolve, reject) => {
+              const api = new Jira(new Request($http), account.url, account.timeout * 1000);
+              api.myself(
+                (err, myself) => (myself && myself.active)
+                  ? resolve({account, api, myself})
+                  : reject({account, err})
+              );
+            }))
+        )
+        .then(entries => entries.forEach(entry => accountList.push(entry)))
+        .catch(entries => {
+          entries.filter(e => e.err === 401).forEach(entry => {
+            cjNotifications.createOrUpdate(`auth-${entry.account.id}`, {
+              title: 'Unauthorized',
+              isClickable: true,
+              message: `Please, authorize the "${entry.account.label}" account!`,
+              priority: 2,
+              requireInteraction: true,
+              iconUrl: chrome.extension.getURL('icons/contact-128.png'),
+              buttons: [{
+                title: 'Disable account',
+                iconUrl: chrome.extension.getURL('icons/cancel-32.png')
+              }]
+            });
           });
         });
-      });
 
       chrome.alarms.get('jironimoRefreshIcon', function (alarm) {
         if (!alarm) {
@@ -58,46 +65,41 @@ angular
         if (!alarm || alarm.name !== 'jironimoStatusCheck') { return; }
 
         accountList.forEach(entry => {
-          entry.api.myself((err, info) => {
-            if (err) { return; }
-
-            const cache = [];
-
-            _.filter(cjSettings.workspaces, {account: entry.account.id, changesNotify: true})
-              .forEach(workspace => {
-                const query = {
-                  jql: 'updated > "-%dm" AND '.replace('%d', +cjSettings.timer.workspace) +
+          const cache = [];
+          _.filter(cjSettings.workspaces, {account: entry.account.id, changesNotify: true})
+            .forEach(workspace => {
+              const query = {
+                jql: 'updated > "-%dm" AND '.replace('%d', +cjSettings.timer.workspace || 5) +
                   workspace.query,
-                  expand: 'changelog',
-                  fields: 'updated,summary'
-                };
+                expand: 'changelog',
+                fields: 'updated,summary'
+              };
 
-                entry.api.search(query, (err, result) => {
-                  if (err || !result || !Array.isArray(result.issues)) { return; }
+              entry.api.search(query, (err, result) => {
+                if (err || !result || !Array.isArray(result.issues)) { return; }
 
-                  result.issues.forEach(issue => {
-                    if (~cache.indexOf(issue.id)) { return; }
-                    cache.push(issue.id);
+                result.issues.forEach(issue => {
+                  if (~cache.indexOf(issue.id)) { return; }
+                  cache.push(issue.id);
 
-                    if (_.get(issue, 'changelog.histories')
-                        && _.get(_.last(issue.changelog.histories), 'author.name') === info.name) {
-                      return;
+                  const histories = _.get(issue, 'changelog.histories');
+                  if (histories && _.get(_.last(histories), 'author.name') === entry.myself.name) {
+                    return;
+                  }
+
+                  cjNotifications.createOrUpdate(
+                    ['issue', entry.account.id, issue.key].join('-'),
+                    {
+                      eventTime: moment(issue.fields.updated).valueOf(),
+                      isClickable: true,
+                      message: issue.fields.summary.trim() +
+                      ' (updated at ' + moment(issue.fields.updated).format('LT') + ')',
+                      title: issue.key
                     }
-
-                    cjNotifications.createOrUpdate(
-                      ['issue', entry.account.id, issue.key].join('-'),
-                      {
-                        eventTime: moment(issue.fields.updated).valueOf(),
-                        isClickable: true,
-                        message: issue.fields.summary.trim() +
-                        ' (updated at ' + moment(issue.fields.updated).format('LT') + ')',
-                        title: issue.key
-                      }
-                    );
-                  });
+                  );
                 });
               });
-          });
+            });
         });
       });
 
@@ -119,12 +121,10 @@ angular
                     url: cjSettings.accounts.find(a => a.id === matches[1]).url
                   });
                   break;
-
                 case 'issue':
                   const url = cjSettings.accounts.find(a => a.id === matches[1]).url;
                   chrome.tabs.create({active: true, url: `${url}/browse/${id}`});
                   break;
-
                 default:
                   console.error('Unknown subtype');
               }
