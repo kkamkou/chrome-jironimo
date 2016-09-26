@@ -12,7 +12,7 @@
 
     <h2>{{ 'optionsTimerWorkspaces' | i18n }}</h2>
     <div class="input-control text span6">
-      <input type="text" maxlength="4" required
+      <input type="number" min="1" max="60" maxlength="2" required
         title="{{ 'placeholderOptionsTimerRefreshInterval' | i18n }}"
         placeholder="{{ 'placeholderOptionsTimerRefreshInterval' | i18n }}"
         ng-model="timer.workspace">
