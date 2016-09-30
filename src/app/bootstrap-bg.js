@@ -34,7 +34,7 @@ angular
               accountList.push(entry);
               return;
             }
-            cjNotifications.createOrUpdate(`auth-${entry.account.id}`, {
+            cjNotifications.createOrUpdate(`auth;${entry.account.id}`, {
               title: 'Unauthorized',
               isClickable: true,
               message: `Please, authorize the "${entry.account.label}" account!`,
@@ -92,7 +92,7 @@ angular
                   }
 
                   cjNotifications.createOrUpdate(
-                    ['issue', entry.account.id, issue.key].join('-'),
+                    ['issue', entry.account.id, issue.key].join(';'),
                     {
                       eventTime: moment(issue.fields.updated).valueOf(),
                       isClickable: true,
@@ -113,46 +113,46 @@ angular
           if (err) { return; }
 
           switch (nId) {
-            case 'jironimo-update':
-              chrome.tabs.create({active: true, url: cjSettings.getUriSettings()});
+          case 'jironimo-update':
+            chrome.tabs.create({active: true, url: cjSettings.getUriSettings()});
+            break;
+          default:
+            const matches = nId.split(';');
+            switch (matches[0]) {
+            case 'auth':
+              chrome.tabs.create({
+                active: true,
+                url: cjSettings.accounts.find(a => a.id === matches[1]).url
+              });
+              break;
+            case 'issue':
+              const url = cjSettings.accounts.find(a => a.id === matches[1]).url;
+              chrome.tabs.create({active: true, url: `${url}/browse/${matches[2]}`});
               break;
             default:
-              const matches = nId.split('-');
-              switch (matches[0]) {
-                case 'auth':
-                  chrome.tabs.create({
-                    active: true,
-                    url: cjSettings.accounts.find(a => a.id === matches[1]).url
-                  });
-                  break;
-                case 'issue':
-                  const url = cjSettings.accounts.find(a => a.id === matches[1]).url;
-                  chrome.tabs.create({active: true, url: `${url}/browse/${id}`});
-                  break;
-                default:
-                  console.error('Unknown subtype');
-              }
+              console.error('Unknown subtype');
+            }
           }
         });
       });
 
       chrome.notifications.onButtonClicked.addListener((nId, btnIdx) => {
         switch (nId) {
-          case 'jironimo-update':
-            chrome.tabs
-              .create({active: true, url: 'http://2ka.by/article/chrome-jironimo#changelog'});
+        case 'jironimo-update':
+          chrome.tabs
+            .create({active: true, url: 'http://2ka.by/article/chrome-jironimo#changelog'});
+          break;
+        default:
+          const matches = nId.split(';');
+          switch (matches[0]) {
+          case 'auth':
+            cjSettings.accounts = cjSettings.accounts.map(a => {
+              if (a.id === matches[1]) { a.enabled = false; }
+              return a;
+            });
+            cjNotifications.clear(nId);
             break;
-          default:
-            const matches = nId.split('-');
-            switch (matches[0]) {
-              case 'auth':
-                cjSettings.accounts = cjSettings.accounts.map(a => {
-                  if (a.id === matches[1]) { a.enabled = false; }
-                  return a;
-                });
-                cjNotifications.clear(nId);
-                break;
-            }
+          }
         }
       });
 
@@ -170,21 +170,21 @@ angular
       // runtime.onInstalled
       chrome.runtime.onInstalled.addListener(function (details) {
         switch (details.reason) {
-          case 'install':
-            chrome.tabs.create({active: true, url: cjSettings.getUriSettings()});
-            chrome.runtime.setUninstallURL(cjSettings.getUriFeedback());
-            break;
+        case 'install':
+          chrome.tabs.create({active: true, url: cjSettings.getUriSettings()});
+          chrome.runtime.setUninstallURL(cjSettings.getUriFeedback());
+          break;
 
-          case 'update':
-            cjNotifications.createOrUpdate('jironimo-update', {
-              buttons: [{
-                title: 'Changelog',
-                iconUrl: chrome.extension.getURL('icons/eye-32.png')
-              }],
-              title: $filter('i18n')('messageJironimoUpdatedTitle'),
-              message: $filter('i18n')('messageJironimoUpdatedText')
-            });
-            break;
+        case 'update':
+          cjNotifications.createOrUpdate('jironimo-update', {
+            buttons: [{
+              title: 'Changelog',
+              iconUrl: chrome.extension.getURL('icons/eye-32.png')
+            }],
+            title: $filter('i18n')('messageJironimoUpdatedTitle'),
+            message: $filter('i18n')('messageJironimoUpdatedText')
+          });
+          break;
         }
       });
     }
