@@ -13,7 +13,7 @@ angular
   .service('cjSettings', ['$filter', function ($filter) {
     var _data = localStorage, self = this, defaults = {};
 
-    defaults.version = 580;
+    defaults.version = 600;
 
     // default settings for the account tab
     defaults.general = {sync: true};
@@ -146,12 +146,12 @@ angular
 
     if (this.version < 600) {
       this.workspaces = this.workspaces.map(w => { w.account = 'ALL'; return w; });
-      this.version = 600;
-      this.activity = _.set(this.activity, 'lastWorkspace.default.index', {
+      this.activity = _.set(this.activity, 'lastWorkspace.default', {
         index: this.workspaceLast || 0,
         enabled: true
       });
       delete _data.workspaceLast;
+      this.version = 600;
     }
 
     return this;
