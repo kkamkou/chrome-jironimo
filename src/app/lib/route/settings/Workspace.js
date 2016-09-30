@@ -2,10 +2,7 @@
 
 class RouteSettingsWorkspace extends RouteAbstract {
   constructor($scope) {
-    super(
-      $scope,
-      ['add', 'save', 'remove', 'import', 'setAsDefault', 'accountSwitch', 'isQueryValidForWatch']
-    );
+    super($scope, ['add', 'save', 'remove', 'import', 'accountSwitch', 'isQueryValidForWatch']);
 
     this.settings = this.service('cjSettings');
     this.i18n = this.service('$filter')('i18n');
@@ -45,13 +42,8 @@ class RouteSettingsWorkspace extends RouteAbstract {
       account: this._accountId(this.scope.accountSelected),
       title: null,
       query: null,
-      isDefault: false,
       icon: 'bug'
     });
-  }
-
-  setAsDefault(workspace) {
-    this.scope.workspaces.forEach(w => w.isDefault = (w === workspace));
   }
 
   remove(workspace) {
@@ -62,10 +54,6 @@ class RouteSettingsWorkspace extends RouteAbstract {
     if (this.scope.workspaces.length < 2) { return; }
 
     this.scope.workspaces = this.scope.workspaces.filter(w => w !== workspace);
-
-    if (workspace.isDefault) {
-      this.setAsDefault(this.scope.workspaces[0]);
-    }
   }
 
   import() {
@@ -87,7 +75,6 @@ class RouteSettingsWorkspace extends RouteAbstract {
         this.scope.workspaces.push({
           account: this._accountId(this.scope.accountSelected),
           icon: 'heart-2',
-          isDefault: false,
           query: jql,
           title: _.find(data, {jql: jql}).name
         });

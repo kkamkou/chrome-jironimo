@@ -125,9 +125,6 @@
   "optionsJqlWorkspacesRefreshInterval": {
     "message": "Refresh interval settings are located in the timer section"
   },
-  "optionsJqlDefault": {
-    "message": "Default"
-  },
   "optionsJqlCheckUpdates": {
     "message": "Check for updates and notify"
   },

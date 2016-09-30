@@ -65,11 +65,8 @@ angular
 
       /** @access private */
       function _workspaceActiveByAccount(account) {
-        return _.find($scope.workspaces, function (dataSet, index, list) {
-          const activity = _.get(cjSettings.activity, `lastWorkspace.${account.id}.index`);
-          return (_.isNumber(activity) && list.length > activity)
-            ? (activity === index) : dataSet.isDefault;
-        });
+        const activity = _.get(cjSettings.activity, `lastWorkspace.${account.id}.index`, 0);
+        return $scope.workspaces[($scope.workspaces.length - 1 > activity) ? activity : 0];
       }
 
       // init

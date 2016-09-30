@@ -35,18 +35,11 @@
 
       <div class="row" ng-repeat="workspace in workspaces track by $index">
 
-        <div class="span2">
-          <label class="input-control radio">
-            <input type="radio" name="isDefault"
-              ng-click="setAsDefault(workspace)"
-              ng-checked="workspace.isDefault">
-            <span class="check"></span> {{ 'optionsJqlDefault' | i18n }}
-          </label>
-
+        <div class="span1">
           <i class="icon-{{workspace.icon}} place-right" style="margin-top: 11px;"></i>
         </div>
 
-        <div class="span9">
+        <div class="span10">
           <div class="span2">
             <div class="input-control text">
               <input type="text" maxlength="18" required
