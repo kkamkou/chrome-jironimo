@@ -12,7 +12,7 @@
     "message": "JIRA™ Adresse"
   },
   "jiraApiUrlRequired": {
-    "message": "JIRA™ URL und Benutzerdaten werden benötigt um den Service zu verwenden"
+    "message": "JIRA™ URL ist benötigt um den Service zu verwenden"
   },
   "optionsAboutIcons": {
     "message": "Symbole"

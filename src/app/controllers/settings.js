@@ -10,9 +10,9 @@
 
 angular
   .module('jironimo')
-  .controller('SettingsController', [
-    '$scope', '$location', '$filter', 'cjSettings', 'cjJira',
-    function ($scope, $location, $filter, cjSettings, cjJira) {
+  .controller('SettingsController', [ // deprecated controller!
+    '$scope', '$location', '$filter', 'cjSettings',
+    function ($scope, $location, $filter, cjSettings) {
       angular.forEach(['colors', 'timer', 'workspaces'], k => $scope[k] = cjSettings[k]);
 
       $scope.tabControl = {colors: 'theme'};

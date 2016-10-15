@@ -29,12 +29,16 @@ class RouteSettingsGeneral extends RouteAbstract {
     }
 
     chrome.permissions.request({origins: [account.url + '/']}, flag => {
-      if (!flag) {
-        return false;
-      }
+      if (!flag) { return false; }
 
-      this.settings.accounts = this.scope.accountList
-        .map((a, idx) => a.label === account.label ? account : a);
+      this.settings.accounts = this.scope.accountList.map(a => a.id === account.id ? account : a);
+
+      /*this.settings.activity = _.merge(this.settings.activity, {
+        lastWorkspace: _.reject(
+          _.get(this.settings.activity, 'lastWorkspace', {}),
+          (v, k) => !this.settings.accounts.find(a => a.id === k)
+        )
+      });*/
 
       this.scope.$apply(() =>
         this.scope.notifications

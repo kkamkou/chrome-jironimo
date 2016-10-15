@@ -233,7 +233,7 @@
     "message": "Check the JIRA™ configuration. Make sure the \"Allow Remote API Calls\" is turned ON under Administration > General Configuration."
   },
   "jiraApiUrlRequired": {
-    "message": "JIRA™ url and login are required for the service"
+    "message": "JIRA™ url is required for the service"
   },
   "jiraApiConnectionProblem": {
     "message": "Connection Problem"

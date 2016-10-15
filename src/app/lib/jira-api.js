@@ -35,35 +35,33 @@ angular
             messages = [$filter('i18n')('jiraApiCheckConfig')];
           } else if (rej.data && rej.data.errorMessages) {
             messages = rej.data.errorMessages;
+          } else if (rej.data && rej.data.message) {
+            messages = [rej.data.message];
           }
 
-          // custom message
-          $rootScope.$emit(
-            'jiraRequestFail',
-            [$filter('i18n')('statusCode' + rej.status), messages]
-          );
+          $rootScope
+            .$emit('jiraRequestFail', [$filter('i18n')('statusCode' + rej.status), messages]);
 
           return $q.reject(rej);
         }
       };
     }]);
   }])
-  .service('cjJira', ['$rootScope', 'cjSettings', '$http', '$filter', function ($rootScope, cjSettings, $http, $filter) {
-    const adapter = new Jira(
-      new Request($http), cjSettings.accounts[0].url, cjSettings.accounts[0].timeout * 1000
-    );
-
-/*console.log('adapter');
-return adapter;
-    if (!config.url) {
-      return callback(new Error($filter('i18n')('jiraApiUrlRequired')));
-    }*/
-
-
-
-    /*$http(callOptions)
-      .success(json => callback(null, json))
-      .error(err => callback(new Error(err || $filter('i18n')('jiraApiConnectionProblem'))));*/
-
-    return adapter;
+  .service('cjJira', ['$http', '$filter', function ($http, $filter) {
+    return {
+      instance: function (account) {
+        return new Jira(
+          new Request(
+            (config) => new Promise(
+              (resolve, reject) =>
+                $http(config).then(resolve).catch(
+                  err => reject(err || new Error($filter('i18n')('jiraApiConnectionProblem')))
+                )
+            )
+          ),
+          account.url,
+          account.timeout * 1000
+        );
+      }
+    };
   }]);

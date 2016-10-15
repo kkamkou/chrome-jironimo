@@ -80,7 +80,7 @@ rules:
 
 # Global scoped method and vars
 globals:
-  chrome: true
-  angular: true
-  _: true
-  moment: true
+  chrome: false
+  angular: false
+  _: false
+  moment: false

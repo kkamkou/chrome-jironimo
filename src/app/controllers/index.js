@@ -11,8 +11,8 @@
 angular
   .module('jironimo')
   .controller('IndexController', [
-    '$q', '$timeout', '$rootScope', '$scope', 'cjTimer', 'cjSettings', 'cjNotifications', 'cjJira',
-    function ($q, $timeout, $rootScope, $scope, cjTimer, cjSettings, cjNotifications, cjJira) {
+    '$q', '$timeout', '$rootScope', '$scope', 'cjTimer', 'cjSettings', 'cjJira',
+    function ($q, $timeout, $rootScope, $scope, cjTimer, cjSettings, cjJira) {
       var self = this,
         timeouts = {workspaceRefresh: null};
 
@@ -66,7 +66,7 @@ angular
       /** @access private */
       function _workspaceActiveByAccount(account) {
         const activity = _.get(cjSettings.activity, `lastWorkspace.${account.id}.index`, 0);
-        return $scope.workspaces[($scope.workspaces.length - 1 > activity) ? activity : 0];
+        return $scope.workspaces[($scope.workspaces.length - 1 >= activity) ? activity : 0];
       }
 
       // init
@@ -98,16 +98,15 @@ angular
           limit = $scope.searchMaxResults;
         }
 
-        self._issueSearch($scope.workspaceActive.query, +offset, +limit)
-          .then(
-            data => {
-              $scope.loading = false;
-              $scope.searchTotal = data.total;
-              $scope.searchStartAt = data.startAt;
-              (data.issues || []).forEach(issue => $scope.issues.push(self._issueModify(issue)));
-            },
-            () => $scope.loading = false
-          );
+        self
+          ._issueSearch($scope.workspaceActive.query, +offset, +limit)
+          .then(data => {
+            $scope.loading = false;
+            $scope.searchTotal = data.total;
+            $scope.searchStartAt = data.startAt;
+            (data.issues || []).forEach(issue => $scope.issues.push(self._issueModify(issue)));
+          })
+          .catch(() => $scope.loading = false);
 
         const searchMaxResultsKey = `lastWorkspace.${$scope.account.id}.searchMaxResults`;
         if (_.get(cjSettings.activity, searchMaxResultsKey) !== limit) {
@@ -238,30 +237,27 @@ angular
       /**
        * Loads issues from the API
        * @private
-       * @param {String} query
-       * @param {Number} offset
-       * @param {Number} limit
+       * @param {String} jql
+       * @param {Number} [offset=0]
+       * @param {Number} [limit=10]
        * @return {Object}
        */
-      this._issueSearch = function (query, offset, limit) {
-        var deferred = $q.defer(),
-          searchData = {
-            jql: query,
+      this._issueSearch = function (jql, offset, limit) {
+        var api = cjJira.instance($scope.account),
+          query = {
+            jql: jql,
             startAt: +offset || 0,
             maxResults: +limit || 10,
             expand: 'transitions',
             fields: '*navigable'
           };
 
-        cjJira.myself(function (err, flag) {
-          if (err || !flag) {
-            return deferred.reject(err ? err : new Error('Unable to identify myself'));
-          }
-          cjJira.search(searchData, (err, data) =>
-            err ? deferred.reject(err) : deferred.resolve(data));
+        return $q((resolve, reject) => {
+          api.myself((err, flag) => {
+            if (err || !flag) { return reject(err ? err : new Error('Unable to identify myself')); }
+            api.search(query, (err2, data) => err2 ? reject(err2) : resolve(data));
+          });
         });
-
-        return deferred.promise;
       };
 
       $scope.$on('issueOpenInNewTab', function (event, entry) {
@@ -269,10 +265,11 @@ angular
       });
 
       $scope.$on('issueTransitionChanged', function (event, entry) {
-        self._issueSearch('id = %d'.replace('%d', entry.id))
-          .then(function (data) {
-            data.issues.forEach(function (issue) {
-              var idx = _.findIndex($scope.issues, {id: issue.id});
+        self
+          ._issueSearch('id = %d'.replace('%d', entry.id))
+          .then(data => {
+            data.issues.forEach(issue => {
+              const idx = _.findIndex($scope.issues, {id: issue.id});
               $scope.issues[idx] = self._issueModify(issue);
             });
           });
@@ -296,6 +293,7 @@ angular
 
       $rootScope.$on('jiraRequestFail', function (event, args) {
         $scope.jiraRequestFailed = [_.capitalize(args[0]), args[1].join('; ')];
+        $scope.loading = false;
       });
 
       $scope.$watch('filterFieldDisplay', function (flag) {

@@ -30,7 +30,6 @@
       "/app/shared/module.js",
       "/app/shared/filter/i18n.js",
       "/app/lib/settings.js",
-      "/app/lib/jira-api.js",
       "/app/lib/notifications.js",
       "/app/bootstrap-bg.js"
     ]
