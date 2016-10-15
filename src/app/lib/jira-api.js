@@ -47,17 +47,15 @@ angular
       };
     }]);
   }])
-  .service('cjJira', ['$http', '$filter', function ($http, $filter) {
+  .service('cjJira', ['$q', '$http', '$filter', function ($q, $http, $filter) {
     return {
       instance: function (account) {
         return new Jira(
           new Request(
-            (config) => new Promise(
-              (resolve, reject) =>
-                $http(config).then(resolve).catch(
-                  err => reject(err || new Error($filter('i18n')('jiraApiConnectionProblem')))
-                )
-            )
+            config => $q((resolve, reject) =>
+              $http(config)
+                .then(resolve)
+                .catch(err => reject(err.data ? err : $filter('i18n')('jiraApiConnectionProblem'))))
           ),
           account.url,
           account.timeout * 1000

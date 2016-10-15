@@ -125,7 +125,12 @@
       .then(r => callback(null, r.toJson()))
       .catch(e => {
         console.error(e);
-        callback(e.code);
+        let err = e;
+        if (e instanceof Response) {
+          err = new Error(e.toJson());
+          err.code = e.code;
+        }
+        callback(err);
       });
   }
 }

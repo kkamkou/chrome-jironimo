@@ -59,10 +59,11 @@ class RouteSettingsWorkspace extends RouteAbstract {
   import() {
     this.scope.importingFavorites = true;
 
-    this.jira.filterFavourite((err, data) => {
+    this.jira.instance(this.scope.accountSelected).filterFavourite((err, data) => {
       if (err) {
-        this.scope.notifications.push({type: 'error', message: err.message});
+        this.scope.notifications.push({type: 'error', message: err.toString()});
         this.scope.importingFavorites = false;
+        this.scope.$digest();
         return;
       }
 
