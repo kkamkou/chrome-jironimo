@@ -16,35 +16,47 @@ class RouteSettingsGeneral extends RouteAbstract {
   }
 
   save() {
-    this.settings.general = Object.assign(this.settings.general, {sync: this.scope.sync});
+    const list = this.scope.accountList.map(account => new Promise((resolve, reject) => {
+      if (this.scope.accountSelected.id === account.id) {
+        account = this.scope.accountSelected;
+      }
 
-    const account = this.scope.accountSelected;
-    account.url = account.url.replace(/\/+$/, '');
-    account.timeout = parseInt(account.timeout, 10) || 10;
+      if (!account.url || account.url.indexOf('http') !== 0) {
+        return reject(new Error(this.i18n('placeholderOptionsAccountUrl')));
+      }
 
-    if (!account.url || account.url.indexOf('http') !== 0) {
-      this.scope.notifications
-        .push({type: 'error', message: this.i18n('placeholderOptionsAccountUrl')});
-      return;
-    }
+      account.url = account.url.replace(/\/+$/, '');
+      account.timeout = parseInt(account.timeout, 10) || 10;
 
-    chrome.permissions.request({origins: [account.url + '/']}, flag => {
-      if (!flag) { return false; }
+      chrome.permissions.request(
+        {origins: [account.url + '/']},
+        flag => flag ? resolve(account) : reject(new Error(this.i18n('msgGeneralActionConfirm')))
+      );
+    }));
 
-      this.settings.accounts = this.scope.accountList.map(a => a.id === account.id ? account : a);
+    Promise
+      .all(list)
+      .then(accounts => {
+        this.settings.accounts = accounts;
+        this.settings.general = Object.assign(this.settings.general, {sync: this.scope.sync});
 
-      /*this.settings.activity = _.merge(this.settings.activity, {
-        lastWorkspace: _.reject(
-          _.get(this.settings.activity, 'lastWorkspace', {}),
-          (v, k) => !this.settings.accounts.find(a => a.id === k)
-        )
-      });*/
+        // activity cleanup
+        this.settings.activity = Object.assign(this.settings.activity, {
+          lastWorkspace: _.omitBy(
+              this.settings.activity.lastWorkspace,
+              (v, k) => !this.settings.accounts.find(a => a.id === k)
+          )
+        });
 
-      this.scope.$apply(() =>
         this.scope.notifications
           .push({type: 'success', message: this.i18n('msgOptionsSaveSuccess')})
-      );
-    });
+
+        this.scope.$digest();
+      })
+      .catch(e => {
+        this.scope.notifications.push({type: 'error', message: e.toString()});
+        this.scope.$digest();
+      });
   }
 
   accountAdd() {
