@@ -40,7 +40,7 @@
   }
 
   start() {
-    this._timestamp = new Date();
+    this._timestamp = Date.now();
     this._state = 'STARTED';
   }
 
