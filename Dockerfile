@@ -1,4 +1,4 @@
-FROM google/nodejs
+FROM node:6
 
 WORKDIR /opt
 

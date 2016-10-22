@@ -48,18 +48,28 @@ angular
     }]);
   }])
   .service('cjJira', ['$q', '$http', '$filter', function ($q, $http, $filter) {
+    const cache = {};
+    let lastActive;
+
     return {
+      current: function () {
+        return lastActive;
+      },
+
       instance: function (account) {
-        return new Jira(
-          new Request(
-            config => $q((resolve, reject) =>
-              $http(config)
-                .then(resolve)
-                .catch(err => reject(err.data ? err : $filter('i18n')('jiraApiConnectionProblem'))))
-          ),
-          account.url,
-          account.timeout * 1000
-        );
+        if (!cache[account.id]) {
+          cache[account.id] = new Jira(
+            new Request(
+              config => $q((resolve, reject) =>
+                $http(config).then(resolve).catch(err =>
+                  reject(err.data ? err : $filter('i18n')('jiraApiConnectionProblem'))))
+            ),
+            account.url,
+            account.timeout * 1000
+          );
+        }
+        lastActive = cache[account.id];
+        return cache[account.id];
       }
     };
   }]);

@@ -21,16 +21,10 @@ angular
         };
 
         $scope.modify = function (entry, transition) {
-          var dataSet = {
-            _method: 'POST',
-            transition: {id: transition.id}
-          };
-
-          cjJira.transitions(entry.id, dataSet, function (err) {
+          const query = {_method: 'POST', transition: {id: transition.id}};
+          cjJira.current().transitions(entry.id, query, err => {
             if (err) { return; }
-            elem.fadeOut('fast', function () {
-              $scope.$emit('issueTransitionChanged', entry, transition);
-            });
+            elem.fadeOut('fast', () => $scope.$emit('issueTransitionChanged', entry, transition));
           });
         };
       }

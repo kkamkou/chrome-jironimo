@@ -1,7 +1,7 @@
 // @author Kanstantsin Kamkou <2ka.by>
 // MIT license
 
-/* eslint-env node, mocha */
+/* eslint-env node */
 /* global desc, task, complete */
 
 'use strict';
@@ -197,14 +197,12 @@ task('copy-bootstrap-bg', ['copy-sources'], {async: true}, function () {
 });
 
 // cleanup-pre
-desc('Pre cleanup process');
 task('cleanup-pre', function () {
   wrench.rmdirSyncRecursive(CONSTANTS.DIR_BUILD);
   console.log('- "build" folder has been removed');
 });
 
 // cleanup-post
-desc('Post cleanup process');
 task('cleanup-post', {async: true}, function () {
   fs.rmdir(path.join(CONSTANTS.DIR_BUILD, 'vendors'), function (err) {
     if (err) { throw err; }
@@ -213,9 +211,8 @@ task('cleanup-post', {async: true}, function () {
   });
 });
 
-
 // layout-modify
-desc('Replaces headers in the dafault layout');
+desc('Replaces headers in the default layout');
 task(
   'layout-modify',
   ['copy-sources', 'pack-app', 'pack-vendors', 'pack-css', 'copy-metro',

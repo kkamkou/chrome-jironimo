@@ -11,9 +11,8 @@
 angular
   .module(
     'jironimo',
-    ['ngRoute', 'ngSanitize', 'jironimo.settings', 'jironimo.jira',
-     'jironimo.notifications', 'jironimo.timer', 'jironimo.shared',
-     'jironimo.tile']
+    ['ngRoute', 'ngSanitize', 'jironimo.settings', 'jironimo.jira', 'jironimo.timer',
+     'jironimo.notifications', 'jironimo.shared', 'jironimo.tile']
   )
   .controller('RouteSettingsGeneral', ['$scope', RouteSettingsGeneral])
   .controller('RouteSettingsWorkspace', ['$scope', RouteSettingsWorkspace])

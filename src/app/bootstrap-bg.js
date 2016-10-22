@@ -160,6 +160,8 @@ angular
       chrome.alarms.onAlarm.addListener(function (alarm) {
         if (!alarm || alarm.name !== 'jironimoRefreshIcon') { return; }
 
+        // _.find(cjSettings.activity.lastWorkspace, )
+
         const timer = _.filter(cjSettings.timers || {}, {started: true}).pop();
         if (!timer) { return; }
 

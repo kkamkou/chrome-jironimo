@@ -6,6 +6,9 @@
   },
   "author": "Kanstantsin Kamkou <kkamkou@gmail.com>",
   "private": true,
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --opts app/test/mocha.opts"
+  },
   "dependencies": {
     "jake": "latest",
     "uglify-js-harmony": "latest",

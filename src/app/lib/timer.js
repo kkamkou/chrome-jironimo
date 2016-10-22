@@ -8,157 +8,175 @@
 
 'use strict';
 
+/*final public*/class CjWorkLogEntry {
+  constructor(id, state, timestamp) {
+    this._id = id;
+    this._state = state || 'STOPPED';
+    this._timestamp = timestamp || Date.now();
+
+    if (!~['STOPPED', 'STARTED'].indexOf(this._state)) {
+      throw new TypeError('Unknown state: ' + this._state);
+    }
+  }
+
+  get id() {
+    return this._id;
+  }
+
+  get started() {
+    return this._state === 'STARTED';
+  }
+
+  get stopped() {
+    return this._state === 'STOPPED';
+  }
+
+  get duration() {
+    return Date.now() - this._timestamp;
+  }
+
+  resume() {
+    this._state = 'STARTED';
+  }
+
+  start() {
+    this._timestamp = new Date();
+    this._state = 'STARTED';
+  }
+
+  stop() {
+    this._state = 'STOPPED';
+  }
+
+  toJSON() {
+    return {id: this._id, state: this._state, timestamp: this._timestamp};
+  }
+}
+
 angular
   .module('jironimo.timer', ['jironimo.jira', 'jironimo.settings'])
   .factory('cjTimer', ['cjJira', 'cjSettings', function (cjJira, cjSettings) {
-    var self = this,
-      timerSet = cjSettings.timers;
-
     return {
-      /**
-       * Updates a timer entry for the issue
-       *
-       * @public
-       * @param {object} issue
-       * @param {object} fields
-       */
-      update: function (issue, fields) {
-        if (!timerSet[issue.id]) {
-          timerSet[issue.id] = {started: false, timestamp: null};
+      instance: function (account) {
+        const storage = {},
+          activity = _.get(cjSettings.activity, `lastWorkspace.${account.id}.timers`, {});
+
+        Object.keys(activity).forEach(k =>
+          storage[k.split(';')[0]] =
+            new CjWorkLogEntry(activity[k].id, activity[k].state, activity[k].timestamp)
+        );
+
+        function persist() {
+          const timers = {};
+          Object.keys(storage).forEach(k => timers[k + ';jira'] = storage[k].toJSON());
+          cjSettings.activity =
+            _.set(cjSettings.activity, `lastWorkspace.${account.id}.timers`, timers);
+
+          // chrome.browserAction.setBadgeText({text: '00:00'});
         }
 
-        Object.keys(fields).forEach(function (field) {
-          timerSet[issue.id][field] = fields[field];
-        });
+        return {
+          /**
+           * Returns true if timer for this issue already started
+           * @param {object} issue
+           * @return {boolean}
+           */
+          isStarted: function (issue) {
+            return storage[issue.id] ? storage[issue.id].started : false;
+          },
 
-        cjSettings.timers = timerSet;
+          /**
+           * Returns true if timer for this issue can be started
+           * @param {object} issue
+           * @return {boolean}
+           */
+          canBeStarted: function (issue) {
+            // default flag
+            let flag = cjSettings.timer.enabled && !this.isStarted(issue)
+              && _.get(issue, 'fields.status.name') !== 'Closed'; // @todo! not trusted
 
-        this.initIcon(issue);
-      },
+            // only one active ticket
+            if (cjSettings.timer.singleton) {
+              flag = flag && !_.find(storage, entry => entry.started);
+            }
 
-      /**
-       * Returns true if timer for this issue already started
-       *
-       * @public
-       * @param {object} issue
-       * @return {Boolean}
-       */
-      isStarted: function (issue) {
-        return (timerSet[issue.id] && timerSet[issue.id].started);
-      },
+            return flag;
+          },
 
-      /**
-       * Returns true if timer for this issue can be started
-       *
-       * @public
-       * @param {object} issue
-       * @return {Boolean}
-       */
-      canBeStarted: function (issue) {
-        // default flag
-        var flag = cjSettings.timer.enabled && !this.isStarted(issue) &&
-          _.get(issue, 'fields.status.name') !== 'Closed'; // @todo! not trusted
+          /**
+           * Returns true if timer for this issue can be stopped
+           * @param {object} issue
+           * @return {boolean}
+           */
+          canBeStopped: function (issue) {
+            return this.isStarted(issue);
+          },
 
-        // only one active ticket
-        if (cjSettings.timer.singleton) {
-          flag = flag && !_.find(timerSet, function (entry) {
-            return entry.started;
-          });
-        }
-        return flag;
-      },
+          /**
+           * Returns elapsed time for the current issue (humanized)
+           * @param {object} issue
+           * @return {string}
+           */
+          elapsedTime: function (issue) {
+            return this.isStarted(issue)
+              ? moment.duration(storage[issue.id].duration).humanize()
+              : '?';
+          },
 
-      /**
-       * Returns true if timer for this issue can be stopped
-       *
-       * @public
-       * @param {object} issue
-       * @return {Boolean}
-       */
-      canBeStopped: function (issue) {
-        return this.isStarted(issue);
-      },
+          /**
+           * Starts timer for the current issue
+           * @param {object} issue
+           */
+          start: function (issue) {
+            if (!storage[issue.id]) {
+              storage[issue.id] = new CjWorkLogEntry(issue.id);
+            }
+            storage[issue.id].start();
+            persist();
+          },
 
-      /**
-       * Returns elapsed time for the current issue (humanized)
-       *
-       * @public
-       * @param {object} issue
-       * @return {String}
-       */
-      elapsedTime: function (issue) {
-        return !this.isStarted(issue) ? '' : moment.duration(
-          moment(timerSet[issue.id].timestamp * 1000).diff()
-        ).humanize();
-      },
+          /**
+           * Ends timer for the current issue
+           * @param {object} issue
+           */
+          stop: function (issue) {
+            if (!this.canBeStopped(issue)) { return; }
 
-      /**
-       * Starts timer for the current issue
-       *
-       * @public
-       * @param {object} issue
-       */
-      start: function (issue) {
-        this.update(issue, {started: true, timestamp: moment().unix()});
-      },
+            const dur = storage[issue.id].duration,
+              diff = Math.ceil(dur / 1000);
 
-      /**
-       * Ends timer for the current issue
-       *
-       * @public
-       * @param {object} issue
-       */
-      stop: function (issue) {
-        if (!this.canBeStopped(issue)) {
-          return;
-        }
+            if (!diff) { return; } // diff is zero (fast-click?)
 
-        var issueTimestamp = timerSet[issue.id].timestamp,
-          diff = parseInt(moment().unix() - issueTimestamp, 10);
+            persist(); // transaction
 
-        // diff is zero (fastclick?)
-        if (!diff) {
-          return;
-        }
+            storage[issue.id].stop();
 
-        this.update(issue, {started: false, timestamp: null});
+            // data set for the work-log request
+            var dataSet = {
+              _method: 'POST',
+              comment: moment.duration(dur).humanize(),
+              timeSpent: (diff > 60 ? Math.ceil(diff / 60) : 1) + 'm'
+            };
 
-        // data set for the worklog request
-        var dataSet = {
-          _method: 'POST',
-          comment: moment.duration(diff * 1000).humanize(),
-          timeSpent: (diff > 60 ? Math.ceil(diff / 60) : 1) + 'm'
-        };
+            cjJira.current().issueWorklog(issue.id, dataSet, err => {
+              if (!err) {
+                delete storage[issue.id];
+                return persist();
+              }
+              storage[issue.id].resume(); // rollback if error
+            });
+          },
 
-        cjJira.issueWorklog(issue.id, dataSet, function (err) {
-          if (err) { // rollback if error
-            self.update(issue, {started: true, timestamp: issueTimestamp});
+          /**
+           * Stops timer without time-logging
+           * @param {object} issue
+           */
+          discard: function (issue) {
+            if (!this.canBeStopped(issue)) { return; }
+            delete storage[issue.id];
+            persist();
           }
-        });
-      },
-
-      /**
-       * Stops timer without time-logging
-       *
-       * @public
-       * @param {object} issue
-       */
-      discard: function (issue) {
-        if (this.canBeStopped(issue)) {
-          this.update(issue, {started: false, timestamp: null});
-        }
-      },
-
-      /**
-       * Shows a timer stub on the badge for the active issue
-       *
-       * @private
-       * @param {object} issue
-       */
-      initIcon: function (issue) {
-        chrome.browserAction.setBadgeText({
-          text: this.isStarted(issue) ? '00:00' : ''
-        });
+        };
       }
     };
   }]);

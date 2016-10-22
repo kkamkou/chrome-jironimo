@@ -19,7 +19,7 @@ angular
     defaults.general = {sync: true};
 
     defaults.accounts = [
-      {type: 'basic', label: 'Default', id: 'default', enabled: true, timeout: 10}
+      {type: 'basic', label: 'Default', id: 'default', enabled: false, timeout: 10}
     ];
 
     // default settings for the colors tab
@@ -78,14 +78,9 @@ angular
       singleton: true
     };
 
-    // defaults for the personal data
-    defaults.timers = {};
-
     defaults.activity = {
       lastAccount: 0,
-      lastWorkspace: {
-        'default': {index: 0, searchMaxResults: 16}
-      }
+      lastWorkspace: {'default': {index: 0, searchMaxResults: 16, timers: {}}}
     };
 
     // getters and setters override
@@ -144,10 +139,12 @@ angular
     if (this.version < 600) {
       this.workspaces = this.workspaces.map(w => { w.account = 'ALL'; return w; });
       this.activity = _.set(this.activity, 'lastWorkspace.default', {
+        enabled: true,
         index: this.workspaceLast || 0,
-        enabled: true
+        timers: _data.timers
       });
       delete _data.workspaceLast;
+      delete _data.timers;
       this.version = 600;
     }
 

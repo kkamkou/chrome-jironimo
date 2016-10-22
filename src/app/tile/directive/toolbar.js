@@ -23,7 +23,7 @@ angular
               return;
             }
 
-            cjJira.myself(function (err1, info) {
+            cjJira.current().myself((err1, info) => {
               if (err1) { return; }
 
               var paramsQuery = {_method: 'PUT', name: info.name},
@@ -32,13 +32,11 @@ angular
                   message: $filter('i18n')('notificationAssignedToMe')
                 };
 
-              cjJira.issueAssignee(issue.key, paramsQuery, function (err2) {
+              cjJira.current().issueAssignee(issue.key, paramsQuery, err2 => {
                 if (err2) { return; }
-                cjNotifications.createOrUpdate(issue.key, paramsNotify, function () {
-                  $scope.$apply(function () {
-                    $scope.timer.start(issue);
-                  });
-                });
+                cjNotifications.createOrUpdate(issue.key, paramsNotify, () =>
+                  $scope.$apply(() => $scope.timer.start(issue))
+                );
               });
             });
           };

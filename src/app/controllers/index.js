@@ -11,25 +11,20 @@
 angular
   .module('jironimo')
   .controller('IndexController', [
-    '$q', '$timeout', '$rootScope', '$scope', 'cjTimer', 'cjSettings', 'cjJira',
-    function ($q, $timeout, $rootScope, $scope, cjTimer, cjSettings, cjJira) {
-      var self = this,
+    '$q', '$timeout', '$rootScope', '$scope', 'cjSettings', 'cjJira', 'cjTimer',
+    function ($q, $timeout, $rootScope, $scope, cjSettings, cjJira, cjTimer) {
+      var api = null,
+        self = this,
         timeouts = {workspaceRefresh: null};
 
-      $scope.accounts = cjSettings.accounts;
+      $scope.accounts = cjSettings.accounts.filter(a => a.enabled);
       $scope.issueFocused = null;
       $scope.issues = [];
-
       $scope.loading = false;
-
       $scope.searchMaxResults = 16;
       $scope.searchStartAt = 0;
       $scope.searchTotal = 0;
-
-      $scope.timer = cjTimer;
-
       $scope.windowDetached = false;
-
       $scope.workspaceActive = cjSettings.workspaces[0];
       $scope.workspaces = cjSettings.workspaces;
 
@@ -41,9 +36,12 @@ angular
           cjSettings.activity = _.set(cjSettings.activity, 'lastAccount', idx);
         }
 
+        api = cjJira.instance(account);
+
         $scope.workspaces = _workspaceListByAccount(account);
         $scope.workspaceActive = _workspaceActiveByAccount(account);
         $scope.searchMaxResults = _workspaceSearchMaxResults(account);
+        $scope.timer = cjTimer.instance(account);
 
         $scope.workspaceRefresh();
       });
@@ -71,7 +69,7 @@ angular
 
       // init
       $scope.$on('$routeChangeSuccess', function () {
-        if (!cjSettings.accounts[0].url) {
+        if (!cjSettings.accounts.find(a => a.enabled)) {
           $scope.tabSettings();
           return;
         }
@@ -243,14 +241,13 @@ angular
        * @return {Object}
        */
       this._issueSearch = function (jql, offset, limit) {
-        var api = cjJira.instance($scope.account),
-          query = {
-            jql: jql,
-            startAt: +offset || 0,
-            maxResults: +limit || 10,
-            expand: 'transitions',
-            fields: '*navigable'
-          };
+        const query = {
+          jql: jql,
+          startAt: +offset || 0,
+          maxResults: +limit || 10,
+          expand: 'transitions',
+          fields: '*navigable'
+        };
 
         return $q((resolve, reject) => {
           api.myself((err, flag) => {
