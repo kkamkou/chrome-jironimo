@@ -36,12 +36,11 @@ angular
           cjSettings.activity = _.set(cjSettings.activity, 'lastAccount', idx);
         }
 
-        $scope.api = cjJira.instance(account);
-
         $scope.workspaces = _workspaceListByAccount(account);
         $scope.workspaceActive = _workspaceActiveByAccount(account);
         $scope.searchMaxResults = _workspaceSearchMaxResults(account);
-        $scope.timer = cjTimer.instance(account);
+        $scope.api = cjJira.instance(account);
+        $scope.timer = cjTimer.instance(account, $scope.api);
 
         $scope.workspaceRefresh();
       });

@@ -12,7 +12,7 @@ angular
     return {
       restrict: 'E',
       replace: true,
-      scope: {entry: '=', timer: '='},
+      scope: {entry: '=', timer: '=', api: '='},
       templateUrl: 'tile/tile.html'
     };
   });

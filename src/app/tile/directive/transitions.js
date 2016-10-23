@@ -19,7 +19,6 @@ angular
           elem.fadeOut('fast');
           return;
         };
-
         $scope.modify = function (entry, transition) {
           const query = {_method: 'POST', transition: {id: transition.id}};
           $scope.api.transitions(entry.id, query, err => {
