@@ -42,7 +42,7 @@ angular
         $scope.api = cjJira.instance(account);
         $scope.timer = cjTimer.instance(account, $scope.api);
 
-        $scope.workspaceRefresh();
+        $scope.searchReset().workspaceRefresh();
       });
 
       $scope.account = $scope.accounts[_.get(cjSettings.activity, 'lastAccount', 0)]
