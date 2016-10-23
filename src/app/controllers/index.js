@@ -300,7 +300,7 @@ angular
 
       $scope.$watch('loading', function (flag) {
         var $tiles = $('div.tiles');
-        $('div.container').height($tiles[flag ? 'fadeOut' : 'fadeIn']('fast').height());
+        $('div.container').height($tiles.stop(true)[flag ? 'fadeOut' : 'fadeIn']('fast').height());
 
         if (!flag) { return; }
         $scope.jiraRequestFailed = false;
