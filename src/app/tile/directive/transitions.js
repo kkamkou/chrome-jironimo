@@ -8,11 +8,11 @@
 
 angular
   .module('jironimo.tile')
-  .directive('tileTransitions', ['cjJira', function (cjJira) {
+  .directive('tileTransitions', function () {
     return {
       restrict: 'E',
       replace: true,
-      scope: {entry: '='},
+      scope: {entry: '=', api: '='},
       templateUrl: 'tile/transitions.html',
       link: function ($scope, elem) {
         $scope.close = function () {
@@ -22,11 +22,11 @@ angular
 
         $scope.modify = function (entry, transition) {
           const query = {_method: 'POST', transition: {id: transition.id}};
-          cjJira.current().transitions(entry.id, query, err => {
+          $scope.api.transitions(entry.id, query, err => {
             if (err) { return; }
             elem.fadeOut('fast', () => $scope.$emit('issueTransitionChanged', entry, transition));
           });
         };
       }
     };
-  }]);
+  });

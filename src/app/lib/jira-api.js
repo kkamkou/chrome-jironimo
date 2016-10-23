@@ -49,13 +49,7 @@ angular
   }])
   .service('cjJira', ['$q', '$http', '$filter', function ($q, $http, $filter) {
     const cache = {};
-    let lastActive;
-
     return {
-      current: function () {
-        return lastActive;
-      },
-
       instance: function (account) {
         if (!cache[account.id]) {
           cache[account.id] = new Jira(
@@ -68,7 +62,6 @@ angular
             account.timeout * 1000
           );
         }
-        lastActive = cache[account.id];
         return cache[account.id];
       }
     };

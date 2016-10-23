@@ -54,10 +54,10 @@
 }
 
 angular
-  .module('jironimo.timer', ['jironimo.jira', 'jironimo.settings'])
-  .factory('cjTimer', ['cjJira', 'cjSettings', function (cjJira, cjSettings) {
+  .module('jironimo.timer', ['jironimo.settings'])
+  .factory('cjTimer', ['cjSettings', function (cjSettings) {
     return {
-      instance: function (account) {
+      instance: function (account, api) {
         const storage = {},
           activity = _.get(cjSettings.activity, `lastWorkspace.${account.id}.timers`, {});
 
@@ -158,7 +158,7 @@ angular
               timeSpent: (diff > 60 ? Math.ceil(diff / 60) : 1) + 'm'
             };
 
-            cjJira.current().issueWorklog(issue.id, dataSet, err => {
+            api.issueWorklog(issue.id, dataSet, err => {
               if (!err) {
                 delete storage[issue.id];
                 return persist();

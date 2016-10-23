@@ -36,7 +36,7 @@ angular
           cjSettings.activity = _.set(cjSettings.activity, 'lastAccount', idx);
         }
 
-        api = cjJira.instance(account);
+        $scope.api = cjJira.instance(account);
 
         $scope.workspaces = _workspaceListByAccount(account);
         $scope.workspaceActive = _workspaceActiveByAccount(account);
@@ -250,9 +250,9 @@ angular
         };
 
         return $q((resolve, reject) => {
-          api.myself((err, flag) => {
+          $scope.api.myself((err, flag) => {
             if (err || !flag) { return reject(err ? err : new Error('Unable to identify myself')); }
-            api.search(query, (err2, data) => err2 ? reject(err2) : resolve(data));
+            $scope.api.search(query, (err2, data) => err2 ? reject(err2) : resolve(data));
           });
         });
       };
