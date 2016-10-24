@@ -55,27 +55,58 @@
 
 angular
   .module('jironimo.timer', ['jironimo.settings'])
-  .factory('cjTimer', ['cjSettings', function (cjSettings) {
+  .factory('cjTimer', ['$rootScope', 'cjSettings', function ($rootScope, cjSettings) {
     return {
       instance: function (account, api) {
         const storage = {},
-          activity = _.get(cjSettings.activity, `lastWorkspace.${account.id}.timers`, {});
+          activity = _.get(cjSettings.activity, `workspace.${account.id}.timers`, {});
 
         Object.keys(activity).forEach(k =>
-          storage[k.split(';')[0]] =
-            new CjWorkLogEntry(activity[k].id, activity[k].state, activity[k].timestamp)
+          storage[k] = new CjWorkLogEntry(activity[k].id, activity[k].state, activity[k].timestamp)
         );
 
-        function persist() {
-          const timers = {};
-          Object.keys(storage).forEach(k => timers[k + ';jira'] = storage[k].toJSON());
-          cjSettings.activity =
-            _.set(cjSettings.activity, `lastWorkspace.${account.id}.timers`, timers);
-
-          // chrome.browserAction.setBadgeText({text: '00:00'});
-        }
-
         return {
+          /**
+           * Updates the local storage
+           * @returns {cjTimer}
+           */
+          persist: function () {
+            const timers = {};
+
+            Object.keys(storage).forEach(k => timers[k] = storage[k].toJSON());
+
+            cjSettings.activity =
+              _.set(cjSettings.activity, `workspace.${account.id}.timers`, timers);
+
+            return this;
+          },
+
+          /**
+           * Resets the badge
+           * @returns {cjTimer}
+           */
+          resetBadge: function () {
+            const activity = _(cjSettings.activity.workspace).flatMap('timers').value(),
+              cnt = activity.reduce((c, p) => c + _.size(p), 0);
+
+            if (cnt < 1) {
+              chrome.browserAction.setBadgeText({text: ''});
+              return this;
+            }
+
+            if (cnt > 1) {
+              chrome.browserAction.setBadgeText({text: cnt.toString()});
+              return this;
+            }
+
+            const first = _.sample(_(activity).omitBy(_.isEmpty).sample());
+            chrome.browserAction.setBadgeText(
+              {text: moment(moment().diff(first.timestamp) - 3600000).format('HH:mm')}
+            );
+
+            return this;
+          },
+
           /**
            * Returns true if timer for this issue already started
            * @param {object} issue
@@ -131,8 +162,9 @@ angular
             if (!storage[issue.id]) {
               storage[issue.id] = new CjWorkLogEntry(issue.id);
             }
+
             storage[issue.id].start();
-            persist();
+            this.persist().resetBadge();
           },
 
           /**
@@ -147,7 +179,7 @@ angular
 
             if (!diff) { return; } // diff is zero (fast-click?)
 
-            persist(); // transaction
+            this.persist().resetBadge(); // transaction
 
             storage[issue.id].stop();
 
@@ -159,11 +191,13 @@ angular
             };
 
             api.issueWorklog(issue.id, dataSet, err => {
-              if (!err) {
-                delete storage[issue.id];
-                return persist();
+              if (err) {
+                return storage[issue.id].resume(); // rollback if error
               }
-              storage[issue.id].resume(); // rollback if error
+
+              delete storage[issue.id];
+              this.persist().resetBadge();
+              $rootScope.$broadcast('tileModified', issue);
             });
           },
 
@@ -174,7 +208,7 @@ angular
           discard: function (issue) {
             if (!this.canBeStopped(issue)) { return; }
             delete storage[issue.id];
-            persist();
+            this.persist().resetBadge();
           }
         };
       }

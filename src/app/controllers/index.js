@@ -51,7 +51,7 @@ angular
       /** @access private */
       function _workspaceSearchMaxResults(account) {
         return _.get(
-          cjSettings.activity, `lastWorkspace.${account.id}.searchMaxResults`, 16
+          cjSettings.activity, `workspace.${account.id}.searchMaxResults`, 16
         );
       }
 
@@ -62,7 +62,7 @@ angular
 
       /** @access private */
       function _workspaceActiveByAccount(account) {
-        const activity = _.get(cjSettings.activity, `lastWorkspace.${account.id}.index`, 0);
+        const activity = _.get(cjSettings.activity, `workspace.${account.id}.index`, 0);
         return $scope.workspaces[($scope.workspaces.length - 1 >= activity) ? activity : 0];
       }
 
@@ -105,7 +105,7 @@ angular
           })
           .catch(() => $scope.loading = false);
 
-        const searchMaxResultsKey = `lastWorkspace.${$scope.account.id}.searchMaxResults`;
+        const searchMaxResultsKey = `workspace.${$scope.account.id}.searchMaxResults`;
         if (_.get(cjSettings.activity, searchMaxResultsKey) !== limit) {
           cjSettings.activity = _.set(cjSettings.activity, searchMaxResultsKey, limit);
         }
@@ -130,10 +130,10 @@ angular
         $scope.workspaceActive = $scope.workspaces[idx];
         $scope.searchReset().workspaceRefresh();
 
-        const activity = _.get(cjSettings.activity, `lastWorkspace.${$scope.account.id}.index`);
+        const activity = _.get(cjSettings.activity, `workspace.${$scope.account.id}.index`);
         if (activity !== idx) {
           cjSettings.activity = _.set(
-            cjSettings.activity, `lastWorkspace.${$scope.account.id}.index`, idx
+            cjSettings.activity, `workspace.${$scope.account.id}.index`, idx
           );
         }
       };
@@ -260,15 +260,13 @@ angular
         $scope.tabIssue(entry);
       });
 
-      $scope.$on('issueTransitionChanged', function (event, entry) {
+      $scope.$on('tileModified', function (event, entry) {
         self
           ._issueSearch('id = %d'.replace('%d', entry.id))
-          .then(data => {
-            data.issues.forEach(issue => {
-              const idx = _.findIndex($scope.issues, {id: issue.id});
-              $scope.issues[idx] = self._issueModify(issue);
-            });
-          });
+          .then(data => data.issues.forEach(issue => {
+            const idx = _.findIndex($scope.issues, {id: issue.id});
+            $scope.issues[idx] = self._issueModify(issue);
+          }));
       });
 
       // DOM playground (should be moved somewhere)

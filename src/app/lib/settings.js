@@ -80,7 +80,7 @@ angular
 
     defaults.activity = {
       lastAccount: 0,
-      lastWorkspace: {'default': {index: 0, searchMaxResults: 16, timers: {}}}
+      workspace: {'default': {index: 0, searchMaxResults: 16, timers: {}}}
     };
 
     // getters and setters override
@@ -138,7 +138,7 @@ angular
 
     if (this.version < 600) {
       this.workspaces = this.workspaces.map(w => { w.account = 'ALL'; return w; });
-      this.activity = _.set(this.activity, 'lastWorkspace.default', {
+      this.activity = _.set(this.activity, 'workspace.default', {
         enabled: true,
         index: this.workspaceLast || 0,
         timers: _data.timers

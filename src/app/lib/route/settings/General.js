@@ -42,9 +42,9 @@ class RouteSettingsGeneral extends RouteAbstract {
 
         // activity cleanup
         this.settings.activity = Object.assign(this.settings.activity, {
-          lastWorkspace: _.omitBy(
-              this.settings.activity.lastWorkspace,
-              (v, k) => !this.settings.accounts.find(a => a.id === k)
+          workspace: _.omitBy(
+            this.settings.activity.workspace,
+            (v, k) => !this.settings.accounts.find(a => a.id === k)
           )
         });
 

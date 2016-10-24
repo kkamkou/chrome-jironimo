@@ -22,9 +22,10 @@ angular
             .map(account =>
               new Promise(resolve => {
                 const api = new Jira(new Request($http), account.url, account.timeout * 1000);
-                api.myself((err, myself) => resolve(
-                  {problem: err === 401 || (myself && !myself.active), account, api, myself}
-                ));
+                api.myself((err, myself) => resolve({
+                  problem: _.get(err, 'code') === 401 || (myself && !myself.active),
+                  account, api, myself
+                }));
               })
             )
         )
@@ -160,13 +161,14 @@ angular
       chrome.alarms.onAlarm.addListener(function (alarm) {
         if (!alarm || alarm.name !== 'jironimoRefreshIcon') { return; }
 
-        // _.find(cjSettings.activity.lastWorkspace, )
+        const activity = _(cjSettings.activity.workspace).flatMap('timers').value(),
+          cnt = activity.reduce((c, p) => c + _.size(p), 0);
+        if (cnt > 1) { return; }
 
-        const timer = _.filter(cjSettings.timers || {}, {started: true}).pop();
-        if (!timer) { return; }
-
-        const diff = moment().diff(moment.unix(timer.timestamp + 3600));
-        chrome.browserAction.setBadgeText({text: moment(diff).format('HH:mm')});
+        const entry = _.sample(_(activity).omitBy(_.isEmpty).sample());
+        chrome.browserAction.setBadgeText(
+          {text: moment(moment().diff(entry.timestamp) - 3600000).format('HH:mm')}
+        );
       });
 
       // runtime.onInstalled

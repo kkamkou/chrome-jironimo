@@ -23,7 +23,7 @@ angular
           const query = {_method: 'POST', transition: {id: transition.id}};
           $scope.api.transitions(entry.id, query, err => {
             if (err) { return; }
-            elem.fadeOut('fast', () => $scope.$emit('issueTransitionChanged', entry, transition));
+            elem.fadeOut('fast', () => $scope.$emit('tileModified', entry));
           });
         };
       }
