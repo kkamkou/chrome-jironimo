@@ -13,9 +13,8 @@ angular
   .controller('IndexController', [
     '$q', '$timeout', '$rootScope', '$scope', 'cjSettings', 'cjJira', 'cjTimer',
     function ($q, $timeout, $rootScope, $scope, cjSettings, cjJira, cjTimer) {
-      var api = null,
-        self = this,
-        timeouts = {workspaceRefresh: null};
+      var timeouts = {workspaceRefresh: null},
+        self = this;
 
       $scope.accounts = cjSettings.accounts.filter(a => a.enabled);
       $scope.issueFocused = null;

@@ -32,6 +32,7 @@ angular
 
             $scope.api.issueAssignee(issue.key, paramsQuery, err2 => {
               if (err2) { return; }
+              $scope.$emit('tileModified', issue);
               cjNotifications.createOrUpdate(issue.key, paramsNotify, () =>
                 $scope.$apply(() => $scope.timer.start(issue))
               );
