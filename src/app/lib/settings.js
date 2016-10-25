@@ -19,7 +19,7 @@ angular
     defaults.general = {sync: true};
 
     defaults.accounts = [
-      {type: 'basic', label: 'Default', id: 'default', enabled: false, timeout: 10}
+      {type: 'basic', label: 'Default', id: 'default', enabled: true, timeout: 10}
     ];
 
     // default settings for the colors tab
