@@ -1,6 +1,14 @@
+/**
+ * chrome-jironimo
+ *
+ * @author Kanstantsin Kamkou <2ka.by>
+ * @link http://github.com/kkamkou/chrome-jironimo
+ * @license http://opensource.org/licenses/BSL-1.0
+ */
+
 'use strict';
 
-class RouteSettingsGeneral extends RouteAbstract {
+/*final public*/class RouteSettingsGeneral extends RouteAbstract {
   constructor($scope) {
     super($scope, ['save', 'accountAdd', 'accountRemoveSelected', 'accountAuthVerify']);
     this.settings = this.service('cjSettings');
@@ -13,6 +21,10 @@ class RouteSettingsGeneral extends RouteAbstract {
     $scope.$watch('accountSelected', () => {
       $scope.accountSelectedAuthStatus = -1;
     });
+
+    if (!$scope.accountList.find(a => a.enabled)) {
+      this.scope.notifications.push({type: 'notice', message: 'You have no enabled accounts!'});
+    }
   }
 
   save() {

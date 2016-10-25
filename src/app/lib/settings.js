@@ -47,17 +47,17 @@ angular
     defaults.workspaces = [
       {
         account: 'ALL',
-        icon: 'target',
-        title: $filter('i18n')('settingsWorkspaceMyIssues'),
-        query: 'assignee = currentUser() AND status not in (Closed, Resolved)' +
-          ' ORDER BY updatedDate DESC',
+        icon: 'share-2',
+        title: $filter('i18n')('settingsWorkspaceCreatedByMe'),
+        query: 'reporter = currentUser() ORDER BY created DESC',
         changesNotify: true
       },
       {
         account: 'ALL',
-        icon: 'share-2',
-        title: $filter('i18n')('settingsWorkspaceCreatedByMe'),
-        query: 'reporter = currentUser() ORDER BY created DESC',
+        icon: 'target',
+        title: $filter('i18n')('settingsWorkspaceMyIssues'),
+        query: 'assignee = currentUser() AND status not in (Closed, Resolved)' +
+          ' ORDER BY updatedDate DESC',
         changesNotify: true
       },
       {

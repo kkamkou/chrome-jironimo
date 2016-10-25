@@ -37,28 +37,7 @@ function manifestUpdate(data) {
   );
 }
 
-function readDir(pathDir, ext) {
-  var files = fs.readdirSync(pathDir),
-    results = [];
-
-  for (var idx in files) {
-    var filePath = path.join(pathDir, files[idx]),
-      stat = fs.statSync(filePath);
-
-    if (stat.isDirectory()) {
-      results = _.union(results, readDir(filePath, ext));
-      continue;
-    }
-
-    if (!ext || (ext && filePath.match(new RegExp('\\.' + ext + '$')))) {
-      results.push(filePath);
-    }
-  }
-
-  return results;
-}
-
-function minify (fileSet) {
+function minify(fileSet) {
   let output = '';
   fileSet.forEach(f => {
     output += ~f.indexOf('/vendors/')
@@ -67,6 +46,20 @@ function minify (fileSet) {
     output += os.EOL;
   });
   return output;
+}
+
+function scripts() {
+  var templatePath = path.join(CONSTANTS.DIR_BUILD, 'views', 'default.html'),
+    body = fs.readFileSync(templatePath, {encoding: 'utf-8'}),
+    regex = new RegExp('<script.*src="(.+?)"><\/script>', 'g'),
+    fileSet = [],
+    match;
+
+  while ((match = regex.exec(body)) !== null) {
+    fileSet.push(path.join(CONSTANTS.DIR_SRC, match[1]));
+  }
+
+  return fileSet;
 }
 
 // default
@@ -78,14 +71,11 @@ task('default', ['cleanup-pre', 'layout-modify', 'cleanup-post'], function () {
 // pack-app
 desc('Application scripts packing');
 task('pack-app', ['copy-sources'], {async: true}, function () {
-  var files = [];
-
-  ['shared', 'lib', 'bootstrap.js', 'controllers'].forEach(function (p) {
-    if (p.indexOf('.js') !== -1) {
-      files.push(path.join(CONSTANTS.DIR_APP, p));
-      return;
+  const files = [];
+  scripts().forEach(path => {
+    if (!~path.indexOf('vendors/')) {
+      files.push(path);
     }
-    files = files.concat(readDir(path.join(CONSTANTS.DIR_APP, p), 'js').reverse());
   });
 
   fs.writeFile(
@@ -101,17 +91,12 @@ task('pack-app', ['copy-sources'], {async: true}, function () {
 // pack-vendors
 desc('Vendors scripts packing');
 task('pack-vendors', ['copy-sources'], {async: true}, function () {
-  var templatePath = path.join(CONSTANTS.DIR_BUILD, 'views', 'default.html'),
-    body = fs.readFileSync(templatePath, {encoding: 'utf-8'}),
-    regex = new RegExp('<script.*src="(.+?)"><\/script>', 'g'),
-    fileSet = [],
-    match;
-
-  while ((match = regex.exec(body)) !== null) {
-    if (!~match[1].indexOf('less/')) {
-      fileSet.push(path.join(CONSTANTS.DIR_SRC, match[1]));
+  const fileSet = [];
+  scripts().forEach(path => {
+    if (~path.indexOf('vendors/') && !~path.indexOf('less/')) {
+      fileSet.push(path);
     }
-  }
+  });
 
   fs.writeFile(
     path.join(CONSTANTS.DIR_BUILD_APP, 'vendors.js'), minify(fileSet), () => {

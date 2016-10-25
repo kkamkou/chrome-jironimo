@@ -1,6 +1,14 @@
+/**
+ * chrome-jironimo
+ *
+ * @author Kanstantsin Kamkou <2ka.by>
+ * @link http://github.com/kkamkou/chrome-jironimo
+ * @license http://opensource.org/licenses/BSL-1.0
+ */
+
 'use strict';
 
-class RouteSettingsWorkspace extends RouteAbstract {
+/*final public*/class RouteSettingsWorkspace extends RouteAbstract {
   constructor($scope) {
     super($scope, ['add', 'save', 'remove', 'import', 'accountSwitch', 'isQueryValidForWatch']);
 

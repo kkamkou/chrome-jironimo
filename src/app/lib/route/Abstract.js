@@ -1,6 +1,14 @@
+/**
+ * chrome-jironimo
+ *
+ * @author Kanstantsin Kamkou <2ka.by>
+ * @link http://github.com/kkamkou/chrome-jironimo
+ * @license http://opensource.org/licenses/BSL-1.0
+ */
+
 'use strict';
 
-class RouteAbstract {
+/*final public*/class RouteAbstract {
   constructor($scope, scopeMethods) {
     this.services = angular.injector(['jironimo']);
     this.scope = $scope;

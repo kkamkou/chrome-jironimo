@@ -8,51 +8,6 @@
 
 'use strict';
 
-/*final public*/class CjWorkLogEntry {
-  constructor(id, state, timestamp) {
-    this._id = id;
-    this._state = state || 'STOPPED';
-    this._timestamp = timestamp || Date.now();
-
-    if (!~['STOPPED', 'STARTED'].indexOf(this._state)) {
-      throw new TypeError('Unknown state: ' + this._state);
-    }
-  }
-
-  get id() {
-    return this._id;
-  }
-
-  get started() {
-    return this._state === 'STARTED';
-  }
-
-  get stopped() {
-    return this._state === 'STOPPED';
-  }
-
-  get duration() {
-    return Date.now() - this._timestamp;
-  }
-
-  resume() {
-    this._state = 'STARTED';
-  }
-
-  start() {
-    this._timestamp = Date.now();
-    this._state = 'STARTED';
-  }
-
-  stop() {
-    this._state = 'STOPPED';
-  }
-
-  toJSON() {
-    return {id: this._id, state: this._state, timestamp: this._timestamp};
-  }
-}
-
 angular
   .module('jironimo.timer', ['jironimo.settings'])
   .factory('cjTimer', ['$rootScope', 'cjSettings', function ($rootScope, cjSettings) {
@@ -61,8 +16,9 @@ angular
         const storage = {},
           activity = _.get(cjSettings.activity, `workspace.${account.id}.timers`, {});
 
-        Object.keys(activity).forEach(k =>
-          storage[k] = new CjWorkLogEntry(activity[k].id, activity[k].state, activity[k].timestamp)
+        Object.keys(activity).forEach(
+          k => storage[k] =
+            new TimerWorkLogEntry(activity[k].id, activity[k].state, activity[k].timestamp)
         );
 
         return {
@@ -161,7 +117,7 @@ angular
            */
           start: function (issue) {
             if (!storage[issue.id]) {
-              storage[issue.id] = new CjWorkLogEntry(issue.id);
+              storage[issue.id] = new TimerWorkLogEntry(issue.id);
             }
 
             storage[issue.id].start();
