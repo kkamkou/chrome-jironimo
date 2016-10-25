@@ -49,7 +49,7 @@ class RouteSettingsGeneral extends RouteAbstract {
         });
 
         this.scope.notifications
-          .push({type: 'success', message: this.i18n('msgOptionsSaveSuccess')})
+          .push({type: 'success', message: this.i18n('msgOptionsSaveSuccess')});
 
         this.scope.$digest();
       })
