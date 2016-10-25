@@ -73,7 +73,8 @@ angular
           persist: function () {
             const timers = {};
 
-            Object.keys(storage).forEach(k => timers[k] = storage[k].toJSON());
+            Object.keys(storage).filter(k => storage[k].started)
+              .forEach(k => timers[k] = storage[k].toJSON());
 
             cjSettings.activity =
               _.set(cjSettings.activity, `workspace.${account.id}.timers`, timers);

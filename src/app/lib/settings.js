@@ -128,23 +128,28 @@ angular
       return this;
     };
 
-    // migrations
-    if (this.version < 580) {
-      const acc = this.account;
-      delete acc.url;
-      this.account = acc;
-      this.version = 580;
-    }
-
     if (this.version < 600) {
-      this.workspaces = this.workspaces.map(w => { w.account = 'ALL'; return w; });
+      if (Array.isArray(this.workspaces)) {
+        this.workspaces = this.workspaces.map(w => {w.account = 'ALL'; return w;});
+      }
+      this.accounts = [_.merge(defaults.accounts[0], {enabled: true})];
       this.activity = _.set(this.activity, 'workspace.default', {
         enabled: true,
-        index: this.workspaceLast || 0,
-        timers: _data.timers
+        index: _data.workspaceLast || 0,
+        timers: angular.fromJson(_data.timers)
       });
+
+      const account = angular.fromJson(_data.account);
+      if (account && account.url) {
+        this.general = {sync: !!account.sync || true};
+        this.accounts = [
+          _.merge(this.accounts[0], {url: account.url, timeout: account.timeout || 10})
+        ];
+      }
+
       delete _data.workspaceLast;
       delete _data.timers;
+      delete _data.account;
       this.version = 600;
     }
 
