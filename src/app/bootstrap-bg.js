@@ -163,7 +163,7 @@ angular
 
         const activity = _(cjSettings.activity.workspace).flatMap('timers').value(),
           cnt = activity.reduce((c, p) => c + _.size(p), 0);
-        if (cnt > 1) { return; }
+        if (!cnt || cnt > 1) { return; }
 
         const entry = _.sample(_(activity).omitBy(_.isEmpty).sample());
         chrome.browserAction.setBadgeText(

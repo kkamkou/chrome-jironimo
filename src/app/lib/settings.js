@@ -16,7 +16,7 @@ angular
     defaults.version = 600;
 
     // default settings for the account tab
-    defaults.general = {sync: true};
+    defaults.general = {sync: true, submitExceptions: true};
 
     defaults.accounts = [
       {enabled: false, id: 'default', label: 'Default', timeout: 10, type: 'basic', url: null}

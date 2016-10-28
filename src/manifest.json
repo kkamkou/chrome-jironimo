@@ -24,6 +24,7 @@
       "/vendors/angularjs/angular.js",
       "/vendors/lodash/lodash-latest.js",
       "/vendors/momentjs/moment-latest.js",
+      "/app/exception.js",
       "/app/lib/adapter/jira.js",
       "/app/lib/http/request.js",
       "/app/lib/http/response.js",
