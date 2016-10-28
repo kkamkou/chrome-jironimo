@@ -9,8 +9,7 @@
 'use strict';
 
 window.onerror = function () {
-  const general = JSON.parse(localStorage.general || '{}');
-  if (general.submitExceptions) {
+  if (JSON.parse(localStorage.general || '{}').submitExceptions) {
     (new Image()).src = 'http://2ka.by/examples/chrome-jironimo.php?err='
       + JSON.stringify(arguments);
   }
