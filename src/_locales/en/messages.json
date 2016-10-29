@@ -39,7 +39,7 @@
     "message": "Settings for the current extension will be available on different devices (native Google Chrome sync is used)"
   },
   "hintWhereToFindJiraAddress": {
-    "message": "<p>Open a JIRA ticket in a new tab. Copy URL of the ticket and paste it here. Remove everything starting from <i>/browse</i> until the end of the string. For example: <i>https://issues.apache.org/jira/browse/PROJ-3319</i> becomes <i>https://issues.apache.org/jira</i></p>"
+    "message": "<p><i class='fg-darkMagenta'>Login to JIRA first</i> and open a ticket in a new tab. Copy URL of the ticket and paste it here. Remove everything starting from <i>/browse</i> until the end of the string. For example: <i>https://issues.apache.org/jira/browse/PROJ-3319</i> becomes <i>https://issues.apache.org/jira</i></p>"
   },
   "hintSubmitExceptions1": {
     "message": "<p>Automatically send the information about errors to developer's server.</p><p>Jironimo doesn't send any private data or activity!</p>"

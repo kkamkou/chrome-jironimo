@@ -254,7 +254,7 @@
     "message": "Um Transitions-Features zu benutzen, versichere dich, dass in deiner JIRA™-Instanz das <a href=\"https://www.atlassian.com/software/jira/agile\" class=\"fg-green\" target=\"_blank\">JIRA™ Agile</a> Add-On installiert ist."
   },
   "hintWhereToFindJiraAddress": {
-    "message": "<p>Open a JIRA ticket in a new tab. Copy URL of the ticket and paste it here. Remove everything starting from <i>/browse</i> until the end of the string. For example: <i>https://issues.apache.org/jira/browse/PROJ-3319</i> becomes <i>https://issues.apache.org/jira</i></p>"
+    "message": "<p><i class='fg-darkMagenta'>Login to JIRA first</i> and open a ticket in a new tab. Copy URL of the ticket and paste it here. Remove everything starting from <i>/browse</i> until the end of the string. For example: <i>https://issues.apache.org/jira/browse/PROJ-3319</i> becomes <i>https://issues.apache.org/jira</i></p>"
   },
   "settingsColorsPriority": {
     "message": "Priorität:"
