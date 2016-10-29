@@ -16,7 +16,7 @@
 
     $scope.accountList = this.settings.accounts;
     $scope.accountSelected = this.settings.accounts[0];
-    $scope.sync = this.settings.general.sync;
+    $scope.general = this.settings.general;
 
     $scope.$watch('accountSelected', () => {
       $scope.accountSelectedAuthStatus = -1;
@@ -50,7 +50,7 @@
       .all(list)
       .then(accounts => {
         this.settings.accounts = accounts;
-        this.settings.general = Object.assign(this.settings.general, {sync: this.scope.sync});
+        this.settings.general = Object.assign(this.settings.general, this.scope.general);
 
         // activity cleanup
         this.settings.activity = Object.assign(this.settings.activity, {

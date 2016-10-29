@@ -23,6 +23,9 @@
   "captionOptionsAccountSync": {
     "message": "Synchronise settings"
   },
+  "captionSubmitExceptions": {
+    "message": "Send crash information"
+  },
   "titleOptionsJqlIcon": {
     "message": "Icon for the workspace. See the list of available icons. Ignore icon-* prefix."
   },
@@ -37,6 +40,12 @@
   },
   "hintWhereToFindJiraAddress": {
     "message": "<p>Open a JIRA ticket in a new tab. Copy URL of the ticket and paste it here. Remove everything starting from <i>/browse</i> until the end of the string. For example: <i>https://issues.apache.org/jira/browse/PROJ-3319</i> becomes <i>https://issues.apache.org/jira</i></p>"
+  },
+  "hintSubmitExceptions1": {
+    "message": "<p>Automatically send the information about errors to developer's server.</p><p>Jironimo doesn't send any private data or activity!</p>"
+  },
+  "hintSubmitExceptions2": {
+    "message": "<p>Please enable this option if you would like to make the extension more stable!</p>"
   },
   "btnSave": {
     "message": "Save"

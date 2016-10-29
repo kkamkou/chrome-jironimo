@@ -11,6 +11,9 @@
   "captionOptionsAccountJiraAddress": {
     "message": "JIRA™ Adresse"
   },
+  "captionSubmitExceptions": {
+    "message": "Send crash information"
+  },
   "jiraApiUrlRequired": {
     "message": "JIRA™ URL ist benötigt um den Service zu verwenden"
   },
@@ -213,6 +216,12 @@
   },
   "hintHowDataIsStored": {
     "message": "Jironimo benutzt keine Middleware um deine Daten zu speichern. Sie werden nur auf deinem Computer gespeichert."
+  },
+  "hintSubmitExceptions1": {
+    "message": "<p>Automatically send the information about errors to developer's server.</p><p>Jironimo doesn't send any private data or activity!</p>"
+  },
+  "hintSubmitExceptions2": {
+    "message": "<p>Please enable this option if you would like to make the extension more stable!</p>"
   },
   "optionsJqlWorkspacesTitle": {
     "message": "Arbeitsbereiche"

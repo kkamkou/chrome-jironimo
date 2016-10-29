@@ -8,9 +8,8 @@
 
 'use strict';
 
-window.onerror = function () {
+window.onerror = function (err) {
   if (JSON.parse(localStorage.general || '{}').submitExceptions) {
-    (new Image()).src = 'http://2ka.by/examples/chrome-jironimo.php?err='
-      + JSON.stringify(arguments);
+    (new Image()).src = 'http://2ka.by/examples/chrome-jironimo.php?err=' + JSON.stringify(err);
   }
 };

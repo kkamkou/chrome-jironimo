@@ -76,11 +76,11 @@
     <hr>
 
     <div class="row" style="background-color: #FBFBFB">
-      <div class="span6">
+      <div class="span6" style="padding-left: 20px">
         <h2>{{ 'captionOptionsAccountSync' | i18n }}</h2>
 
         <label class="input-control switch">
-          <input type="checkbox" ng-model="sync">
+          <input type="checkbox" ng-model="general.sync">
           <span class="check"></span>
         </label>
 
@@ -94,6 +94,26 @@
           <p ng-bind-html="'hintHowDataIsStored' | i18n"></p>
           <p ng-bind-html="'hintRequiredJiraAgile' | i18n"></p>
         </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="span6" style="padding-left: 20px">
+        <h2>{{ 'captionSubmitExceptions' | i18n }}</h2>
+
+        <label class="input-control switch">
+          <input type="checkbox" ng-model="general.submitExceptions">
+          <span class="check"></span>
+        </label>
+
+        <blockquote>
+          <p ng-bind-html="'hintSubmitExceptions2' | i18n"></p>
+        </blockquote>
+      </div>
+
+      <div class="span6">
+        <div class="notice marker-on-left bg-white"
+          ng-bind-html="'hintSubmitExceptions1' | i18n"></div>
       </div>
     </div>
 
