@@ -100,7 +100,10 @@ angular
           // chrome storage update
           var obj = {};
           obj[name] = _data[name];
-          chrome.storage.sync.set(obj);
+
+          if (chrome.storage.sync) {
+            chrome.storage.sync.set(obj);
+          }
         });
       }
       /*jshint camelcase: true */

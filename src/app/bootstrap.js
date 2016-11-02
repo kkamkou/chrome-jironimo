@@ -49,7 +49,7 @@ angular
   )
   .run(
     ['cjSettings', function (cjSettings) {
-      if (cjSettings.general.sync) {
+      if (cjSettings.general.sync && chrome.storage.sync) {
         chrome.storage.sync.get(cjSettings.getStorageData(), function (items) {
           cjSettings.setStorageData(items);
         });
