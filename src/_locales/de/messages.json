@@ -139,6 +139,9 @@
   "placeholderOptionsAccountTimeout": {
     "message": "Zeitüberschreitung der Verbindung in Sekunden"
   },
+  "msgOptionsAccountNoEnabledAccounts": {
+    "message": "Sie haben keine aktivierten Accounts!"
+  },
   "msgOptionsSaveSuccess": {
     "message": "Einstellungen wurden gespeichert."
   },

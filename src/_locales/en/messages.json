@@ -50,6 +50,9 @@
   "btnSave": {
     "message": "Save"
   },
+  "msgOptionsAccountNoEnabledAccounts": {
+    "message": "You have no enabled accounts!"
+  },
   "msgOptionsSaveSuccess": {
     "message": "Settings were changed"
   },

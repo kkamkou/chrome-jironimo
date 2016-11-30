@@ -8,7 +8,7 @@
 
 'use strict';
 
-/*final public*/class /* */ TimerWorkLogEntry {
+/*final public*/class TimerWorkLogEntry {
   constructor(id, state, timestamp) {
     this._id = id;
     this._state = state || 'STOPPED';

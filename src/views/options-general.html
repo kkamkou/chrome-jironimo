@@ -14,13 +14,14 @@
       <div class="span1">
         <label class="input-control switch" title="Enable this account">
           <input type="checkbox" ng-model="accountSelected.enabled">
-          <span class="check"></span>
+          <span ng-class="['check', {'bg-crimson': !accountSelected.enabled}]"></span>
         </label>
       </div>
 
       <div class="span8">
         <div class="input-control select">
-          <select class="bg-white" ng-model="accountSelected"
+          <select ng-model="accountSelected"
+            ng-class="[accountSelected.enabled ? 'bg-white' : 'bg-crimson fg-white']"
             ng-options="::item as item.label for item in accountList track by item.id"></select>
         </div>
       </div>

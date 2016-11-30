@@ -23,7 +23,9 @@
     });
 
     if (!$scope.accountList.find(a => a.enabled)) {
-      this.scope.notifications.push({type: 'notice', message: 'You have no enabled accounts!'});
+      this.scope.notifications.push(
+        {type: 'notice', message: this.i18n('msgOptionsAccountNoEnabledAccounts')}
+      );
     }
   }
 
