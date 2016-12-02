@@ -39,13 +39,14 @@
         return reject(new Error(this.i18n('placeholderOptionsAccountUrl')));
       }
 
-      account.url = account.url.replace(/\/+$/, '');
       account.timeout = parseInt(account.timeout, 10) || 10;
 
-      chrome.permissions.request(
-        {origins: [account.url + '/']},
-        flag => flag ? resolve(account) : reject(new Error(this.i18n('msgGeneralActionConfirm')))
-      );
+      this._ensureUrlIsAllowed(account.url)
+        .then(url => {
+          account.url = url;
+          resolve(account);
+        })
+        .catch(() => reject(new Error(this.i18n('msgGeneralActionConfirm'))));
     }));
 
     Promise
@@ -106,8 +107,22 @@
 
     this.scope.accountSelectedAuthStatus = 2;
 
-    (new Jira(new Request(this.service('$http')), url, timeout * 1000)).authenticated(
-      (err, flag) => this.scope.$apply(() => this.scope.accountSelectedAuthStatus = +flag)
-    );
+    this._ensureUrlIsAllowed(url)
+      .then(cleanUrl => {
+        (new Jira(new Request(this.service('$http')), cleanUrl, timeout * 1000)).authenticated(
+          (err, flag) => this.scope.$apply(() => this.scope.accountSelectedAuthStatus = +flag)
+        );
+      })
+      .catch(() => {
+        this.scope.accountSelectedAuthStatus = -1;
+        this.scope.$digest();
+      });
+  }
+
+  _ensureUrlIsAllowed(url) {
+    const cleanUrl = url.replace(/\/+$/, '') + '/';
+    return new Promise((resolve, reject) =>
+      chrome.permissions
+        .request({origins: [cleanUrl]}, flag => flag ? resolve(cleanUrl) : reject()));
   }
 }
