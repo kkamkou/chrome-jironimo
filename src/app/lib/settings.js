@@ -50,7 +50,8 @@ angular
         icon: 'share-2',
         title: $filter('i18n')('settingsWorkspaceCreatedByMe'),
         query: 'reporter = currentUser() ORDER BY created DESC',
-        changesNotify: true
+        changesNotify: true,
+        changesNotifyPersistent: false
       },
       {
         account: 'ALL',
@@ -58,7 +59,8 @@ angular
         title: $filter('i18n')('settingsWorkspaceMyIssues'),
         query: 'assignee = currentUser() AND status not in (Closed, Resolved)' +
           ' ORDER BY updatedDate DESC',
-        changesNotify: true
+        changesNotify: true,
+        changesNotifyPersistent: false
       },
       {
         account: 'ALL',
@@ -67,7 +69,8 @@ angular
         query: '(' +
           'assignee = currentUser() OR assignee was currentUser() OR reporter = currentUser()' +
           ') AND status not in (Closed, Resolved) ORDER BY updated DESC',
-        changesNotify: true
+        changesNotify: true,
+        changesNotifyPersistent: false
       }
     ];
 

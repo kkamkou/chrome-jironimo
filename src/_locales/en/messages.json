@@ -140,6 +140,9 @@
   "optionsJqlCheckUpdates": {
     "message": "Check for updates and notify"
   },
+  "optionsJqlCheckUpdatesPersistent": {
+    "message": "Notifications require interaction"
+  },
   "optionsJqlDateHint": {
     "message": "Please, ensure that \"<b>updated</b>\" or \"<b>updatedDate</b>\" are placed after the \"<b>ORDER BY</b>\""
   },

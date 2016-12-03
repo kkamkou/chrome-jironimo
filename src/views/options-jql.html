@@ -21,12 +21,12 @@
     </div>
   </div>
 
-  <form class="span12" ng-submit="save()" style="margin-bottom: 0">
+  <form ng-submit="save()" style="margin-bottom: 0">
     <notify entries="notifications"></notify>
 
     <div class="grid">
       <div class="row" ng-if="!workspaces.length">
-        <div class="span12 balloon top">
+        <div class="span11 offset1 balloon top">
           <p class="padding10">
             Hey! It looks like your list is empty. Click the button below to add a new workspace.
           </p>
@@ -49,22 +49,12 @@
             </div>
           </div>
 
-          <div class="span3">
+          <div class="span7">
             <div class="input-control text">
               <input type="text" maxlength="40" required
                 title="{{ 'placeholderOptionsJqlTitle' | i18n }}"
                 placeholder="{{ 'placeholderOptionsJqlTitle' | i18n }}"
                 ng-model="workspace.title">
-            </div>
-          </div>
-
-          <div class="span4">
-            <div class="input-control checkbox">
-                <label>
-                    <input type="checkbox" ng-model="workspace.changesNotify" />
-                    <span class="check"></span>
-                    {{ 'optionsJqlCheckUpdates' | i18n }}
-                </label>
             </div>
           </div>
 
@@ -87,17 +77,41 @@
             ng-click="remove(workspace)"><i class="icon-cancel-2"></i></button>
         </div>
 
+        <div class="offset1 span5">
+          <div class="input-control checkbox">
+            <label>
+              <input type="checkbox" ng-model="workspace.changesNotify" />
+              <span class="check"></span>
+              {{ 'optionsJqlCheckUpdates' | i18n }}
+            </label>
+          </div>
+        </div>
+
+        <div class="span5" ng-if="workspace.changesNotify">
+          <div class="input-control checkbox">
+            <label>
+              <input type="checkbox" ng-model="workspace.changesNotifyPersistent" />
+              <span class="check"></span>
+              {{ 'optionsJqlCheckUpdatesPersistent' | i18n }}
+            </label>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <button ng-click="add()" type="button" class="success">
-      <i class="icon-plus-2"></i> {{ 'optionsJqlAddOne' | i18n }}
-    </button>
+    <div class="row">
+      <div class="span11 offset1">
+        <button ng-click="add()" type="button" class="success">
+          <i class="icon-plus-2"></i> {{ 'optionsJqlAddOne' | i18n }}
+        </button>
 
-    <a href="http://metroui.org.ua/v2/icons.html" class="button link" target="_blank">
-      <i class="icon-link"></i>
-      {{ 'optionsJqlAvailableIcons' | i18n }}
-    </a>
+        <a href="http://metroui.org.ua/v2/icons.html" class="button link" target="_blank">
+          <i class="icon-link"></i>
+          {{ 'optionsJqlAvailableIcons' | i18n }}
+        </a>
+      </div>
+    </div>
 
     <hr>
 

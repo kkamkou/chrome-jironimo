@@ -106,6 +106,7 @@ angular
                         {
                           eventTime: moment(issue.fields.updated).valueOf(),
                           isClickable: true,
+                          requireInteraction: !!workspace.changesNotifyPersistent,
                           message: issue.fields.summary.trim() +
                           ' (updated at ' + moment(issue.fields.updated).format('LT') + ')',
                           title: issue.key
