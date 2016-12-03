@@ -131,20 +131,18 @@ angular
           stop: function (issue) {
             if (!this.canBeStopped(issue)) { return; }
 
-            const dur = storage[issue.id].duration,
-              diff = Math.ceil(dur / 1000);
+            const duration = moment.duration(storage[issue.id].duration),
+              minutes = duration.asMinutes();
 
-            if (!diff) { return; } // diff is zero (fast-click?)
+            if (minutes < 0.02) { return; } // less than 2s (fast-click?)
 
             this.persist().resetBadge(); // transaction
 
             storage[issue.id].stop();
 
             // data set for the work-log request
-            var dataSet = {
-              _method: 'POST',
-              comment: moment.duration(dur).humanize(),
-              timeSpent: (diff > 60 ? Math.ceil(diff / 60) : 1) + 'm'
+            const dataSet = {
+              _method: 'POST', comment: duration.humanize(), timeSpent: minutes + 'm'
             };
 
             api.issueWorklog(issue.id, dataSet, err => {
