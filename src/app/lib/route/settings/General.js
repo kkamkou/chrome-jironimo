@@ -120,9 +120,10 @@
   }
 
   _ensureUrlIsAllowed(url) {
-    const cleanUrl = url.replace(/\/+$/, '') + '/';
-    return new Promise((resolve, reject) =>
+    return new Promise((resolve, reject) => {
+      const cleanUrl = url.replace(/\/+$/, '');
       chrome.permissions
-        .request({origins: [cleanUrl]}, flag => flag ? resolve(cleanUrl) : reject()));
+        .request({origins: [cleanUrl + '/']}, flag => flag ? resolve(cleanUrl) : reject());
+    });
   }
 }

@@ -1,7 +1,9 @@
 <div class="tile padding10 {{ entry._size }} bg-{{ entry._colors.bg }} border-{{ entry._colors.bd }} outline-{{ entry._colors.ot }}"
   ng-class="{selected: entry._isClosed}">
 
-  <div class="issue-icon issue-icon-status bg-{{ entry._colors.bd }}" title="{{ entry.fields.status.name }}">
+  <div class="issue-icon issue-icon-status bg-{{ entry._colors.bd }}"
+    title="{{ entry.fields.status.name }}"
+    ng-if="entry.fields.status.iconUrl.indexOf('.') !== -1">
     <img ng-src="{{ entry.fields.status.iconUrl }}" alt=""></div>
 
   <div class="tile-content">

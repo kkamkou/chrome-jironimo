@@ -15,15 +15,15 @@ angular
       scope: {entry: '=', api: '='},
       templateUrl: 'tile/transitions.html',
       link: function ($scope, elem) {
-        $scope.close = function () {
-          elem.fadeOut('fast');
-          return;
-        };
-        $scope.modify = function (entry, transition) {
-          const query = {_method: 'POST', transition: {id: transition.id}};
-          $scope.api.transitions(entry.id, query, err => {
-            if (err) { return; }
-            elem.fadeOut('fast', () => $scope.$emit('tileModified', entry));
+        $scope.close = () => elem.fadeOut('fast');
+        $scope.modify = (entry, transition) => {
+          elem.fadeOut('fast', () => {
+            const query = {_method: 'POST', transition: {id: transition.id}};
+            $scope.api.transitions(entry.id, query, err => {
+              if (!err) {
+                $scope.$emit('tileModified', entry);
+              }
+            });
           });
         };
       }
