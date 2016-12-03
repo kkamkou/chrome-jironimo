@@ -90,7 +90,7 @@
       ng-repeat="issue in issues | filter:filterText"
       ng-dblclick="$emit('issueOpenInNewTab', issue)"
       ng-click="issueFocus($event, issue)"
-      entry="issue" timer="timer" api="api"></tile>
+      entry="issue" timer="timer" api="api" account="account"></tile>
 
     <pagination position="searchStartAt" limit="searchMaxResults" total="searchTotal"
       callback="workspaceRefresh" ng-show="!loading"></pagination>

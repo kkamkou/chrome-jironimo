@@ -12,7 +12,7 @@ angular
     return {
       restrict: 'E',
       replace: true,
-      scope: {entry: '=', timer: '=', api: '='},
+      scope: {account: '=', api: '=', entry: '=', timer: '='},
       templateUrl: 'tile/toolbar.html',
       link: function ($scope) {
         $scope.timerStart = function (issue) {
@@ -24,8 +24,9 @@ angular
           $scope.api.myself((err1, info) => {
             if (err1) { return; }
 
-            var paramsQuery = {_method: 'PUT', name: info.name},
-              paramsNotify = {
+            var notifyId = ['issue', $scope.account.id, issue.key].join(';'),
+              paramsQuery = {_method: 'PUT', name: info.name},
+              notifyParams = {
                 title: issue.key,
                 message: $filter('i18n')('notificationAssignedToMe')
               };
@@ -33,7 +34,7 @@ angular
             $scope.api.issueAssignee(issue.key, paramsQuery, err2 => {
               if (err2) { return; }
               $scope.$emit('tileModified', issue);
-              cjNotifications.createOrUpdate(issue.key, paramsNotify, () =>
+              cjNotifications.createOrUpdate(notifyId, notifyParams, () =>
                 $scope.$apply(() => $scope.timer.start(issue))
               );
             });

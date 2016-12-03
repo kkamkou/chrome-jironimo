@@ -12,7 +12,7 @@ angular
     return {
       restrict: 'E',
       replace: true,
-      scope: {entry: '=', api: '='},
+      scope: {api: '=', entry: '='},
       templateUrl: 'tile/transitions.html',
       link: function ($scope, elem) {
         $scope.close = () => elem.fadeOut('fast');
