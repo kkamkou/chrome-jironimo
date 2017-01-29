@@ -197,7 +197,7 @@
     "message": "Von mir erstellt"
   },
   "placeholderOptionsAccountUrl": {
-    "message": "https://jira.deineseite.de oder http://deineseite.de/jira"
+    "message": "https://jira.deineseite.de, http://deineseite.de/jira oder http://ip:port"
   },
   "statusCode400": {
     "message": "Anfrage Fehlerhaft"

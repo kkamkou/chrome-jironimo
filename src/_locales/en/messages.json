@@ -1,6 +1,6 @@
 {
   "placeholderOptionsAccountUrl": {
-    "message": "https://jira.yoursite.com or https://yoursite.com/jira"
+    "message": "https://jira.yoursite.com, https://yoursite.com/jira or http://ip:port"
   },
   "placeholderOptionsAccountTimeout": {
     "message": "Connection timeout in seconds"
