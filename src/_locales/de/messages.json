@@ -212,7 +212,7 @@
     "message": "Epic"
   },
   "optionsAboutShareOpinion": {
-    "message": "Bitte, <a href=\"https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl\" target=\"_blank\">teile deine Meinung</a>."
+    "message": "Bitte <a href=\"https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl\" target=\"_blank\">teile deine Meinung</a> oder <a href=\"https://gitter.im/chrome-jironimo\" target=\"_blank\">komm in unseren gitter chat</a>."
   },
   "optionsGeneralTitle": {
     "message": "Allgemeine Information"

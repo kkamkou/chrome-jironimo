@@ -111,7 +111,7 @@
     "message": "Feedback"
   },
   "optionsAboutShareOpinion": {
-    "message": "Please, <a href=\"https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl\" target=\"_blank\">share your opinion here</a>."
+    "message": "Please <a href=\"https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl\" target=\"_blank\">share your opinion here</a> or <a href=\"https://gitter.im/chrome-jironimo\" target=\"_blank\">join our gitter chat</a>."
   },
   "optionsAboutAuthor": {
     "message": "Author"

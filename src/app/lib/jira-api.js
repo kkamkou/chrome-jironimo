@@ -14,6 +14,8 @@ angular
     $httpProvider.interceptors.push(['$q', '$rootScope', '$filter', function ($q, $rootScope, $filter) {
       return {
         responseError: function (rej) {
+          window.onerror(_.omit(rej, 'config.url', 'config.headers')); // global debug helper
+
           var messages = [
             $filter('i18n')('jiraApiUknownResponse'),
             $filter('i18n')('jiraApiCheckSettings')
