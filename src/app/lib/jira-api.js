@@ -14,7 +14,11 @@ angular
     $httpProvider.interceptors.push(['$q', '$rootScope', '$filter', function ($q, $rootScope, $filter) {
       return {
         responseError: function (rej) {
-          window.onerror(_.omit(rej, 'config.url', 'config.headers')); // global debug helper
+          try { // global debug helper
+            const msg = _.omit(rej, 'config.headers', 'config.url');
+            msg.url = _(_.get(rej, 'config.url')).split('latest').drop(1).join('/');
+            window.onerror(msg);
+          } catch (e) { }
 
           var messages = [
             $filter('i18n')('jiraApiUknownResponse'),
