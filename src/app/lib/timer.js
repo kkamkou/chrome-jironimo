@@ -133,8 +133,8 @@ angular
 
             const duration = moment.duration(storage[issue.id].duration);
 
-            // less than 2s (fast-click?)
-            if (duration.asSeconds() < 2) { return; }
+            // less than 60s (fast-click?), see #168
+            if (duration.asSeconds() < 60) { return; }
 
             this.persist().resetBadge(); // transaction
 
@@ -142,7 +142,9 @@ angular
 
             // data set for the work-log request
             const dataSet = {
-              _method: 'POST', comment: duration.humanize(), timeSpent: duration.asMinutes() + 'm'
+              _method: 'POST',
+              comment: duration.humanize(),
+              timeSpent: _.round(duration.asMinutes()) + 'm'
             };
 
             api.issueWorklog(issue.id, dataSet, err => {
