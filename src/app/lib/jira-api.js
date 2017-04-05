@@ -15,6 +15,7 @@ angular
       return {
         responseError: function (rej) {
           try { // global debug helper
+            // @todo #1:15min Filter out calls without authorization
             const msg = _.omit(rej, 'config.headers', 'config.url');
             msg.url = _(_.get(rej, 'config.url')).split('latest').drop(1).join('/');
             window.onerror(msg);
