@@ -52,6 +52,7 @@
 
         <div class="span1" style="margin-top: 4px">
           <button type="button" class="button bg-fg-darkBlue"
+            title="{{ 'placeholderOptionsAccountAuthVerify' | i18n }}"
             ng-click="accountAuthVerify(accountSelected.url, accountSelected.timeout)">
             <i class="icon-help fg-white" ng-show="accountSelectedAuthStatus < 0"></i>
             <i class="icon-link-2 fg-red" ng-show="accountSelectedAuthStatus === 0"></i>
@@ -120,7 +121,7 @@
 
     <hr>
 
-    <input type="submit" value="{{ 'btnSave' | i18n }}" class="default">
+    <input type="submit" value="{{ 'btnSave' | i18n }}" class="button default">
   </form>
 
 </div>

@@ -2,6 +2,9 @@
   "placeholderOptionsAccountUrl": {
     "message": "https://jira.yoursite.com, https://yoursite.com/jira or http://ip:port"
   },
+  "placeholderOptionsAccountAuthVerify": {
+    "message": "Verify the authorisation (and connection). Green icon means everything is okay.\n\nDo not forget to save your changes!"
+  },
   "placeholderOptionsAccountTimeout": {
     "message": "Connection timeout in seconds"
   },

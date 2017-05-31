@@ -199,6 +199,9 @@
   "placeholderOptionsAccountUrl": {
     "message": "https://jira.deineseite.de, http://deineseite.de/jira oder http://ip:port"
   },
+  "placeholderOptionsAccountAuthVerify": {
+    "message": "Überprüfen Sie die Berechtigung (und die Verbindung). Grüne Ikone bedeutet, dass alles in Ordnung ist.\n\nVergessen Sie nicht, Ihre Änderungen zu speichern!"
+  },
   "statusCode400": {
     "message": "Anfrage Fehlerhaft"
   },
