@@ -26,3 +26,11 @@ Account
 *********
 
 tbd.
+
+*********
+Icons
+*********
+
+Please see here for a list of icons you can use when defining your workspaces:
+
+https://metroui.org.ua/v2/icons.html
