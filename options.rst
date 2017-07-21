@@ -4,7 +4,7 @@
 Options
 =======
 
-.. note::
+.. warning::
     Screenshots you see here might be outdated!
 
 *********
