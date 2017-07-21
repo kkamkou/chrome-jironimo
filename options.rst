@@ -1,3 +1,6 @@
+.. note::
+    To update the documentation, please create a new Pull Request.
+    
 Options
 =======
 
