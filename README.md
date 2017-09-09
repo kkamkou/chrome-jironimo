@@ -1,5 +1,6 @@
-Jironimo
-===============
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=82G4WKMLK667U)
+
+# chrome-jironimo
 Atlassian JIRA&trade; Agile extension for Chrome
 
 ## Chrome Web Store
