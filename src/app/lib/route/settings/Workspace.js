@@ -9,8 +9,8 @@
 'use strict';
 
 /*final public*/class RouteSettingsWorkspace extends RouteAbstract {
-  constructor($scope) {
-    super($scope, ['add', 'save', 'remove', 'import', 'accountSwitch', 'isQueryValidForWatch']);
+  constructor($scope, $injector) {
+    super($scope, $injector, ['add', 'save', 'remove', 'import', 'accountSwitch', 'isQueryValidForWatch']);
 
     this.settings = this.service('cjSettings');
     this.i18n = this.service('$filter')('i18n');

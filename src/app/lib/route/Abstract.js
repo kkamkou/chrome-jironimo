@@ -9,8 +9,8 @@
 'use strict';
 
 /*final public*/class RouteAbstract {
-  constructor($scope, scopeMethods) {
-    this.services = angular.injector(['jironimo']);
+  constructor($scope, $injector, scopeMethods) {
+    this.injector = $injector;
     this.scope = $scope;
 
     // reset the $scope
@@ -19,7 +19,7 @@
   }
 
   service(name) {
-    const service = this.services.get(name);
+    const service = this.injector.get(name);
     if (!service) {
       throw new TypeError(`Unknown service "${name}"`);
     }

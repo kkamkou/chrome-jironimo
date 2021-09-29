@@ -9,8 +9,9 @@
 'use strict';
 
 /*final public*/class RouteSettingsGeneral extends RouteAbstract {
-  constructor($scope) {
-    super($scope, ['save', 'accountAdd', 'accountRemoveSelected', 'accountAuthVerify']);
+  constructor($scope, $injector) {
+    super($scope, $injector, ['save', 'accountAdd', 'accountRemoveSelected', 'accountAuthVerify']);
+
     this.settings = this.service('cjSettings');
     this.i18n = this.service('$filter')('i18n');
 

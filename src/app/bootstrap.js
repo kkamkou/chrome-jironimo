@@ -14,11 +14,12 @@ angular
     ['ngRoute', 'ngSanitize', 'jironimo.settings', 'jironimo.jira', 'jironimo.timer',
      'jironimo.notifications', 'jironimo.shared', 'jironimo.tile']
   )
-  .controller('RouteSettingsGeneral', ['$scope', RouteSettingsGeneral])
-  .controller('RouteSettingsWorkspace', ['$scope', RouteSettingsWorkspace])
+  .controller('RouteSettingsGeneral', ['$scope', '$injector', RouteSettingsGeneral])
+  .controller('RouteSettingsWorkspace', ['$scope', '$injector', RouteSettingsWorkspace])
   .config(
-    ['$routeProvider', '$compileProvider', function ($routeProvider, $compileProvider) {
-      $compileProvider.debugInfoEnabled(false);
+    ['$routeProvider', '$compileProvider', '$locationProvider', function ($routeProvider, $compileProvider, $locationProvider) {
+      $locationProvider.hashPrefix('');
+      $compileProvider.debugInfoEnabled(true);
       $routeProvider
         .when('/', {
           templateUrl: '/views/index.html',
