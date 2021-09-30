@@ -19,7 +19,7 @@ angular
   .config(
     ['$routeProvider', '$compileProvider', '$locationProvider', function ($routeProvider, $compileProvider, $locationProvider) {
       $locationProvider.hashPrefix('');
-      $compileProvider.debugInfoEnabled(true);
+      $compileProvider.debugInfoEnabled(false);
       $routeProvider
         .when('/', {
           templateUrl: '/views/index.html',
