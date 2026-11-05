@@ -33,6 +33,7 @@ export class FetchTransport implements HttpTransport {
       cache: 'no-store',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
+        'X-Atlassian-Token': 'no-check',
         ...(config.headers ?? {})
       },
       body: method !== 'GET' && config.data !== undefined ? JSON.stringify(config.data) : undefined,

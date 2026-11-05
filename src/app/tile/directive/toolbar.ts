@@ -40,7 +40,9 @@ export class TileToolbarComponent {
         return;
       }
       const notifyId = ['issue', this.account.id, issue.key].join(';');
-      const paramsQuery = { _method: 'PUT', name: info.name };
+      const paramsQuery: Record<string, unknown> = info.accountId
+        ? { _method: 'PUT', accountId: info.accountId }
+        : { _method: 'PUT', name: info.name };
       const notifyParams = {
         title: issue.key,
         message: this.i18n.transform('notificationAssignedToMe')

@@ -66,7 +66,7 @@ async function run() {
   for (const dir of ['_locales', 'icons', 'themes', 'views']) {
     fs.cpSync(path.join(srcDir, dir), path.join(buildDir, dir), {
       recursive: true,
-      filter: src => !['variables.less', 'Jira.svg'].includes(path.basename(src))
+      filter: src => !['variables.less', 'jira.svg'].includes(path.basename(src).toLowerCase())
     });
   }
 

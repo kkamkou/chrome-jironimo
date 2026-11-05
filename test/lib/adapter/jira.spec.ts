@@ -31,30 +31,50 @@ test('Jira converts GET payload into query params and strips method override', {
     }),
     {
       method: 'GET',
-      url: 'https://jira.example/rest/api/latest/search',
+      url: 'https://jira.example/rest/api/3/search/jql',
       cache: false,
       params: { jql: 'project = DEMO' },
       responseType: 'json',
-      timeout: 4000,
-      headers: { ContentType: 'application/json; charset=UTF-8' }
+      timeout: 4000
     },
     'Jira cannot format GET search request options'
   );
 });
 
-test('Jira honours method override for worklog submission', { timeout: 1000 }, async () => {
+test('Jira requests approximate issue count via POST to v3 endpoint', { timeout: 1000 }, async () => {
+  assert.deepStrictEqual(
+    await new Promise<Record<string, unknown>>(resolve => {
+      new Jira(
+        new Request(async params => {
+          resolve({ method: params.method, url: params.url, data: params.data });
+          return { data: { count: 42 }, status: 200 };
+        }),
+        'https://jira.example',
+        4000
+      ).approximateCount('project = DEMO', () => undefined);
+    }),
+    {
+      method: 'POST',
+      url: 'https://jira.example/rest/api/3/search/approximate-count',
+      data: { jql: 'project = DEMO' }
+    },
+    'Jira cannot request approximate count via POST'
+  );
+});
+
+test('Jira honours method override for v3 worklog submission', { timeout: 1000 }, async () => {
   assert.strictEqual(
     await new Promise<string>(resolve => {
       new Jira(
         new Request(async params => {
-          resolve(String(params.method));
+          resolve(`${params.method} ${params.url}`);
           return { data: { id: '99' }, status: 201 };
         }),
         'https://jira.example',
         4000
       ).issueWorklog('1001', { _method: 'POST', comment: '10 minutes', timeSpent: '10m' }, () => undefined);
     }),
-    'POST',
-    'Jira cannot apply POST method override for worklogs'
+    'POST https://jira.example/rest/api/3/issue/1001/worklog?adjustEstimate=auto',
+    'Jira cannot apply POST method override for v3 worklogs'
   );
 });

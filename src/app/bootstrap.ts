@@ -35,10 +35,17 @@ const routes: Routes = [
 export class AppComponent {
   constructor() {
     const settings = new Settings();
-    if (settings.general.sync && typeof chrome !== 'undefined' && chrome.storage?.sync) {
-      chrome.storage.sync.get(settings.getStorageData(), items => {
-        settings.setStorageData(items as Record<string, string>);
+    if (typeof chrome !== 'undefined' && chrome.storage) {
+      chrome.storage.local?.get(settings.getStorageData(), localItems => {
+        settings.setStorageData(localItems as Record<string, string>);
+        chrome.storage.local?.set(settings.getStorageData());
       });
+      if (settings.general.sync && chrome.storage.sync) {
+        chrome.storage.sync.get(settings.getStorageData(), items => {
+          settings.setStorageData(items as Record<string, string>);
+          chrome.storage.local?.set(settings.getStorageData());
+        });
+      }
     }
   }
 }

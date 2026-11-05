@@ -3,9 +3,9 @@ import { Request, type Transport } from './http/request.ts';
 import type { AccountConfig } from './settings.ts';
 
 export interface HttpFailure {
-  status: number;
-  headers: Record<string, string | undefined>;
-  data: any;
+  status?: number;
+  headers?: Record<string, string | undefined>;
+  data?: any;
   config?: { url?: string };
 }
 
@@ -25,14 +25,18 @@ export class JiraErrorFormatter implements ErrorDiagnostics {
   }
 
   messages(rejection: HttpFailure): string[] {
+    if (!rejection || !rejection.status) {
+      return [this.translate('jiraApiConnectionProblem')];
+    }
+    const headers = rejection.headers ?? {};
     const reasons: Record<string, string> = {
       AUTHENTICATION_DENIED: 'jiraApiAuthenticationDenied',
       AUTHENTICATED_FAILED: 'jiraApiAuthenticationFailed',
       AUTHORISATION_FAILED: 'jiraApiAuthorizationFailed',
       OUT: 'jiraApiLoggedOut'
     };
-    const denied = rejection.headers['x-authentication-denied-reason'];
-    const reason = rejection.headers['x-seraph-loginreason'];
+    const denied = headers['x-authentication-denied-reason'];
+    const reason = headers['x-seraph-loginreason'];
     if (denied) {
       return [denied];
     }
@@ -81,16 +85,19 @@ export class JiraRegistry {
           this.transport(config).catch((rej: HttpFailure) => {
             try {
               if (typeof window !== 'undefined' && typeof window.onerror === 'function') {
-                const parts = String(rej.config?.url ?? '').split('latest');
+                const parts = String(rej?.config?.url ?? '').split('/rest/');
                 (window.onerror as (err: unknown) => void)({
-                  status: rej.status,
-                  data: rej.data,
+                  status: rej?.status,
+                  data: rej?.data,
                   url: parts.slice(1).join('/')
                 });
               }
             } catch {}
-            this.fail(this.translate(`statusCode${rej.status}`), formatter.messages(rej));
-            throw rej.data ? rej : this.translate('jiraApiConnectionProblem');
+            const heading =
+              (rej?.status ? this.translate(`statusCode${rej.status}`) : '') ||
+              (rej?.status ? `HTTP ${rej.status}` : this.translate('jiraApiConnectionProblem'));
+            this.fail(heading, formatter.messages(rej));
+            throw rej?.data ? rej : this.translate('jiraApiConnectionProblem');
           })
         ),
         account.url,

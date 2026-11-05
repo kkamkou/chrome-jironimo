@@ -7,6 +7,7 @@ export interface JiraClient {
   authenticated(callback: (err: Error | null, flag: boolean) => void): void;
   myself(callback: JiraCallback): void;
   search(data: Record<string, unknown>, callback: JiraCallback): void;
+  approximateCount(jql: string, callback: JiraCallback<{ count: number }>): void;
   filterFavourite(callback: JiraCallback): void;
   issueAssignee(issueId: string | number, data: Record<string, unknown>, callback: JiraCallback): void;
   issueWorklog(issueId: string | number, data: Record<string, unknown>, callback: JiraCallback): void;
@@ -39,7 +40,7 @@ export class Jira implements JiraClient {
       callback(null, this.cache.myself);
       return;
     }
-    this.send('/api/latest/myself', {}, (err, data) => {
+    this.send('/api/3/myself', {}, (err, data) => {
       if (!err) {
         this.cache.myself = data;
       }
@@ -48,23 +49,27 @@ export class Jira implements JiraClient {
   }
 
   search(data: Record<string, unknown>, callback: JiraCallback): void {
-    this.send('/api/latest/search', data, callback);
+    this.send('/api/3/search/jql', data, callback);
+  }
+
+  approximateCount(jql: string, callback: JiraCallback<{ count: number }>): void {
+    this.send('/api/3/search/approximate-count', { _method: 'POST', jql }, callback);
   }
 
   filterFavourite(callback: JiraCallback): void {
-    this.send('/api/latest/filter/favourite', {}, callback);
+    this.send('/api/3/filter/favourite', {}, callback);
   }
 
   issueAssignee(issueId: string | number, data: Record<string, unknown>, callback: JiraCallback): void {
-    this.send(`/api/latest/issue/${issueId}/assignee`, data, callback);
+    this.send(`/api/3/issue/${issueId}/assignee`, data, callback);
   }
 
   issueWorklog(issueId: string | number, data: Record<string, unknown>, callback: JiraCallback): void {
-    this.send(`/api/latest/issue/${issueId}/worklog?adjustEstimate=auto`, data, callback);
+    this.send(`/api/3/issue/${issueId}/worklog?adjustEstimate=auto`, data, callback);
   }
 
   transitions(issueId: string | number, data: Record<string, unknown>, callback: JiraCallback): void {
-    this.send(`/api/latest/issue/${issueId}/transitions?expand=transitions.fields`, data, callback);
+    this.send(`/api/3/issue/${issueId}/transitions`, data, callback);
   }
 
   private send(urn: string, payload: Record<string, unknown>, callback: JiraCallback): void {
@@ -76,8 +81,7 @@ export class Jira implements JiraClient {
       url: `${this.url}/rest${urn}`,
       cache: false,
       responseType: 'json',
-      timeout: this.timeout,
-      headers: { ContentType: 'application/json; charset=UTF-8' }
+      timeout: this.timeout
     };
     if (method === 'GET') {
       options.params = copy;

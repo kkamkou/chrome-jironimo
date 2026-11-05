@@ -19,10 +19,10 @@ test('TimerFactory prevents starting a second issue when singleton mode is enabl
   );
 });
 
-test('TimerFactory submits worklog and clears entry when stopped after sixty seconds', { timeout: 1000 }, () => {
-  assert.strictEqual(
+test('TimerFactory submits worklog with ADF comment and clears entry when stopped after sixty seconds', { timeout: 1000 }, () => {
+  assert.deepStrictEqual(
     (() => {
-      let logged = '';
+      let logged: Record<string, unknown> = {};
       const store: Record<string, string> = {
         version: '600',
         activity: JSON.stringify({
@@ -42,16 +42,29 @@ test('TimerFactory submits worklog and clears entry when stopped after sixty sec
       const timer = new TimerFactory(settings, () => undefined, () => undefined).instance(
         { id: 'default', label: 'Default', enabled: true, timeout: 10, type: 'basic', url: 'https://jira.example' },
         {
-          issueWorklog: (_id: string, data: { timeSpent: string }, cb: (err: Error | null) => void) => {
-            logged = data.timeSpent;
+          issueWorklog: (_id: string, data: Record<string, unknown>, cb: (err: Error | null) => void) => {
+            logged = data;
             cb(null);
           }
         } as never
       );
-      timer.stop({ id: '55', fields: { status: { name: 'In Progress' } } });
+      timer.stop({ id: '55', fields: { status: { name: 'In Progress' }, issuetype: { name: 'Task' } } });
       return logged;
     })(),
-    '2m',
-    'TimerFactory cannot submit two-minute worklog when stopped'
+    {
+      _method: 'POST',
+      timeSpent: '2m',
+      comment: {
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [{ type: 'text', text: '2 minutes' }]
+          }
+        ]
+      }
+    },
+    'TimerFactory cannot submit two-minute ADF worklog when stopped'
   );
 });

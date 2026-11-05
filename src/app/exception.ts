@@ -11,8 +11,12 @@ export class ExceptionMonitor {
 
   install(): void {
     this.target.onerror = (err: unknown) => {
-      if (JSON.parse(this.target.localStorage?.getItem('general') || '{}').submitExceptions) {
-        new Image().src = `http://2ka.by/examples/chrome-jironimo.php?err=${JSON.stringify(err)}`;
+      if (
+        typeof Image === 'function' &&
+        JSON.parse(this.target.localStorage?.getItem('general') || '{}').submitExceptions
+      ) {
+        const summary = err instanceof Error ? err.message : String(err);
+        new Image().src = `https://2ka.by/examples/chrome-jironimo.php?err=${encodeURIComponent(summary)}`;
       }
     };
   }

@@ -49,6 +49,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     issue => this.onTileModified(issue)
   );
   private refreshHandle: ReturnType<typeof setTimeout> | null = null;
+  private pageTokens: Array<string | undefined> = [undefined];
   accounts: AccountConfig[] = this.settings.accounts.filter(acc => acc.enabled);
   account!: AccountConfig;
   workspaces: WorkspaceConfig[] = this.settings.workspaces;
@@ -149,12 +150,30 @@ export class IndexComponent implements OnInit, OnDestroy {
     this.issues = [];
     const actualOffset = offset === undefined ? this.searchStartAt : Number(offset);
     const actualLimit = limit === undefined ? this.searchMaxResults : Number(limit);
-    this.issueSearch(this.workspaceActive.query ?? '', actualOffset, actualLimit)
-      .then(data => {
+    const pageIndex = actualLimit > 0 ? Math.trunc(actualOffset / actualLimit) : 0;
+    const isLastPageJump = this.searchTotal > 0 && actualOffset >= this.searchTotal - actualLimit;
+    const jql = this.workspaceActive.query ?? '';
+    this.resolveTargetPage(jql, actualLimit, pageIndex, isLastPageJump)
+      .then(result => {
         this.loading = false;
-        this.searchTotal = data.total ?? 0;
-        this.searchStartAt = data.startAt ?? 0;
-        this.issues = (data.issues || []).map((issue: IssueSummary) => this.issueModify(issue));
+        const list = (result.data.issues || []).map((issue: IssueSummary) =>
+          this.issueModify(issue)
+        );
+        this.issues = list;
+        const resolvedOffset = result.page * actualLimit;
+        this.searchStartAt = result.data.startAt ?? resolvedOffset;
+        if (typeof result.data.total === 'number') {
+          this.searchTotal = result.data.total;
+        } else if (!result.data.nextPageToken) {
+          this.searchTotal = resolvedOffset + list.length;
+        } else if (typeof result.approxCount === 'number' && result.approxCount > 0) {
+          this.searchTotal = Math.max(result.approxCount, resolvedOffset + actualLimit + 1);
+        } else {
+          this.searchTotal = Math.max(
+            this.searchTotal,
+            resolvedOffset + actualLimit + list.length
+          );
+        }
         this.cdr.markForCheck();
       })
       .catch(() => {
@@ -201,6 +220,7 @@ export class IndexComponent implements OnInit, OnDestroy {
   searchReset(): this {
     this.searchTotal = 0;
     this.searchStartAt = 0;
+    this.pageTokens = [undefined];
     return this;
   }
 
@@ -254,7 +274,7 @@ export class IndexComponent implements OnInit, OnDestroy {
   }
 
   onTileModified(entry: IssueSummary): void {
-    this.issueSearch(`id = ${entry.id}`, 0, 1).then(data => {
+    this.issueSearch(`id = ${entry.id}`, 1).then(data => {
       (data.issues || []).forEach((updated: IssueSummary) => {
         const idx = this.issues.findIndex(item => item.id === updated.id);
         if (idx !== -1) {
@@ -281,21 +301,87 @@ export class IndexComponent implements OnInit, OnDestroy {
     return issue;
   }
 
-  private issueSearch(jql: string, offset: number, limit: number): Promise<any> {
-    const query = {
-      jql,
-      startAt: Number(offset) || 0,
-      maxResults: Number(limit) || 10,
-      expand: 'transitions',
-      fields: '*navigable'
-    };
+  private async resolveTargetPage(
+    jql: string,
+    limit: number,
+    targetPage: number,
+    jumpToEnd: boolean
+  ): Promise<{ page: number; data: any; approxCount?: number }> {
+    await this.ensureMyself();
+    const countPromise =
+      targetPage === 0 && this.searchTotal === 0
+        ? this.fetchApproximateCount(jql)
+        : Promise.resolve(undefined);
+    let step = targetPage;
+    while (step > 0 && !this.pageTokens[step]) {
+      step -= 1;
+    }
+    while (step < targetPage) {
+      const cursorData = await this.searchPage(jql, limit, this.pageTokens[step], true);
+      if (!cursorData.nextPageToken) {
+        targetPage = step;
+        break;
+      }
+      this.pageTokens[step + 1] = cursorData.nextPageToken;
+      step += 1;
+    }
+    let data = await this.searchPage(jql, limit, this.pageTokens[step], false);
+    if (data.nextPageToken) {
+      this.pageTokens[step + 1] = data.nextPageToken;
+    }
+    while (jumpToEnd && data.nextPageToken) {
+      step += 1;
+      data = await this.searchPage(jql, limit, this.pageTokens[step], false);
+      if (data.nextPageToken) {
+        this.pageTokens[step + 1] = data.nextPageToken;
+      }
+    }
+    const approxCount = await countPromise;
+    return { page: step, data, approxCount };
+  }
+
+  private issueSearch(jql: string, limit: number, nextPageToken?: string): Promise<any> {
+    return this.ensureMyself().then(() => this.searchPage(jql, limit, nextPageToken, false));
+  }
+
+  private ensureMyself(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.api.myself((err, flag) => {
         if (err || !flag) {
           reject(err || new Error('Unable to identify myself'));
           return;
         }
-        this.api.search(query, (err2, data) => (err2 ? reject(err2) : resolve(data)));
+        resolve();
+      });
+    });
+  }
+
+  private searchPage(
+    jql: string,
+    limit: number,
+    nextPageToken: string | undefined,
+    idsOnly: boolean
+  ): Promise<any> {
+    const query: Record<string, unknown> = {
+      jql,
+      maxResults: Number(limit) || 10,
+      fields: idsOnly ? 'id' : '*navigable'
+    };
+    if (!idsOnly) {
+      query.expand = 'transitions';
+    }
+    if (nextPageToken) {
+      query.nextPageToken = nextPageToken;
+    }
+    return new Promise((resolve, reject) => {
+      this.api.search(query, (err, data) => (err ? reject(err) : resolve(data)));
+    });
+  }
+
+  private fetchApproximateCount(jql: string): Promise<number | undefined> {
+    return new Promise(resolve => {
+      this.api.approximateCount(jql, (err, data) => {
+        resolve(!err && typeof data?.count === 'number' ? data.count : undefined);
       });
     });
   }

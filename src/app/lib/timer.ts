@@ -98,18 +98,7 @@ export class AccountTimer implements WorklogTimer {
   }
 
   resetBadge(): WorklogTimer {
-    const entries = Object.values(this.settings.activity.workspace).flatMap(ws =>
-      Object.values(ws?.timers ?? {})
-    );
-    if (entries.length < 1) {
-      this.hooks.badge('');
-      return this;
-    }
-    if (entries.length > 1) {
-      this.hooks.badge(String(entries.length));
-      return this;
-    }
-    this.hooks.badge(new Duration(Date.now() - entries[0].timestamp).badge());
+    new TimerFactory(this.settings, this.hooks.badge, this.hooks.modified).refreshBadge();
     return this;
   }
 
@@ -158,7 +147,16 @@ export class AccountTimer implements WorklogTimer {
     this.hooks.storage[issue.id].stop();
     const payload = {
       _method: 'POST',
-      comment: span.humanize(),
+      comment: {
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [{ type: 'text', text: span.humanize() }]
+          }
+        ]
+      },
       timeSpent: `${span.minutes()}m`
     };
     this.api.issueWorklog(issue.id, payload, err => {
@@ -210,5 +208,20 @@ export class TimerFactory {
       badge: this.badge,
       modified: this.modified
     });
+  }
+
+  refreshBadge(): void {
+    const entries = Object.values(this.settings.activity.workspace).flatMap(ws =>
+      Object.values(ws?.timers ?? {})
+    );
+    if (entries.length < 1) {
+      this.badge('');
+      return;
+    }
+    if (entries.length > 1) {
+      this.badge(String(entries.length));
+      return;
+    }
+    this.badge(new Duration(Date.now() - entries[0].timestamp).badge());
   }
 }

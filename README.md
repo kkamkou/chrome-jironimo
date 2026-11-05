@@ -1,5 +1,3 @@
-[![Buy me a coffee](https://img.shields.io/badge/Donate-PayPal-green.svg)](http://2ka.by/coffee?project=chrome-jironimo)
-
 # chrome-jironimo
 Atlassian JIRA&trade; Agile extension for Chrome
 

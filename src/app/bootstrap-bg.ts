@@ -1,16 +1,15 @@
-import './exception.ts';
 import { Jira, type JiraClient } from './lib/adapter/jira.ts';
 import { FetchTransport } from './lib/http/fetch-transport.ts';
 import { Request } from './lib/http/request.ts';
 import { type NotificationChannel, Notifications } from './lib/notifications.ts';
 import { type AccountConfig, Settings, type SettingsStore } from './lib/settings.ts';
-import { Duration } from './lib/timer/duration.ts';
+import { TimerFactory } from './lib/timer.ts';
 
 interface VerifiedAccount {
   problem: boolean;
   account: AccountConfig;
   api: JiraClient;
-  myself: { active?: boolean; name?: string } | undefined;
+  myself: { active?: boolean; name?: string; accountId?: string } | undefined;
 }
 
 /**
@@ -33,11 +32,17 @@ export class BackgroundDaemon {
   }
 
   start(): void {
+    chrome.alarms.onAlarm.addListener(alarm => this.onStatusAlarm(alarm));
+    chrome.alarms.onAlarm.addListener(alarm => this.onBadgeAlarm(alarm));
+    chrome.notifications.onClicked.addListener(id => this.onNotificationClicked(id));
+    chrome.notifications.onButtonClicked.addListener(id => this.onNotificationButton(id));
+    chrome.runtime.onInstalled.addListener(details => this.onInstalled(details));
     if (typeof chrome !== 'undefined' && chrome.storage) {
       chrome.storage.local?.get(null, items => {
         if (items) {
           this.settings.setStorageData(items as Record<string, string>);
         }
+        this.ensureAlarms(false);
       });
       chrome.storage.onChanged?.addListener(changes => {
         const updated: Record<string, string> = {};
@@ -47,25 +52,86 @@ export class BackgroundDaemon {
           }
         });
         this.settings.setStorageData(updated);
+        if (changes.timer) {
+          this.ensureAlarms(true);
+        }
       });
+      return;
     }
+    this.ensureAlarms(false);
+  }
+
+  pollWorkspaces(): Promise<void> {
+    return this.accounts().then(accounts => {
+      accounts.forEach(entry => {
+        const seen = new Set<string>();
+        this.settings.workspaces
+          .filter(ws => ['ALL', entry.account.id].includes(ws.account) && ws.changesNotify)
+          .forEach(workspace => {
+            const interval = Number(this.settings.timer.workspace) || 5;
+            const query = {
+              jql: `updated > "-${interval}m" AND ${workspace.query ?? ''}`,
+              expand: 'changelog',
+              fields: 'updated,summary'
+            };
+            entry.api.search(query, (err, result) => {
+              if (err || !result || !Array.isArray(result.issues)) {
+                return;
+              }
+              result.issues.forEach((issue: any) => {
+                if (seen.has(issue.id)) {
+                  return;
+                }
+                seen.add(issue.id);
+                const histories = issue?.changelog?.histories;
+                const latest = Array.isArray(histories) ? histories[histories.length - 1] : null;
+                if (
+                  latest &&
+                  ((entry.myself?.accountId && latest.author?.accountId === entry.myself.accountId) ||
+                    (entry.myself?.name && latest.author?.name === entry.myself.name))
+                ) {
+                  return;
+                }
+                const updated = new Date(issue.fields.updated);
+                const formatted = new Intl.DateTimeFormat(undefined, {
+                  hour: 'numeric',
+                  minute: '2-digit'
+                }).format(updated);
+                const iconUrl =
+                  typeof chrome !== 'undefined' && chrome.runtime?.getURL
+                    ? chrome.runtime.getURL('icons/app-128.png')
+                    : 'icons/app-128.png';
+                this.notifications.createOrUpdate(
+                  ['issue', entry.account.id, issue.key].join(';'),
+                  {
+                    eventTime: updated.valueOf(),
+                    iconUrl,
+                    isClickable: true,
+                    requireInteraction: Boolean(workspace.changesNotifyPersistent),
+                    message: `${String(issue.fields.summary).trim()} (updated at ${formatted})`,
+                    title: issue.key
+                  }
+                );
+              });
+            });
+          });
+      });
+    });
+  }
+
+  private ensureAlarms(recreateStatus: boolean): void {
     chrome.alarms.get('jironimoRefreshIcon', alarm => {
       if (!alarm) {
         chrome.alarms.create('jironimoRefreshIcon', { periodInMinutes: 1 });
       }
     });
     chrome.alarms.get('jironimoStatusCheck', alarm => {
-      if (!alarm) {
+      if (!alarm || recreateStatus) {
         chrome.alarms.create('jironimoStatusCheck', {
-          periodInMinutes: Number(this.settings.timer.workspace)
+          periodInMinutes: Number(this.settings.timer.workspace) || 5
         });
       }
     });
-    chrome.alarms.onAlarm.addListener(alarm => this.onStatusAlarm(alarm));
-    chrome.alarms.onAlarm.addListener(alarm => this.onBadgeAlarm(alarm));
-    chrome.notifications.onClicked.addListener(id => this.onNotificationClicked(id));
-    chrome.notifications.onButtonClicked.addListener(id => this.onNotificationButton(id));
-    chrome.runtime.onInstalled.addListener(details => this.onInstalled(details));
   }
 
   private accounts(): Promise<VerifiedAccount[]> {
@@ -96,17 +162,25 @@ export class BackgroundDaemon {
           valid.push(entry);
           return;
         }
+        const contactIcon =
+          typeof chrome !== 'undefined' && chrome.runtime?.getURL
+            ? chrome.runtime.getURL('icons/contact-128.png')
+            : 'icons/contact-128.png';
+        const cancelIcon =
+          typeof chrome !== 'undefined' && chrome.runtime?.getURL
+            ? chrome.runtime.getURL('icons/cancel-32.png')
+            : 'icons/cancel-32.png';
         this.notifications.createOrUpdate(`auth;${entry.account.id}`, {
           title: 'Unauthorized',
           isClickable: true,
           message: `Please, authorize the "${entry.account.label}" account!`,
           priority: 2,
           requireInteraction: true,
-          iconUrl: chrome.runtime.getURL('icons/contact-128.png'),
+          iconUrl: contactIcon,
           buttons: [
             {
               title: 'Disable account',
-              iconUrl: chrome.runtime.getURL('icons/cancel-32.png')
+              iconUrl: cancelIcon
             }
           ]
         });
@@ -119,68 +193,14 @@ export class BackgroundDaemon {
     if (!alarm || alarm.name !== 'jironimoStatusCheck') {
       return;
     }
-    this.accounts().then(accounts => {
-      accounts.forEach(entry => {
-        const seen = new Set<string>();
-        this.settings.workspaces
-          .filter(ws => ['ALL', entry.account.id].includes(ws.account) && ws.changesNotify)
-          .forEach(workspace => {
-            const interval = Number(this.settings.timer.workspace) || 5;
-            const query = {
-              jql: `updated > "-${interval}m" AND ${workspace.query ?? ''}`,
-              expand: 'changelog',
-              fields: 'updated,summary'
-            };
-            entry.api.search(query, (err, result) => {
-              if (err || !result || !Array.isArray(result.issues)) {
-                return;
-              }
-              result.issues.forEach((issue: any) => {
-                if (seen.has(issue.id)) {
-                  return;
-                }
-                seen.add(issue.id);
-                const histories = issue?.changelog?.histories;
-                const latest = Array.isArray(histories) ? histories[histories.length - 1] : null;
-                if (latest && latest.author?.name === entry.myself?.name) {
-                  return;
-                }
-                const updated = new Date(issue.fields.updated);
-                const formatted = new Intl.DateTimeFormat(undefined, {
-                  hour: 'numeric',
-                  minute: '2-digit'
-                }).format(updated);
-                this.notifications.createOrUpdate(
-                  ['issue', entry.account.id, issue.key].join(';'),
-                  {
-                    eventTime: updated.valueOf(),
-                    isClickable: true,
-                    requireInteraction: Boolean(workspace.changesNotifyPersistent),
-                    message: `${String(issue.fields.summary).trim()} (updated at ${formatted})`,
-                    title: issue.key
-                  }
-                );
-              });
-            });
-          });
-      });
-    });
+    this.pollWorkspaces();
   }
 
   private onBadgeAlarm(alarm?: chrome.alarms.Alarm): void {
     if (!alarm || alarm.name !== 'jironimoRefreshIcon') {
       return;
     }
-    const timers = Object.values(this.settings.activity.workspace).flatMap(ws =>
-      Object.values(ws?.timers ?? {})
-    );
-    if (timers.length !== 1) {
-      return;
-    }
-    const action = chrome.action ?? chrome.browserAction;
-    action?.setBadgeText({
-      text: new Duration(Date.now() - timers[0].timestamp).badge()
-    });
+    new TimerFactory(this.settings).refreshBadge();
   }
 
   private onNotificationClicked(nId: string): void {
