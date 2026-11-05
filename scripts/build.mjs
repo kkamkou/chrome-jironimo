@@ -66,7 +66,7 @@ async function run() {
   for (const dir of ['_locales', 'icons', 'themes', 'views']) {
     fs.cpSync(path.join(srcDir, dir), path.join(buildDir, dir), {
       recursive: true,
-      filter: src => path.basename(src) !== 'variables.less'
+      filter: src => !['variables.less', 'Jira.svg'].includes(path.basename(src))
     });
   }
 
@@ -91,7 +91,7 @@ async function run() {
     bundle: true,
     minify: true,
     format: 'iife',
-    target: ['es2022'],
+    target: ['es2025'],
     define: { ngDevMode: 'false', ngJitMode: 'false' },
     outfile: path.join(buildAppDir, 'app.js'),
     plugins: [angularLinkerPlugin]
@@ -102,7 +102,7 @@ async function run() {
     bundle: true,
     minify: true,
     format: 'iife',
-    target: ['es2022'],
+    target: ['es2025'],
     outfile: path.join(buildAppDir, 'bootstrap-bg.js')
   });
 

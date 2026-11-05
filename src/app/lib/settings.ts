@@ -83,8 +83,9 @@ export class Settings implements SettingsStore {
     translate: (key: string) => string = key =>
       typeof chrome !== 'undefined' && chrome.i18n ? chrome.i18n.getMessage(key) : key,
     syncer: (payload: Record<string, string>) => void = payload => {
-      if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
-        chrome.storage.sync.set(payload);
+      if (typeof chrome !== 'undefined' && chrome.storage) {
+        chrome.storage.local?.set(payload);
+        chrome.storage.sync?.set(payload);
       }
     }
   ) {

@@ -192,8 +192,9 @@ export class TimerFactory {
   constructor(
     settings: SettingsStore,
     badge: (text: string) => void = text => {
-      if (typeof chrome !== 'undefined' && chrome.browserAction) {
-        chrome.browserAction.setBadgeText({ text });
+      const target = typeof chrome !== 'undefined' ? (chrome.action ?? chrome.browserAction) : undefined;
+      if (target) {
+        target.setBadgeText({ text });
       }
     },
     modified: (issue: IssueSummary) => void = () => undefined

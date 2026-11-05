@@ -33,6 +33,22 @@ export class BackgroundDaemon {
   }
 
   start(): void {
+    if (typeof chrome !== 'undefined' && chrome.storage) {
+      chrome.storage.local?.get(null, items => {
+        if (items) {
+          this.settings.setStorageData(items as Record<string, string>);
+        }
+      });
+      chrome.storage.onChanged?.addListener(changes => {
+        const updated: Record<string, string> = {};
+        Object.keys(changes).forEach(key => {
+          if (changes[key].newValue !== undefined) {
+            updated[key] = String(changes[key].newValue);
+          }
+        });
+        this.settings.setStorageData(updated);
+      });
+    }
     chrome.alarms.get('jironimoRefreshIcon', alarm => {
       if (!alarm) {
         chrome.alarms.create('jironimoRefreshIcon', { periodInMinutes: 1 });
@@ -86,11 +102,11 @@ export class BackgroundDaemon {
           message: `Please, authorize the "${entry.account.label}" account!`,
           priority: 2,
           requireInteraction: true,
-          iconUrl: chrome.extension.getURL('icons/contact-128.png'),
+          iconUrl: chrome.runtime.getURL('icons/contact-128.png'),
           buttons: [
             {
               title: 'Disable account',
-              iconUrl: chrome.extension.getURL('icons/cancel-32.png')
+              iconUrl: chrome.runtime.getURL('icons/cancel-32.png')
             }
           ]
         });
@@ -161,7 +177,8 @@ export class BackgroundDaemon {
     if (timers.length !== 1) {
       return;
     }
-    chrome.browserAction.setBadgeText({
+    const action = chrome.action ?? chrome.browserAction;
+    action?.setBadgeText({
       text: new Duration(Date.now() - timers[0].timestamp).badge()
     });
   }
@@ -214,7 +231,7 @@ export class BackgroundDaemon {
         buttons: [
           {
             title: 'Changelog',
-            iconUrl: chrome.extension.getURL('icons/eye-32.png')
+            iconUrl: chrome.runtime.getURL('icons/eye-32.png')
           }
         ],
         title: chrome.i18n.getMessage('messageJironimoUpdatedTitle'),

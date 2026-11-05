@@ -29,8 +29,8 @@ export class Notifications implements NotificationChannel {
           update: (_id, _opts, cb) => cb(true),
           clear: (_id, cb) => cb(true)
         },
-    icon: string = typeof chrome !== 'undefined' && chrome.extension
-      ? chrome.extension.getURL('icons/app-128.png')
+    icon: string = typeof chrome !== 'undefined' && chrome.runtime?.getURL
+      ? chrome.runtime.getURL('icons/app-128.png')
       : 'icons/app-128.png'
   ) {
     this.port = port;
