@@ -7,65 +7,65 @@
     <small>{{ 'optionsColorsTitle' | i18n }}</small>
   </h1>
 
-  <form ng-submit="save('colors', colors)" style="margin-bottom: 0">
-    <notify entries="notifications"></notify>
+  <form (ngSubmit)="save('colors', colors)" style="margin-bottom: 0">
+    <notify [entries]="notifications"></notify>
 
     <div class="tab-control" data-role="tab-control" data-effect="fade[slide]">
         <ul class="tabs">
-          <li ng-repeat="(frameKey, frameTitle) in {theme: 'settingsColorsDefaultTheme', colors: 'settingsColorsPriorityColors', sizes: 'settingsColorsPrioritySizes'}"
-            ng-class="{active: tabControl.colors === frameKey }">
-            <a ng-click="tabControl.colors = frameKey">{{ frameTitle | i18n}}</a>
+          <li *ngFor="let frame of colorFrames"
+            [ngClass]="{active: tabControl.colors === frame.key }">
+            <a (click)="tabControl.colors = frame.key">{{ frame.title | i18n }}</a>
           </li>
         </ul>
 
         <div class="frames bg-white">
-            <div class="frame" style="display: block" ng-show="tabControl.colors === 'theme'">
+            <div class="frame" style="display: block" *ngIf="tabControl.colors === 'theme'">
               <h2>{{ 'settingsColorsDefaultTheme' | i18n }}</h2>
 
               <div class="input-control select span5">
-                <select ng-model="colors.theme">
+                <select name="colorTheme" [(ngModel)]="colors.theme">
                   <option value="default">Jironimo</option>
                 </select>
               </div>
             </div>
-            <div class="frame" style="display: block" ng-show="tabControl.colors === 'colors'">
+            <div class="frame" style="display: block" *ngIf="tabControl.colors === 'colors'">
               <h2>{{ 'settingsColorsPriorityColors' | i18n }}</h2>
 
               <div class="grid">
-                <div class="row" ng-repeat="colpri in colors.priority">
+                <div class="row" *ngFor="let pKey of priorityKeys; let idx = index">
                   <div class="span2 text-right">
-                    <h5>{{$index+1}} <small>{{ 'settingsColorsPriority' | i18n }}</small></h5>
+                    <h5>{{ idx + 1 }} <small>{{ 'settingsColorsPriority' | i18n }}</small></h5>
                   </div>
 
                   <div class="span2">
                     <div class="input-control text">
-                      <input type="text" ng-model="colpri.fg" placeholder="Foreground (fg-*)" maxlength="30" required>
+                      <input type="text" [name]="'fg_' + pKey" [(ngModel)]="colors.priority[pKey].fg" placeholder="Foreground (fg-*)" maxlength="30" required>
                     </div>
                   </div>
 
                   <div class="span2">
                     <div class="input-control text">
-                      <input type="text" ng-model="colpri.bg" placeholder="Background (bg-*)" maxlength="30" required>
+                      <input type="text" [name]="'bg_' + pKey" [(ngModel)]="colors.priority[pKey].bg" placeholder="Background (bg-*)" maxlength="30" required>
                     </div>
                   </div>
 
                   <div class="span2">
                     <div class="input-control text">
-                      <input type="text" ng-model="colpri.bd" placeholder="Border (bd-*)" maxlength="30" required>
+                      <input type="text" [name]="'bd_' + pKey" [(ngModel)]="colors.priority[pKey].bd" placeholder="Border (bd-*)" maxlength="30" required>
                     </div>
                   </div>
 
                   <div class="span2">
                     <div class="input-control text span2">
-                      <input type="text" ng-model="colpri.ot" placeholder="Outline (ol-*)" maxlength="30" required>
+                      <input type="text" [name]="'ot_' + pKey" [(ngModel)]="colors.priority[pKey].ot" placeholder="Outline (ol-*)" maxlength="30" required>
                     </div>
                   </div>
 
                   <div class="span2">
                     <div class="input-control text">
-                      <input class="text-center bd-{{ colpri.bd }} ol-{{ colpri.ot }} bg-{{ colpri.bg }} fg-{{ colpri.fg }}"
+                      <input class="text-center bd-{{ colors.priority[pKey].bd }} ol-{{ colors.priority[pKey].ot }} bg-{{ colors.priority[pKey].bg }} fg-{{ colors.priority[pKey].fg }}"
                         style="outline-style: solid; outline-width: 1px;"
-                        type="text" ng-value="'settingsColorExamplePriority' | i18n" readonly="readonly">
+                        type="text" [value]="'settingsColorExamplePriority' | i18n" readonly="readonly">
                     </div>
                   </div>
                 </div>
@@ -76,23 +76,23 @@
                 </a>
               </div>
             </div>
-            <div class="frame" style="display: block" ng-show="tabControl.colors === 'sizes'">
+            <div class="frame" style="display: block" *ngIf="tabControl.colors === 'sizes'">
               <h2>{{ 'settingsColorsPrioritySizes' | i18n }}</h2>
 
               <div class="grid">
-                <div class="row" ng-repeat="(sizkey, sizval) in colors.sizes">
+                <div class="row" *ngFor="let sizkey of sizeKeys">
                   <div class="span2 text-right">
-                    <h5>{{ 'settingsColorType' + sizkey.replace('-', '_') | i18n }}:</h5>
+                    <h5>{{ ('settingsColorType' + sizkey.replace('-', '_')) | i18n }}:</h5>
                   </div>
 
                   <div class="span10">
                     <div class="input-control select span4">
-                      <select ng-model="colors.sizes[sizkey]">
+                      <select [name]="'size_' + sizkey" [(ngModel)]="colors.sizes[sizkey]">
                         <option value="half">{{ 'settingsColorsSizeHalf' | i18n }}</option>
-                        <option value="default">{{ 'settingsColorsSizeDefault' | i18n}}</option>
-                        <option value="double">{{ 'settingsColorsSizeDouble' | i18n}}</option>
-                        <option value="triple">{{ 'settingsColorsSizeTriple' | i18n}}</option>
-                        <option value="quadro">{{ 'settingsColorsSizeQuadruple' | i18n}}</option>
+                        <option value="default">{{ 'settingsColorsSizeDefault' | i18n }}</option>
+                        <option value="double">{{ 'settingsColorsSizeDouble' | i18n }}</option>
+                        <option value="triple">{{ 'settingsColorsSizeTriple' | i18n }}</option>
+                        <option value="quadro">{{ 'settingsColorsSizeQuadruple' | i18n }}</option>
                       </select>
                     </div>
                   </div>
@@ -100,14 +100,14 @@
 
                 <a href="http://metroui.org.ua/v2/tiles.html" class="button link" target="_blank">
                   <i class="icon-link"></i>
-                  {{ 'settingsColorsAvailableSizes' | i18n}}
+                  {{ 'settingsColorsAvailableSizes' | i18n }}
                 </a>
               </div>
             </div>
         </div>
     </div>
     <br>
-    <input type="submit" value="{{ 'btnSave' | i18n }}" class="button default">
+    <input type="submit" [value]="'btnSave' | i18n" class="button default">
   </form>
 
 </div>

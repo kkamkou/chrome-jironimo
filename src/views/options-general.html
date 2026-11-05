@@ -7,33 +7,36 @@
     <small>{{ 'optionsGeneralTitle' | i18n }}</small>
   </h1>
 
-  <form ng-submit="save()" class="grid" style="margin-bottom: 0">
-    <notify entries="notifications"></notify>
+  <form (ngSubmit)="save()" class="grid" style="margin-bottom: 0">
+    <notify [entries]="notifications"></notify>
 
     <div class="row">
       <div class="span1">
         <label class="input-control switch" title="Enable this account">
-          <input type="checkbox" ng-model="accountSelected.enabled">
-          <span ng-class="['check', {'bg-crimson': !accountSelected.enabled}]"></span>
+          <input type="checkbox" name="accountEnabled" [(ngModel)]="accountSelected.enabled">
+          <span class="check" [ngClass]="{'bg-crimson': !accountSelected.enabled}"></span>
         </label>
       </div>
 
       <div class="span8">
         <div class="input-control select">
-          <select ng-model="accountSelected"
-            ng-class="[accountSelected.enabled ? 'bg-white' : 'bg-crimson fg-white']"
-            ng-options="::item as item.label for item in accountList track by item.id"></select>
+          <select name="accountSelected"
+            [ngModel]="accountSelected"
+            (ngModelChange)="onAccountSelect($event)"
+            [ngClass]="accountSelected.enabled ? 'bg-white' : 'bg-crimson fg-white'">
+            <option *ngFor="let item of accountList" [ngValue]="item">{{ item.label }}</option>
+          </select>
         </div>
       </div>
 
       <div class="span3">
         <div class="button-set" style="margin-top: 2px">
           <button type="button"
-            ng-if="accountList.length < 10"
-            ng-click="accountAdd()"><i class="icon-plus-2 on-left"></i> Add</button>
+            *ngIf="accountList.length < 10"
+            (click)="accountAdd()"><i class="icon-plus-2 on-left"></i> Add</button>
           <button type="button" class="danger"
-            ng-if="accountList.length > 1"
-            ng-click="accountRemoveSelected()"><i class="icon-cancel-2 on-left"></i> Delete</button>
+            *ngIf="accountList.length > 1"
+            (click)="accountRemoveSelected()"><i class="icon-cancel-2 on-left"></i> Delete</button>
         </div>
       </div>
     </div>
@@ -43,35 +46,34 @@
         <h2>{{ 'captionOptionsAccountJiraAddress' | i18n }}</h2>
 
         <div class="input-control text span5">
-          <input type="url" required="required"
-            ng-required="true"
-            ng-model="accountSelected.url"
-            title="{{ 'placeholderOptionsAccountUrl' | i18n }}"
-            placeholder="{{ 'placeholderOptionsAccountUrl' | i18n }}">
+          <input type="url" name="accountUrl" required="required"
+            [(ngModel)]="accountSelected.url"
+            [title]="'placeholderOptionsAccountUrl' | i18n"
+            [placeholder]="'placeholderOptionsAccountUrl' | i18n">
         </div>
 
         <div class="span1" style="margin-top: 4px">
           <button type="button" class="button bg-fg-darkBlue"
-            title="{{ 'placeholderOptionsAccountAuthVerify' | i18n }}"
-            ng-click="accountAuthVerify(accountSelected.url, accountSelected.timeout)">
-            <i class="icon-help fg-white" ng-show="accountSelectedAuthStatus < 0"></i>
-            <i class="icon-link-2 fg-red" ng-show="accountSelectedAuthStatus === 0"></i>
-            <i class="icon-link fg-green" ng-show="accountSelectedAuthStatus === 1"></i>
-            <i class="icon-clock fg-orange" ng-show="accountSelectedAuthStatus === 2"></i>
+            [title]="'placeholderOptionsAccountAuthVerify' | i18n"
+            (click)="accountAuthVerify(accountSelected.url, accountSelected.timeout)">
+            <i class="icon-help fg-white" *ngIf="accountSelectedAuthStatus < 0"></i>
+            <i class="icon-link-2 fg-red" *ngIf="accountSelectedAuthStatus === 0"></i>
+            <i class="icon-link fg-green" *ngIf="accountSelectedAuthStatus === 1"></i>
+            <i class="icon-clock fg-orange" *ngIf="accountSelectedAuthStatus === 2"></i>
           </button>
         </div>
 
         <div class="input-control text">
-          <input type="number" min="5" max="60" maxlength="2" required="required"
-            ng-model="accountSelected.timeout"
-            title="{{ 'placeholderOptionsAccountTimeout' | i18n }}"
-            placeholder="{{ 'placeholderOptionsAccountTimeout' | i18n }}">
+          <input type="number" name="accountTimeout" min="5" max="60" maxlength="2" required="required"
+            [(ngModel)]="accountSelected.timeout"
+            [title]="'placeholderOptionsAccountTimeout' | i18n"
+            [placeholder]="'placeholderOptionsAccountTimeout' | i18n">
         </div>
       </div>
 
       <div class="span6">
         <div class="notice marker-on-left bg-white"
-          ng-bind-html="'hintWhereToFindJiraAddress' | i18n"></div>
+          [innerHTML]="'hintWhereToFindJiraAddress' | i18n"></div>
       </div>
     </div>
 
@@ -82,19 +84,19 @@
         <h2>{{ 'captionOptionsAccountSync' | i18n }}</h2>
 
         <label class="input-control switch">
-          <input type="checkbox" ng-model="general.sync">
+          <input type="checkbox" name="generalSync" [(ngModel)]="general.sync">
           <span class="check"></span>
         </label>
 
         <blockquote>
-          <p ng-bind-html="'hintSynchroniseSettings' | i18n"></p>
+          <p [innerHTML]="'hintSynchroniseSettings' | i18n"></p>
         </blockquote>
       </div>
 
       <div class="span6">
         <div class="notice marker-on-left bg-white">
-          <p ng-bind-html="'hintHowDataIsStored' | i18n"></p>
-          <p ng-bind-html="'hintRequiredJiraAgile' | i18n"></p>
+          <p [innerHTML]="'hintHowDataIsStored' | i18n"></p>
+          <p [innerHTML]="'hintRequiredJiraAgile' | i18n"></p>
         </div>
       </div>
     </div>
@@ -104,24 +106,24 @@
         <h2>{{ 'captionSubmitExceptions' | i18n }}</h2>
 
         <label class="input-control switch">
-          <input type="checkbox" ng-model="general.submitExceptions">
+          <input type="checkbox" name="submitExceptions" [(ngModel)]="general.submitExceptions">
           <span class="check"></span>
         </label>
 
         <blockquote>
-          <p ng-bind-html="'hintSubmitExceptions2' | i18n"></p>
+          <p [innerHTML]="'hintSubmitExceptions2' | i18n"></p>
         </blockquote>
       </div>
 
       <div class="span6">
         <div class="notice marker-on-left bg-white"
-          ng-bind-html="'hintSubmitExceptions1' | i18n"></div>
+          [innerHTML]="'hintSubmitExceptions1' | i18n"></div>
       </div>
     </div>
 
     <hr>
 
-    <input type="submit" value="{{ 'btnSave' | i18n }}" class="button default">
+    <input type="submit" [value]="'btnSave' | i18n" class="button default">
   </form>
 
 </div>

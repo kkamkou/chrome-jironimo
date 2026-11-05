@@ -1,4 +1,4 @@
-FROM node:6
+FROM node:26
 
 WORKDIR /opt
 
@@ -8,4 +8,6 @@ RUN npm install
 
 VOLUME ["/opt/app"]
 
-ENTRYPOINT ["node", "node_modules/jake/bin/cli.js", "-f", "app/Jakefile.js"]
+WORKDIR /opt/app
+
+ENTRYPOINT ["npm", "run", "build"]

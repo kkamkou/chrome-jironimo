@@ -12,20 +12,20 @@
   <div class="span12">
     <div class="button-set">
       <button type="button"
-        ng-class="{success: accountSelected === 'ALL'}"
-        ng-click="accountSwitch('ALL')">{{ 'settingsWorkspaceAccountShared' | i18n }}</button>
+        [ngClass]="{success: accountSelected === 'ALL'}"
+        (click)="accountSwitch('ALL')">{{ 'settingsWorkspaceAccountShared' | i18n }}</button>
       <button type="button"
-        ng-repeat="account in accounts track by account.label"
-        ng-class="{success: accountSelected === account}"
-        ng-click="accountSwitch(account)">{{ ::account.label }}</button>
+        *ngFor="let account of accounts"
+        [ngClass]="{success: accountSelected === account}"
+        (click)="accountSwitch(account)">{{ account.label }}</button>
     </div>
   </div>
 
-  <form ng-submit="save()" style="margin-bottom: 0">
-    <notify entries="notifications"></notify>
+  <form (ngSubmit)="save()" style="margin-bottom: 0">
+    <notify [entries]="notifications"></notify>
 
     <div class="grid">
-      <div class="row" ng-if="!workspaces.length">
+      <div class="row" *ngIf="!workspaces.length">
         <div class="span11 offset1 balloon top">
           <p class="padding10">
             Hey! It looks like your list is empty. Click the button below to add a new workspace.
@@ -33,64 +33,64 @@
         </div>
       </div>
 
-      <div class="row" ng-repeat="workspace in workspaces track by $index">
+      <div class="row" *ngFor="let workspace of workspaces; let idx = index">
 
         <div class="span1">
-          <i class="icon-{{workspace.icon}} place-right" style="margin-top: 11px;"></i>
+          <i class="icon-{{ workspace.icon }} place-right" style="margin-top: 11px;"></i>
         </div>
 
         <div class="span10">
           <div class="span2">
             <div class="input-control text">
-              <input type="text" maxlength="18" required
-                title="{{ 'titleOptionsJqlIcon' | i18n }}"
-                placeholder="{{ 'placeholderOptionsJqlIcon' | i18n }}"
-                ng-model="workspace.icon">
+              <input type="text" [name]="'icon_' + idx" maxlength="18" required
+                [title]="'titleOptionsJqlIcon' | i18n"
+                [placeholder]="'placeholderOptionsJqlIcon' | i18n"
+                [(ngModel)]="workspace.icon">
             </div>
           </div>
 
           <div class="span7">
             <div class="input-control text">
-              <input type="text" maxlength="40" required
-                title="{{ 'placeholderOptionsJqlTitle' | i18n }}"
-                placeholder="{{ 'placeholderOptionsJqlTitle' | i18n }}"
-                ng-model="workspace.title">
+              <input type="text" [name]="'title_' + idx" maxlength="40" required
+                [title]="'placeholderOptionsJqlTitle' | i18n"
+                [placeholder]="'placeholderOptionsJqlTitle' | i18n"
+                [(ngModel)]="workspace.title">
             </div>
           </div>
 
           <div class="input-control textarea">
-            <textarea required style="min-height: 50px;"
-              title="{{ 'placeholderOptionsJqlQuery' | i18n }}"
-              placeholder="{{ 'placeholderOptionsJqlQuery' | i18n }}"
-              ng-model="workspace.query"></textarea>
+            <textarea [name]="'query_' + idx" required style="min-height: 50px;"
+              [title]="'placeholderOptionsJqlQuery' | i18n"
+              [placeholder]="'placeholderOptionsJqlQuery' | i18n"
+              [(ngModel)]="workspace.query"></textarea>
 
             <div class="label info"
-              ng-if="workspace.changesNotify && isQueryValidForWatch(workspace.query)">
+              *ngIf="workspace.changesNotify && isQueryValidForWatch(workspace.query)">
               <i class="icon-lamp-2 place-left"></i>&nbsp;
-              <span ng-bind-html="'optionsJqlDateHint' | i18n"></span>
+              <span [innerHTML]="'optionsJqlDateHint' | i18n"></span>
             </div>
           </div>
         </div>
 
-        <div class="span1 text-center" ng-if="workspaces.length > 1">
+        <div class="span1 text-center" *ngIf="workspaces.length > 1">
           <button type="button" class="danger" style="margin-top: 5px;"
-            ng-click="remove(workspace)"><i class="icon-cancel-2"></i></button>
+            (click)="remove(workspace)"><i class="icon-cancel-2"></i></button>
         </div>
 
         <div class="offset1 span5">
           <div class="input-control checkbox">
             <label>
-              <input type="checkbox" ng-model="workspace.changesNotify" />
+              <input type="checkbox" [name]="'notify_' + idx" [(ngModel)]="workspace.changesNotify" />
               <span class="check"></span>
               {{ 'optionsJqlCheckUpdates' | i18n }}
             </label>
           </div>
         </div>
 
-        <div class="span5" ng-if="workspace.changesNotify">
+        <div class="span5" *ngIf="workspace.changesNotify">
           <div class="input-control checkbox">
             <label>
-              <input type="checkbox" ng-model="workspace.changesNotifyPersistent" />
+              <input type="checkbox" [name]="'persistent_' + idx" [(ngModel)]="workspace.changesNotifyPersistent" />
               <span class="check"></span>
               {{ 'optionsJqlCheckUpdatesPersistent' | i18n }}
             </label>
@@ -102,7 +102,7 @@
 
     <div class="row">
       <div class="span11 offset1">
-        <button ng-click="add()" type="button" class="success">
+        <button (click)="add()" type="button" class="success">
           <i class="icon-plus-2"></i> {{ 'optionsJqlAddOne' | i18n }}
         </button>
 
@@ -116,11 +116,11 @@
     <hr>
 
     <div>
-      <input type="submit" value="{{ 'btnSave' | i18n }}" class="button default">
+      <input type="submit" [value]="'btnSave' | i18n" class="button default">
 
-      <button type='button' class="primary place-right"
-        ng-if="accountSelected !== 'ALL'"
-        ng-click="import()" ng-disabled="importingFavorites">
+      <button type="button" class="primary place-right"
+        *ngIf="accountSelected !== 'ALL'"
+        (click)="import()" [disabled]="importingFavorites">
         <i class="icon-spin"></i> {{ 'optionsJqlImportFavorites' | i18n }}
       </button>
     </div>

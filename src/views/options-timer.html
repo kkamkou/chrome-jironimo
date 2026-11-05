@@ -7,15 +7,15 @@
     <small>{{ 'optionsTimerTitle' | i18n }}</small>
   </h1>
 
-  <form ng-submit="save('timer', timer)" style="margin-bottom: 0">
-    <notify entries="notifications"></notify>
+  <form (ngSubmit)="save('timer', timer)" style="margin-bottom: 0">
+    <notify [entries]="notifications"></notify>
 
     <h2>{{ 'optionsTimerWorkspaces' | i18n }}</h2>
     <div class="input-control text span6">
-      <input type="number" min="1" max="60" maxlength="2" required
-        title="{{ 'placeholderOptionsTimerRefreshInterval' | i18n }}"
-        placeholder="{{ 'placeholderOptionsTimerRefreshInterval' | i18n }}"
-        ng-model="timer.workspace">
+      <input type="number" name="timerWorkspace" min="1" max="60" maxlength="2" required
+        [title]="'placeholderOptionsTimerRefreshInterval' | i18n"
+        [placeholder]="'placeholderOptionsTimerRefreshInterval' | i18n"
+        [(ngModel)]="timer.workspace">
     </div>
 
     <h2>{{ 'optionsTimerTimelog' | i18n }}</h2>
@@ -23,15 +23,15 @@
       <div class="row">
         <div class="span6">
           <label class="input-control switch">
-              <input type="checkbox" ng-model="timer.enabled">
+              <input type="checkbox" name="timerEnabled" [(ngModel)]="timer.enabled">
               <span class="check"></span>
               {{ 'optionsTimerEnableTimelog' | i18n }}
           </label>
         </div>
 
-        <div class="span6" ng-show="timer.enabled">
+        <div class="span6" *ngIf="timer.enabled">
           <label class="input-control switch">
-              <input type="checkbox" ng-model="timer.singleton">
+              <input type="checkbox" name="timerSingleton" [(ngModel)]="timer.singleton">
               <span class="check"></span>
               {{ 'optionsTimerTimelogOnlyOneActive' | i18n }}
           </label>
@@ -42,7 +42,7 @@
 
     <hr>
 
-    <input type="submit" value="{{ 'btnSave' | i18n }}" class="button default">
+    <input type="submit" [value]="'btnSave' | i18n" class="button default">
   </form>
 
 </div>

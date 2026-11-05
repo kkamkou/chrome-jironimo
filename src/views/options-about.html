@@ -19,7 +19,7 @@
       </div>
       <div class="span6">
         <h2>{{ 'optionsAboutFeedback' | i18n }}</h2>
-        <p ng-bind-html="'optionsAboutShareOpinion' | i18n"></p>
+        <p [innerHTML]="'optionsAboutShareOpinion' | i18n"></p>
       </div>
     </div>
   </div>
@@ -57,11 +57,8 @@
           <h2>{{ 'optionsAboutThirdParty' | i18n }}</h2>
           <p>
             <a href="http://metroui.org.ua/v2/" target="_blank">Metro-UI-CSS</a>,
-            <a href="http://jquery.com/" target="_blank">jQuery</a>,
-            <a href="http://lesscss.org/" target="_blank">{less}</a>,
-            <a href="http://angularjs.org/" target="_blank">Angular.js</a>,
-            <a href="http://momentjs.com/" target="_blank">Moment.js</a>,
-            <a href="http://lodash.com/" target="_blank">Lo-Dash</a>
+            <a href="http://lesscss.org/" target="_blank">{{ '{less}' }}</a>,
+            <a href="https://angular.dev/" target="_blank">Angular</a>
           </p>
         </div>
       </div>
@@ -69,7 +66,7 @@
   </div>
 
   <div>
-    <h2>{{ 'optionsAboutLicense' |i18n }}</h2>
+    <h2>{{ 'optionsAboutLicense' | i18n }}</h2>
   </div>
 
   <div class="bg-darkBlue padding20">

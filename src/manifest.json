@@ -6,7 +6,7 @@
   "homepage_url": "https://plus.google.com/communities/108001372997677649751",
   "description": "Atlassian JIRA Agile in your browser. Adorable open-source extension for passionate techies and product owners.",
   "default_locale": "en",
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "content_security_policy": "script-src 'self'; object-src 'self'",
   "options_page": "views/default.html#/settings/general",
   "minimum_chrome_version": "45",
   "icons": {
@@ -21,18 +21,7 @@
   "background": {
     "persistent": false,
     "scripts": [
-      "/vendors/angularjs/angular.js",
-      "/vendors/lodash/lodash-latest.js",
-      "/vendors/momentjs/moment-latest.js",
-      "/app/exception.js",
-      "/app/lib/adapter/jira.js",
-      "/app/lib/http/request.js",
-      "/app/lib/http/response.js",
-      "/app/shared/module.js",
-      "/app/shared/filter/i18n.js",
-      "/app/lib/settings.js",
-      "/app/lib/notifications.js",
-      "/app/bootstrap-bg.js"
+      "app/bootstrap-bg.js"
     ]
   },
   "commands": {
