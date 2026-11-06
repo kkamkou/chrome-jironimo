@@ -51,7 +51,6 @@ export interface ActivityConfig {
 
 export interface GeneralConfig {
   sync: boolean;
-  submitExceptions: boolean;
 }
 
 export interface SettingsStore {
@@ -104,7 +103,7 @@ export class Settings implements SettingsStore {
   }
 
   get general(): GeneralConfig {
-    return this.read('general', { sync: true, submitExceptions: true });
+    return this.read('general', { sync: true });
   }
 
   set general(val: GeneralConfig) {
@@ -264,7 +263,7 @@ export class Settings implements SettingsStore {
     this.activity = current;
     const legacy = this.store.account ? JSON.parse(this.store.account) : null;
     if (legacy && legacy.url) {
-      this.general = { sync: Boolean(legacy.sync) || true, submitExceptions: true };
+      this.general = { sync: Boolean(legacy.sync) || true };
       this.accounts = [{ ...base, url: legacy.url, timeout: Number(legacy.timeout) || 10 }];
     }
     delete this.store.workspaceLast;

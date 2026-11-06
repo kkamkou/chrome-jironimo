@@ -10,7 +10,7 @@
 
   <div class="tile-content">
     <h5 class="fg-{{ entry._colors.fg }}">{{ entry.key }}</h5>
-    <h6 class="fg-{{ entry._colors.fg }}">{{ (entry.fields.reporter?.displayName || '') | slice:0:16 }}</h6>
+    <h6 class="fg-{{ entry._colors.fg }}">{{ entry.fields.reporter?.displayName || '' }}</h6>
     <p class="fg-{{ entry._colors.fg }}">{{ entry.fields.summary }}</p>
   </div>
 

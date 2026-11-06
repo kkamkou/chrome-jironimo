@@ -1,4 +1,4 @@
-<div class="info-bar" *ngIf="!issues.length && !loading">
+<div class="info-bar" *ngIf="!issues.length && !loading && !jiraRequestFailed">
   <h3 class="fg-darkCobalt">{{ 'indexNoDataProvidedTitle' | i18n }}</h3>
   <p>{{ 'indexNoDataProvidedText' | i18n }}</p>
 </div>
@@ -36,8 +36,8 @@
         fluid />
     </div>
 
-    <div id="home-workspaces" *ngIf="workspaces.length >= 2 && !loading">
-      <p-buttongroup>
+    <div id="home-workspaces" *ngIf="!loading">
+      <p-buttongroup *ngIf="workspaces.length >= 2">
         <button pButton type="button" size="small"
           *ngFor="let workspace of workspaces; let i = index"
           [title]="workspace.title || ''"
@@ -65,7 +65,7 @@
         id="advanced-panel-icon"
         [severity]="homePanelVisible ? 'contrast' : 'secondary'"
         [ngClass]="{inverse: homePanelVisible}"
-        (click)="homePanelVisible = !homePanelVisible">
+        (click)="toggleHomePanel()">
         <i class="icon-mouse"></i>
       </button>
     </div>

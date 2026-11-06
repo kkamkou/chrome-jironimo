@@ -10,6 +10,14 @@ test('Settings initializes default version when storage is empty', { timeout: 10
   );
 });
 
+test('Settings initializes default general configuration with only sync enabled', { timeout: 1000 }, () => {
+  assert.deepStrictEqual(
+    new Settings({}, key => key).general,
+    { sync: true },
+    'Settings cannot initialize default general configuration without crash reporting'
+  );
+});
+
 test('Settings migrates legacy pre-600 account data into accounts array', { timeout: 1000 }, () => {
   assert.strictEqual(
     new Settings(

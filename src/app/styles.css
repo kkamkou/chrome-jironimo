@@ -41,7 +41,7 @@
     margin: 0;
     padding: 0 0 0 10px;
     background: #ffffff url('/themes/default/bg.png');
-    min-width: 530px;
+    min-width: 552px;
     min-height: 120px;
     overflow-x: hidden;
     font-family: var(--font-sans);
@@ -530,9 +530,14 @@
   line-height: 1;
   border-radius: 0;
   padding: 6px 12px;
-  min-height: 28px;
+  min-height: 32px;
   gap: 5px;
   box-shadow: none;
+}
+
+.p-inputgroup .p-button {
+  height: 32px;
+  min-height: 32px;
 }
 
 .p-button.p-button-sm {
@@ -685,7 +690,8 @@
 }
 
 .p-inputtext {
-  min-height: 30px;
+  height: 32px;
+  min-height: 32px;
   padding: 5px 8px;
 }
 
@@ -696,12 +702,14 @@
 }
 
 .p-select {
-  min-height: 30px;
+  height: 32px;
+  min-height: 32px;
 }
 
 .p-select .p-select-label {
   padding: 5px 8px;
   font-size: 13px;
+  line-height: 20px;
 }
 
 .p-select.bg-crimson {
@@ -787,12 +795,17 @@
 .label.info {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   margin-top: 6px;
   padding: 6px 10px;
   background-color: #1ba1e2;
   color: #ffffff;
   font-size: 12px;
+}
+
+.label.info [class^="icon-"],
+.label.info [class*=" icon-"] {
+  font-size: 16px;
 }
 
 /* PrimeNG Metro Tabs */
@@ -852,7 +865,7 @@
 .metro .info-bar {
   position: fixed;
   inset: 0;
-  padding: 44px 20px 20px;
+  padding: 46px 26px 20px;
   z-index: 1002;
   height: 100%;
 }
@@ -942,7 +955,7 @@ div.container-widget div#account-switch {
 div.container-widget div#limit-per-page {
   width: auto;
   position: absolute;
-  right: 8px;
+  right: 16px;
   top: 4px;
   z-index: 1051;
 }
@@ -1009,6 +1022,48 @@ div.container-widget div#tiles-toolbar {
   height: 55px;
 }
 
+.tile.half .tile-content {
+  height: 100% !important;
+  padding: 4px 5px !important;
+}
+
+.tile.half .tile-content h5 {
+  font-size: 11px !important;
+  line-height: 14px !important;
+}
+
+.tile.half .tile-content h6,
+.tile.half .brand {
+  display: none !important;
+}
+
+.tile.half .tile-content p {
+  height: 26px;
+  font-size: 10px;
+  line-height: 13px !important;
+  -webkit-line-clamp: 2;
+  margin-top: 2px;
+}
+
+.tile.half div.toolbar {
+  height: 100%;
+  padding: 2px;
+}
+
+.tile.half div.toolbar .button-set {
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  gap: 2px;
+}
+
+.tile.half div.toolbar .p-button {
+  width: 22px;
+  height: 22px;
+  min-height: 22px;
+  font-size: 11px;
+}
+
 .tile.double {
   width: 250px;
 }
@@ -1046,6 +1101,10 @@ div.container-widget div#tiles-toolbar {
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath transform='translate(0,960) scale(1,-1)' d='M864 832L384 352 160 576 0 416l384-384 640 640z'/%3E%3C/svg%3E") no-repeat center / contain;
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath transform='translate(0,960) scale(1,-1)' d='M864 832L384 352 160 576 0 416l384-384 640 640z'/%3E%3C/svg%3E") no-repeat center / contain;
   z-index: 102;
+}
+
+.tile.selected .issue-icon-status {
+  display: none;
 }
 
 .tile .tile-content {
@@ -1168,7 +1227,7 @@ div.container-widget div#tiles-toolbar {
   position: absolute;
   bottom: 0;
   left: 0;
-  z-index: 10;
+  z-index: 105;
   width: 100%;
   height: 100%;
   overflow: auto;
@@ -1233,7 +1292,7 @@ div.container-widget div#tiles-toolbar {
 /* Pagination */
 #pagination {
   float: right;
-  clear: left;
+  clear: both;
   margin-right: 10px;
   margin-top: 4px;
 }
@@ -1246,7 +1305,7 @@ div.container-widget div#tiles-toolbar {
   text-align: center;
   padding: 4px;
   top: 30px;
-  right: 16px;
+  right: 45px;
   z-index: 1051;
   display: flex;
   flex-wrap: wrap;
@@ -1286,7 +1345,7 @@ div.container-widget div#tiles-toolbar {
 
 #home-workspaces {
   position: absolute;
-  right: 68px;
+  right: 76px;
   top: 4px;
   z-index: 1051;
   display: inline-flex;

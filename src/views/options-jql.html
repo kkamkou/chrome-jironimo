@@ -37,7 +37,7 @@
 
       <div class="row pb-4 border-b border-neutral-100" *ngFor="let workspace of workspaces; let idx = index">
 
-        <div class="span1 flex justify-end pt-1">
+        <div class="span1 flex justify-end">
           <span class="inline-flex items-center justify-center w-8 h-8 bg-neutral-100 border border-neutral-300 text-base">
             <i class="icon-{{ workspace.icon }}"></i>
           </span>
@@ -108,8 +108,8 @@
           </div>
         </div>
 
-        <div class="span1 text-center pt-1" *ngIf="workspaces.length > 1">
-          <button pButton type="button" severity="danger" class="danger"
+        <div class="span1 text-center" *ngIf="workspaces.length > 1">
+          <button pButton type="button" severity="danger" class="danger w-8 h-8 !p-0"
             (click)="remove(workspace)"><i class="icon-cancel-2"></i></button>
         </div>
 

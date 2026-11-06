@@ -1,4 +1,3 @@
-import './exception.ts';
 import { Component, provideZonelessChangeDetection } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouterOutlet, type Routes, provideRouter, withHashLocation } from '@angular/router';
@@ -59,8 +58,8 @@ const MetroPreset = definePreset(Nora, {
       handle: {
         borderRadius: '0',
         size: '0.875rem',
-        background: '#222222',
-        hoverBackground: '#111111',
+        background: '#ffffff',
+        hoverBackground: '#f5f5f5',
         checkedBackground: '#ffffff',
         checkedHoverBackground: '#ffffff'
       }

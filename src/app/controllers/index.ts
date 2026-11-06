@@ -152,7 +152,15 @@ export class IndexComponent implements OnInit, OnDestroy {
   toggleFilterField(): void {
     this.filterFieldDisplay = !this.filterFieldDisplay;
     if (this.filterFieldDisplay) {
+      this.homePanelVisible = false;
       setTimeout(() => this.filterInput?.nativeElement.focus(), 100);
+    }
+  }
+
+  toggleHomePanel(): void {
+    this.homePanelVisible = !this.homePanelVisible;
+    if (this.homePanelVisible) {
+      this.filterFieldDisplay = false;
     }
   }
 
@@ -163,6 +171,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.jiraRequestFailed = null;
     this.filterFieldDisplay = false;
+    this.homePanelVisible = false;
     this.openToolbarIssueId = null;
     this.issues = [];
     const actualOffset = offset === undefined ? this.searchStartAt : Number(offset);

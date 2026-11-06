@@ -83,16 +83,6 @@ export class JiraRegistry {
       this.cache[account.id] = new Jira(
         new Request(config =>
           this.transport(config).catch((rej: HttpFailure) => {
-            try {
-              if (typeof window !== 'undefined' && typeof window.onerror === 'function') {
-                const parts = String(rej?.config?.url ?? '').split('/rest/');
-                (window.onerror as (err: unknown) => void)({
-                  status: rej?.status,
-                  data: rej?.data,
-                  url: parts.slice(1).join('/')
-                });
-              }
-            } catch {}
             const heading =
               (rej?.status ? this.translate(`statusCode${rej.status}`) : '') ||
               (rej?.status ? `HTTP ${rej.status}` : this.translate('jiraApiConnectionProblem'));
