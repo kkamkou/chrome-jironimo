@@ -5,56 +5,65 @@
 
 <div class="error-bar" *ngIf="jiraRequestFailed">
   <h3 class="fg-white">{{ jiraRequestFailed[0] }}</h3>
-  <p class="fg-white">{{ jiraRequestFailed[1] }}</p>
+  <p class="fg-white" [innerHTML]="jiraRequestFailed[1]"></p>
 </div>
 
-<div id="loading" *ngIf="loading"><i class="icon-clock"></i></div>
+<div id="loading" *ngIf="loading">
+  <p-progressspinner strokeWidth="4" [style]="{ width: '42px', height: '42px' }" />
+</div>
 
 <div class="container container-widget clearfix">
 
   <div class="clearfix" id="tiles-toolbar">
 
-    <div id="limit-per-page" class="input-control select" *ngIf="!loading">
-      <select [ngModel]="searchMaxResults" (ngModelChange)="onMaxResultsChange($event)">
-        <option [ngValue]="8">8</option>
-        <option [ngValue]="16">16</option>
-        <option [ngValue]="25">25</option>
-        <option [ngValue]="50">50</option>
-        <option [ngValue]="75">75</option>
-        <option [ngValue]="100">100</option>
-        <option [ngValue]="150">150</option>
-        <option [ngValue]="250">250</option>
-      </select>
+    <div id="limit-per-page" *ngIf="!loading">
+      <p-select
+        [options]="maxResultsOptions"
+        [ngModel]="searchMaxResults"
+        (ngModelChange)="onMaxResultsChange($event)"
+        appendTo="body"
+        size="small" />
     </div>
 
-    <div id="account-switch" class="input-control select" *ngIf="!loading && accounts.length > 1">
-      <select [ngModel]="account" (ngModelChange)="onAccountChange($event)">
-        <option *ngFor="let item of sortedAccounts()" [ngValue]="item">{{ item.label }}</option>
-      </select>
+    <div id="account-switch" *ngIf="!loading && accounts.length > 1">
+      <p-select
+        [options]="sortedAccounts()"
+        optionLabel="label"
+        [ngModel]="account"
+        (ngModelChange)="onAccountChange($event)"
+        appendTo="body"
+        size="small"
+        fluid />
     </div>
 
-    <div id="home-workspaces"
-      *ngIf="workspaces.length >= 2 && !loading">
-      <button type="button"
-        *ngFor="let workspace of workspaces; let i = index"
-        [title]="workspace.title || ''"
-        (click)="workspaceSwitchTo(i)"
-        [ngClass]="{default: workspace === workspaceActive}">
-        <i class="icon-{{ workspace.icon }}"></i>
-      </button>
+    <div id="home-workspaces" *ngIf="workspaces.length >= 2 && !loading">
+      <p-buttongroup>
+        <button pButton type="button" size="small"
+          *ngFor="let workspace of workspaces; let i = index"
+          [title]="workspace.title || ''"
+          (click)="workspaceSwitchTo(i)"
+          [severity]="workspace === workspaceActive ? 'primary' : 'secondary'"
+          [ngClass]="{default: workspace === workspaceActive}">
+          <i class="icon-{{ workspace.icon }}"></i>
+        </button>
+      </p-buttongroup>
 
-      <div class="input-control text size3" id="filter"
-        *ngIf="filterFieldDisplay">
-        <input #filterInput type="text" [(ngModel)]="filterText" class="bd-darkBlue">
+      <div class="input-control text size3" id="filter" *ngIf="filterFieldDisplay">
+        <input #filterInput pInputText pSize="small" type="text" [(ngModel)]="filterText" class="bd-darkBlue" fluid>
       </div>
 
-      <button type="button" [title]="'indexTooltipFilters' | i18n"
+      <button pButton type="button" size="small"
+        [title]="'indexTooltipFilters' | i18n"
         (click)="toggleFilterField()"
+        [severity]="(filterFieldDisplay || filterText) ? 'contrast' : 'secondary'"
         [ngClass]="{inverse: filterFieldDisplay || filterText}">
         <i class="icon-filter"></i>
-      </button><!--
+      </button>
 
-    --><button type="button" [title]="'indexTooltipTools' | i18n" id="advanced-panel-icon"
+      <button pButton type="button" size="small"
+        [title]="'indexTooltipTools' | i18n"
+        id="advanced-panel-icon"
+        [severity]="homePanelVisible ? 'contrast' : 'secondary'"
         [ngClass]="{inverse: homePanelVisible}"
         (click)="homePanelVisible = !homePanelVisible">
         <i class="icon-mouse"></i>
@@ -63,23 +72,22 @@
 
   </div>
 
-  <div id="advanced-panel"
-    *ngIf="!loading && homePanelVisible">
-    <button type="button" [title]="'indexTooltipRefresh' | i18n" (click)="workspaceRefresh()">
+  <div id="advanced-panel" *ngIf="!loading && homePanelVisible">
+    <button pButton type="button" size="small" severity="secondary" [title]="'indexTooltipRefresh' | i18n" (click)="workspaceRefresh()">
       <i class="icon-spin"></i>
     </button>
 
-    <button type="button" [title]="'indexTooltipDetachWindow' | i18n"
+    <button pButton type="button" size="small" severity="secondary" [title]="'indexTooltipDetachWindow' | i18n"
       *ngIf="!windowDetached"
       (click)="windowDetach()">
       <i class="icon-new-tab-2"></i>
     </button>
 
-    <button type="button" [title]="'indexTooltipSettings' | i18n" (click)="tabSettings()">
+    <button pButton type="button" size="small" severity="secondary" [title]="'indexTooltipSettings' | i18n" (click)="tabSettings()">
       <i class="icon-tools"></i>
     </button>
 
-    <button type="button" [title]="'optionsAboutFeedback' | i18n" (click)="tabFeedback()">
+    <button pButton type="button" size="small" severity="secondary" [title]="'optionsAboutFeedback' | i18n" (click)="tabFeedback()">
       <i class="icon-mail"></i>
     </button>
   </div>

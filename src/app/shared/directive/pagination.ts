@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { ButtonDirective } from 'primeng/button';
+import { ButtonGroup } from 'primeng/buttongroup';
 import { I18nPipe } from '../filter/i18n.ts';
 import { PaginationSlice } from './pagination-slice.ts';
 
@@ -9,7 +11,7 @@ import { PaginationSlice } from './pagination-slice.ts';
 @Component({
   selector: 'pagination',
   standalone: true,
-  imports: [CommonModule, I18nPipe],
+  imports: [CommonModule, ButtonDirective, ButtonGroup, I18nPipe],
   host: { style: 'display: contents' },
   templateUrl: '../../../views/shared/pagination.html'
 })

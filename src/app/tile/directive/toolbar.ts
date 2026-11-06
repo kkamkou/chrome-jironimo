@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { ButtonDirective } from 'primeng/button';
+import { ButtonGroup } from 'primeng/buttongroup';
 import type { JiraClient } from '../../lib/adapter/jira.ts';
 import { Notifications } from '../../lib/notifications.ts';
 import type { AccountConfig } from '../../lib/settings.ts';
@@ -12,7 +14,7 @@ import { I18nPipe } from '../../shared/filter/i18n.ts';
 @Component({
   selector: 'tile-toolbar',
   standalone: true,
-  imports: [CommonModule, I18nPipe],
+  imports: [CommonModule, ButtonDirective, ButtonGroup, I18nPipe],
   host: { style: 'display: contents' },
   templateUrl: '../../../views/tile/toolbar.html'
 })
@@ -58,5 +60,15 @@ export class TileToolbarComponent {
         });
       });
     });
+  }
+
+  timerStop(issue: IssueSummary): void {
+    this.timer.stop(issue);
+    this.cdr.markForCheck();
+  }
+
+  timerDiscard(issue: IssueSummary): void {
+    this.timer.discard(issue);
+    this.cdr.markForCheck();
   }
 }

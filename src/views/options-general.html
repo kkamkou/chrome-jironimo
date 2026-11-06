@@ -7,37 +7,37 @@
     <small>{{ 'optionsGeneralTitle' | i18n }}</small>
   </h1>
 
-  <form (ngSubmit)="save()" class="grid" style="margin-bottom: 0">
-    <notify [entries]="notifications"></notify>
-
-    <div class="row">
-      <div class="span1">
-        <label class="input-control switch" title="Enable this account">
-          <input type="checkbox" name="accountEnabled" [(ngModel)]="accountSelected.enabled">
-          <span class="check" [ngClass]="{'bg-crimson': !accountSelected.enabled}"></span>
-        </label>
+  <form (ngSubmit)="save()" ngNativeValidate class="grid mb-0">
+    <div class="row items-center">
+      <div class="span1 flex items-center">
+        <p-toggleswitch
+          name="accountEnabled"
+          [(ngModel)]="accountSelected.enabled"
+          [class.switch-disabled]="!accountSelected.enabled"
+          title="Enable this account" />
       </div>
 
       <div class="span8">
-        <div class="input-control select">
-          <select name="accountSelected"
-            [ngModel]="accountSelected"
-            (ngModelChange)="onAccountSelect($event)"
-            [ngClass]="accountSelected.enabled ? 'bg-white' : 'bg-crimson fg-white'">
-            <option *ngFor="let item of accountList" [ngValue]="item">{{ item.label }}</option>
-          </select>
-        </div>
+        <p-select
+          name="accountSelected"
+          [options]="accountList"
+          optionLabel="label"
+          [ngModel]="accountSelected"
+          (ngModelChange)="onAccountSelect($event)"
+          [styleClass]="accountSelected.enabled ? 'bg-white' : 'bg-crimson fg-white'"
+          appendTo="body"
+          fluid />
       </div>
 
       <div class="span3">
-        <div class="button-set" style="margin-top: 2px">
-          <button type="button"
+        <p-buttongroup class="button-set">
+          <button pButton type="button" severity="secondary"
             *ngIf="accountList.length < 10"
             (click)="accountAdd()"><i class="icon-plus-2 on-left"></i> Add</button>
-          <button type="button" class="danger"
+          <button pButton type="button" severity="danger" class="danger"
             *ngIf="accountList.length > 1"
             (click)="accountRemoveSelected()"><i class="icon-cancel-2 on-left"></i> Delete</button>
-        </div>
+        </p-buttongroup>
       </div>
     </div>
 
@@ -45,15 +45,14 @@
       <div class="span6">
         <h2>{{ 'captionOptionsAccountJiraAddress' | i18n }}</h2>
 
-        <div class="input-control text span5">
-          <input type="url" name="accountUrl" required="required"
+        <p-inputgroup class="mb-3">
+          <input pInputText type="url" name="accountUrl" required="required"
             [(ngModel)]="accountSelected.url"
             [title]="'placeholderOptionsAccountUrl' | i18n"
-            [placeholder]="'placeholderOptionsAccountUrl' | i18n">
-        </div>
+            [placeholder]="'placeholderOptionsAccountUrl' | i18n"
+            fluid>
 
-        <div class="span1" style="margin-top: 4px">
-          <button type="button" class="button bg-fg-darkBlue"
+          <button pButton type="button" class="button bg-fg-darkBlue w-10 shrink-0"
             [title]="'placeholderOptionsAccountAuthVerify' | i18n"
             (click)="accountAuthVerify(accountSelected.url, accountSelected.timeout)">
             <i class="icon-help fg-white" *ngIf="accountSelectedAuthStatus < 0"></i>
@@ -61,39 +60,39 @@
             <i class="icon-link fg-green" *ngIf="accountSelectedAuthStatus === 1"></i>
             <i class="icon-clock fg-orange" *ngIf="accountSelectedAuthStatus === 2"></i>
           </button>
-        </div>
+        </p-inputgroup>
 
         <div class="input-control text">
-          <input type="number" name="accountTimeout" min="5" max="60" maxlength="2" required="required"
+          <input pInputText type="number" name="accountTimeout" min="5" max="60" maxlength="2" required="required"
             [(ngModel)]="accountSelected.timeout"
             [title]="'placeholderOptionsAccountTimeout' | i18n"
-            [placeholder]="'placeholderOptionsAccountTimeout' | i18n">
+            [placeholder]="'placeholderOptionsAccountTimeout' | i18n"
+            fluid>
         </div>
       </div>
 
-      <div class="span6">
+      <div class="span6 self-center">
         <div class="notice marker-on-left bg-white"
           [innerHTML]="'hintWhereToFindJiraAddress' | i18n"></div>
       </div>
     </div>
 
-    <hr>
+    <p-divider />
 
-    <div class="row" style="background-color: #FBFBFB">
-      <div class="span6" style="padding-left: 20px">
+    <div class="row bg-[#fbfbfb] py-3 px-4 border border-neutral-100">
+      <div class="span6">
         <h2>{{ 'captionOptionsAccountSync' | i18n }}</h2>
 
-        <label class="input-control switch">
-          <input type="checkbox" name="generalSync" [(ngModel)]="general.sync">
-          <span class="check"></span>
-        </label>
+        <div class="my-1.5">
+          <p-toggleswitch name="generalSync" [(ngModel)]="general.sync" />
+        </div>
 
         <blockquote>
           <p [innerHTML]="'hintSynchroniseSettings' | i18n"></p>
         </blockquote>
       </div>
 
-      <div class="span6">
+      <div class="span6 self-center">
         <div class="notice marker-on-left bg-white">
           <p [innerHTML]="'hintHowDataIsStored' | i18n"></p>
           <p [innerHTML]="'hintRequiredJiraAgile' | i18n"></p>
@@ -101,29 +100,30 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="span6" style="padding-left: 20px">
+    <div class="row px-4">
+      <div class="span6">
         <h2>{{ 'captionSubmitExceptions' | i18n }}</h2>
 
-        <label class="input-control switch">
-          <input type="checkbox" name="submitExceptions" [(ngModel)]="general.submitExceptions">
-          <span class="check"></span>
-        </label>
+        <div class="my-1.5">
+          <p-toggleswitch name="submitExceptions" [(ngModel)]="general.submitExceptions" />
+        </div>
 
         <blockquote>
           <p [innerHTML]="'hintSubmitExceptions2' | i18n"></p>
         </blockquote>
       </div>
 
-      <div class="span6">
+      <div class="span6 self-center">
         <div class="notice marker-on-left bg-white"
           [innerHTML]="'hintSubmitExceptions1' | i18n"></div>
       </div>
     </div>
 
-    <hr>
+    <p-divider />
 
-    <input type="submit" [value]="'btnSave' | i18n" class="button default">
+    <div>
+      <button pButton type="submit" severity="primary" class="button default">{{ 'btnSave' | i18n }}</button>
+    </div>
   </form>
 
 </div>

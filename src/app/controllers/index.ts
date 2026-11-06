@@ -9,6 +9,11 @@ import {
   inject
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ButtonDirective } from 'primeng/button';
+import { ButtonGroup } from 'primeng/buttongroup';
+import { InputText } from 'primeng/inputtext';
+import { ProgressSpinner } from 'primeng/progressspinner';
+import { Select } from 'primeng/select';
 import type { JiraClient } from '../lib/adapter/jira.ts';
 import { FetchTransport } from '../lib/http/fetch-transport.ts';
 import { JiraRegistry } from '../lib/jira-api.ts';
@@ -25,11 +30,23 @@ import { TileComponent } from '../tile/directive/tile.ts';
 @Component({
   selector: 'jironimo-index',
   standalone: true,
-  imports: [CommonModule, FormsModule, I18nPipe, PaginationComponent, TileComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ButtonDirective,
+    ButtonGroup,
+    InputText,
+    ProgressSpinner,
+    Select,
+    I18nPipe,
+    PaginationComponent,
+    TileComponent
+  ],
   templateUrl: '../../views/index.html'
 })
 export class IndexComponent implements OnInit, OnDestroy {
   @ViewChild('filterInput') filterInput?: ElementRef<HTMLInputElement>;
+  readonly maxResultsOptions = [8, 16, 25, 50, 75, 100, 150, 250];
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly settings = new Settings();
   private readonly i18n = new I18nPipe();

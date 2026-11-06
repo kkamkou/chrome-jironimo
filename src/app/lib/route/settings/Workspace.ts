@@ -1,8 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { ButtonGroup } from 'primeng/buttongroup';
+import { Checkbox } from 'primeng/checkbox';
+import { Divider } from 'primeng/divider';
+import { InputText } from 'primeng/inputtext';
+import { Message } from 'primeng/message';
+import { Tag } from 'primeng/tag';
+import { Textarea } from 'primeng/textarea';
 import { NavigationComponent } from '../../../shared/directive/navigation.ts';
-import { type NotificationEntry, NotifyComponent } from '../../../shared/directive/notify.ts';
 import { I18nPipe } from '../../../shared/filter/i18n.ts';
 import { FetchTransport } from '../../http/fetch-transport.ts';
 import { JiraRegistry } from '../../jira-api.ts';
@@ -14,22 +22,49 @@ import { type AccountConfig, Settings, type WorkspaceConfig } from '../../settin
 @Component({
   selector: 'jironimo-settings-workspace',
   standalone: true,
-  imports: [CommonModule, FormsModule, I18nPipe, NavigationComponent, NotifyComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ButtonDirective,
+    ButtonGroup,
+    Checkbox,
+    Divider,
+    InputText,
+    Message,
+    Tag,
+    Textarea,
+    I18nPipe,
+    NavigationComponent
+  ],
   templateUrl: '../../../../views/options-jql.html'
 })
 export class RouteSettingsWorkspace {
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly messageService = inject(MessageService);
   private readonly settings = new Settings();
   private readonly i18n = new I18nPipe();
   private readonly jira = new JiraRegistry(
     cfg => new FetchTransport().send(cfg),
     key => this.i18n.transform(key)
   );
-  notifications: NotificationEntry[] = [];
   accounts: AccountConfig[] = this.settings.accounts.filter(acc => acc.enabled);
   accountSelected: AccountConfig | 'ALL' | '' = '';
   importingFavorites = false;
   workspaces: WorkspaceConfig[] = [];
+  focusedWorkspace: WorkspaceConfig | null = null;
+  readonly iconSuggestions = [
+    'share-2',
+    'target',
+    'eye-2',
+    'bug',
+    'heart-2',
+    'star',
+    'flag',
+    'fire',
+    'rocket',
+    'bookmark',
+    'bell'
+  ];
 
   constructor() {
     this.accountSwitch('ALL');
@@ -54,18 +89,30 @@ export class RouteSettingsWorkspace {
     this.workspaces = this.settings.workspaces
       .filter(ws => ws.account === this.accountId(target))
       .map(ws => ({ ...ws }));
+    this.focusedWorkspace = this.workspaces[this.workspaces.length - 1] ?? null;
   }
 
   add(): void {
     if (this.workspaces.length > 10 || this.accountSelected === '') {
       return;
     }
-    this.workspaces.push({
+    const created: WorkspaceConfig = {
       account: this.accountId(this.accountSelected),
       title: null,
       query: null,
       icon: 'bug'
-    });
+    };
+    this.workspaces = [...this.workspaces, created];
+    this.focusedWorkspace = created;
+    this.cdr.markForCheck();
+  }
+
+  selectIcon(icon: string): void {
+    const target = this.focusedWorkspace ?? this.workspaces[this.workspaces.length - 1];
+    if (target) {
+      target.icon = icon;
+      this.cdr.markForCheck();
+    }
   }
 
   remove(workspace: WorkspaceConfig): boolean {
@@ -76,6 +123,10 @@ export class RouteSettingsWorkspace {
       return false;
     }
     this.workspaces = this.workspaces.filter(ws => ws !== workspace);
+    if (this.focusedWorkspace === workspace) {
+      this.focusedWorkspace = this.workspaces[this.workspaces.length - 1] ?? null;
+    }
+    this.cdr.markForCheck();
     return true;
   }
 
@@ -87,18 +138,20 @@ export class RouteSettingsWorkspace {
     const selected = this.accountSelected;
     this.jira.instance(selected).filterFavourite((err, data: Array<{ jql: string; name: string }> = []) => {
       if (err) {
-        this.notifications.push({ type: 'error', message: String(err) });
+        this.messageService.clear();
+        this.messageService.add({ severity: 'error', summary: 'Jironimo', detail: String(err) });
         this.importingFavorites = false;
         this.cdr.markForCheck();
         return;
       }
       const existing = new Set(this.workspaces.map(ws => ws.query));
       let count = 0;
+      const imported: WorkspaceConfig[] = [];
       data.forEach(fav => {
         if (!existing.has(fav.jql)) {
           existing.add(fav.jql);
           count += 1;
-          this.workspaces.push({
+          imported.push({
             account: this.accountId(selected),
             icon: 'heart-2',
             query: fav.jql,
@@ -106,10 +159,16 @@ export class RouteSettingsWorkspace {
           });
         }
       });
+      if (imported.length) {
+        this.workspaces = [...this.workspaces, ...imported];
+        this.focusedWorkspace = this.workspaces[this.workspaces.length - 1] ?? null;
+      }
       this.importingFavorites = false;
-      this.notifications.push({
-        type: 'success',
-        message: this.i18n.transform('msgWorkspaceImportSuccess', [count])
+      this.messageService.clear();
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Jironimo',
+        detail: this.i18n.transform('msgWorkspaceImportSuccess', [count])
       });
       this.cdr.markForCheck();
     });
@@ -126,11 +185,14 @@ export class RouteSettingsWorkspace {
     const id = this.accountId(this.accountSelected);
     this.settings.workspaces = this.settings.workspaces
       .filter(ws => ws.account !== id)
-      .concat(this.workspaces);
-    this.notifications.push({
-      type: 'success',
-      message: this.i18n.transform('msgOptionsSaveSuccess')
+      .concat(this.workspaces.map(ws => ({ ...ws })));
+    this.messageService.clear();
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Jironimo',
+      detail: this.i18n.transform('msgOptionsSaveSuccess')
     });
+    this.cdr.markForCheck();
   }
 
   private accountId(account: AccountConfig | 'ALL'): string {

@@ -22,9 +22,21 @@ export class TileComponent {
   @Input() api!: JiraClient;
   @Input() entry!: IssueSummary;
   @Input() timer!: WorklogTimer;
-  @Input() toolbarOpen = false;
   @Output() readonly selectTile = new EventEmitter<MouseEvent>();
   @Output() readonly openIssue = new EventEmitter<IssueSummary>();
   @Output() readonly modified = new EventEmitter<IssueSummary>();
   transitionsOpen = false;
+  private isToolbarOpen = false;
+
+  @Input()
+  get toolbarOpen(): boolean {
+    return this.isToolbarOpen;
+  }
+
+  set toolbarOpen(value: boolean) {
+    this.isToolbarOpen = value;
+    if (!value) {
+      this.transitionsOpen = false;
+    }
+  }
 }

@@ -7,42 +7,34 @@
     <small>{{ 'optionsTimerTitle' | i18n }}</small>
   </h1>
 
-  <form (ngSubmit)="save('timer', timer)" style="margin-bottom: 0">
-    <notify [entries]="notifications"></notify>
-
+  <form (ngSubmit)="save('timer', timer)" ngNativeValidate class="mb-0">
     <h2>{{ 'optionsTimerWorkspaces' | i18n }}</h2>
-    <div class="input-control text span6">
-      <input type="number" name="timerWorkspace" min="1" max="60" maxlength="2" required
+    <div class="span6 mb-4">
+      <input pInputText type="number" name="timerWorkspace" min="1" max="60" maxlength="2" required
         [title]="'placeholderOptionsTimerRefreshInterval' | i18n"
         [placeholder]="'placeholderOptionsTimerRefreshInterval' | i18n"
-        [(ngModel)]="timer.workspace">
+        [(ngModel)]="timer.workspace"
+        fluid>
     </div>
 
     <h2>{{ 'optionsTimerTimelog' | i18n }}</h2>
     <div class="grid">
-      <div class="row">
-        <div class="span6">
-          <label class="input-control switch">
-              <input type="checkbox" name="timerEnabled" [(ngModel)]="timer.enabled">
-              <span class="check"></span>
-              {{ 'optionsTimerEnableTimelog' | i18n }}
-          </label>
+      <div class="row items-center">
+        <div class="span6 inline-flex items-center gap-2.5">
+          <p-toggleswitch name="timerEnabled" inputId="timerEnabled" [(ngModel)]="timer.enabled" />
+          <label for="timerEnabled" class="cursor-pointer select-none">{{ 'optionsTimerEnableTimelog' | i18n }}</label>
         </div>
 
-        <div class="span6" *ngIf="timer.enabled">
-          <label class="input-control switch">
-              <input type="checkbox" name="timerSingleton" [(ngModel)]="timer.singleton">
-              <span class="check"></span>
-              {{ 'optionsTimerTimelogOnlyOneActive' | i18n }}
-          </label>
+        <div class="span6 inline-flex items-center gap-2.5" *ngIf="timer.enabled">
+          <p-toggleswitch name="timerSingleton" inputId="timerSingleton" [(ngModel)]="timer.singleton" />
+          <label for="timerSingleton" class="cursor-pointer select-none">{{ 'optionsTimerTimelogOnlyOneActive' | i18n }}</label>
         </div>
-
       </div>
     </div>
 
-    <hr>
+    <p-divider />
 
-    <input type="submit" [value]="'btnSave' | i18n" class="button default">
+    <button pButton type="submit" severity="primary" class="button default">{{ 'btnSave' | i18n }}</button>
   </form>
 
 </div>

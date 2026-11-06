@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { ProgressBar } from 'primeng/progressbar';
 
 /**
  * Horizontal progress bar displaying issue completion percentage on a tile.
@@ -6,6 +7,7 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'tile-progress',
   standalone: true,
+  imports: [ProgressBar],
   host: { style: 'display: contents' },
   templateUrl: '../../../views/tile/progress.html'
 })

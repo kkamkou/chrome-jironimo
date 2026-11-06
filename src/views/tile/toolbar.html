@@ -1,22 +1,22 @@
 <div class="toolbar" [style.display]="visible ? 'block' : 'none'" (click)="$event.stopPropagation()">
-  <div class="button-set">
-    <button type="button" [title]="'indexTooltipStartProgress' | i18n" class="active"
+  <p-buttongroup class="button-set">
+    <button pButton type="button" size="small" severity="contrast" [title]="'indexTooltipStartProgress' | i18n" class="active"
       *ngIf="timer.canBeStarted(entry)"
       (click)="timerStart(entry)"><i class="icon-play"></i></button>
 
-    <button type="button" [title]="'indexTooltipSaveTime' | i18n" class="active"
+    <button pButton type="button" size="small" severity="contrast" [title]="'indexTooltipSaveTime' | i18n" class="active"
       *ngIf="timer.canBeStopped(entry)"
-      (click)="timer.stop(entry)"><i class="icon-stop"></i></button>
+      (click)="timerStop(entry)"><i class="icon-stop"></i></button>
 
-    <button type="button" [title]="'indexTooltipStopProgress' | i18n" class="active"
+    <button pButton type="button" size="small" severity="contrast" [title]="'indexTooltipStopProgress' | i18n" class="active"
       *ngIf="timer.canBeStopped(entry)"
-      (click)="timer.discard(entry)"><i class="icon-remove"></i></button>
+      (click)="timerDiscard(entry)"><i class="icon-remove"></i></button>
 
-    <button type="button" [title]="'indexTooltipActions' | i18n" class="active transitions"
+    <button pButton type="button" size="small" severity="contrast" [title]="'indexTooltipActions' | i18n" class="active transitions"
       *ngIf="entry.transitions?.length && !timer.isStarted(entry)"
       (click)="showTransitions.emit()"><i class="icon-list"></i></button>
 
-    <button type="button" [title]="'indexTooltipOpenIssue' | i18n" class="active"
+    <button pButton type="button" size="small" severity="contrast" [title]="'indexTooltipOpenIssue' | i18n" class="active"
       (click)="openIssue.emit(entry)"><i class="icon-new-tab"></i></button>
-  </div>
+  </p-buttongroup>
 </div>

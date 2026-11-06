@@ -1,8 +1,0 @@
-<div class="notify-container" *ngIf="entries && entries.length">
-  <div class="notify-entry padding20 text-center"
-      style="display: block"
-      [ngClass]="{'bg-green': entry.type === 'success', 'bg-red': entry.type === 'error', 'bg-amber': entry.type === 'notice'}"
-      *ngFor="let entry of entries">
-    <h2 class="fg-white">{{ entry.message }}</h2>
-  </div>
-</div>

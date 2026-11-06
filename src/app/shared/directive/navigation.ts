@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { ButtonDirective } from 'primeng/button';
+import { ButtonGroup } from 'primeng/buttongroup';
 import { I18nPipe } from '../filter/i18n.ts';
 
 interface NavEntry {
@@ -15,7 +17,7 @@ interface NavEntry {
 @Component({
   selector: 'navigation',
   standalone: true,
-  imports: [CommonModule, I18nPipe],
+  imports: [CommonModule, ButtonDirective, ButtonGroup, I18nPipe],
   host: { style: 'display: contents' },
   templateUrl: '../../../views/macros/options-navigation.html'
 })

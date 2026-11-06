@@ -4,16 +4,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as babel from '@babel/core';
 import { createEs2015LinkerPlugin } from '@angular/compiler-cli/linker/babel';
-import * as csso from 'csso';
 import * as esbuild from 'esbuild';
-import less from 'less';
 
 const rootDir = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const srcDir = path.join(rootDir, 'src');
 const outTscDir = path.join(rootDir, '.out-tsc');
 const buildDir = path.join(rootDir, 'build');
 const buildAppDir = path.join(buildDir, 'app');
-const version = process.env.version || '6.0.0';
+const version = process.env.version || '7.0.0';
 
 const angularLinkerPlugin = {
   name: 'angular-linker',
@@ -38,7 +36,7 @@ const angularLinkerPlugin = {
         readFile: filePath => fs.readFileSync(filePath, 'utf-8')
       }
     });
-    build.onLoad({ filter: /node_modules\/@angular\/.*\.m?js$/ }, async args => {
+    build.onLoad({ filter: /node_modules\/(@angular|primeng|@primeicons)\/.*\.m?js$/ }, async args => {
       const source = await fs.promises.readFile(args.path, 'utf-8');
       if (!source.includes('ɵɵngDeclare')) {
         return { contents: source, loader: 'js' };
@@ -66,25 +64,16 @@ async function run() {
   for (const dir of ['_locales', 'icons', 'themes', 'views']) {
     fs.cpSync(path.join(srcDir, dir), path.join(buildDir, dir), {
       recursive: true,
-      filter: src => !['variables.less', 'jira.svg'].includes(path.basename(src).toLowerCase())
+      filter: src => path.basename(src).toLowerCase() !== 'jira.svg'
     });
   }
 
-  fs.cpSync(
-    path.join(srcDir, 'vendors', 'Metro-UI-CSS', 'fonts'),
-    path.join(buildDir, 'fonts'),
-    { recursive: true }
+  const tailwindBin = path.join(rootDir, 'node_modules', '.bin', 'tailwindcss');
+  execFileSync(
+    tailwindBin,
+    ['-i', path.join(srcDir, 'app', 'styles.css'), '-o', path.join(buildAppDir, 'app.css'), '--minify'],
+    { stdio: 'inherit' }
   );
-
-  const metroCss = fs.readFileSync(
-    path.join(srcDir, 'vendors', 'Metro-UI-CSS', 'css', 'metro-bootstrap.css'),
-    'utf-8'
-  );
-  fs.writeFileSync(path.join(buildAppDir, 'metro.css'), csso.minify(metroCss).css);
-
-  const lessInput = fs.readFileSync(path.join(srcDir, 'app', 'styles.less'), 'utf-8');
-  const renderedLess = await less.render(lessInput, { paths: [srcDir] });
-  fs.writeFileSync(path.join(buildAppDir, 'app.css'), csso.minify(renderedLess.css).css);
 
   await esbuild.build({
     entryPoints: [path.join(outTscDir, 'app', 'bootstrap.js')],
