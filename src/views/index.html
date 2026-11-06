@@ -1,99 +1,116 @@
-<div class="info-bar" ng-show="!issues.length && !loading">
+<div class="info-bar" *ngIf="!issues.length && !loading">
   <h3 class="fg-darkCobalt">{{ 'indexNoDataProvidedTitle' | i18n }}</h3>
   <p>{{ 'indexNoDataProvidedText' | i18n }}</p>
 </div>
 
-<div class="error-bar" ng-show="jiraRequestFailed">
-  <h3 class="fg-white" ng-bind="jiraRequestFailed[0]"></h3>
-  <p class="fg-white" ng-bind-html="jiraRequestFailed[1]"></p>
+<div class="error-bar" *ngIf="jiraRequestFailed">
+  <h3 class="fg-white">{{ jiraRequestFailed[0] }}</h3>
+  <p class="fg-white" [innerHTML]="jiraRequestFailed[1]"></p>
 </div>
 
-<div id="loading" ng-show="loading"><i class="icon-clock"></i></div>
+<div id="loading" *ngIf="loading">
+  <p-progressspinner strokeWidth="4" [style]="{ width: '42px', height: '42px' }" />
+</div>
 
 <div class="container container-widget clearfix">
 
   <div class="clearfix" id="tiles-toolbar">
 
-    <div id="limit-per-page" class="input-control select" ng-show="!loading">
-      <select ng-model="searchMaxResults" ng-change="workspaceRefresh()" integer>
-        <option>8</option>
-        <option>16</option>
-        <option>25</option>
-        <option>50</option>
-        <option>75</option>
-        <option>100</option>
-        <option>150</option>
-        <option>250</option>
-      </select>
+    <div id="limit-per-page" *ngIf="!loading">
+      <p-select
+        [options]="maxResultsOptions"
+        [ngModel]="searchMaxResults"
+        (ngModelChange)="onMaxResultsChange($event)"
+        appendTo="body"
+        size="small" />
     </div>
 
-    <div id="account-switch" class="input-control select" ng-show="!loading && accounts.length > 1">
-      <select
-        ng-options="::account.label for account in accounts | orderBy: 'label' track by account.label"
-        ng-model="account"></select>
+    <div id="account-switch" *ngIf="!loading && accounts.length > 1">
+      <p-select
+        [options]="sortedAccounts()"
+        optionLabel="label"
+        [ngModel]="account"
+        (ngModelChange)="onAccountChange($event)"
+        appendTo="body"
+        size="small"
+        fluid />
     </div>
 
-    <div id="home-workspaces"
-      ng-hide="workspaces.length < 2 || loading">
-      <button title="{{workspace.title}}"
-        ng-click="$parent.workspaceSwitchTo($index)"
-        ng-repeat="workspace in workspaces"
-        ng-class="{default: workspace == workspaceActive}">
-        <i class="icon-{{workspace.icon}}"></i>
-      </button>
+    <div id="home-workspaces" *ngIf="workspaces.length >= 2 && !loading">
+      <p-buttongroup>
+        <button pButton type="button" size="small"
+          *ngFor="let workspace of workspaces; let i = index"
+          [title]="workspace.title || ''"
+          (click)="workspaceSwitchTo(i)"
+          [severity]="workspace === workspaceActive ? 'primary' : 'secondary'"
+          [ngClass]="{default: workspace === workspaceActive}">
+          <i class="icon-{{ workspace.icon }}"></i>
+        </button>
+      </p-buttongroup>
 
-      <div class="input-control text size3" id="filter"
-        ng-show="filterFieldDisplay">
-        <input type="text" ng-model="filterText" class="bd-darkBlue">
+      <div class="input-control text size3" id="filter" *ngIf="filterFieldDisplay">
+        <input #filterInput pInputText pSize="small" type="text" [(ngModel)]="filterText" class="bd-darkBlue" fluid>
       </div>
 
-      <button title="{{ 'indexTooltipFilters' | i18n }}"
-        ng-click="filterFieldDisplay = !filterFieldDisplay" ng-init="filterFieldDisplay=false"
-        ng-class="{inverse: filterFieldDisplay || filterText}">
+      <button pButton type="button" size="small"
+        [title]="'indexTooltipFilters' | i18n"
+        (click)="toggleFilterField()"
+        [severity]="(filterFieldDisplay || filterText) ? 'contrast' : 'secondary'"
+        [ngClass]="{inverse: filterFieldDisplay || filterText}">
         <i class="icon-filter"></i>
-      </button><!--
+      </button>
 
-    --><button title="{{ 'indexTooltipTools' | i18n }}" id="advanced-panel-icon"
-        ng-class="{inverse: homePanelVisible}" ng-init="homePanelVisible=false"
-        ng-click="homePanelVisible = !homePanelVisible">
+      <button pButton type="button" size="small"
+        [title]="'indexTooltipTools' | i18n"
+        id="advanced-panel-icon"
+        [severity]="homePanelVisible ? 'contrast' : 'secondary'"
+        [ngClass]="{inverse: homePanelVisible}"
+        (click)="homePanelVisible = !homePanelVisible">
         <i class="icon-mouse"></i>
       </button>
     </div>
 
   </div>
 
-  <div id="advanced-panel"
-    ng-show="!loading && homePanelVisible">
-    <button title="{{ 'indexTooltipRefresh' | i18n }}" ng-click="workspaceRefresh()">
+  <div id="advanced-panel" *ngIf="!loading && homePanelVisible">
+    <button pButton type="button" size="small" severity="secondary" [title]="'indexTooltipRefresh' | i18n" (click)="workspaceRefresh()">
       <i class="icon-spin"></i>
     </button>
 
-    <button title="{{ 'indexTooltipDetachWindow' | i18n }}"
-      ng-if="!windowDetached"
-      ng-click="windowDetach()">
+    <button pButton type="button" size="small" severity="secondary" [title]="'indexTooltipDetachWindow' | i18n"
+      *ngIf="!windowDetached"
+      (click)="windowDetach()">
       <i class="icon-new-tab-2"></i>
     </button>
 
-    <button title="{{ 'indexTooltipSettings' | i18n }}" ng-click="tabSettings()">
+    <button pButton type="button" size="small" severity="secondary" [title]="'indexTooltipSettings' | i18n" (click)="tabSettings()">
       <i class="icon-tools"></i>
     </button>
 
-    <button title="{{ 'optionsAboutFeedback' | i18n }}" ng-click="tabFeedback()">
+    <button pButton type="button" size="small" severity="secondary" [title]="'optionsAboutFeedback' | i18n" (click)="tabFeedback()">
       <i class="icon-mail"></i>
     </button>
   </div>
 
-  <div class="tiles clearfix">
-    <h3 ng-show="issues.length">{{workspaceActive.title}}</h3>
+  <div class="tiles clearfix" *ngIf="!loading">
+    <h3 *ngIf="issues.length">{{ workspaceActive.title }}</h3>
 
     <tile
-      ng-repeat="issue in issues | filter:filterText"
-      ng-dblclick="$emit('issueOpenInNewTab', issue)"
-      ng-click="issueFocus($event, issue)"
-      entry="issue" timer="timer" api="api" account="account"></tile>
+      *ngFor="let issue of filteredIssues()"
+      [entry]="issue"
+      [timer]="timer"
+      [api]="api"
+      [account]="account"
+      [toolbarOpen]="openToolbarIssueId === issue.id"
+      (selectTile)="onTileClick($event, issue)"
+      (openIssue)="tabIssue($event)"
+      (modified)="onTileModified($event)"></tile>
 
-    <pagination position="searchStartAt" limit="searchMaxResults" total="searchTotal"
-      callback="workspaceRefresh" ng-show="!loading"></pagination>
+    <pagination
+      [position]="searchStartAt"
+      [limit]="searchMaxResults"
+      [total]="searchTotal"
+      [callback]="refreshCallback"></pagination>
   </div>
 
 </div>

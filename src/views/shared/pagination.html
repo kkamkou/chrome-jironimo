@@ -1,9 +1,19 @@
-<div id="pagination" class="pagination">
-  <ul ng-show="limit <  total">
-    <li class="first" ng-show="hasPrev"><a ng-click="first()"><i class="icon-first-2"></i></a></li>
-    <li class="prev" ng-show="hasPrev"><a ng-click="prev()"><i class="icon-previous"></i></a></li>
-    <li class="active"><a>{{ 'paginationPosition' | i18n: [position, hasNext ? (position + limit) : total, total] }}</a></li>
-    <li class="next" ng-show="hasNext"><a ng-click="next()"><i class="icon-next"></i></a></li>
-    <li class="last" ng-show="hasNext"><a ng-click="last()"><i class="icon-last-2"></i></a></li>
-  </ul>
+<div id="pagination" class="pagination" *ngIf="limit < total">
+  <p-buttongroup>
+    <button pButton type="button" size="small" severity="secondary" *ngIf="hasPrev()" (click)="first()">
+      <i class="icon-first-2"></i>
+    </button>
+    <button pButton type="button" size="small" severity="secondary" *ngIf="hasPrev()" (click)="prev()">
+      <i class="icon-previous"></i>
+    </button>
+    <button pButton type="button" size="small" severity="primary" class="pointer-events-none">
+      {{ 'paginationPosition' | i18n: [position, hasNext() ? (position + limit) : total, total] }}
+    </button>
+    <button pButton type="button" size="small" severity="secondary" *ngIf="hasNext()" (click)="next()">
+      <i class="icon-next"></i>
+    </button>
+    <button pButton type="button" size="small" severity="secondary" *ngIf="hasNext()" (click)="last()">
+      <i class="icon-last-2"></i>
+    </button>
+  </p-buttongroup>
 </div>

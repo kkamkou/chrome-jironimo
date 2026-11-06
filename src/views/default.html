@@ -1,49 +1,18 @@
 <!doctype html>
-<html lang="en" ng-app="jironimo" ng-strict-di>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
     <title>Jironimo</title>
 
     <!-- styles -->
-      <link rel="stylesheet/less" type="text/css" href="/vendors/Metro-UI-CSS/less/metro-bootstrap.less">
-      <link rel="stylesheet/less" type="text/css" href="/app/styles.less">
+      <link rel="stylesheet" type="text/css" href="/app/app.css">
     <!-- /styles -->
-
-    <!-- scripts -->
-      <script type="text/javascript" src="/vendors/jquery/jquery-latest.js"></script>
-      <script type="text/javascript" src="/vendors/less/less-latest.js"></script>
-      <script type="text/javascript" src="/vendors/angularjs/angular.js"></script>
-      <script type="text/javascript" src="/vendors/angularjs/angular-route.js"></script>
-      <script type="text/javascript" src="/vendors/angularjs/angular-sanitize.js"></script>
-      <script type="text/javascript" src="/vendors/lodash/lodash-latest.js"></script>
-      <script type="text/javascript" src="/vendors/momentjs/moment-latest.js"></script>
-      <script type="text/javascript" src="/app/exception.js"></script>
-      <script type="text/javascript" src="/app/lib/adapter/jira.js"></script>
-      <script type="text/javascript" src="/app/lib/http/request.js"></script>
-      <script type="text/javascript" src="/app/lib/http/response.js"></script>
-      <script type="text/javascript" src="/app/lib/settings.js"></script>
-      <script type="text/javascript" src="/app/lib/jira-api.js"></script>
-      <script type="text/javascript" src="/app/lib/notifications.js"></script>
-      <script type="text/javascript" src="/app/lib/timer.js"></script>
-      <script type="text/javascript" src="/app/lib/timer/TimerWorkLogEntry.js"></script>
-      <script type="text/javascript" src="/app/lib/route/Abstract.js"></script>
-      <script type="text/javascript" src="/app/lib/route/settings/General.js"></script>
-      <script type="text/javascript" src="/app/lib/route/settings/Workspace.js"></script>
-      <script type="text/javascript" src="/app/shared/module.js"></script>
-      <script type="text/javascript" src="/app/shared/filter/i18n.js"></script>
-      <script type="text/javascript" src="/app/shared/directive/notify.js"></script>
-      <script type="text/javascript" src="/app/shared/directive/pagination.js"></script>
-      <script type="text/javascript" src="/app/tile/module.js"></script>
-      <script type="text/javascript" src="/app/tile/directive/tile.js"></script>
-      <script type="text/javascript" src="/app/tile/directive/toolbar.js"></script>
-      <script type="text/javascript" src="/app/tile/directive/progress.js"></script>
-      <script type="text/javascript" src="/app/tile/directive/transitions.js"></script>
-      <script type="text/javascript" src="/app/bootstrap.js"></script>
-      <script type="text/javascript" src="/app/controllers/index.js"></script>
-      <script type="text/javascript" src="/app/controllers/settings.js"></script>
-    <!-- /scripts -->
   </head>
 
-  <body class="metro" ng-view ng-cloak>
-    <!-- body -->
+  <body class="metro antialiased">
+    <jironimo-root></jironimo-root>
+    <!-- scripts -->
+      <script type="text/javascript" src="/app/app.js"></script>
+    <!-- /scripts -->
   </body>
 </html>

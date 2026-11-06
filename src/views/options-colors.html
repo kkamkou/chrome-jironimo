@@ -7,107 +7,134 @@
     <small>{{ 'optionsColorsTitle' | i18n }}</small>
   </h1>
 
-  <form ng-submit="save('colors', colors)" style="margin-bottom: 0">
-    <notify entries="notifications"></notify>
+  <form (ngSubmit)="save('colors', colors)" ngNativeValidate class="mb-0">
+    <p-tabs [(value)]="tabControl.colors">
+      <p-tablist>
+        <p-tab *ngFor="let frame of colorFrames" [value]="frame.key">
+          {{ frame.title | i18n }}
+        </p-tab>
+      </p-tablist>
 
-    <div class="tab-control" data-role="tab-control" data-effect="fade[slide]">
-        <ul class="tabs">
-          <li ng-repeat="(frameKey, frameTitle) in {theme: 'settingsColorsDefaultTheme', colors: 'settingsColorsPriorityColors', sizes: 'settingsColorsPrioritySizes'}"
-            ng-class="{active: tabControl.colors === frameKey }">
-            <a ng-click="tabControl.colors = frameKey">{{ frameTitle | i18n}}</a>
-          </li>
-        </ul>
+      <p-tabpanels>
+        <p-tabpanel value="theme">
+          <h2>{{ 'settingsColorsDefaultTheme' | i18n }}</h2>
 
-        <div class="frames bg-white">
-            <div class="frame" style="display: block" ng-show="tabControl.colors === 'theme'">
-              <h2>{{ 'settingsColorsDefaultTheme' | i18n }}</h2>
+          <div class="span5">
+            <p-select
+              name="colorTheme"
+              [options]="themeOptions"
+              optionLabel="label"
+              optionValue="value"
+              [(ngModel)]="colors.theme"
+              appendTo="body"
+              fluid />
+          </div>
+        </p-tabpanel>
 
-              <div class="input-control select span5">
-                <select ng-model="colors.theme">
-                  <option value="default">Jironimo</option>
-                </select>
+        <p-tabpanel value="colors">
+          <h2>{{ 'settingsColorsPriorityColors' | i18n }}</h2>
+
+          <div class="grid">
+            <div class="row items-center text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-1">
+              <div class="span2"></div>
+              <div class="span2">Foreground</div>
+              <div class="span2">Background</div>
+              <div class="span2">Border</div>
+              <div class="span2">Outline</div>
+              <div class="span2 text-center">Preview</div>
+            </div>
+
+            <div class="row items-center" *ngFor="let pKey of priorityKeys; let idx = index">
+              <div class="span2 text-right">
+                <h5>{{ idx + 1 }} <small class="text-neutral-500 font-normal">{{ 'settingsColorsPriority' | i18n }}</small></h5>
+              </div>
+
+              <div class="span2">
+                <input pInputText type="text" [name]="'fg_' + pKey" [(ngModel)]="colors.priority[pKey].fg" placeholder="Foreground (fg-*)" maxlength="30" required fluid>
+              </div>
+
+              <div class="span2">
+                <input pInputText type="text" [name]="'bg_' + pKey" [(ngModel)]="colors.priority[pKey].bg" placeholder="Background (bg-*)" maxlength="30" required fluid>
+              </div>
+
+              <div class="span2">
+                <input pInputText type="text" [name]="'bd_' + pKey" [(ngModel)]="colors.priority[pKey].bd" placeholder="Border (bd-*)" maxlength="30" required fluid>
+              </div>
+
+              <div class="span2">
+                <input pInputText type="text" [name]="'ot_' + pKey" [(ngModel)]="colors.priority[pKey].ot" placeholder="Outline (ol-*)" maxlength="30" required fluid>
+              </div>
+
+              <div class="span2">
+                <input pInputText class="text-center border-2 outline-1 outline-solid bd-{{ colors.priority[pKey].bd }} ol-{{ colors.priority[pKey].ot }} bg-{{ colors.priority[pKey].bg }} fg-{{ colors.priority[pKey].fg }}"
+                  type="text" [value]="'settingsColorExamplePriority' | i18n" readonly="readonly" fluid>
               </div>
             </div>
-            <div class="frame" style="display: block" ng-show="tabControl.colors === 'colors'">
-              <h2>{{ 'settingsColorsPriorityColors' | i18n }}</h2>
 
-              <div class="grid">
-                <div class="row" ng-repeat="colpri in colors.priority">
-                  <div class="span2 text-right">
-                    <h5>{{$index+1}} <small>{{ 'settingsColorsPriority' | i18n }}</small></h5>
-                  </div>
+            <div class="mt-4 pt-3 border-t border-neutral-200 flex flex-wrap items-center gap-1.5 text-xs">
+              <span class="text-neutral-500 mr-1">Metro palette:</span>
+              <span class="px-2 py-0.5 bg-red fg-white">red</span>
+              <span class="px-2 py-0.5 bg-lightRed fg-white">lightRed</span>
+              <span class="px-2 py-0.5 bg-crimson fg-white">crimson</span>
+              <span class="px-2 py-0.5 bg-orange fg-white">orange</span>
+              <span class="px-2 py-0.5 bg-amber fg-white">amber</span>
+              <span class="px-2 py-0.5 bg-yellow fg-black">yellow</span>
+              <span class="px-2 py-0.5 bg-lime fg-white">lime</span>
+              <span class="px-2 py-0.5 bg-lightOlive fg-white">lightOlive</span>
+              <span class="px-2 py-0.5 bg-green fg-white">green</span>
+              <span class="px-2 py-0.5 bg-emerald fg-white">emerald</span>
+              <span class="px-2 py-0.5 bg-teal fg-white">teal</span>
+              <span class="px-2 py-0.5 bg-cyan fg-white">cyan</span>
+              <span class="px-2 py-0.5 bg-lightBlue fg-white">lightBlue</span>
+              <span class="px-2 py-0.5 bg-blue fg-white">blue</span>
+              <span class="px-2 py-0.5 bg-cobalt fg-white">cobalt</span>
+              <span class="px-2 py-0.5 bg-darkCobalt fg-white">darkCobalt</span>
+              <span class="px-2 py-0.5 bg-darkBlue fg-white">darkBlue</span>
+              <span class="px-2 py-0.5 bg-indigo fg-white">indigo</span>
+              <span class="px-2 py-0.5 bg-violet fg-white">violet</span>
+              <span class="px-2 py-0.5 bg-pink fg-white">pink</span>
+              <span class="px-2 py-0.5 bg-magenta fg-white">magenta</span>
+              <span class="px-2 py-0.5 bg-steel fg-white">steel</span>
+              <span class="px-2 py-0.5 bg-mauve fg-white">mauve</span>
+              <span class="px-2 py-0.5 bg-taupe fg-white">taupe</span>
+              <span class="px-2 py-0.5 bg-brown fg-white">brown</span>
+              <span class="px-2 py-0.5 bg-gray fg-white">gray</span>
+              <span class="px-2 py-0.5 bg-dark fg-white">dark</span>
+              <span class="px-2 py-0.5 bg-darker fg-white">darker</span>
+              <span class="px-2 py-0.5 bg-white fg-black border border-neutral-300">white</span>
+              <span class="px-2 py-0.5 bg-black fg-white">black</span>
+            </div>
+          </div>
+        </p-tabpanel>
 
-                  <div class="span2">
-                    <div class="input-control text">
-                      <input type="text" ng-model="colpri.fg" placeholder="Foreground (fg-*)" maxlength="30" required>
-                    </div>
-                  </div>
+        <p-tabpanel value="sizes">
+          <h2>{{ 'settingsColorsPrioritySizes' | i18n }}</h2>
 
-                  <div class="span2">
-                    <div class="input-control text">
-                      <input type="text" ng-model="colpri.bg" placeholder="Background (bg-*)" maxlength="30" required>
-                    </div>
-                  </div>
+          <div class="grid">
+            <div class="row items-center" *ngFor="let sizkey of sizeKeys">
+              <div class="span2 text-right">
+                <h5>{{ ('settingsColorType' + sizkey.replace('-', '_')) | i18n }}:</h5>
+              </div>
 
-                  <div class="span2">
-                    <div class="input-control text">
-                      <input type="text" ng-model="colpri.bd" placeholder="Border (bd-*)" maxlength="30" required>
-                    </div>
-                  </div>
-
-                  <div class="span2">
-                    <div class="input-control text span2">
-                      <input type="text" ng-model="colpri.ot" placeholder="Outline (ol-*)" maxlength="30" required>
-                    </div>
-                  </div>
-
-                  <div class="span2">
-                    <div class="input-control text">
-                      <input class="text-center bd-{{ colpri.bd }} ol-{{ colpri.ot }} bg-{{ colpri.bg }} fg-{{ colpri.fg }}"
-                        style="outline-style: solid; outline-width: 1px;"
-                        type="text" ng-value="'settingsColorExamplePriority' | i18n" readonly="readonly">
-                    </div>
-                  </div>
-                </div>
-
-                <a href="http://metroui.org.ua/v2/global.html" class="button link" target="_blank">
-                  <i class="icon-link"></i>
-                  {{ 'settingsColorsAvailableColors' | i18n }}
-                </a>
+              <div class="span4">
+                <p-select
+                  [name]="'size_' + sizkey"
+                  [options]="sizeOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                  [(ngModel)]="colors.sizes[sizkey]"
+                  appendTo="body"
+                  fluid />
               </div>
             </div>
-            <div class="frame" style="display: block" ng-show="tabControl.colors === 'sizes'">
-              <h2>{{ 'settingsColorsPrioritySizes' | i18n }}</h2>
+          </div>
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
 
-              <div class="grid">
-                <div class="row" ng-repeat="(sizkey, sizval) in colors.sizes">
-                  <div class="span2 text-right">
-                    <h5>{{ 'settingsColorType' + sizkey.replace('-', '_') | i18n }}:</h5>
-                  </div>
-
-                  <div class="span10">
-                    <div class="input-control select span4">
-                      <select ng-model="colors.sizes[sizkey]">
-                        <option value="half">{{ 'settingsColorsSizeHalf' | i18n }}</option>
-                        <option value="default">{{ 'settingsColorsSizeDefault' | i18n}}</option>
-                        <option value="double">{{ 'settingsColorsSizeDouble' | i18n}}</option>
-                        <option value="triple">{{ 'settingsColorsSizeTriple' | i18n}}</option>
-                        <option value="quadro">{{ 'settingsColorsSizeQuadruple' | i18n}}</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <a href="http://metroui.org.ua/v2/tiles.html" class="button link" target="_blank">
-                  <i class="icon-link"></i>
-                  {{ 'settingsColorsAvailableSizes' | i18n}}
-                </a>
-              </div>
-            </div>
-        </div>
+    <div class="mt-4">
+      <button pButton type="submit" severity="primary" class="button default">{{ 'btnSave' | i18n }}</button>
     </div>
-    <br>
-    <input type="submit" value="{{ 'btnSave' | i18n }}" class="button default">
   </form>
 
 </div>

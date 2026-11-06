@@ -1,49 +1,37 @@
 {
   "name": "jironimo for JIRA",
-  "version": "0.0.0",
-  "manifest_version": 2,
+  "version": "7.0.0",
+  "manifest_version": 3,
   "offline_enabled": false,
-  "homepage_url": "https://plus.google.com/communities/108001372997677649751",
+  "homepage_url": "https://github.com/kkamkou/chrome-jironimo",
   "description": "Atlassian JIRA Agile in your browser. Adorable open-source extension for passionate techies and product owners.",
   "default_locale": "en",
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
   "options_page": "views/default.html#/settings/general",
-  "minimum_chrome_version": "45",
+  "minimum_chrome_version": "130",
   "icons": {
     "16": "icons/app-16.png",
     "48": "icons/app-48.png",
     "128": "icons/app-128.png"
   },
-  "browser_action": {
+  "action": {
     "default_icon": "icons/app-128.png",
     "default_popup": "views/default.html"
   },
   "background": {
-    "persistent": false,
-    "scripts": [
-      "/vendors/angularjs/angular.js",
-      "/vendors/lodash/lodash-latest.js",
-      "/vendors/momentjs/moment-latest.js",
-      "/app/exception.js",
-      "/app/lib/adapter/jira.js",
-      "/app/lib/http/request.js",
-      "/app/lib/http/response.js",
-      "/app/shared/module.js",
-      "/app/shared/filter/i18n.js",
-      "/app/lib/settings.js",
-      "/app/lib/notifications.js",
-      "/app/bootstrap-bg.js"
-    ]
+    "service_worker": "app/bootstrap-bg.js"
   },
   "commands": {
-    "_execute_browser_action": {
+    "_execute_action": {
       "suggested_key": {"default": "Alt+J", "mac": "Command+J"},
       "description": "Open jironimo window"
     }
   },
-  "optional_permissions": [
-    "http://*/",
-    "https://*/"
+  "optional_host_permissions": [
+    "http://*/*",
+    "https://*/*"
   ],
   "permissions": [
     "storage",

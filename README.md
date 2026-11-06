@@ -1,5 +1,3 @@
-[![Buy me a coffee](https://img.shields.io/badge/Donate-PayPal-green.svg)](http://2ka.by/coffee?project=chrome-jironimo)
-
 # chrome-jironimo
 Atlassian JIRA&trade; Agile extension for Chrome
 
@@ -26,22 +24,19 @@ cd chrome-jironimo
 ```
 
 ### Use the source code
-- Switch to a release tag (see the releases section)
 - Navigate to `chrome://extensions`
 - Expand the developer dropdown menu and click `Load Unpacked Extension`
-- Navigate to local folder `/src`
+- Navigate to local folder `/build`
 
 ### Build
 ```bash
-npm install && ./node_modules/.bin/jake version='4.0'
-# example for windows
-# npm install && C:\...\chrome-jironimo\node_modules\.bin\jake version='4.0'
+npm install && version='6.0.0' npm run build
 ```
 
 ### Docker
 ```bash
 [sudo] docker build -t jironimo .
-[sudo] docker run -ti --rm -v "${PWD}:/opt/app" jironimo version='4.0'
+[sudo] docker run -ti --rm -e version='6.0.0' -v "${PWD}:/opt/app" jironimo
 ```
 
 ### License
