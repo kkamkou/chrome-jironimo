@@ -1,6 +1,6 @@
 {
   "name": "chrome-jironimo",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "engines": {
     "node": ">=26.0.0",
     "npm": ">=11.0.0"

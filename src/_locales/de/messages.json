@@ -212,7 +212,7 @@
     "message": "Epic"
   },
   "optionsAboutShareOpinion": {
-    "message": "Bitte <a href=\"https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl\" target=\"_blank\">teile deine Meinung</a> oder <a href=\"https://gitter.im/chrome-jironimo\" target=\"_blank\">komm in unseren gitter chat</a>."
+    "message": "Bitte <a href=\"https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl\" target=\"_blank\">teile deine Meinung</a>."
   },
   "optionsGeneralTitle": {
     "message": "Allgemeine Information"
@@ -251,7 +251,19 @@
     "message": "Um Transitions-Features zu benutzen, versichere dich, dass in deiner JIRA™-Instanz das <a href=\"https://www.atlassian.com/software/jira/agile\" class=\"fg-green\" target=\"_blank\">JIRA™ Agile</a> Add-On installiert ist."
   },
   "hintWhereToFindJiraAddress": {
-    "message": "<p><i class='fg-darkMagenta'>Login to JIRA first</i> and open a ticket in a new tab. Copy URL of the ticket and paste it here. Remove everything starting from <i>/browse</i> until the end of the string. For example: <i>https://issues.apache.org/jira/browse/PROJ-3319</i> becomes <i>https://issues.apache.org/jira</i></p>"
+    "message": "<p><i class='fg-darkMagenta'>Melde dich zuerst bei JIRA™ an</i>, füge dann eine beliebige Projekt-, Filter- oder Ticket-URL ein (z.&nbsp;B. <i>https://issues.apache.org/jira/issues/</i> oder <i>https://issues.apache.org/jira/browse/PROJ-3319</i>) und klicke auf die Prüfen-Schaltfläche, um die Basisadresse <i>https://issues.apache.org/jira</i> zu erkennen.</p>"
+  },
+  "captionProbeDialogTitle": {
+    "message": "JIRA™ Verbindungsprüfung"
+  },
+  "msgProbeDialogSuccess": {
+    "message": "Verbunden mit $1 (REST API $2) als $3. Basisadresse aktualisiert — bitte Speichern klicken."
+  },
+  "msgProbeDialogUnauthorized": {
+    "message": "JIRA™ REST API ($2) unter $1 erkannt, aber deine Browsersitzung ist nicht angemeldet. Öffne JIRA™ in einem neuen Tab, melde dich an und prüfe erneut."
+  },
+  "hintProbeDialogFailure": {
+    "message": "<p>Unter dieser Adresse wurde kein JIRA™ REST API v3- oder v2-Endpunkt gefunden.</p><p>Öffne dein JIRA™-Board oder die Vorgangsliste (z.&nbsp;B. <i>https://issues.apache.org/jira/issues/</i>) und prüfe im Browser, ob <i>/rest/api/2/myself</i> oder <i>/rest/api/3/myself</i> antwortet (z.&nbsp;B. <i>https://issues.apache.org/jira/rest/api/2/myself</i>), sodass die Basisadresse <i>https://issues.apache.org/jira</i> lautet.</p>"
   },
   "settingsColorsPriority": {
     "message": "Priorität:"

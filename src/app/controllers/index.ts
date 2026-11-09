@@ -341,20 +341,29 @@ export class IndexComponent implements OnInit, OnDestroy {
       targetPage === 0 && this.searchTotal === 0
         ? this.fetchApproximateCount(jql)
         : Promise.resolve(undefined);
+    const offsetBased = this.searchTotal > 0 && !this.pageTokens[1];
     let step = targetPage;
-    while (step > 0 && !this.pageTokens[step]) {
-      step -= 1;
-    }
-    while (step < targetPage) {
-      const cursorData = await this.searchPage(jql, limit, this.pageTokens[step], true);
-      if (!cursorData.nextPageToken) {
-        targetPage = step;
-        break;
+    if (!offsetBased) {
+      while (step > 0 && !this.pageTokens[step]) {
+        step -= 1;
       }
-      this.pageTokens[step + 1] = cursorData.nextPageToken;
-      step += 1;
+      while (step < targetPage) {
+        const cursorData = await this.searchPage(jql, limit, this.pageTokens[step], true);
+        if (!cursorData.nextPageToken) {
+          targetPage = step;
+          break;
+        }
+        this.pageTokens[step + 1] = cursorData.nextPageToken;
+        step += 1;
+      }
     }
-    let data = await this.searchPage(jql, limit, this.pageTokens[step], false);
+    let data = await this.searchPage(
+      jql,
+      limit,
+      this.pageTokens[step],
+      false,
+      offsetBased ? step * limit : 0
+    );
     if (data.nextPageToken) {
       this.pageTokens[step + 1] = data.nextPageToken;
     }
@@ -389,7 +398,8 @@ export class IndexComponent implements OnInit, OnDestroy {
     jql: string,
     limit: number,
     nextPageToken: string | undefined,
-    idsOnly: boolean
+    idsOnly: boolean,
+    startAt = 0
   ): Promise<any> {
     const query: Record<string, unknown> = {
       jql,
@@ -401,6 +411,8 @@ export class IndexComponent implements OnInit, OnDestroy {
     }
     if (nextPageToken) {
       query.nextPageToken = nextPageToken;
+    } else if (startAt > 0) {
+      query.startAt = startAt;
     }
     return new Promise((resolve, reject) => {
       this.api.search(query, (err, data) => (err ? reject(err) : resolve(data)));

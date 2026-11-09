@@ -39,7 +39,19 @@
     "message": "Settings for the current extension will be available on different devices (native Google Chrome sync is used)"
   },
   "hintWhereToFindJiraAddress": {
-    "message": "<p><i class='fg-darkMagenta'>Login to JIRA first</i> and open a ticket in a new tab. Copy URL of the ticket and paste it here. Remove everything starting from <i>/browse</i> until the end of the string. For example: <i>https://issues.apache.org/jira/browse/PROJ-3319</i> becomes <i>https://issues.apache.org/jira</i></p>"
+    "message": "<p><i class='fg-darkMagenta'>Log in to JIRA™ first</i>, then paste any project, filter, or issue URL (for example, <i>https://issues.apache.org/jira/issues/</i> or <i>https://issues.apache.org/jira/browse/PROJ-3319</i>) and click the verify button to detect the base address <i>https://issues.apache.org/jira</i>.</p>"
+  },
+  "captionProbeDialogTitle": {
+    "message": "JIRA™ Connection Probe"
+  },
+  "msgProbeDialogSuccess": {
+    "message": "Connected to $1 (REST API $2) as $3. Base address updated — remember to click Save."
+  },
+  "msgProbeDialogUnauthorized": {
+    "message": "JIRA™ REST API ($2) detected at $1, but your browser session is not logged in. Open JIRA™ in a new tab, sign in, and verify again."
+  },
+  "hintProbeDialogFailure": {
+    "message": "<p>Could not detect a JIRA™ REST API v3 or v2 endpoint at this address.</p><p>Open your JIRA™ board or issue list (for example, <i>https://issues.apache.org/jira/issues/</i>) and verify that <i>/rest/api/2/myself</i> or <i>/rest/api/3/myself</i> responds in your browser (for example, <i>https://issues.apache.org/jira/rest/api/2/myself</i>), so the base address is <i>https://issues.apache.org/jira</i>.</p>"
   },
   "btnSave": {
     "message": "Save"
@@ -117,7 +129,7 @@
     "message": "Feedback"
   },
   "optionsAboutShareOpinion": {
-    "message": "Please <a href=\"https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl\" target=\"_blank\">share your opinion here</a> or <a href=\"https://gitter.im/chrome-jironimo\" target=\"_blank\">join our gitter chat</a>."
+    "message": "Please <a href=\"https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl\" target=\"_blank\">share your opinion here</a>."
   },
   "optionsAboutAuthor": {
     "message": "Author"

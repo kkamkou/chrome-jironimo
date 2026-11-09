@@ -1,34 +1,22 @@
 import type { HttpOrigin } from '../http/request.ts';
-import { Response } from '../http/response.ts';
+import { JiraBase, type JiraCallback, type JiraClient } from './jira-base.ts';
+import { JiraV2 } from './jira-v2.ts';
+import { JiraV3 } from './jira-v3.ts';
 
-export type JiraCallback<T = any> = (err: (Error & { code?: number }) | null, data?: T) => void;
-
-export interface JiraClient {
-  authenticated(callback: (err: Error | null, flag: boolean) => void): void;
-  myself(callback: JiraCallback): void;
-  search(data: Record<string, unknown>, callback: JiraCallback): void;
-  approximateCount(jql: string, callback: JiraCallback<{ count: number }>): void;
-  filterFavourite(callback: JiraCallback): void;
-  priorities(callback: JiraCallback): void;
-  issueAssignee(issueId: string | number, data: Record<string, unknown>, callback: JiraCallback): void;
-  issueWorklog(issueId: string | number, data: Record<string, unknown>, callback: JiraCallback): void;
-  transitions(issueId: string | number, data: Record<string, unknown>, callback: JiraCallback): void;
-}
+export { JiraBase, type JiraCallback, type JiraClient, JiraV2, JiraV3 };
 
 /**
- * Atlassian JIRA REST API client for a single configured server account.
+ * Version-negotiating JIRA REST API client delegating to JiraV3 and falling back to JiraV2 on HTTP 404.
  */
 export class Jira implements JiraClient {
-  private readonly request: HttpOrigin;
-  private readonly url: string;
-  private readonly timeout: number;
-  private readonly cache: Record<string, unknown>;
+  private readonly v3: JiraClient;
+  private readonly v2: JiraClient;
+  private readonly state: { active: 'v3' | 'v2' };
 
   constructor(request: HttpOrigin, url: string | null, timeout: number) {
-    this.request = request;
-    this.url = String(url ?? '');
-    this.timeout = parseInt(String(timeout), 10) || 10000;
-    this.cache = {};
+    this.v3 = new JiraV3(request, url, timeout);
+    this.v2 = new JiraV2(request, url, timeout);
+    this.state = { active: 'v3' };
     Object.freeze(this);
   }
 
@@ -37,73 +25,52 @@ export class Jira implements JiraClient {
   }
 
   myself(callback: JiraCallback): void {
-    if (this.cache.myself) {
-      callback(null, this.cache.myself);
-      return;
-    }
-    this.send('/api/3/myself', {}, (err, data) => {
-      if (!err) {
-        this.cache.myself = data;
-      }
-      callback(err, data);
-    });
+    this.delegate((client, cb) => client.myself(cb), callback);
   }
 
   search(data: Record<string, unknown>, callback: JiraCallback): void {
-    this.send('/api/3/search/jql', data, callback);
+    this.delegate((client, cb) => client.search(data, cb), callback);
   }
 
   approximateCount(jql: string, callback: JiraCallback<{ count: number }>): void {
-    this.send('/api/3/search/approximate-count', { _method: 'POST', jql }, callback);
+    this.delegate((client, cb) => client.approximateCount(jql, cb), callback);
   }
 
   filterFavourite(callback: JiraCallback): void {
-    this.send('/api/3/filter/favourite', {}, callback);
+    this.delegate((client, cb) => client.filterFavourite(cb), callback);
   }
 
   priorities(callback: JiraCallback): void {
-    this.send('/api/3/priority', {}, callback);
+    this.delegate((client, cb) => client.priorities(cb), callback);
   }
 
   issueAssignee(issueId: string | number, data: Record<string, unknown>, callback: JiraCallback): void {
-    this.send(`/api/3/issue/${issueId}/assignee`, data, callback);
+    this.delegate((client, cb) => client.issueAssignee(issueId, data, cb), callback);
   }
 
   issueWorklog(issueId: string | number, data: Record<string, unknown>, callback: JiraCallback): void {
-    this.send(`/api/3/issue/${issueId}/worklog?adjustEstimate=auto`, data, callback);
+    this.delegate((client, cb) => client.issueWorklog(issueId, data, cb), callback);
   }
 
   transitions(issueId: string | number, data: Record<string, unknown>, callback: JiraCallback): void {
-    this.send(`/api/3/issue/${issueId}/transitions`, data, callback);
+    this.delegate((client, cb) => client.transitions(issueId, data, cb), callback);
   }
 
-  private send(urn: string, payload: Record<string, unknown>, callback: JiraCallback): void {
-    const copy = { ...payload };
-    const method = typeof copy._method === 'string' ? copy._method.toUpperCase() : 'GET';
-    delete copy._method;
-    const options: Record<string, unknown> = {
-      method,
-      url: `${this.url}/rest${urn}`,
-      cache: false,
-      responseType: 'json',
-      timeout: this.timeout
-    };
-    if (method === 'GET') {
-      options.params = copy;
-    } else {
-      options.data = copy;
+  private delegate<T>(
+    invoke: (client: JiraClient, cb: JiraCallback<T>) => void,
+    callback: JiraCallback<T>
+  ): void {
+    if (this.state.active === 'v2') {
+      invoke(this.v2, callback);
+      return;
     }
-    this.request
-      .fetch(options)
-      .then(res => callback(null, res.toJson()))
-      .catch(reason => {
-        if (reason instanceof Response) {
-          const error = new Error(String(reason.toJson())) as Error & { code?: number };
-          error.code = reason.code();
-          callback(error);
-          return;
-        }
-        callback(reason instanceof Error ? reason : new Error(String(reason)));
-      });
+    invoke(this.v3, (err, data) => {
+      if (err && err.code === 404) {
+        this.state.active = 'v2';
+        invoke(this.v2, callback);
+        return;
+      }
+      callback(err, data);
+    });
   }
 }

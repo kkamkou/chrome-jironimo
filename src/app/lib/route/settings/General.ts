@@ -5,16 +5,17 @@ import _ from 'lodash';
 import { MessageService } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { ButtonGroup } from 'primeng/buttongroup';
+import { Dialog } from 'primeng/dialog';
 import { Divider } from 'primeng/divider';
 import { InputGroup } from 'primeng/inputgroup';
 import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
+import { Tag } from 'primeng/tag';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { NavigationComponent } from '../../../shared/directive/navigation.ts';
 import { I18nPipe } from '../../../shared/filter/i18n.ts';
-import { Jira } from '../../adapter/jira.ts';
 import { FetchTransport } from '../../http/fetch-transport.ts';
-import { Request } from '../../http/request.ts';
+import { JiraProbe, type ProbeAttempt, type ProbeOutcome } from '../../jira-api.ts';
 import { type AccountConfig, type GeneralConfig, Settings } from '../../settings.ts';
 
 /**
@@ -28,10 +29,12 @@ import { type AccountConfig, type GeneralConfig, Settings } from '../../settings
     FormsModule,
     ButtonDirective,
     ButtonGroup,
+    Dialog,
     Divider,
     InputGroup,
     InputText,
     Select,
+    Tag,
     ToggleSwitch,
     I18nPipe,
     NavigationComponent
@@ -44,10 +47,15 @@ export class RouteSettingsGeneral implements OnInit {
   private readonly settings = new Settings();
   private readonly i18n = new I18nPipe();
   private readonly transport = new FetchTransport();
+  private readonly probe = new JiraProbe(cfg => this.transport.send(cfg));
   accountList: AccountConfig[] = this.settings.accounts;
   accountSelected: AccountConfig = this.accountList[0];
   general: GeneralConfig = this.settings.general;
   accountSelectedAuthStatus = -1;
+  probeDialogVisible = false;
+  probing = false;
+  probeAttempts: ProbeAttempt[] = [];
+  probeOutcome: ProbeOutcome | null = null;
 
   ngOnInit(): void {
     if (!this.accountList.find(acc => acc.enabled)) {
@@ -71,7 +79,7 @@ export class RouteSettingsGeneral implements OnInit {
     }
     const accounts = this.accountList.map(item => {
       const account = { ...(this.accountSelected.id === item.id ? this.accountSelected : item) };
-      account.url = account.url!.replace(/\/+$/, '');
+      account.url = this.probe.normalize(account.url!);
       account.timeout = parseInt(String(account.timeout), 10) || 10;
       return account;
     });
@@ -140,23 +148,42 @@ export class RouteSettingsGeneral implements OnInit {
   }
 
   accountAuthVerify(url: string | null, timeout: number): void {
-    if (!url) {
+    const trimmed = String(url ?? '').trim();
+    if (!trimmed || trimmed.indexOf('http') !== 0) {
+      this.probeAttempts = [];
+      this.probeOutcome = { matchedUrl: null, version: null, authenticated: false, attempts: [] };
+      this.probing = false;
+      this.probeDialogVisible = true;
+      this.cdr.markForCheck();
       return;
     }
-    const cleanUrl = url.replace(/\/+$/, '');
+    const candidates = this.probe.candidates(trimmed);
     this.accountSelectedAuthStatus = 2;
-    this.ensureOriginsAllowed([`${cleanUrl}/`])
-      .then(() => {
-        new Jira(
-          new Request(cfg => this.transport.send(cfg)),
-          cleanUrl,
-          timeout * 1000
-        ).authenticated((_err, flag) => {
-          this.accountSelectedAuthStatus = Number(flag);
+    this.probeAttempts = [];
+    this.probeOutcome = null;
+    this.probing = true;
+    this.probeDialogVisible = true;
+    this.cdr.markForCheck();
+    this.ensureOriginsAllowed(candidates.map(item => `${item}/`))
+      .then(() =>
+        this.probe.run(trimmed, (Number(timeout) || 10) * 1000, attempts => {
+          this.probeAttempts = attempts;
           this.cdr.markForCheck();
-        });
+        })
+      )
+      .then(outcome => {
+        this.probing = false;
+        this.probeOutcome = outcome;
+        this.probeAttempts = outcome.attempts;
+        if (outcome.matchedUrl) {
+          this.accountSelected.url = outcome.matchedUrl;
+        }
+        this.accountSelectedAuthStatus = outcome.matchedUrl && outcome.authenticated ? 1 : 0;
+        this.cdr.markForCheck();
       })
       .catch(() => {
+        this.probing = false;
+        this.probeDialogVisible = false;
         this.accountSelectedAuthStatus = -1;
         this.cdr.markForCheck();
       });
