@@ -34,7 +34,39 @@
         <p-tabpanel value="colors">
           <h2>{{ 'settingsColorsPriorityColors' | i18n }}</h2>
 
-          <div class="grid">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-4" *ngIf="accounts.length">
+            <p-buttongroup class="button-set">
+              <button pButton type="button"
+                [severity]="accountSelected === 'ALL' ? 'success' : 'secondary'"
+                [ngClass]="{success: accountSelected === 'ALL'}"
+                (click)="accountSwitch('ALL')">{{ 'settingsWorkspaceAccountShared' | i18n }}</button>
+              <button pButton type="button"
+                *ngFor="let account of accounts"
+                [severity]="accountSelected === account ? 'success' : 'secondary'"
+                [ngClass]="{success: accountSelected === account}"
+                (click)="accountSwitch(account)">{{ account.label }}</button>
+            </p-buttongroup>
+
+            <div class="flex items-center gap-2" *ngIf="accountSelected !== 'ALL'">
+              <button pButton type="button" severity="secondary"
+                *ngIf="activePriorityKeys().length"
+                (click)="resetAccountPriorities()">
+                {{ 'optionsColorsResetPriorities' | i18n }}
+              </button>
+              <button pButton type="button" severity="info" class="primary"
+                (click)="samplePriorities()" [disabled]="samplingPriorities">
+                <i class="icon-spin"></i> {{ 'optionsColorsSamplePriorities' | i18n }}
+              </button>
+            </div>
+          </div>
+
+          <div class="mb-4" *ngIf="!activePriorityKeys().length">
+            <p-message severity="info">
+              {{ 'optionsColorsAccountSharedHint' | i18n }}
+            </p-message>
+          </div>
+
+          <div class="grid" *ngIf="activePriorityKeys().length">
             <div class="row items-center text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-1">
               <div class="span2"></div>
               <div class="span2">Foreground</div>
@@ -44,29 +76,34 @@
               <div class="span2 text-center">Preview</div>
             </div>
 
-            <div class="row items-center" *ngFor="let pKey of priorityKeys; let idx = index">
+            <div class="row items-center" *ngFor="let pKey of activePriorityKeys(); let idx = index">
               <div class="span2 text-right">
-                <h5>{{ idx + 1 }} <small class="text-neutral-500 font-normal">{{ 'settingsColorsPriority' | i18n }}</small></h5>
+                <h5 *ngIf="accountSelected === 'ALL'">
+                  {{ idx + 1 }} <small class="text-neutral-500 font-normal">{{ 'settingsColorsPriority' | i18n }}</small>
+                </h5>
+                <h5 *ngIf="accountSelected !== 'ALL'" [title]="(activePriorities()[pKey].label || '') + ' (#' + pKey + ')'" class="truncate">
+                  {{ activePriorities()[pKey].label || (idx + 1) }} <small class="text-neutral-500 font-normal">#{{ pKey }}</small>
+                </h5>
               </div>
 
               <div class="span2">
-                <input pInputText type="text" [name]="'fg_' + pKey" [(ngModel)]="colors.priority[pKey].fg" placeholder="Foreground (fg-*)" maxlength="30" required fluid>
+                <input pInputText type="text" [name]="'fg_' + (accountSelected === 'ALL' ? 'all' : accountSelected.id) + '_' + pKey" [(ngModel)]="activePriorities()[pKey].fg" placeholder="Foreground (fg-*)" maxlength="30" required fluid>
               </div>
 
               <div class="span2">
-                <input pInputText type="text" [name]="'bg_' + pKey" [(ngModel)]="colors.priority[pKey].bg" placeholder="Background (bg-*)" maxlength="30" required fluid>
+                <input pInputText type="text" [name]="'bg_' + (accountSelected === 'ALL' ? 'all' : accountSelected.id) + '_' + pKey" [(ngModel)]="activePriorities()[pKey].bg" placeholder="Background (bg-*)" maxlength="30" required fluid>
               </div>
 
               <div class="span2">
-                <input pInputText type="text" [name]="'bd_' + pKey" [(ngModel)]="colors.priority[pKey].bd" placeholder="Border (bd-*)" maxlength="30" required fluid>
+                <input pInputText type="text" [name]="'bd_' + (accountSelected === 'ALL' ? 'all' : accountSelected.id) + '_' + pKey" [(ngModel)]="activePriorities()[pKey].bd" placeholder="Border (bd-*)" maxlength="30" required fluid>
               </div>
 
               <div class="span2">
-                <input pInputText type="text" [name]="'ot_' + pKey" [(ngModel)]="colors.priority[pKey].ot" placeholder="Outline (ol-*)" maxlength="30" required fluid>
+                <input pInputText type="text" [name]="'ot_' + (accountSelected === 'ALL' ? 'all' : accountSelected.id) + '_' + pKey" [(ngModel)]="activePriorities()[pKey].ot" placeholder="Outline (ol-*)" maxlength="30" required fluid>
               </div>
 
               <div class="span2">
-                <input pInputText class="text-center border-2 outline-1 outline-solid bd-{{ colors.priority[pKey].bd }} ol-{{ colors.priority[pKey].ot }} bg-{{ colors.priority[pKey].bg }} fg-{{ colors.priority[pKey].fg }}"
+                <input pInputText class="text-center border-2 outline-1 outline-solid bd-{{ activePriorities()[pKey].bd }} ol-{{ activePriorities()[pKey].ot }} bg-{{ activePriorities()[pKey].bg }} fg-{{ activePriorities()[pKey].fg }}"
                   type="text" [value]="'settingsColorExamplePriority' | i18n" readonly="readonly" fluid>
               </div>
             </div>

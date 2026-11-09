@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, type OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import _ from 'lodash';
 import { MessageService } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { ButtonGroup } from 'primeng/buttongroup';
@@ -82,14 +83,17 @@ export class RouteSettingsGeneral implements OnInit {
           accounts.find(acc => acc.id === this.accountSelected.id) ?? accounts[0];
         this.settings.accounts = accounts;
         this.settings.general = { ...this.settings.general, ...this.general };
-        const activity = this.settings.activity;
-        const workspace = { ...activity.workspace };
-        Object.keys(workspace).forEach(key => {
-          if (!accounts.find(acc => acc.id === key)) {
-            delete workspace[key];
-          }
-        });
-        this.settings.activity = { ...activity, workspace };
+        const ids = accounts.map(acc => acc.id);
+        this.settings.activity = {
+          ...this.settings.activity,
+          workspace: _.pick(this.settings.activity.workspace, ids)
+        };
+        if (this.settings.colors.accounts) {
+          this.settings.colors = {
+            ...this.settings.colors,
+            accounts: _.pick(this.settings.colors.accounts, ids)
+          };
+        }
         this.notify('success', this.i18n.transform('msgOptionsSaveSuccess'));
       })
       .catch(() => {

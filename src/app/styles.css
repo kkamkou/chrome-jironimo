@@ -919,12 +919,17 @@ div.container-options div.toolbar .p-button:disabled {
 /* Popup Widget Container */
 div.container-widget {
   position: relative;
-  padding: 4px 6px 8px 16px;
+  padding: 4px 16px 8px 16px;
 }
 
 div.container-widget div.tiles {
   position: relative;
   padding-top: 2px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
+  grid-auto-rows: 55px;
+  grid-auto-flow: dense;
+  gap: 10px;
 }
 
 div.container-widget div.tiles h3 {
@@ -989,10 +994,11 @@ div.container-widget div#tiles-toolbar {
   position: relative;
   overflow: hidden;
   display: block;
-  float: left;
-  width: 120px;
-  height: 120px;
-  margin: 0 10px 10px 0;
+  grid-column: span 2;
+  grid-row: span 2;
+  width: 100%;
+  height: 100%;
+  margin: 0;
   padding: 0 !important;
   cursor: pointer;
   background-color: #555555;
@@ -1018,8 +1024,8 @@ div.container-widget div#tiles-toolbar {
 }
 
 .tile.half {
-  width: 55px;
-  height: 55px;
+  grid-column: span 1;
+  grid-row: span 1;
 }
 
 .tile.half .tile-content {
@@ -1065,15 +1071,15 @@ div.container-widget div#tiles-toolbar {
 }
 
 .tile.double {
-  width: 250px;
+  grid-column: span 4;
 }
 
 .tile.triple {
-  width: 380px;
+  grid-column: span 6;
 }
 
 .tile.quadro {
-  width: 510px;
+  grid-column: span 8;
 }
 
 .tile.selected {
@@ -1293,8 +1299,7 @@ div.container-widget div#tiles-toolbar {
 #pagination {
   float: right;
   clear: both;
-  margin-right: 10px;
-  margin-top: 4px;
+  margin-top: 10px;
 }
 
 /* Popup Top Controls & Flyouts */

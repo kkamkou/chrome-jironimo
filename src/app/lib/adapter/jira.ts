@@ -9,6 +9,7 @@ export interface JiraClient {
   search(data: Record<string, unknown>, callback: JiraCallback): void;
   approximateCount(jql: string, callback: JiraCallback<{ count: number }>): void;
   filterFavourite(callback: JiraCallback): void;
+  priorities(callback: JiraCallback): void;
   issueAssignee(issueId: string | number, data: Record<string, unknown>, callback: JiraCallback): void;
   issueWorklog(issueId: string | number, data: Record<string, unknown>, callback: JiraCallback): void;
   transitions(issueId: string | number, data: Record<string, unknown>, callback: JiraCallback): void;
@@ -58,6 +59,10 @@ export class Jira implements JiraClient {
 
   filterFavourite(callback: JiraCallback): void {
     this.send('/api/3/filter/favourite', {}, callback);
+  }
+
+  priorities(callback: JiraCallback): void {
+    this.send('/api/3/priority', {}, callback);
   }
 
   issueAssignee(issueId: string | number, data: Record<string, unknown>, callback: JiraCallback): void {

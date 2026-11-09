@@ -78,3 +78,20 @@ test('Jira honours method override for v3 worklog submission', { timeout: 1000 }
     'Jira cannot apply POST method override for v3 worklogs'
   );
 });
+
+test('Jira requests configured priorities from v3 priority endpoint', { timeout: 1000 }, async () => {
+  assert.strictEqual(
+    await new Promise<string>(resolve => {
+      new Jira(
+        new Request(async params => {
+          resolve(`${params.method} ${params.url}`);
+          return { data: [{ id: '10000', name: 'Blocker' }], status: 200 };
+        }),
+        'https://jira.example',
+        4000
+      ).priorities(() => undefined);
+    }),
+    'GET https://jira.example/rest/api/3/priority',
+    'Jira cannot fetch priority definitions from v3 endpoint'
+  );
+});

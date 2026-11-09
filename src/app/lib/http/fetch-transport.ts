@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export type FetchPort = (input: string, init?: RequestInit) => Promise<globalThis.Response>;
 
 export interface HttpTransport {
@@ -55,13 +57,7 @@ export class FetchTransport implements HttpTransport {
     if (!params || !Object.keys(params).length) {
       return base;
     }
-    const search = new URLSearchParams();
-    Object.entries(params).forEach(([key, val]) => {
-      if (val !== undefined && val !== null) {
-        search.append(key, String(val));
-      }
-    });
-    const query = search.toString();
+    const query = new URLSearchParams(_.mapValues(_.omitBy(params, _.isNil), String)).toString();
     return query ? `${base}${base.includes('?') ? '&' : '?'}${query}` : base;
   }
 

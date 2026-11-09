@@ -1,7 +1,8 @@
+import _ from 'lodash';
 import type { JiraClient } from './adapter/jira.ts';
 import type { AccountConfig, SettingsStore } from './settings.ts';
 import { Duration } from './timer/duration.ts';
-import { TimerWorkLogEntry, type WorkLogEntry, type WorkLogState } from './timer/TimerWorkLogEntry.ts';
+import { TimerWorkLogEntry, type WorkLogEntry } from './timer/TimerWorkLogEntry.ts';
 
 export interface IssueSummary {
   id: string;
@@ -66,26 +67,19 @@ export class AccountTimer implements WorklogTimer {
     this.settings = settings;
     this.account = account;
     this.api = api;
-    const saved = settings.activity.workspace[account.id]?.timers ?? {};
-    const storage: Record<string, WorkLogEntry> = {};
-    Object.keys(saved).forEach(key => {
-      storage[key] = new TimerWorkLogEntry(
-        saved[key].id,
-        saved[key].state,
-        saved[key].timestamp
-      );
-    });
+    const storage = _.mapValues(
+      settings.activity.workspace[account.id]?.timers ?? {},
+      item => new TimerWorkLogEntry(item.id, item.state, item.timestamp)
+    );
     this.hooks = { ...hooks, storage };
     Object.freeze(this);
   }
 
   persist(): WorklogTimer {
-    const timers: Record<string, WorkLogState> = {};
-    Object.keys(this.hooks.storage)
-      .filter(key => this.hooks.storage[key].started)
-      .forEach(key => {
-        timers[key] = this.hooks.storage[key].toJSON();
-      });
+    const timers = _.mapValues(
+      _.pickBy(this.hooks.storage, entry => entry.started),
+      entry => entry.toJSON()
+    );
     const activity = this.settings.activity;
     const current = activity.workspace[this.account.id] ?? {
       index: 0,

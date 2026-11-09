@@ -301,6 +301,18 @@
   "settingsColorExamplePriority": {
     "message": "Beispiel Priorität"
   },
+  "optionsColorsSamplePriorities": {
+    "message": "Prioritäten aus JIRA™ abrufen"
+  },
+  "optionsColorsResetPriorities": {
+    "message": "Auf Shared zurücksetzen"
+  },
+  "optionsColorsAccountSharedHint": {
+    "message": "Für diesen Account werden die Shared-Prioritätsfarben verwendet. Klicke oben, um benutzerdefinierte Prioritäten aus JIRA™ abzurufen."
+  },
+  "msgPrioritySampleSuccess": {
+    "message": "$1 Prioritäten wurden erfolgreich abgerufen."
+  },
   "optionsAboutLicense": {
     "message": "Lizenz"
   }

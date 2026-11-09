@@ -92,7 +92,7 @@
     </button>
   </div>
 
-  <div class="tiles clearfix" *ngIf="!loading">
+  <div class="tiles" *ngIf="!loading">
     <h3 *ngIf="issues.length">{{ workspaceActive.title }}</h3>
 
     <tile
@@ -105,12 +105,13 @@
       (selectTile)="onTileClick($event, issue)"
       (openIssue)="tabIssue($event)"
       (modified)="onTileModified($event)"></tile>
-
-    <pagination
-      [position]="searchStartAt"
-      [limit]="searchMaxResults"
-      [total]="searchTotal"
-      [callback]="refreshCallback"></pagination>
   </div>
+
+  <pagination
+    *ngIf="!loading"
+    [position]="searchStartAt"
+    [limit]="searchMaxResults"
+    [total]="searchTotal"
+    [callback]="refreshCallback"></pagination>
 
 </div>

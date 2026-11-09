@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import _ from 'lodash';
 import { MessageService } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { ButtonGroup } from 'primeng/buttongroup';
@@ -144,21 +145,14 @@ export class RouteSettingsWorkspace {
         this.cdr.markForCheck();
         return;
       }
-      const existing = new Set(this.workspaces.map(ws => ws.query));
-      let count = 0;
-      const imported: WorkspaceConfig[] = [];
-      data.forEach(fav => {
-        if (!existing.has(fav.jql)) {
-          existing.add(fav.jql);
-          count += 1;
-          imported.push({
-            account: this.accountId(selected),
-            icon: 'heart-2',
-            query: fav.jql,
-            title: fav.name
-          });
-        }
-      });
+      const imported = _.uniqBy(data, 'jql')
+        .filter(fav => !this.workspaces.some(ws => ws.query === fav.jql))
+        .map(fav => ({
+          account: this.accountId(selected),
+          icon: 'heart-2',
+          query: fav.jql,
+          title: fav.name
+        }));
       if (imported.length) {
         this.workspaces = [...this.workspaces, ...imported];
         this.focusedWorkspace = this.workspaces[this.workspaces.length - 1] ?? null;
@@ -168,7 +162,7 @@ export class RouteSettingsWorkspace {
       this.messageService.add({
         severity: 'success',
         summary: 'Jironimo',
-        detail: this.i18n.transform('msgWorkspaceImportSuccess', [count])
+        detail: this.i18n.transform('msgWorkspaceImportSuccess', [imported.length])
       });
       this.cdr.markForCheck();
     });

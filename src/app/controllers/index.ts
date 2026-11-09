@@ -9,6 +9,7 @@ import {
   inject
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import _ from 'lodash';
 import { ButtonDirective } from 'primeng/button';
 import { ButtonGroup } from 'primeng/buttongroup';
 import { InputText } from 'primeng/inputtext';
@@ -54,8 +55,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     cfg => new FetchTransport().send(cfg),
     key => this.i18n.transform(key),
     (status, messages) => {
-      const cap = status ? status.charAt(0).toUpperCase() + status.slice(1).toLowerCase() : '';
-      this.jiraRequestFailed = [cap, messages.join('; ')];
+      this.jiraRequestFailed = [_.capitalize(status), messages.join('; ')];
       this.loading = false;
       this.cdr.markForCheck();
     }
@@ -320,8 +320,11 @@ export class IndexComponent implements OnInit, OnDestroy {
     }
     const typeName = String(issue.fields?.issuetype?.name ?? '').toLowerCase();
     issue._size = colors.sizes[typeName] || colors.sizes.task;
-    const priorityId = Number(issue.fields?.priority?.id);
-    if (priorityId && colors.priority[priorityId]) {
+    const priorityId = String(issue.fields?.priority?.id ?? '');
+    const accountPriority = priorityId ? colors.accounts?.[this.account?.id]?.[priorityId] : undefined;
+    if (accountPriority) {
+      issue._colors = accountPriority;
+    } else if (priorityId && colors.priority[priorityId]) {
       issue._colors = colors.priority[priorityId];
     }
     return issue;

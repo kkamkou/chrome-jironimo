@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { Jira, type JiraClient } from './lib/adapter/jira.ts';
 import { FetchTransport } from './lib/http/fetch-transport.ts';
 import { Request } from './lib/http/request.ts';
@@ -45,13 +46,12 @@ export class BackgroundDaemon {
         this.ensureAlarms(false);
       });
       chrome.storage.onChanged?.addListener(changes => {
-        const updated: Record<string, string> = {};
-        Object.keys(changes).forEach(key => {
-          if (changes[key].newValue !== undefined) {
-            updated[key] = String(changes[key].newValue);
-          }
-        });
-        this.settings.setStorageData(updated);
+        this.settings.setStorageData(
+          _.mapValues(
+            _.pickBy(changes, change => change.newValue !== undefined),
+            change => String(change.newValue)
+          )
+        );
         if (changes.timer) {
           this.ensureAlarms(true);
         }

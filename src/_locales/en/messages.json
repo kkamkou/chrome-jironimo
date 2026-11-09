@@ -71,6 +71,18 @@
   "settingsColorExamplePriority": {
     "message": "Example Priority"
   },
+  "optionsColorsSamplePriorities": {
+    "message": "Sample priorities from JIRA™"
+  },
+  "optionsColorsResetPriorities": {
+    "message": "Reset to Shared"
+  },
+  "optionsColorsAccountSharedHint": {
+    "message": "Shared priority colors are used for this account. Click the button above to sample custom priorities from JIRA™."
+  },
+  "msgPrioritySampleSuccess": {
+    "message": "$1 priorities were successfully sampled"
+  },
   "settingsColorsAvailableColors": {
     "message": "Click here to open the list of available colors"
   },
