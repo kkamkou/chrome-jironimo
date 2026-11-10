@@ -80,3 +80,25 @@ test('Settings falls back to semantic priority names when statusColor is shared 
     'Settings cannot map semantic priority names when statusColor is shared'
   );
 });
+
+test('Settings moves workspace to target offset within list', { timeout: 1000 }, () => {
+  assert.deepStrictEqual(
+    (() => {
+      const settings = new Settings({}, key => key);
+      return settings.moveWorkspace(settings.workspaces, 2, -1).map(ws => ws.icon);
+    })(),
+    ['share-2', 'eye-2', 'target'],
+    'Settings cannot move workspace to target offset'
+  );
+});
+
+test('Settings preserves workspace order when move offset exceeds list bounds', { timeout: 1000 }, () => {
+  assert.deepStrictEqual(
+    (() => {
+      const settings = new Settings({}, key => key);
+      return settings.moveWorkspace(settings.workspaces, 0, -1).map(ws => ws.icon);
+    })(),
+    ['share-2', 'target', 'eye-2'],
+    'Settings cannot preserve workspace order when move offset is out of bounds'
+  );
+});

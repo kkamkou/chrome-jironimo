@@ -108,6 +108,7 @@ export interface SettingsStore {
   getStorageData(): Record<string, string>;
   setStorageData(items: Record<string, string>): SettingsStore;
   samplePriorities(items: JiraPriority[]): Record<string, PriorityColor>;
+  moveWorkspace(workspaces: WorkspaceConfig[], index: number, offset: number): WorkspaceConfig[];
 }
 
 /**
@@ -293,6 +294,17 @@ export class Settings implements SettingsStore {
         ];
       })
     );
+  }
+
+  moveWorkspace(workspaces: WorkspaceConfig[], index: number, offset: number): WorkspaceConfig[] {
+    const target = index + offset;
+    if (index < 0 || target < 0 || index >= workspaces.length || target >= workspaces.length) {
+      return workspaces;
+    }
+    const reordered = [...workspaces];
+    const [moved] = reordered.splice(index, 1);
+    reordered.splice(target, 0, moved);
+    return reordered;
   }
 
   private parseHex(hex: string): [number, number, number] | null {

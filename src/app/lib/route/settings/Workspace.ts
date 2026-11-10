@@ -116,6 +116,12 @@ export class RouteSettingsWorkspace {
     }
   }
 
+  move(index: number, offset: number): void {
+    this.workspaces = this.settings.moveWorkspace(this.workspaces, index, offset);
+    this.focusedWorkspace = this.workspaces[index + offset] ?? this.focusedWorkspace;
+    this.cdr.markForCheck();
+  }
+
   remove(workspace: WorkspaceConfig): boolean {
     if (!confirm(this.i18n.transform('msgGeneralActionConfirm'))) {
       return false;

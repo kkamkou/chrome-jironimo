@@ -109,8 +109,16 @@
         </div>
 
         <div class="span1 text-center" *ngIf="workspaces.length > 1">
-          <button pButton type="button" severity="danger" class="danger w-8 h-8 !p-0"
-            (click)="remove(workspace)"><i class="icon-cancel-2"></i></button>
+          <p-buttongroup class="flex-col">
+            <button pButton type="button" severity="secondary" class="w-8 h-8 !p-0"
+              [disabled]="idx === 0"
+              (click)="move(idx, -1)"><i class="icon-arrow-up"></i></button>
+            <button pButton type="button" severity="secondary" class="w-8 h-8 !p-0"
+              [disabled]="idx === workspaces.length - 1"
+              (click)="move(idx, 1)"><i class="icon-arrow-down"></i></button>
+            <button pButton type="button" severity="danger" class="danger w-8 h-8 !p-0"
+              (click)="remove(workspace)"><i class="icon-cancel-2"></i></button>
+          </p-buttongroup>
         </div>
 
       </div>
