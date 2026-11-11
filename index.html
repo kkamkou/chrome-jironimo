@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jironimo for Atlassian JIRA™ — Chrome Extension for Developers, Scrum Masters &amp; Product Owners</title>
+    <meta name="description" content="Track Atlassian JIRA issues, run live JQL Workspaces, switch issue statuses inline, and log work time with a one-click Worklog Timer right from your Chrome toolbar (Alt+J / ⌘+J).">
+    <meta property="og:title" content="Jironimo for Atlassian JIRA™ — JIRA at the Speed of a Shortcut">
+    <meta property="og:description" content="Visual JQL Workspaces, priority-colored Metro Tiles, inline status transitions, and a one-click Worklog Timer for Developers, Scrum Masters, and Product Owners.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="images/og-social-1200x630.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Jironimo for Atlassian JIRA™ — Chrome Extension">
+    <meta name="twitter:description" content="Run JQL Workspaces, switch JIRA statuses inline, and track worklogs from your browser toolbar.">
+    <meta name="twitter:image" content="images/og-social-1200x630.png">
+    <link rel="icon" type="image/png" href="images/app-48.png">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-bar">
+        <a href="#" class="brand-link">
+          <img src="images/app-128.png" alt="Jironimo Logo">
+          <span>jironimo <span class="brand-tag">v7.1</span></span>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#roles">For Your Role</a></li>
+          <li><a href="#features">Core Features</a></li>
+          <li><a href="#jql-library">JQL Playbooks</a></li>
+          <li><a href="#setup">60s Setup</a></li>
+          <li><a href="#media-kit">Store Gallery</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="https://github.com/kkamkou/chrome-jironimo" target="_blank" rel="noopener" class="btn btn-outline btn-sm">GitHub</a>
+          <a href="https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl" target="_blank" rel="noopener" class="btn btn-lime btn-sm">Add to Chrome</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <div class="eyebrow-row">
+              <span class="metro-badge">Atlassian JIRA™ Agile Extension</span>
+              <span class="kbd-pill" title="Windows / Linux Shortcut">Alt + J</span>
+              <span class="kbd-pill" title="macOS Shortcut">⌘ + J</span>
+            </div>
+
+            <h1>
+              Tame JIRA from Your Toolbar. <strong>Zero Heavy Tabs.</strong>
+            </h1>
+
+            <p class="hero-lead">
+              Monitor live JQL <strong>Workspaces</strong>, spot sprint blockers by priority color, transition <strong>Issue</strong> statuses inline, and record accurate hours with a one-click <strong>Worklog Timer</strong>—authenticated directly through your active browser session.
+            </p>
+
+            <div class="hero-ctas">
+              <a href="https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl" target="_blank" rel="noopener" class="btn btn-lime">
+                Install from Chrome Web Store
+              </a>
+              <a href="#roles" class="btn btn-primary">
+                Workflows by Role
+              </a>
+              <a href="https://github.com/kkamkou/chrome-jironimo" target="_blank" rel="noopener" class="btn btn-outline">
+                Open Source (BSL-1.0)
+              </a>
+            </div>
+
+            <div class="role-pills">
+              <a href="#roles" class="role-pill dev" data-jump-role="developers">Developers: Worklog &amp; PR Queue</a>
+              <a href="#roles" class="role-pill sm" data-jump-role="scrum-masters">Scrum Masters: Blocker Radar</a>
+              <a href="#roles" class="role-pill po" data-jump-role="product-owners">Product Owners: Visual Epics</a>
+            </div>
+          </div>
+
+          <div class="showcase-panel">
+            <div class="showcase-tabs" role="tablist" aria-label="Interface Preview">
+              <button type="button" class="showcase-tab active" data-img="images/ui-popup-board.png" data-caption="LIVE WORKSPACE BOARD — ACTIVE WORKLOG TIMER &amp; PRIORITY TILES" data-status="● Timer Running (PLAT-811)">
+                1. Live Board &amp; Timer
+              </button>
+              <button type="button" class="showcase-tab" data-img="images/ui-popup-transitions.png" data-caption="INLINE ISSUE TRANSITIONS &amp; QUICK TOOLS PANEL" data-status="● Inline Status Menu">
+                2. Inline Transitions
+              </button>
+              <button type="button" class="showcase-tab" data-img="images/ui-options-workspaces.png" data-caption="CUSTOM JQL WORKSPACES &amp; STRICT SYNTAX VALIDATOR" data-status="✔ JQL Verified">
+                3. JQL Workspaces
+              </button>
+              <button type="button" class="showcase-tab" data-img="images/ui-options-colors.png" data-caption="PRIORITY COLORS SAMPLED FROM JIRA™ &amp; 30-TONE METRO PALETTE" data-status="● Custom Priorities">
+                4. Priority Colors
+              </button>
+              <button type="button" class="showcase-tab" data-img="images/ui-options-general-probe.png" data-caption="SMART CONNECTION PROBE — AUTO-DETECT REST API V3 &amp; V2" data-status="✔ Session Authenticated">
+                5. API Probe
+              </button>
+            </div>
+
+            <div class="window-frame">
+              <div class="window-header">
+                <span id="showcase-caption">LIVE WORKSPACE BOARD — ACTIVE WORKLOG TIMER &amp; PRIORITY TILES</span>
+                <span id="showcase-status" class="status-indicator">● Timer Running (PLAT-811)</span>
+              </div>
+              <img id="showcase-image" src="images/ui-popup-board.png" alt="Jironimo Live Workspace Board">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Trust & Architecture Strip -->
+      <section class="trust-strip">
+        <div class="container trust-grid">
+          <div class="trust-item">
+            <strong>100% Direct Browser-to-JIRA</strong>
+            <span>Zero middleware servers, zero telemetry, zero stored passwords.</span>
+          </div>
+          <div class="trust-item">
+            <strong>JIRA REST API v3 &amp; v2</strong>
+            <span>Works seamlessly with Atlassian Cloud, Server, and Data Center.</span>
+          </div>
+          <div class="trust-item">
+            <strong>Up to 10 JIRA Accounts</strong>
+            <span>Switch servers on the fly or share JQL Workspaces across all Accounts.</span>
+          </div>
+          <div class="trust-item">
+            <strong>Manifest V3 &amp; Chrome Sync</strong>
+            <span>Lightweight background alarms with native cross-device settings sync.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Role-Based Workflows Section -->
+      <section id="roles" class="section">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-kicker">Purpose-Built Agile Workflows</span>
+            <h2>One Extension. <strong>Three High-Velocity Perspectives.</strong></h2>
+            <p>
+              Whether you are shipping code, facilitating daily standups, or grooming the release roadmap, Jironimo adapts its <strong>Workspaces</strong> and <strong>Tiles</strong> to the exact signals your role cares about.
+            </p>
+          </div>
+
+          <div class="role-selector" role="tablist" aria-label="Role Workflows">
+            <button type="button" class="role-tab-btn active" data-role="developers">
+              01. Software Developers
+            </button>
+            <button type="button" class="role-tab-btn" data-role="scrum-masters">
+              02. Scrum Masters
+            </button>
+            <button type="button" class="role-tab-btn" data-role="product-owners">
+              03. Product Owners
+            </button>
+          </div>
+
+          <!-- Developers Panel -->
+          <div class="role-panel active" id="role-developers">
+            <div class="role-panel-grid">
+              <div>
+                <span class="role-Tagline dev">For Software Developers &amp; Engineers</span>
+                <h3>Stay in Deep Code Flow. <strong>Log Time &amp; Switch Statuses in 2 Seconds.</strong></h3>
+                <p class="role-lead">
+                  Opening a full JIRA browser tab just to check an acceptance criterion, move a ticket to <em>In Review</em>, or log 45 minutes of debugging breaks your mental model. Jironimo keeps your sprint queue one keystroke away.
+                </p>
+
+                <ul class="benefit-list dev">
+                  <li>
+                    <strong>One-Click Worklog Timer on Every Tile</strong>
+                    <span>Press Play when you start coding. The extension badge displays your live elapsed time and submits the worklog to JIRA when stopped (ignoring accidental sessions under 1 minute).</span>
+                  </li>
+                  <li>
+                    <strong>Inline Status Transitions</strong>
+                    <span>Click the Transitions button on any Tile to move an Issue from <em>Open</em> to <em>In Progress</em>, <em>In Review</em>, or <em>Resolved</em> without loading a single JIRA web page.</span>
+                  </li>
+                  <li>
+                    <strong>Instant Keyword &amp; Key Filtering</strong>
+                    <span>Toggle the popup filter field to search across loaded Issue keys, summaries, and reporters in real time.</span>
+                  </li>
+                  <li>
+                    <strong>New Assignment &amp; Review Alerts</strong>
+                    <span>Get desktop notifications the moment a production bug or pull-request review ticket lands in your queue.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="window-frame">
+                <div class="window-header">
+                  <span>DEVELOPER WORKFLOW — INLINE TRANSITIONS &amp; TIMER</span>
+                  <span class="status-indicator">Alt + J / ⌘ + J</span>
+                </div>
+                <img src="images/ui-popup-transitions.png" alt="Jironimo inline transitions and worklog timer for Software Developers">
+              </div>
+            </div>
+
+            <div class="jql-recipes" id="jql-library">
+              <h4>Copy-Ready Developer JQL Workspaces</h4>
+              <div class="recipe-grid">
+                <div class="recipe-card">
+                  <div>
+                    <div class="recipe-header">
+                      <span class="recipe-title">My Active Sprint Queue</span>
+                      <button type="button" class="copy-jql-btn" data-jql="assignee = currentUser() AND sprint in openSprints() AND status not in (Closed, Resolved) ORDER BY priority ASC, updatedDate DESC">Copy JQL</button>
+                    </div>
+                    <p class="recipe-meta">Icon: <code>target</code> • Notify on updates</p>
+                  </div>
+                  <code>assignee = currentUser() AND sprint in openSprints() AND status not in (Closed, Resolved) ORDER BY priority ASC, updatedDate DESC</code>
+                </div>
+
+                <div class="recipe-card">
+                  <div>
+                    <div class="recipe-header">
+                      <span class="recipe-title">Needs My Code Review</span>
+                      <button type="button" class="copy-jql-btn" data-jql='status = "In Review" AND assignee != currentUser() AND sprint in openSprints() ORDER BY updatedDate DESC'>Copy JQL</button>
+                    </div>
+                    <p class="recipe-meta">Icon: <code>code</code> • Notify on updates</p>
+                  </div>
+                  <code>status = "In Review" AND assignee != currentUser() AND sprint in openSprints() ORDER BY updatedDate DESC</code>
+                </div>
+
+                <div class="recipe-card">
+                  <div>
+                    <div class="recipe-header">
+                      <span class="recipe-title">Assigned Production Bugs</span>
+                      <button type="button" class="copy-jql-btn" data-jql="assignee = currentUser() AND issuetype = Bug AND status not in (Closed, Resolved) ORDER BY priority ASC, updatedDate DESC">Copy JQL</button>
+                    </div>
+                    <p class="recipe-meta">Icon: <code>bug</code> • Persistent alert</p>
+                  </div>
+                  <code>assignee = currentUser() AND issuetype = Bug AND status not in (Closed, Resolved) ORDER BY priority ASC, updatedDate DESC</code>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scrum Masters Panel -->
+          <div class="role-panel" id="role-scrum-masters">
+            <div class="role-panel-grid">
+              <div>
+                <span class="role-Tagline sm">For Scrum Masters &amp; Agile Coaches</span>
+                <h3>Spot Impediments Early. <strong>Run Standups Without Board Lag.</strong></h3>
+                <p class="role-lead">
+                  Don't wait until the daily standup to discover a P0 blocker or an unestimated ticket added mid-sprint. Jironimo turns your browser into a live impediment radar across every squad you coach.
+                </p>
+
+                <ul class="benefit-list sm">
+                  <li>
+                    <strong>Persistent Blocker Notifications</strong>
+                    <span>Enable background polling per Workspace and check <em>Notifications require interaction</em> so critical blockers stay on screen until acknowledged.</span>
+                  </li>
+                  <li>
+                    <strong>Detachable Standup Window (1024×768)</strong>
+                    <span>Click Detach Window in the tools panel to pop Jironimo into a clean standalone board for screen-sharing during standups and retrospectives.</span>
+                  </li>
+                  <li>
+                    <strong>Multi-Account Squad Switching</strong>
+                    <span>Supporting multiple teams or client JIRA instances? Connect up to 10 Accounts and run Shared Workspaces across all of them.</span>
+                  </li>
+                  <li>
+                    <strong>Focus-First WIP Discipline</strong>
+                    <span>Enable <em>Allow only one active issue</em> in Timer settings to reinforce single-tasking and accurate sprint time tracking.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="window-frame">
+                <div class="window-header">
+                  <span>SCRUM MASTER WORKFLOW — JQL WATCHERS &amp; ALERTS</span>
+                  <span class="status-indicator">✔ Strict JQL Verified</span>
+                </div>
+                <img src="images/ui-options-workspaces.png" alt="Jironimo JQL Workspaces and blocker alerts for Scrum Masters">
+              </div>
+            </div>
+
+            <div class="jql-recipes">
+              <h4>Copy-Ready Scrum Master JQL Workspaces</h4>
+              <div class="recipe-grid">
+                <div class="recipe-card">
+                  <div>
+                    <div class="recipe-header">
+                      <span class="recipe-title">Sprint Blockers &amp; Flagged</span>
+                      <button type="button" class="copy-jql-btn" data-jql="sprint in openSprints() AND (priority in (Blocker, Highest) OR Flagged is not EMPTY) AND status not in (Closed, Resolved) ORDER BY updatedDate DESC">Copy JQL</button>
+                    </div>
+                    <p class="recipe-meta">Icon: <code>fire</code> • Persistent alert</p>
+                  </div>
+                  <code>sprint in openSprints() AND (priority in (Blocker, Highest) OR Flagged is not EMPTY) AND status not in (Closed, Resolved) ORDER BY updatedDate DESC</code>
+                </div>
+
+                <div class="recipe-card">
+                  <div>
+                    <div class="recipe-header">
+                      <span class="recipe-title">Stale In-Progress (&gt; 3 Days)</span>
+                      <button type="button" class="copy-jql-btn" data-jql='sprint in openSprints() AND status = "In Progress" AND updatedDate < -3d ORDER BY updatedDate ASC'>Copy JQL</button>
+                    </div>
+                    <p class="recipe-meta">Icon: <code>clock</code> • Standup check</p>
+                  </div>
+                  <code>sprint in openSprints() AND status = "In Progress" AND updatedDate &lt; -3d ORDER BY updatedDate ASC</code>
+                </div>
+
+                <div class="recipe-card">
+                  <div>
+                    <div class="recipe-header">
+                      <span class="recipe-title">Unassigned Sprint Scope</span>
+                      <button type="button" class="copy-jql-btn" data-jql="sprint in openSprints() AND assignee is EMPTY AND status not in (Closed, Resolved) ORDER BY priority ASC, created DESC">Copy JQL</button>
+                    </div>
+                    <p class="recipe-meta">Icon: <code>flag</code> • Notify on updates</p>
+                  </div>
+                  <code>sprint in openSprints() AND assignee is EMPTY AND status not in (Closed, Resolved) ORDER BY priority ASC, created DESC</code>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Owners Panel -->
+          <div class="role-panel" id="role-product-owners">
+            <div class="role-panel-grid">
+              <div>
+                <span class="role-Tagline po">For Product Owners &amp; Product Managers</span>
+                <h3>See Epics, Priorities &amp; Release Progress <strong>at a Single Glance.</strong></h3>
+                <p class="role-lead">
+                  Standard JIRA lists flatten Epics, Stories, and trivial chores into identical rows. Jironimo's Metro Tile grid restores visual hierarchy through proportional sizing, sampled priority colors, and embedded progress bars.
+                </p>
+
+                <ul class="benefit-list po">
+                  <li>
+                    <strong>Proportional Issue-Type Tile Sizing</strong>
+                    <span>Scale <em>Epics</em> to Triple-width (380×120), <em>Stories</em> to Double-width (250×120), and <em>Tasks/Bugs</em> to Default (120×120) or Half (55×55).</span>
+                  </li>
+                  <li>
+                    <strong>One-Click Priority Sampling from JIRA</strong>
+                    <span>Pull your JIRA Account's custom priority levels and automatically map them to 30 high-contrast Metro palette colors.</span>
+                  </li>
+                  <li>
+                    <strong>Import Favorite Filters Automatically</strong>
+                    <span>Already maintain saved JIRA filters for UAT sign-off, customer escalations, or release scope? Import all of them into Workspaces in one click.</span>
+                  </li>
+                  <li>
+                    <strong>Real-Time Progress &amp; Estimates on Every Tile</strong>
+                    <span>Monitor remaining time estimates, completion progress bars, and closed checkmarks without drilling into sub-screens.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="window-frame">
+                <div class="window-header">
+                  <span>PRODUCT OWNER WORKFLOW — SAMPLED PRIORITY COLORS</span>
+                  <span class="status-indicator">30 Metro Colors</span>
+                </div>
+                <img src="images/ui-options-colors.png" alt="Jironimo sampled priority colors and Metro palette for Product Owners">
+              </div>
+            </div>
+
+            <div class="jql-recipes">
+              <h4>Copy-Ready Product Owner JQL Workspaces</h4>
+              <div class="recipe-grid">
+                <div class="recipe-card">
+                  <div>
+                    <div class="recipe-header">
+                      <span class="recipe-title">Release Epics &amp; Roadmap</span>
+                      <button type="button" class="copy-jql-btn" data-jql="issuetype in (Epic, Story) AND fixVersion = earliestUnreleasedVersion() AND status != Closed ORDER BY priority ASC, updatedDate DESC">Copy JQL</button>
+                    </div>
+                    <p class="recipe-meta">Icon: <code>rocket</code> • Release tracking</p>
+                  </div>
+                  <code>issuetype in (Epic, Story) AND fixVersion = earliestUnreleasedVersion() AND status != Closed ORDER BY priority ASC, updatedDate DESC</code>
+                </div>
+
+                <div class="recipe-card">
+                  <div>
+                    <div class="recipe-header">
+                      <span class="recipe-title">Ready for PO Acceptance</span>
+                      <button type="button" class="copy-jql-btn" data-jql='status in ("Ready for Acceptance", "In UAT", "Resolved") AND sprint in openSprints() ORDER BY updatedDate DESC'>Copy JQL</button>
+                    </div>
+                    <p class="recipe-meta">Icon: <code>trophy</code> • Notify on updates</p>
+                  </div>
+                  <code>status in ("Ready for Acceptance", "In UAT", "Resolved") AND sprint in openSprints() ORDER BY updatedDate DESC</code>
+                </div>
+
+                <div class="recipe-card">
+                  <div>
+                    <div class="recipe-header">
+                      <span class="recipe-title">Stakeholder &amp; Watched Issues</span>
+                      <button type="button" class="copy-jql-btn" data-jql="(reporter = currentUser() OR watcher = currentUser()) AND status not in (Closed, Resolved) ORDER BY updated DESC">Copy JQL</button>
+                    </div>
+                    <p class="recipe-meta">Icon: <code>eye-2</code> • Notify on updates</p>
+                  </div>
+                  <code>(reporter = currentUser() OR watcher = currentUser()) AND status not in (Closed, Resolved) ORDER BY updated DESC</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Core Capabilities Grid -->
+      <section id="features" class="section section-alt">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-kicker">Core Architecture</span>
+            <h2>Engineered for Speed, Clarity, and <strong>Zero Maintenance.</strong></h2>
+            <p>
+              Built on Chrome Manifest V3, Angular, and PrimeNG with native support for both Atlassian JIRA REST API v3 and v2.
+            </p>
+          </div>
+
+          <div class="features-grid">
+            <article class="feature-tile">
+              <span class="feature-kicker">Visual Hierarchy</span>
+              <h3>Live Metro Issue Tiles</h3>
+              <p>
+                Each <strong>Tile</strong> displays the Issue key, reporter, summary, issue type, time estimate, completion progress bar, and status icon—styled by priority color and proportional issue-type width.
+              </p>
+            </article>
+
+            <article class="feature-tile accent-crimson">
+              <span class="feature-kicker">Time Tracking</span>
+              <h3>Integrated Worklog Timer</h3>
+              <p>
+                Track elapsed time directly on any <strong>Issue</strong>. Stop the timer after at least one minute to automatically submit a formatted worklog entry to JIRA (including ADF comments on REST API v3), or discard with one click.
+              </p>
+            </article>
+
+            <article class="feature-tile accent-orange">
+              <span class="feature-kicker">Instant Actions</span>
+              <h3>Inline Workflow Transitions</h3>
+              <p>
+                Fetch available workflow transitions for any <strong>Tile</strong> and switch statuses in place. Middle-click or double-click any Tile when you want to open the full JIRA ticket in a background tab.
+              </p>
+            </article>
+
+            <article class="feature-tile accent-cobalt">
+              <span class="feature-kicker">Multi-Server</span>
+              <h3>Accounts &amp; Smart API Probe</h3>
+              <p>
+                Configure up to 10 JIRA <strong>Accounts</strong>. Paste any issue or board link and click Verify—the Connection Probe normalizes the URL and tests <code>/rest/api/3/myself</code> and <code>/rest/api/2/myself</code> automatically.
+              </p>
+            </article>
+
+            <article class="feature-tile accent-amber">
+              <span class="feature-kicker">Custom Filters</span>
+              <h3>JQL Workspaces &amp; Watchers</h3>
+              <p>
+                Scope JQL <strong>Workspaces</strong> to a single Account or share them across all Accounts. Validate JQL syntax live, reorder tabs, import favorite JIRA filters, and receive background desktop notifications.
+              </p>
+            </article>
+
+            <article class="feature-tile accent-green">
+              <span class="feature-kicker">Privacy First</span>
+              <h3>Session Auth &amp; Local Storage</h3>
+              <p>
+                Jironimo never asks for or stores your password, and never routes data through third-party middleware. It reuses your active browser session and optionally syncs preferences via Google Chrome Sync.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 60-Second Setup Section -->
+      <section id="setup" class="section">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-kicker">Zero-Friction Onboarding</span>
+            <h2>Up and Running in <strong>Under 60 Seconds.</strong></h2>
+            <p>No API tokens to generate, no webhooks to configure, and no server plugins required beyond standard JIRA REST API access.</p>
+          </div>
+
+          <div class="steps-grid">
+            <div class="step-card">
+              <div class="step-num">1</div>
+              <h3>Sign In to JIRA™ in Chrome</h3>
+              <p>
+                Log in to your Atlassian JIRA Cloud or Data Center instance in any normal browser tab so your session cookie is active.
+              </p>
+            </div>
+
+            <div class="step-card">
+              <div class="step-num">2</div>
+              <h3>Probe &amp; Save Your Account</h3>
+              <p>
+                Open Jironimo Settings, paste any JIRA project or issue URL, and click the <strong>Verify</strong> button. Jironimo detects your base URL and REST API version (v3 or v2) automatically.
+              </p>
+            </div>
+
+            <div class="step-card">
+              <div class="step-num">3</div>
+              <h3>Import Filters &amp; Press Alt + J</h3>
+              <p>
+                Import your favorite JIRA filters into <strong>Workspaces</strong>, sample your server's Priority Colors, and press <code>Alt + J</code> (Windows/Linux) or <code>⌘ + J</code> (Mac) anytime.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Store Screenshots & Visual Gallery -->
+      <section id="media-kit" class="section section-alt">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-kicker">Visual Tour &amp; Store Assets</span>
+            <h2>Inside <strong>Jironimo v7.1</strong></h2>
+            <p>High-resolution Chrome Web Store screenshots and interface overviews across every view.</p>
+          </div>
+
+          <div class="gallery-grid">
+            <div class="gallery-card">
+              <img src="images/store-1-overview.png" alt="Jironimo Command Center Overview" loading="lazy">
+              <div class="gallery-caption">
+                <strong>01. Your JIRA Command Center in One Shortcut</strong>
+                <span>1280×800 • Store Screenshot</span>
+              </div>
+            </div>
+
+            <div class="gallery-card">
+              <img src="images/store-2-developers.png" alt="Jironimo for Software Developers" loading="lazy">
+              <div class="gallery-caption">
+                <strong>02. Built for Developers: Inline Transitions &amp; Timer</strong>
+                <span>1280×800 • Store Screenshot</span>
+              </div>
+            </div>
+
+            <div class="gallery-card">
+              <img src="images/store-3-scrum-masters.png" alt="Jironimo for Scrum Masters" loading="lazy">
+              <div class="gallery-caption">
+                <strong>03. Built for Scrum Masters: Live Impediment Radar</strong>
+                <span>1280×800 • Store Screenshot</span>
+              </div>
+            </div>
+
+            <div class="gallery-card">
+              <img src="images/store-4-product-owners.png" alt="Jironimo for Product Owners" loading="lazy">
+              <div class="gallery-caption">
+                <strong>04. Built for Product Owners: Visual Epics &amp; Priorities</strong>
+                <span>1280×800 • Store Screenshot</span>
+              </div>
+            </div>
+
+            <div class="gallery-card">
+              <img src="images/store-5-privacy-setup.png" alt="Smart Connection Probe and Direct Browser-to-JIRA Privacy" loading="lazy">
+              <div class="gallery-caption">
+                <strong>05. Smart Connection Probe &amp; 100% Local Privacy</strong>
+                <span>1280×800 • Store Screenshot</span>
+              </div>
+            </div>
+
+            <div class="gallery-card">
+              <img src="images/promo-marquee-1400x560.png" alt="Chrome Web Store Marquee Promo Banner" loading="lazy">
+              <div class="gallery-caption">
+                <strong>Chrome Web Store Marquee Banner</strong>
+                <span>1400×560 • Promo Tile</span>
+              </div>
+            </div>
+
+            <div class="gallery-card">
+              <img src="images/jironimo-frontend-full.jpg" alt="Jironimo Popup Board and Inline Transitions" loading="lazy">
+              <div class="gallery-caption">
+                <strong>Popup Workspace Board &amp; Inline Transitions</strong>
+                <span>736×768 • Frontend Composite</span>
+              </div>
+            </div>
+
+            <div class="gallery-card">
+              <img src="images/jironimo-options-full.jpg" alt="Jironimo Settings Suite: Accounts, Workspaces, Priority Colors, Tile Sizes" loading="lazy">
+              <div class="gallery-caption">
+                <strong>Complete Settings Suite (Accounts, JQL, Colors, Sizes)</strong>
+                <span>1024×768 • Options Composite</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bottom Call to Action -->
+      <section class="cta-banner">
+        <div class="container cta-box">
+          <div>
+            <h2>Ready to Keep JIRA <strong>One Shortcut Away?</strong></h2>
+            <p>Free, open-source, and built for agile teams who value focus and speed.</p>
+          </div>
+          <div class="hero-ctas" style="margin-bottom: 0;">
+            <a href="https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl" target="_blank" rel="noopener" class="btn btn-lime">
+              Install from Chrome Web Store
+            </a>
+            <a href="https://github.com/kkamkou/chrome-jironimo" target="_blank" rel="noopener" class="btn btn-outline">
+              Star on GitHub
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-row">
+        <div>
+          <strong>jironimo for JIRA™</strong> • Created by <a href="http://2ka.by" target="_blank" rel="noopener">Kanstantsin Kamkou</a> • Licensed under Boost Software License 1.0 (BSL-1.0)
+        </div>
+        <div class="footer-links">
+          <a href="https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl" target="_blank" rel="noopener">Chrome Web Store</a>
+          <a href="https://github.com/kkamkou/chrome-jironimo" target="_blank" rel="noopener">GitHub Repository</a>
+          <a href="https://github.com/kkamkou/chrome-jironimo/issues" target="_blank" rel="noopener">Report an Issue</a>
+          <a href="STORE_COPY.md">Marketing &amp; Store Copy</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Hero Showcase Switcher
+      const showcaseTabs = document.querySelectorAll('.showcase-tab');
+      const showcaseImg = document.getElementById('showcase-image');
+      const showcaseCaption = document.getElementById('showcase-caption');
+      const showcaseStatus = document.getElementById('showcase-status');
+
+      showcaseTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          showcaseTabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          showcaseImg.src = tab.dataset.img;
+          showcaseCaption.textContent = tab.dataset.caption;
+          showcaseStatus.textContent = tab.dataset.status;
+        });
+      });
+
+      // Role Playbook Tabs
+      const roleBtns = document.querySelectorAll('.role-tab-btn');
+      const rolePanels = document.querySelectorAll('.role-panel');
+
+      function activateRole(roleKey) {
+        roleBtns.forEach(b => b.classList.toggle('active', b.dataset.role === roleKey));
+        rolePanels.forEach(p => p.classList.toggle('active', p.id === 'role-' + roleKey));
+      }
+
+      roleBtns.forEach(btn => {
+        btn.addEventListener('click', () => activateRole(btn.dataset.role));
+      });
+
+      document.querySelectorAll('[data-jump-role]').forEach(link => {
+        link.addEventListener('click', () => activateRole(link.dataset.jumpRole));
+      });
+
+      // One-Click Copy JQL Buttons
+      document.querySelectorAll('.copy-jql-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const jql = btn.dataset.jql || '';
+          try {
+            await navigator.clipboard.writeText(jql);
+            const orig = btn.textContent;
+            btn.textContent = 'Copied!';
+            setTimeout(() => { btn.textContent = orig; }, 1600);
+          } catch {
+            btn.textContent = 'Select below';
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
