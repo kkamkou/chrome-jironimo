@@ -8,6 +8,7 @@ export interface JiraClient {
   myself(callback: JiraCallback): void;
   search(data: Record<string, unknown>, callback: JiraCallback): void;
   approximateCount(jql: string, callback: JiraCallback<{ count: number }>): void;
+  validateJql(jql: string, callback: JiraCallback): void;
   filterFavourite(callback: JiraCallback): void;
   priorities(callback: JiraCallback): void;
   issueAssignee(issueId: string | number, data: Record<string, unknown>, callback: JiraCallback): void;
@@ -63,6 +64,30 @@ export abstract class JiraBase implements JiraClient {
 
   transitions(issueId: string | number, data: Record<string, unknown>, callback: JiraCallback): void {
     this.send(`${this.prefix()}/issue/${issueId}/transitions`, data, callback);
+  }
+
+  validateJql(jql: string, callback: JiraCallback): void {
+    this.send(
+      `${this.prefix()}/jql/parse?validation=strict`,
+      { _method: 'POST', queries: [jql] },
+      (err, data) => {
+        if (err && (err.code === 404 || err.code === 405)) {
+          this.search({ jql, maxResults: 1, fields: 'id' }, callback);
+          return;
+        }
+        const entry = data?.queries?.[0];
+        const errors = [
+          ...(entry?.errors ?? []),
+          ...(entry?.warnings ?? []),
+          ...(data?.errorMessages ?? [])
+        ];
+        if (!err && (errors.length || (data?.queries && !entry?.structure))) {
+          callback(new Error(errors.join('; ') || 'Invalid JQL'));
+          return;
+        }
+        callback(err, data);
+      }
+    );
   }
 
   abstract search(data: Record<string, unknown>, callback: JiraCallback): void;

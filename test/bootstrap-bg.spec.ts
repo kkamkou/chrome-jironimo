@@ -53,3 +53,51 @@ test('BackgroundDaemon notifies when workspace issue is updated by another user'
     'BackgroundDaemon cannot create notification for issue updated by another user'
   );
 });
+
+test('BackgroundDaemon opens issue tab when clicked notification was already dismissed by OS', { timeout: 1000 }, async () => {
+  assert.strictEqual(
+    await new Promise<string>(resolve => {
+      let clicked: ((id: string) => void) | undefined;
+      (globalThis as any).chrome = {
+        alarms: {
+          onAlarm: { addListener: () => undefined },
+          get: () => undefined,
+          create: () => undefined
+        },
+        notifications: {
+          onClicked: {
+            addListener: (fn: (id: string) => void) => {
+              clicked = fn;
+            }
+          },
+          onButtonClicked: { addListener: () => undefined }
+        },
+        runtime: {
+          onInstalled: { addListener: () => undefined }
+        },
+        tabs: {
+          create: (opts: { url: string }) => resolve(opts.url)
+        }
+      };
+      const store: Record<string, string> = {
+        version: '600',
+        accounts: JSON.stringify([
+          { enabled: true, id: 'default', label: 'Default', timeout: 5, type: 'basic', url: 'https://jira.example' }
+        ])
+      };
+      const settings = new Settings(store, key => key, () => undefined);
+      const notifications = new Notifications(
+        {
+          create: (id, _opts, cb) => cb(id),
+          update: (_id, _opts, cb) => cb(true),
+          clear: (_id, cb) => cb(false)
+        },
+        'icons/app-128.png'
+      );
+      new BackgroundDaemon(settings, notifications).start();
+      clicked?.('issue;default;DEMO-10');
+    }),
+    'https://jira.example/browse/DEMO-10',
+    'BackgroundDaemon cannot open issue URL when clicked notification is dismissed'
+  );
+});

@@ -81,3 +81,27 @@ test('JiraV3 requests configured priorities from v3 priority endpoint', { timeou
     'JiraV3 cannot fetch priority definitions from v3 endpoint'
   );
 });
+
+test('JiraV3 reports JQL parse errors from v3 jql parse endpoint', { timeout: 1000 }, async () => {
+  assert.strictEqual(
+    await new Promise<string>(resolve => {
+      new JiraV3(
+        new Request(async () => ({
+          data: {
+            queries: [
+              {
+                query: 'reporter = currentUer()',
+                errors: ["Unable to find JQL function 'currentUer()'."]
+              }
+            ]
+          },
+          status: 200
+        })),
+        'https://jira.example',
+        4000
+      ).validateJql('reporter = currentUer()', err => resolve(err?.message ?? ''));
+    }),
+    "Unable to find JQL function 'currentUer()'.",
+    'JiraV3 cannot surface JQL parse errors from v3 jql parse endpoint'
+  );
+});

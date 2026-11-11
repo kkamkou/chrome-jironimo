@@ -36,6 +36,10 @@ export class Jira implements JiraClient {
     this.delegate((client, cb) => client.approximateCount(jql, cb), callback);
   }
 
+  validateJql(jql: string, callback: JiraCallback): void {
+    this.delegate((client, cb) => client.validateJql(jql, cb), callback);
+  }
+
   filterFavourite(callback: JiraCallback): void {
     this.delegate((client, cb) => client.filterFavourite(cb), callback);
   }
