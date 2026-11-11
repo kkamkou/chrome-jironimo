@@ -48,6 +48,11 @@ export class RouteSettingsWorkspace {
     cfg => new FetchTransport().send(cfg),
     key => this.i18n.transform(key)
   );
+  private readonly statuses = new WeakMap<WorkspaceConfig, number>();
+  private readonly debounced = _.debounce(
+    (workspace: WorkspaceConfig) => this.verify(workspace),
+    500
+  );
   accounts: AccountConfig[] = this.settings.accounts.filter(acc => acc.enabled);
   accountSelected: AccountConfig | 'ALL' | '' = '';
   importingFavorites = false;
@@ -86,11 +91,47 @@ export class RouteSettingsWorkspace {
         return;
       }
     }
+    this.debounced.cancel();
     this.accountSelected = target;
     this.workspaces = this.settings.workspaces
       .filter(ws => ws.account === this.accountId(target))
       .map(ws => ({ ...ws }));
-    this.focusedWorkspace = this.workspaces[this.workspaces.length - 1] ?? null;
+    this.focusedWorkspace = null;
+  }
+
+  status(workspace: WorkspaceConfig): number {
+    return this.statuses.get(workspace) ?? -1;
+  }
+
+  type(workspace: WorkspaceConfig): void {
+    this.statuses.set(workspace, -1);
+    this.debounced(workspace);
+  }
+
+  verify(workspace: WorkspaceConfig): Promise<boolean> {
+    this.debounced.cancel();
+    const query = String(workspace.query ?? '').trim();
+    const account =
+      this.accountSelected !== 'ALL' && this.accountSelected !== ''
+        ? this.accountSelected
+        : this.accounts[0];
+    if (!query || !account) {
+      this.statuses.set(workspace, 0);
+      this.cdr.markForCheck();
+      return Promise.resolve(false);
+    }
+    this.statuses.set(workspace, 2);
+    this.cdr.markForCheck();
+    return new Promise(resolve => {
+      this.jira.instance(account).validateJql(query, err => {
+        const valid = !err && String(workspace.query ?? '').trim() === query;
+        if (String(workspace.query ?? '').trim() === query) {
+          this.statuses.set(workspace, err ? 0 : 1);
+          this.cdr.markForCheck();
+        }
+        resolve(valid);
+      });
+    });
   }
 
   add(): void {
@@ -109,16 +150,14 @@ export class RouteSettingsWorkspace {
   }
 
   selectIcon(icon: string): void {
-    const target = this.focusedWorkspace ?? this.workspaces[this.workspaces.length - 1];
-    if (target) {
-      target.icon = icon;
+    if (this.focusedWorkspace) {
+      this.focusedWorkspace.icon = icon;
       this.cdr.markForCheck();
     }
   }
 
   move(index: number, offset: number): void {
     this.workspaces = this.settings.moveWorkspace(this.workspaces, index, offset);
-    this.focusedWorkspace = this.workspaces[index + offset] ?? this.focusedWorkspace;
     this.cdr.markForCheck();
   }
 
@@ -129,9 +168,10 @@ export class RouteSettingsWorkspace {
     if (this.workspaces.length < 2) {
       return false;
     }
+    this.debounced.cancel();
     this.workspaces = this.workspaces.filter(ws => ws !== workspace);
     if (this.focusedWorkspace === workspace) {
-      this.focusedWorkspace = this.workspaces[this.workspaces.length - 1] ?? null;
+      this.focusedWorkspace = null;
     }
     this.cdr.markForCheck();
     return true;
@@ -161,7 +201,6 @@ export class RouteSettingsWorkspace {
         }));
       if (imported.length) {
         this.workspaces = [...this.workspaces, ...imported];
-        this.focusedWorkspace = this.workspaces[this.workspaces.length - 1] ?? null;
       }
       this.importingFavorites = false;
       this.messageService.clear();
@@ -178,14 +217,29 @@ export class RouteSettingsWorkspace {
     return /\bupdated(date)?\b/.test(String(query ?? '').toLowerCase());
   }
 
-  save(): void {
+  async save(): Promise<void> {
     if (this.accountSelected === '') {
+      return;
+    }
+    this.debounced.cancel();
+    const results = await Promise.all(
+      this.workspaces.map(ws => this.status(ws) === 1 || this.verify(ws))
+    );
+    if (!results.every(Boolean)) {
+      this.messageService.clear();
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Jironimo',
+        detail: this.i18n.transform('jiraApiCheckSettings')
+      });
+      this.cdr.markForCheck();
       return;
     }
     const id = this.accountId(this.accountSelected);
     this.settings.workspaces = this.settings.workspaces
       .filter(ws => ws.account !== id)
       .concat(this.workspaces.map(ws => ({ ...ws })));
+    this.focusedWorkspace = null;
     this.messageService.clear();
     this.messageService.add({
       severity: 'success',

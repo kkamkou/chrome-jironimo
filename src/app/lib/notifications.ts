@@ -53,12 +53,9 @@ export class Notifications implements NotificationChannel {
 
   clear(id: string, cb?: NotificationCallback): void {
     this.port.clear(id, wasCleared => {
-      const err = wasCleared ? null : true;
-      if (!err) {
-        delete this.active[id];
-      }
+      delete this.active[id];
       if (cb) {
-        cb(err, id);
+        cb(wasCleared ? null : true, id);
       }
     });
   }

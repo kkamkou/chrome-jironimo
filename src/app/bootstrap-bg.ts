@@ -204,40 +204,54 @@ export class BackgroundDaemon {
   }
 
   private onNotificationClicked(nId: string): void {
-    this.notifications.clear(nId, err => {
-      if (err) {
-        return;
-      }
-      if (nId === 'jironimo-update') {
-        chrome.tabs.create({ active: true, url: this.settings.getUriSettings() });
-        return;
-      }
-      const parts = nId.split(';');
-      const target = this.settings.accounts.find(acc => acc.id === parts[1]);
-      if (parts[0] === 'auth' && target?.url) {
-        chrome.tabs.create({ active: true, url: target.url });
-        return;
-      }
-      if (parts[0] === 'issue' && target?.url) {
-        chrome.tabs.create({ active: true, url: `${target.url}/browse/${parts[2]}` });
-        return;
-      }
-      console.error(`Unknown notification subtype "${parts[0]}"`);
+    this.notifications.clear(nId, () => {
+      this.hydrate(() => {
+        if (nId === 'jironimo-update') {
+          chrome.tabs.create({ active: true, url: this.settings.getUriSettings() });
+          return;
+        }
+        const parts = nId.split(';');
+        const target = this.settings.accounts.find(acc => acc.id === parts[1]);
+        if (parts[0] === 'auth' && target?.url) {
+          chrome.tabs.create({ active: true, url: target.url });
+          return;
+        }
+        if (parts[0] === 'issue' && target?.url) {
+          chrome.tabs.create({ active: true, url: `${target.url}/browse/${parts[2]}` });
+          return;
+        }
+        console.error(`Unknown notification subtype "${parts[0]}"`);
+      });
     });
   }
 
-  private onNotificationButton(nId: string): void {
-    if (nId === 'jironimo-update') {
-      chrome.tabs.create({ active: true, url: 'http://2ka.by/article/chrome-jironimo#changelog' });
+  private hydrate(done: () => void): void {
+    if (typeof chrome !== 'undefined' && chrome.storage?.local) {
+      chrome.storage.local.get(null, items => {
+        if (items) {
+          this.settings.setStorageData(items as Record<string, string>);
+        }
+        done();
+      });
       return;
     }
-    const parts = nId.split(';');
-    if (parts[0] === 'auth') {
-      this.settings.accounts = this.settings.accounts.map(acc =>
-        acc.id === parts[1] ? { ...acc, enabled: false } : acc
-      );
-      this.notifications.clear(nId);
-    }
+    done();
+  }
+
+  private onNotificationButton(nId: string): void {
+    this.hydrate(() => {
+      if (nId === 'jironimo-update') {
+        chrome.tabs.create({ active: true, url: 'http://2ka.by/article/chrome-jironimo#changelog' });
+        return;
+      }
+      const parts = nId.split(';');
+      if (parts[0] === 'auth') {
+        this.settings.accounts = this.settings.accounts.map(acc =>
+          acc.id === parts[1] ? { ...acc, enabled: false } : acc
+        );
+        this.notifications.clear(nId);
+      }
+    });
   }
 
   private onInstalled(details: chrome.runtime.InstalledDetails): void {

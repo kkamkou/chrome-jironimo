@@ -43,7 +43,7 @@
           </span>
         </div>
 
-        <div class="span10">
+        <div class="span9">
           <div class="flex gap-3 mb-2">
             <div class="w-40 shrink-0">
               <div class="input-control text">
@@ -51,7 +51,6 @@
                   [title]="'titleOptionsJqlIcon' | i18n"
                   [placeholder]="'placeholderOptionsJqlIcon' | i18n"
                   [(ngModel)]="workspace.icon"
-                  (focus)="focusedWorkspace = workspace"
                   fluid>
               </div>
             </div>
@@ -62,19 +61,38 @@
                   [title]="'placeholderOptionsJqlTitle' | i18n"
                   [placeholder]="'placeholderOptionsJqlTitle' | i18n"
                   [(ngModel)]="workspace.title"
-                  (focus)="focusedWorkspace = workspace"
                   fluid>
               </div>
             </div>
           </div>
 
+          <div class="flex flex-wrap items-center gap-1.5 mb-2" *ngIf="focusedWorkspace === workspace">
+            <p-tag
+              *ngFor="let iconName of iconSuggestions"
+              severity="secondary"
+              class="cursor-pointer select-none"
+              (click)="selectIcon(iconName)">
+              <i class="icon-{{ iconName }} mr-1"></i> {{ iconName }}
+            </p-tag>
+          </div>
+
           <div class="input-control textarea">
-            <textarea pTextarea [name]="'query_' + idx" required
-              [title]="'placeholderOptionsJqlQuery' | i18n"
-              [placeholder]="'placeholderOptionsJqlQuery' | i18n"
-              [(ngModel)]="workspace.query"
-              (focus)="focusedWorkspace = workspace"
-              fluid></textarea>
+            <div class="flex items-stretch">
+              <textarea pTextarea [name]="'query_' + idx" required
+                [title]="'placeholderOptionsJqlQuery' | i18n"
+                [placeholder]="'placeholderOptionsJqlQuery' | i18n"
+                [(ngModel)]="workspace.query"
+                (ngModelChange)="type(workspace)"
+                fluid></textarea>
+
+              <button pButton type="button" class="button bg-fg-darkBlue w-10 shrink-0"
+                (click)="verify(workspace)">
+                <i class="icon-help fg-white" *ngIf="status(workspace) < 0"></i>
+                <i class="icon-cancel-2 fg-red" *ngIf="status(workspace) === 0"></i>
+                <i class="icon-checkmark fg-green" *ngIf="status(workspace) === 1"></i>
+                <i class="icon-clock fg-orange" *ngIf="status(workspace) === 2"></i>
+              </button>
+            </div>
 
             <div class="label info"
               *ngIf="workspace.changesNotify && isQueryValidForWatch(workspace.query)">
@@ -108,8 +126,8 @@
           </div>
         </div>
 
-        <div class="span1 text-center" *ngIf="workspaces.length > 1">
-          <p-buttongroup class="flex-col">
+        <div class="span2" *ngIf="workspaces.length > 1">
+          <p-buttongroup class="button-set">
             <button pButton type="button" severity="secondary" class="w-8 h-8 !p-0"
               [disabled]="idx === 0"
               (click)="move(idx, -1)"><i class="icon-arrow-up"></i></button>
@@ -126,19 +144,9 @@
 
     <div class="row mt-3">
       <div class="span11 offset1">
-        <div class="flex flex-wrap items-center gap-2">
-          <button pButton (click)="add()" type="button" severity="success" class="success mr-2">
-            <i class="icon-plus-2"></i> {{ 'optionsJqlAddOne' | i18n }}
-          </button>
-
-          <p-tag
-            *ngFor="let iconName of iconSuggestions"
-            severity="secondary"
-            class="cursor-pointer select-none"
-            (click)="selectIcon(iconName)">
-            <i class="icon-{{ iconName }} mr-1"></i> {{ iconName }}
-          </p-tag>
-        </div>
+        <button pButton (click)="add()" type="button" severity="success" class="success">
+          <i class="icon-plus-2"></i> {{ 'optionsJqlAddOne' | i18n }}
+        </button>
       </div>
     </div>
 

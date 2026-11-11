@@ -88,7 +88,8 @@ export class JiraRegistry {
               (rej?.status === 404 || rej?.status === 405) &&
               (url.includes('/rest/api/3/') ||
                 url.endsWith('/rest/api/2/search/jql') ||
-                url.endsWith('/rest/api/2/search/approximate-count'))
+                url.endsWith('/rest/api/2/search/approximate-count') ||
+                url.includes('/jql/parse'))
             ) {
               throw { ...rej, status: rej.status };
             }
