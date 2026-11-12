@@ -37,3 +37,22 @@ test('FetchTransport rejects non-2xx responses with status body and lowercase he
     'FetchTransport cannot reject with HTTP status and lowercase headers'
   );
 });
+
+test('FetchTransport decodes empty and plain-text payloads without JSON parse errors', { timeout: 1000 }, async () => {
+  assert.deepStrictEqual(
+    await (async () => {
+      const empty = await new FetchTransport(async () => new globalThis.Response(null, { status: 204 })).send({
+        method: 'POST',
+        url: 'https://jira.example/rest/api/3/issue/1/assignee',
+        data: { accountId: 'u1' }
+      });
+      const plain = await new FetchTransport(async () => new globalThis.Response('plain-body', { status: 200 })).send({
+        method: 'GET',
+        url: 'https://jira.example/ping'
+      });
+      return { empty: empty.data, plain: plain.data };
+    })(),
+    { empty: null, plain: 'plain-body' },
+    'FetchTransport cannot decode empty and plain-text HTTP bodies'
+  );
+});

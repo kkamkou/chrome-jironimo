@@ -73,3 +73,35 @@ test('Jira retains JiraV2 delegate for subsequent requests after v3 404 fallback
     'Jira cannot retain JiraV2 delegate for subsequent requests after v3 fallback'
   );
 });
+
+test('Jira delegates count validation favourites assignee worklog and transitions endpoints', { timeout: 1000 }, async () => {
+  assert.deepStrictEqual(
+    await (async () => {
+      const seen: string[] = [];
+      const client = new Jira(
+        new Request(async params => {
+          seen.push(`${params.method} ${params.url}`);
+          return { data: { count: 5, queries: [{ structure: {} }] }, status: 200 };
+        }),
+        'https://jira.example',
+        4000
+      );
+      await new Promise<void>(r => client.approximateCount('project = A', () => r()));
+      await new Promise<void>(r => client.validateJql('project = A', () => r()));
+      await new Promise<void>(r => client.filterFavourite(() => r()));
+      await new Promise<void>(r => client.issueAssignee('1', { _method: 'PUT', accountId: 'u1' }, () => r()));
+      await new Promise<void>(r => client.issueWorklog('1', { _method: 'POST', timeSpent: '1m' }, () => r()));
+      await new Promise<void>(r => client.transitions('1', { _method: 'POST', transition: { id: '2' } }, () => r()));
+      return seen;
+    })(),
+    [
+      'POST https://jira.example/rest/api/3/search/approximate-count',
+      'POST https://jira.example/rest/api/3/jql/parse?validation=strict',
+      'GET https://jira.example/rest/api/3/filter/favourite',
+      'PUT https://jira.example/rest/api/3/issue/1/assignee',
+      'POST https://jira.example/rest/api/3/issue/1/worklog?adjustEstimate=auto',
+      'POST https://jira.example/rest/api/3/issue/1/transitions'
+    ],
+    'Jira cannot delegate count validation favourites assignee worklog and transitions calls'
+  );
+});

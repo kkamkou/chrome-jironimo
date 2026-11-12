@@ -17,3 +17,18 @@ test('PaginationSlice computes last page offset from total items and page limit'
     'PaginationSlice cannot compute offset for last page'
   );
 });
+
+test('PaginationSlice computes first previous and next page offsets', { timeout: 1000 }, () => {
+  assert.deepStrictEqual(
+    (() => {
+      const slice = new PaginationSlice(16, 16, 48);
+      return {
+        first: slice.firstOffset(),
+        prev: slice.prevOffset(),
+        next: slice.nextOffset()
+      };
+    })(),
+    { first: 0, prev: 0, next: 32 },
+    'PaginationSlice cannot compute first previous and next page offsets'
+  );
+});

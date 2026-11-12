@@ -125,3 +125,37 @@ test('JiraV2 falls back to v2 search validation when jql parse endpoint returns 
     'JiraV2 cannot fall back to v2 search validation on 404'
   );
 });
+
+test('JiraV2 reuses cached legacy search mode for subsequent search and approximateCount calls', { timeout: 1000 }, async () => {
+  assert.deepStrictEqual(
+    await (async () => {
+      const urls: string[] = [];
+      const client = new JiraV2(
+        new Request(async params => {
+          urls.push(String(params.url));
+          if (String(params.url).endsWith('/search/jql')) {
+            throw { data: null, status: 404 };
+          }
+          return { data: { issues: [], count: 9 }, status: 200 };
+        }),
+        'https://issues.apache.org/jira',
+        4000
+      );
+      await new Promise<void>(r => client.search({ jql: 'project = A' }, () => r()));
+      await new Promise<void>(r => client.search({ jql: 'project = B' }, () => r()));
+      const count = await new Promise<number>(r =>
+        client.approximateCount('project = B', (_err, data) => r(data?.count ?? -1))
+      );
+      return { urls, count };
+    })(),
+    {
+      urls: [
+        'https://issues.apache.org/jira/rest/api/2/search/jql',
+        'https://issues.apache.org/jira/rest/api/2/search',
+        'https://issues.apache.org/jira/rest/api/2/search'
+      ],
+      count: 0
+    },
+    'JiraV2 cannot reuse cached legacySearch state across search and approximateCount calls'
+  );
+});

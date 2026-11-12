@@ -33,3 +33,19 @@ test('TimerWorkLogEntry rejects unknown state values', { timeout: 1000 }, () => 
     'TimerWorkLogEntry doesnt reject unknown state values'
   );
 });
+
+test('TimerWorkLogEntry exposes identifier and resumes stopped session without resetting timestamp', { timeout: 1000 }, () => {
+  assert.deepStrictEqual(
+    (() => {
+      const entry = new TimerWorkLogEntry('105', 'STOPPED', 1700000009000);
+      entry.resume();
+      return { id: entry.id, started: entry.started, json: entry.toJSON() };
+    })(),
+    {
+      id: '105',
+      started: true,
+      json: { id: '105', state: 'STARTED', timestamp: 1700000009000 }
+    },
+    'TimerWorkLogEntry cannot expose identifier and resume stopped session'
+  );
+});

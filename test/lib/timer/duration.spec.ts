@@ -49,3 +49,15 @@ test('Duration converts milliseconds into rounded minutes', { timeout: 1000 }, (
     'Duration cannot round two and a half minutes to three'
   );
 });
+
+test('Duration humanizes single-hour single-day and multi-day intervals', { timeout: 1000 }, () => {
+  assert.deepStrictEqual(
+    [
+      new Duration(3600000).humanize(),
+      new Duration(86400000).humanize(),
+      new Duration(259200000).humanize()
+    ],
+    ['an hour', 'a day', '3 days'],
+    'Duration cannot humanize hour day and multi-day intervals'
+  );
+});
