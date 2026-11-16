@@ -2,20 +2,26 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { Notifications } from '../../src/app/lib/notifications.ts';
 
-test('Notifications creates notification with default icon when id is new', { timeout: 1000 }, async () => {
-  assert.strictEqual(
-    await new Promise<string>(resolve => {
+test('Notifications creates clickable notification with default icon when id is new', { timeout: 1000 }, async () => {
+  assert.deepStrictEqual(
+    await new Promise<{ id: string; clickable: boolean }>(resolve => {
       new Notifications(
         {
-          create: (id, _options, cb) => cb(id),
+          create: (id, options, cb) => {
+            cb(id);
+            resolve({ id, clickable: Boolean(options.isClickable) });
+          },
           update: (_id, _options, cb) => cb(true),
           clear: (_id, cb) => cb(true)
         },
         'chrome-extension://id/icons/app-128.png'
-      ).createOrUpdate('issue;default;JIR-1', { title: 'JIR-1', message: 'Updated' }, (_err, id) => resolve(String(id)));
+      ).createOrUpdate('issue;default;JIR-1', {
+        title: 'JIR-1',
+        message: 'Updated'
+      });
     }),
-    'issue;default;JIR-1',
-    'Notifications cannot create a new notification'
+    { id: 'issue;default;JIR-1', clickable: true },
+    'Notifications cannot create a clickable notification with default options'
   );
 });
 

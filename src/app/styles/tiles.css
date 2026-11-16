@@ -1,0 +1,305 @@
+/* Metro Live Tiles */
+.tile {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  grid-column: span 2;
+  grid-row: span 2;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0 !important;
+  cursor: pointer;
+  background-color: #555555;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #ffffff;
+  outline-width: 1px;
+  outline-style: solid;
+  outline-color: transparent;
+  box-shadow: none !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: transform 90ms ease, outline-color 90ms ease;
+}
+
+.tile:hover {
+  outline: 3px solid rgba(0, 0, 0, 0.38) !important;
+}
+
+.tile:active {
+  transform: scale(0.985);
+}
+
+.tile.half {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+.tile.half .tile-content {
+  height: 100% !important;
+  padding: 4px 5px !important;
+}
+
+.tile.half .tile-content h5 {
+  font-size: 11px !important;
+  line-height: 14px !important;
+}
+
+.tile.half .tile-content h6,
+.tile.half .brand {
+  display: none !important;
+}
+
+.tile.half .tile-content p {
+  height: 26px;
+  font-size: 10px;
+  line-height: 13px !important;
+  -webkit-line-clamp: 2;
+  margin-top: 2px;
+}
+
+.tile.half div.toolbar {
+  height: 100%;
+  padding: 2px;
+}
+
+.tile.half div.toolbar .button-set {
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  gap: 2px;
+}
+
+.tile.half div.toolbar .p-button {
+  width: 22px;
+  height: 22px;
+  min-height: 22px;
+  font-size: 11px;
+}
+
+.tile.double {
+  grid-column: span 4;
+}
+
+.tile.triple {
+  grid-column: span 6;
+}
+
+.tile.quadro {
+  grid-column: span 8;
+}
+
+.tile.selected {
+  border-width: 2px;
+}
+
+.tile.selected::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-top: 28px solid #4390df;
+  border-left: 28px solid transparent;
+  z-index: 101;
+}
+
+.tile.selected::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  right: 2px;
+  width: 11px;
+  height: 11px;
+  background-color: #ffffff;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath transform='translate(0,960) scale(1,-1)' d='M864 832L384 352 160 576 0 416l384-384 640 640z'/%3E%3C/svg%3E") no-repeat center / contain;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath transform='translate(0,960) scale(1,-1)' d='M864 832L384 352 160 576 0 416l384-384 640 640z'/%3E%3C/svg%3E") no-repeat center / contain;
+  z-index: 102;
+}
+
+.tile.selected .issue-icon-status {
+  display: none;
+}
+
+.tile .tile-content {
+  display: block !important;
+  padding: 6px 8px 0 !important;
+  height: 93px !important;
+  overflow: hidden;
+}
+
+.tile .tile-content h5,
+.tile .tile-content h6 {
+  margin: 0 !important;
+  line-height: 16px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tile .tile-content h5 {
+  font-size: 13px !important;
+  font-weight: 700;
+}
+
+.tile .tile-content h6 {
+  font-size: 11px !important;
+  font-weight: 600;
+  opacity: 0.92;
+}
+
+.tile .tile-content p {
+  margin-top: 2px;
+  height: 52px;
+  font-size: 12px;
+  line-height: 13px !important;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+}
+
+.tile .brand {
+  position: absolute;
+  bottom: 3px;
+  left: 0;
+  right: 0;
+  min-height: 20px !important;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tile .brand .name {
+  display: block;
+  width: 100%;
+  font-size: 12px;
+  line-height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 0 !important;
+  color: #ffffff;
+}
+
+.tile .brand .name sup {
+  float: right;
+  font-size: 10px;
+  line-height: 1;
+  margin-top: 5px;
+  margin-left: 4px;
+  opacity: 0.92;
+  top: 0;
+}
+
+.tile .brand .badge {
+  position: absolute;
+  bottom: 0;
+  right: 8px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 12px;
+  z-index: 1;
+}
+
+.tile div.toolbar {
+  margin-bottom: 0;
+  display: none;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.72);
+  width: 100%;
+  height: 32px;
+  z-index: 5;
+  padding: 3px 4px;
+}
+
+.tile div.toolbar .button-set {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 100%;
+}
+
+.tile div.toolbar .p-button {
+  width: 26px;
+  height: 26px;
+  min-height: 26px;
+  padding: 0;
+  font-size: 12px;
+}
+
+.tile div.transitions {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 105;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.tile div.transitions a.close {
+  padding: 2px 6px;
+  float: right;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.tile div.transitions a:hover {
+  color: #f0a30a !important;
+  text-decoration: none;
+}
+
+.tile .progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: rgba(255, 255, 255, 0.88);
+  z-index: 2;
+}
+
+.tile .progress-bar .p-progressbar {
+  height: 3px !important;
+  border: 0 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+
+.tile .progress-bar .bar {
+  height: 100%;
+}
+
+.tile .issue-icon {
+  position: absolute;
+  top: 0;
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.tile .issue-icon img {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+
+.tile .issue-icon-status {
+  right: 0;
+}

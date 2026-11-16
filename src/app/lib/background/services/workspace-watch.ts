@@ -69,6 +69,7 @@ export class WorkspaceWatch implements IssueMonitor {
                 this.notifications.createOrUpdate(
                   ['issue', entry.account.id, issue.key].join(';'),
                   {
+                    contextMessage: `${entry.account.url}/browse/${issue.key}`,
                     eventTime: updated.valueOf(),
                     iconUrl,
                     isClickable: true,

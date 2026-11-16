@@ -65,7 +65,7 @@ export class Notifications implements NotificationChannel {
     params: Record<string, unknown>,
     cb: NotificationCallback = () => undefined
   ): void {
-    const options = { type: 'basic', iconUrl: this.icon, ...params };
+    const options = { type: 'basic', iconUrl: this.icon, isClickable: true, ...params };
     this.port.create(id, options, createdId => {
       const err = createdId ? null : true;
       if (!err) {
@@ -81,6 +81,9 @@ export class Notifications implements NotificationChannel {
     cb: NotificationCallback = () => undefined
   ): void {
     this.port.update(id, params, wasUpdated => {
+      if (!wasUpdated) {
+        delete this.active[id];
+      }
       cb(wasUpdated ? null : true, id);
     });
   }

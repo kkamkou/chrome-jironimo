@@ -7,7 +7,7 @@ import { Settings } from '../../../../src/app/lib/settings.ts';
 test('WorkspaceWatch deduplicates issues across workspaces and ignores changes made by myself', { timeout: 1000 }, async () => {
   assert.deepStrictEqual(
     await (async () => {
-      const notified: string[] = [];
+      const notified: Array<{ id: string; url: string }> = [];
       const settings = new Settings(
         {
           version: '600',
@@ -21,8 +21,8 @@ test('WorkspaceWatch deduplicates issues across workspaces and ignores changes m
       );
       const notifications = new Notifications(
         {
-          create: (id, _opts, cb) => {
-            notified.push(id);
+          create: (id, opts, cb) => {
+            notified.push({ id, url: String(opts.contextMessage ?? '') });
             cb(id);
           },
           update: (_id, _opts, cb) => cb(true),
@@ -68,7 +68,7 @@ test('WorkspaceWatch deduplicates issues across workspaces and ignores changes m
       await new WorkspaceWatch(settings, notifications, audit).poll();
       return notified;
     })(),
-    ['issue;corp;DEMO-10'],
-    'WorkspaceWatch cannot deduplicate workspace issues and ignore self-authored updates'
+    [{ id: 'issue;corp;DEMO-10', url: 'https://corp.jira/browse/DEMO-10' }],
+    'WorkspaceWatch cannot deduplicate workspace issues and create notifications with url'
   );
 });

@@ -8,7 +8,7 @@ export interface AlertEvents {
 }
 
 /**
- * Routes desktop notification clicks, action buttons, and extension install or update events.
+ * Routes desktop notification clicks, action buttons, and extension install events.
  */
 export class NotificationAction implements AlertEvents {
   private readonly settings: SettingsStore;
@@ -23,10 +23,6 @@ export class NotificationAction implements AlertEvents {
   clicked(id: string): void {
     this.notifications.clear(id, () => {
       this.hydrate(() => {
-        if (id === 'jironimo-update') {
-          chrome.tabs.create({ active: true, url: this.settings.getUriSettings() });
-          return;
-        }
         const parts = id.split(';');
         const target = this.settings.accounts.find(acc => acc.id === parts[1]);
         if (parts[0] === 'auth' && target?.url) {
@@ -44,13 +40,6 @@ export class NotificationAction implements AlertEvents {
 
   button(id: string): void {
     this.hydrate(() => {
-      if (id === 'jironimo-update') {
-        chrome.tabs.create({
-          active: true,
-          url: 'http://2ka.by/article/chrome-jironimo#changelog'
-        });
-        return;
-      }
       const parts = id.split(';');
       if (parts[0] === 'auth') {
         this.settings.accounts = this.settings.accounts.map(acc =>
@@ -68,15 +57,8 @@ export class NotificationAction implements AlertEvents {
       return;
     }
     if (details.reason === 'update') {
-      this.notifications.createOrUpdate('jironimo-update', {
-        buttons: [
-          {
-            title: 'Changelog',
-            iconUrl: chrome.runtime.getURL('icons/eye-32.png')
-          }
-        ],
-        title: chrome.i18n.getMessage('messageJironimoUpdatedTitle'),
-        message: chrome.i18n.getMessage('messageJironimoUpdatedText')
+      this.hydrate(() => {
+        this.settings.activity = { ...this.settings.activity, updateHint: true };
       });
     }
   }

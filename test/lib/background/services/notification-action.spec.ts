@@ -4,7 +4,7 @@ import { NotificationAction } from '../../../../src/app/lib/background/services/
 import { Notifications } from '../../../../src/app/lib/notifications.ts';
 import { Settings } from '../../../../src/app/lib/settings.ts';
 
-test('NotificationAction opens settings and account URLs when update or auth notifications are clicked', { timeout: 1000 }, async () => {
+test('NotificationAction opens account and issue URLs when auth or issue notifications are clicked', { timeout: 1000 }, async () => {
   assert.deepStrictEqual(
     await (async () => {
       const opened: string[] = [];
@@ -33,25 +33,19 @@ test('NotificationAction opens settings and account URLs when update or auth not
         'icons/app-128.png'
       );
       const action = new NotificationAction(settings, notifications);
-      action.clicked('jironimo-update');
       action.clicked('auth;corp');
+      action.clicked('issue;corp;DEMO-7');
       return opened;
     })(),
-    ['views/default.html#/settings/general', 'https://corp.jira'],
-    'NotificationAction cannot open settings and account URLs on notification clicks'
+    ['https://corp.jira', 'https://corp.jira/browse/DEMO-7'],
+    'NotificationAction cannot open account and issue URLs on notification clicks'
   );
 });
 
-test('NotificationAction opens changelog and disables unauthorized account on button click', { timeout: 1000 }, () => {
+test('NotificationAction disables unauthorized account on button click', { timeout: 1000 }, () => {
   assert.deepStrictEqual(
     (() => {
-      const opened: string[] = [];
       const cleared: string[] = [];
-      (globalThis as any).chrome = {
-        tabs: {
-          create: (opts: { url: string }) => opened.push(opts.url)
-        }
-      };
       const settings = new Settings(
         {
           version: '600',
@@ -74,20 +68,18 @@ test('NotificationAction opens changelog and disables unauthorized account on bu
         'icons/app-128.png'
       );
       const action = new NotificationAction(settings, notifications);
-      action.button('jironimo-update');
       action.button('auth;corp');
-      return { opened, enabled: settings.accounts[0].enabled, cleared };
+      return { enabled: settings.accounts[0].enabled, cleared };
     })(),
     {
-      opened: ['http://2ka.by/article/chrome-jironimo#changelog'],
       enabled: false,
       cleared: ['auth;corp']
     },
-    'NotificationAction cannot open changelog and disable account on notification button clicks'
+    'NotificationAction cannot disable account on notification button clicks'
   );
 });
 
-test('NotificationAction handles install and update lifecycle events', { timeout: 1000 }, () => {
+test('NotificationAction records update hint on extension update without desktop notification', { timeout: 1000 }, () => {
   assert.deepStrictEqual(
     (() => {
       const opened: string[] = [];
@@ -100,11 +92,7 @@ test('NotificationAction handles install and update lifecycle events', { timeout
         runtime: {
           setUninstallURL: (url: string) => {
             uninstallUrl = url;
-          },
-          getURL: (path: string) => path
-        },
-        i18n: {
-          getMessage: (key: string) => key
+          }
         }
       };
       const settings = new Settings({ version: '600' }, key => key, () => undefined);
@@ -122,13 +110,19 @@ test('NotificationAction handles install and update lifecycle events', { timeout
       const action = new NotificationAction(settings, notifications);
       action.installed({ reason: 'install' } as chrome.runtime.InstalledDetails);
       action.installed({ reason: 'update' } as chrome.runtime.InstalledDetails);
-      return { opened, hasUninstall: uninstallUrl.includes('docs.google.com'), created };
+      return {
+        opened,
+        hasUninstall: uninstallUrl.includes('docs.google.com'),
+        created,
+        updateHint: settings.activity.updateHint
+      };
     })(),
     {
       opened: ['views/default.html#/settings/general'],
       hasUninstall: true,
-      created: ['jironimo-update']
+      created: [],
+      updateHint: true
     },
-    'NotificationAction cannot handle extension install and update events'
+    'NotificationAction cannot record update hint on extension update without desktop notifications'
   );
 });

@@ -60,7 +60,7 @@
         <i class="icon-filter"></i>
       </button>
 
-      <button pButton type="button" size="small"
+      <button #toolsButton pButton type="button" size="small"
         [title]="'indexTooltipTools' | i18n"
         id="advanced-panel-icon"
         [severity]="homePanelVisible ? 'contrast' : 'secondary'"
@@ -68,6 +68,16 @@
         (click)="toggleHomePanel()">
         <i class="icon-mouse"></i>
       </button>
+
+      <p-popover #updatePopover [dismissable]="false" appendTo="body" styleClass="update-hint-popover">
+        <div class="update-hint">
+          <div class="update-hint-header">
+            <strong>{{ 'messageJironimoUpdatedTitle' | i18n }}</strong>
+            <button type="button" class="update-hint-close" (click)="dismissUpdateHint()">&times;</button>
+          </div>
+          <p (click)="dismissUpdateHint(); tabSettings()">{{ 'messageJironimoUpdatedText' | i18n }}</p>
+        </div>
+      </p-popover>
     </div>
 
   </div>

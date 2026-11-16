@@ -46,6 +46,8 @@ export class TileToolbarComponent {
         ? { _method: 'PUT', accountId: info.accountId }
         : { _method: 'PUT', name: info.name };
       const notifyParams = {
+        contextMessage: `${this.account.url}/browse/${issue.key}`,
+        isClickable: true,
         title: issue.key,
         message: this.i18n.transform('notificationAssignedToMe')
       };

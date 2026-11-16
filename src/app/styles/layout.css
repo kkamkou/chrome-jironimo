@@ -1,0 +1,75 @@
+/* Layout Helpers */
+.clearfix::before,
+.clearfix::after {
+  display: table;
+  content: "";
+}
+
+.clearfix::after {
+  clear: both;
+}
+
+.padding10 {
+  padding: 10px !important;
+}
+
+.padding20 {
+  padding: 20px !important;
+}
+
+.place-left {
+  float: left !important;
+}
+
+.place-right {
+  float: right !important;
+}
+
+/* Metro 12-Column Grid for Options Pages */
+.grid {
+  width: 100%;
+}
+
+.grid .row,
+.row:has(> [class*="span"]) {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.grid .row.items-center,
+.row.items-center:has(> [class*="span"]) {
+  align-items: center;
+}
+
+.grid .row > [class*="span"],
+.row > [class*="span"] {
+  min-width: 0;
+}
+
+.span1 { grid-column: span 1 / span 1; }
+.span2 { grid-column: span 2 / span 2; }
+.span3 { grid-column: span 3 / span 3; }
+.span4 { grid-column: span 4 / span 4; }
+.span5 { grid-column: span 5 / span 5; }
+.span6 { grid-column: span 6 / span 6; }
+.span7 { grid-column: span 7 / span 7; }
+.span8 { grid-column: span 8 / span 8; }
+.span9 { grid-column: span 9 / span 9; }
+.span10 { grid-column: span 10 / span 10; }
+.span11 { grid-column: span 11 / span 11; }
+.span12 { grid-column: span 12 / span 12; }
+
+.offset1 {
+  grid-column-start: 2;
+}
+
+:not(.row) > .span5 {
+  max-width: 41.6667%;
+}
+
+:not(.row) > .span6 {
+  max-width: 50%;
+}

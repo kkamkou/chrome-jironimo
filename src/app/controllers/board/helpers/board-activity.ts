@@ -12,6 +12,8 @@ export interface ActivityState {
   activate(accounts: AccountConfig[], account: AccountConfig): AccountSelection;
   recordLimit(accountId: string, limit: number): void;
   recordWorkspace(accountId: string, index: number): void;
+  hasUpdateHint(): boolean;
+  dismissUpdateHint(): void;
 }
 
 /**
@@ -67,6 +69,16 @@ export class BoardActivity implements ActivityState {
       const activity = this.settings.activity;
       activity.workspace[accountId] = { ...current, index };
       this.settings.activity = activity;
+    }
+  }
+
+  hasUpdateHint(): boolean {
+    return Boolean(this.settings.activity.updateHint);
+  }
+
+  dismissUpdateHint(): void {
+    if (this.settings.activity.updateHint) {
+      this.settings.activity = { ...this.settings.activity, updateHint: false };
     }
   }
 }

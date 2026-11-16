@@ -1,0 +1,25 @@
+/* Options Page Container */
+div.container-options {
+  width: 1040px;
+  max-width: calc(100vw - 24px);
+  margin: 20px auto !important;
+  border: 1px solid #e2e2e2;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+div.container-options label.radio {
+  margin-top: 6px;
+}
+
+div.container-options div.toolbar .p-button {
+  width: 44px !important;
+  height: 36px;
+  padding: 0;
+}
+
+div.container-options div.toolbar .p-button:disabled {
+  opacity: 1 !important;
+  background-color: #008287 !important;
+  border-color: #008287 !important;
+  color: #ffffff !important;
+}

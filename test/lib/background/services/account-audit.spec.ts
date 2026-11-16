@@ -8,7 +8,7 @@ import { Settings } from '../../../../src/app/lib/settings.ts';
 test('AccountAudit returns active accounts and notifies when an enabled account is unauthorized', { timeout: 1000 }, async () => {
   assert.deepStrictEqual(
     await (async () => {
-      const alerts: string[] = [];
+      const alerts: Array<{ id: string; url: string }> = [];
       const settings = new Settings(
         {
           version: '600',
@@ -23,8 +23,8 @@ test('AccountAudit returns active accounts and notifies when an enabled account 
       );
       const notifications = new Notifications(
         {
-          create: (id, _opts, cb) => {
-            alerts.push(id);
+          create: (id, opts, cb) => {
+            alerts.push({ id, url: String(opts.contextMessage ?? '') });
             cb(id);
           },
           update: (_id, _opts, cb) => cb(true),
@@ -41,7 +41,10 @@ test('AccountAudit returns active accounts and notifies when an enabled account 
       const valid = await new AccountAudit(settings, notifications, transport).verified();
       return { validIds: valid.map(item => item.account.id), alerts };
     })(),
-    { validIds: ['good'], alerts: ['auth;bad'] },
-    'AccountAudit cannot separate active accounts from unauthorized accounts and notify'
+    {
+      validIds: ['good'],
+      alerts: [{ id: 'auth;bad', url: 'https://bad.jira' }]
+    },
+    'AccountAudit cannot separate active accounts from unauthorized accounts and notify with url'
   );
 });

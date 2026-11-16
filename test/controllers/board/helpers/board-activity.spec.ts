@@ -95,3 +95,24 @@ test('BoardActivity records updated page limit and workspace index per account',
     'BoardActivity cannot persist search limit and workspace index per account'
   );
 });
+
+test('BoardActivity reports and dismisses extension update hint in activity state', { timeout: 1000 }, () => {
+  assert.deepStrictEqual(
+    (() => {
+      const settings = new Settings(
+        {
+          version: '600',
+          activity: JSON.stringify({ lastAccount: 0, updateHint: true, workspace: {} })
+        },
+        key => key,
+        () => undefined
+      );
+      const tracker = new BoardActivity(settings);
+      const before = tracker.hasUpdateHint();
+      tracker.dismissUpdateHint();
+      return { before, after: tracker.hasUpdateHint(), stored: settings.activity.updateHint };
+    })(),
+    { before: true, after: false, stored: false },
+    'BoardActivity cannot report and dismiss extension update hint'
+  );
+});

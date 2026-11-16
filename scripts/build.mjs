@@ -11,7 +11,7 @@ const srcDir = path.join(rootDir, 'src');
 const outTscDir = path.join(rootDir, '.out-tsc');
 const buildDir = path.join(rootDir, 'build');
 const buildAppDir = path.join(buildDir, 'app');
-const version = process.env.version || '7.1.0';
+const version = process.env.version || '7.1.1';
 
 const angularLinkerPlugin = {
   name: 'angular-linker',

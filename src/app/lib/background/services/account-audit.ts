@@ -72,6 +72,7 @@ export class AccountAudit implements AccountCheck {
             : 'icons/cancel-32.png';
         this.notifications.createOrUpdate(`auth;${entry.account.id}`, {
           title: 'Unauthorized',
+          contextMessage: String(entry.account.url ?? ''),
           isClickable: true,
           message: `Please, authorize the "${entry.account.label}" account!`,
           priority: 2,

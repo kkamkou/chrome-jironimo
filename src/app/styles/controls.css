@@ -1,0 +1,336 @@
+/* PrimeNG Metro Theme Enhancements */
+.p-button {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1;
+  border-radius: 0;
+  padding: 6px 12px;
+  min-height: 32px;
+  gap: 5px;
+  box-shadow: none;
+}
+
+.p-inputgroup .p-button {
+  height: 32px;
+  min-height: 32px;
+}
+
+.p-button.p-button-sm {
+  font-size: 12px;
+  padding: 4px 8px;
+  min-height: 26px;
+}
+
+.p-button.p-button-secondary {
+  background-color: #e6e6e6;
+  border-color: #e6e6e6;
+  color: #1d1d1d;
+}
+
+.p-button.p-button-secondary:not(:disabled):hover {
+  background-color: #d4d4d4;
+  border-color: #d4d4d4;
+  color: #1d1d1d;
+}
+
+.p-button.p-button-primary,
+.p-button.default {
+  background-color: #008287;
+  border-color: #008287;
+  color: #ffffff;
+}
+
+.p-button.p-button-primary:not(:disabled):hover,
+.p-button.default:not(:disabled):hover {
+  background-color: #00aba9;
+  border-color: #00aba9;
+  color: #ffffff;
+}
+
+.p-button.p-button-info,
+.p-button.primary {
+  background-color: #16499a;
+  border-color: #16499a;
+  color: #ffffff;
+}
+
+.p-button.p-button-info:not(:disabled):hover,
+.p-button.primary:not(:disabled):hover {
+  background-color: #0050ef;
+  border-color: #0050ef;
+  color: #ffffff;
+}
+
+.p-button.p-button-success,
+.p-button.success {
+  background-color: #60a917;
+  border-color: #60a917;
+  color: #ffffff;
+}
+
+.p-button.p-button-success:not(:disabled):hover,
+.p-button.success:not(:disabled):hover {
+  background-color: #7ad61d;
+  border-color: #7ad61d;
+  color: #ffffff;
+}
+
+.p-button.p-button-danger,
+.p-button.danger {
+  background-color: #e51400;
+  border-color: #e51400;
+  color: #ffffff;
+}
+
+.p-button.p-button-danger:not(:disabled):hover,
+.p-button.danger:not(:disabled):hover {
+  background-color: #a20025;
+  border-color: #a20025;
+  color: #ffffff;
+}
+
+.p-button.p-button-contrast,
+.p-button.inverse,
+.p-button.active {
+  background-color: #222222;
+  border-color: #222222;
+  color: #ffffff;
+}
+
+.p-button.p-button-contrast:not(:disabled):hover,
+.p-button.inverse:not(:disabled):hover,
+.p-button.active:not(:disabled):hover {
+  background-color: #3a3a3a;
+  border-color: #3a3a3a;
+  color: #ffffff;
+}
+
+.p-button.bg-fg-darkBlue {
+  background-color: #16499a;
+  border-color: #16499a;
+  color: #ffffff;
+}
+
+.p-button.bg-fg-darkBlue:not(:disabled):hover {
+  background-color: #0050ef;
+  border-color: #0050ef;
+}
+
+.p-buttongroup {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.button-set,
+.toolbar {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+/* Metro Form Inputs & Selects */
+.input-control {
+  display: block;
+  position: relative;
+  width: 100%;
+}
+
+.input-control.size3 {
+  width: 180px;
+}
+
+.p-inputtext,
+.p-textarea,
+.p-select {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  border-radius: 0;
+  border-color: #bababa;
+  box-shadow: none;
+}
+
+.p-inputtext:enabled:hover,
+.p-textarea:enabled:hover,
+.p-select:not(.p-disabled):hover {
+  border-color: #787878;
+}
+
+.p-inputtext:enabled:focus,
+.p-textarea:enabled:focus,
+.p-select:not(.p-disabled).p-focus {
+  border-color: #008287;
+  box-shadow: none;
+  outline: none;
+}
+
+.p-inputtext {
+  height: 32px;
+  min-height: 32px;
+  padding: 5px 8px;
+}
+
+.p-textarea {
+  resize: vertical;
+  min-height: 58px;
+  padding: 6px 8px;
+}
+
+.p-select {
+  height: 32px;
+  min-height: 32px;
+}
+
+.p-select .p-select-label {
+  padding: 5px 8px;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.p-select.bg-crimson {
+  background-color: #a20025 !important;
+  border-color: #a20025 !important;
+  color: #ffffff !important;
+}
+
+.p-select.bg-crimson .p-select-label,
+.p-select.bg-crimson .p-select-dropdown {
+  color: #ffffff !important;
+}
+
+.p-select-overlay {
+  border-radius: 0;
+  border: 1px solid #008287;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+  z-index: 2000 !important;
+}
+
+.p-select-option {
+  font-size: 13px;
+  padding: 5px 10px;
+  border-radius: 0;
+}
+
+.p-toggleswitch.switch-disabled:not(.p-toggleswitch-checked) .p-toggleswitch-slider,
+.switch-disabled .p-toggleswitch:not(.p-toggleswitch-checked) .p-toggleswitch-slider {
+  background: #a20025 !important;
+  border-color: #a20025 !important;
+}
+
+.p-divider.p-divider-horizontal {
+  margin: 14px 0;
+}
+
+.p-tag {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 400;
+  padding: 3px 8px;
+  border-radius: 0;
+  background-color: #f3f3f3;
+  border: 1px solid #d9d9d9;
+  color: #222222;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.p-tag.cursor-pointer:hover {
+  background-color: #008287;
+  border-color: #008287;
+  color: #ffffff;
+}
+
+/* Metro Notices, Balloons & Info Labels */
+.notice {
+  position: relative;
+  padding: 14px 16px;
+  border: 1px solid #dcdcdc;
+  border-left: 4px solid #008287;
+  background-color: #ffffff;
+  color: #333333;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.notice.marker-on-left::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: -10px;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 6px solid #008287;
+}
+
+.balloon {
+  position: relative;
+  border: 1px solid #cccccc;
+  background-color: #fbfbfb;
+}
+
+.label.info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 6px 10px;
+  background-color: #1ba1e2;
+  color: #ffffff;
+  font-size: 12px;
+}
+
+.label.info [class^="icon-"],
+.label.info [class*=" icon-"] {
+  font-size: 16px;
+}
+
+/* PrimeNG Metro Tabs */
+.p-tabs {
+  background: transparent;
+}
+
+.p-tablist {
+  background: transparent;
+}
+
+.p-tablist-tab-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  border: 0 !important;
+  border-bottom: 2px solid #008287 !important;
+  background: transparent !important;
+}
+
+.p-tab {
+  padding: 8px 18px !important;
+  background-color: #eeeeee !important;
+  color: #222222 !important;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  border: 0 !important;
+  margin: 0 !important;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.p-tab:not(.p-tab-active):hover {
+  background-color: #dcdcdc !important;
+  color: #1d1d1d !important;
+}
+
+.p-tab.p-tab-active {
+  background-color: #008287 !important;
+  color: #ffffff !important;
+}
+
+.p-tablist-active-bar {
+  display: none !important;
+}
+
+.p-tabpanels {
+  border: 1px solid #e2e2e2 !important;
+  border-top: 0 !important;
+  padding: 20px !important;
+  background-color: #ffffff !important;
+}

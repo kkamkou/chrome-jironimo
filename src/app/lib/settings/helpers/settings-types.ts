@@ -55,6 +55,7 @@ export interface AccountActivity {
 
 export interface ActivityConfig {
   lastAccount: number;
+  updateHint?: boolean;
   workspace: Record<string, AccountActivity>;
 }
 
