@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
-  ElementRef,
+  type ElementRef,
   type OnDestroy,
   type OnInit,
   ViewChild,
@@ -13,7 +13,6 @@ import _ from 'lodash';
 import { ButtonDirective } from 'primeng/button';
 import { ButtonGroup } from 'primeng/buttongroup';
 import { InputText } from 'primeng/inputtext';
-import { Popover } from 'primeng/popover';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { Select } from 'primeng/select';
 import type { JiraClient } from '../lib/adapter/jira.ts';
@@ -41,7 +40,6 @@ import { PagedSearch } from './board/services/paged-search.ts';
     ButtonDirective,
     ButtonGroup,
     InputText,
-    Popover,
     ProgressSpinner,
     Select,
     I18nPipe,
@@ -52,8 +50,6 @@ import { PagedSearch } from './board/services/paged-search.ts';
 })
 export class IndexComponent implements OnInit, OnDestroy {
   @ViewChild('filterInput') filterInput?: ElementRef<HTMLInputElement>;
-  @ViewChild('toolsButton', { read: ElementRef }) toolsButton?: ElementRef<HTMLElement>;
-  @ViewChild('updatePopover') updatePopover?: Popover;
   readonly maxResultsOptions = [8, 16, 25, 50, 75, 100, 150, 250];
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly settings = new Settings();
@@ -92,6 +88,7 @@ export class IndexComponent implements OnInit, OnDestroy {
   filterFieldDisplay = false;
   filterText = '';
   homePanelVisible = false;
+  updateHintVisible = false;
   jiraRequestFailed: [string, string] | null = null;
   api!: JiraClient;
   timer!: WorklogTimer;
@@ -166,7 +163,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   dismissUpdateHint(): void {
     this.activity.dismissUpdateHint();
-    this.updatePopover?.hide();
+    this.updateHintVisible = false;
   }
 
   workspaceRefresh(offset?: number, limit?: number): void {
@@ -265,12 +262,9 @@ export class IndexComponent implements OnInit, OnDestroy {
   }
 
   private showUpdateHint(): void {
-    if (this.activity.hasUpdateHint()) {
-      setTimeout(() => {
-        if (this.toolsButton?.nativeElement) {
-          this.updatePopover?.show(null, this.toolsButton.nativeElement);
-        }
-      });
-    }
+    this.activity.checkUpdateHint(visible => {
+      this.updateHintVisible = visible;
+      this.cdr.markForCheck();
+    });
   }
 }

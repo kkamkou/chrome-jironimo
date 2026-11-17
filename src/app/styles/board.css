@@ -173,8 +173,37 @@ div.container-widget div#tiles-toolbar {
 }
 
 .update-hint-popover {
-  max-width: 220px;
-  z-index: 1060 !important;
+  position: absolute;
+  top: 32px;
+  right: 0;
+  width: 220px;
+  padding: 8px 10px;
+  background-color: #ffffff;
+  border: 1px solid #008287;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+  z-index: 1060;
+}
+
+.update-hint-popover::before,
+.update-hint-popover::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  right: 8px;
+  border-style: solid;
+  border-color: transparent;
+  pointer-events: none;
+}
+
+.update-hint-popover::before {
+  border-width: 6px;
+  border-bottom-color: #008287;
+}
+
+.update-hint-popover::after {
+  right: 9px;
+  border-width: 5px;
+  border-bottom-color: #ffffff;
 }
 
 .update-hint {
