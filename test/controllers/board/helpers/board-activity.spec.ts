@@ -116,3 +116,31 @@ test('BoardActivity reports and dismisses extension update hint in activity stat
     'BoardActivity cannot report and dismiss extension update hint'
   );
 });
+
+test('BoardActivity hydrates update hint from chrome local storage when service worker updated activity', { timeout: 1000 }, async () => {
+  assert.strictEqual(
+    await new Promise<boolean>(resolve => {
+      (globalThis as any).chrome = {
+        storage: {
+          local: {
+            get: (_keys: string, cb: (items: Record<string, string>) => void) =>
+              cb({
+                activity: JSON.stringify({ lastAccount: 0, updateHint: true, workspace: {} })
+              })
+          }
+        }
+      };
+      const settings = new Settings(
+        {
+          version: '600',
+          activity: JSON.stringify({ lastAccount: 0, workspace: {} })
+        },
+        key => key,
+        () => undefined
+      );
+      new BoardActivity(settings).checkUpdateHint(flag => resolve(flag));
+    }),
+    true,
+    'BoardActivity cannot hydrate update hint from chrome local storage'
+  );
+});

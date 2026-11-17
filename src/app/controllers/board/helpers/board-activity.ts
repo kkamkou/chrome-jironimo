@@ -13,6 +13,7 @@ export interface ActivityState {
   recordLimit(accountId: string, limit: number): void;
   recordWorkspace(accountId: string, index: number): void;
   hasUpdateHint(): boolean;
+  checkUpdateHint(callback: (visible: boolean) => void): void;
   dismissUpdateHint(): void;
 }
 
@@ -74,6 +75,19 @@ export class BoardActivity implements ActivityState {
 
   hasUpdateHint(): boolean {
     return Boolean(this.settings.activity.updateHint);
+  }
+
+  checkUpdateHint(callback: (visible: boolean) => void): void {
+    if (typeof chrome !== 'undefined' && chrome.storage?.local) {
+      chrome.storage.local.get('activity', items => {
+        if (items?.activity) {
+          this.settings.setStorageData({ activity: String(items.activity) });
+        }
+        callback(this.hasUpdateHint());
+      });
+      return;
+    }
+    callback(this.hasUpdateHint());
   }
 
   dismissUpdateHint(): void {
