@@ -4,7 +4,16 @@ div.container-options {
   max-width: calc(100vw - 24px);
   margin: 20px auto !important;
   border: 1px solid #e2e2e2;
+  border-top: 3px solid #4f46e5;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+div.container-options h1 img.brand-logo {
+  display: inline-block;
+  width: 34px;
+  height: 34px;
+  vertical-align: -6px;
+  margin-right: 8px;
 }
 
 div.container-options label.radio {

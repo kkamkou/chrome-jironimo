@@ -11,7 +11,7 @@ const srcDir = path.join(rootDir, 'src');
 const outTscDir = path.join(rootDir, '.out-tsc');
 const buildDir = path.join(rootDir, 'build');
 const buildAppDir = path.join(buildDir, 'app');
-const version = process.env.version || '7.1.1';
+const version = process.env.version || '7.2.0';
 
 const angularLinkerPlugin = {
   name: 'angular-linker',
@@ -64,7 +64,7 @@ async function run() {
   for (const dir of ['_locales', 'icons', 'themes', 'views']) {
     fs.cpSync(path.join(srcDir, dir), path.join(buildDir, dir), {
       recursive: true,
-      filter: src => path.basename(src).toLowerCase() !== 'jira.svg'
+      filter: src => !src.toLowerCase().endsWith('.svg')
     });
   }
 

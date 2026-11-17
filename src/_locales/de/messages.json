@@ -14,9 +14,6 @@
   "jiraApiUrlRequired": {
     "message": "JIRA™ URL ist benötigt um den Service zu verwenden"
   },
-  "optionsAboutIcons": {
-    "message": "Symbole"
-  },
   "btnSave": {
     "message": "Speichern"
   },
