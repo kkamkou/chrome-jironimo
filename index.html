@@ -13,15 +13,17 @@
     <meta name="twitter:title" content="Jironimo for Atlassian JIRA™ — Chrome Extension">
     <meta name="twitter:description" content="Run JQL Workspaces, switch JIRA statuses inline, and track worklogs from your browser toolbar.">
     <meta name="twitter:image" content="images/og-social-1200x630.png">
-    <link rel="icon" type="image/png" href="images/app-48.png">
+    <link rel="icon" type="image/svg+xml" href="images/app.svg">
+    <link rel="alternate icon" type="image/png" href="images/app-48.png">
+    <link rel="apple-touch-icon" href="images/app-128.png">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <header class="site-header">
       <div class="container nav-bar">
         <a href="#" class="brand-link">
-          <img src="images/app-128.png" alt="Jironimo Logo">
-          <span>jironimo <span class="brand-tag">v7.1</span></span>
+          <img src="images/app.svg" alt="Jironimo Logo">
+          <span>jironimo <span class="brand-tag">for JIRA™</span></span>
         </a>
 
         <ul class="nav-links">
@@ -79,20 +81,23 @@
 
           <div class="showcase-panel">
             <div class="showcase-tabs" role="tablist" aria-label="Interface Preview">
-              <button type="button" class="showcase-tab active" data-img="images/ui-popup-board.png" data-caption="LIVE WORKSPACE BOARD — ACTIVE WORKLOG TIMER &amp; PRIORITY TILES" data-status="● Timer Running (PLAT-811)">
+              <button type="button" role="tab" aria-selected="true" class="showcase-tab active" data-img="images/ui-popup-board.png" data-caption="LIVE WORKSPACE BOARD — ACTIVE WORKLOG TIMER &amp; PRIORITY TILES" data-status="● Timer Running (PLAT-811)">
                 1. Live Board &amp; Timer
               </button>
-              <button type="button" class="showcase-tab" data-img="images/ui-popup-transitions.png" data-caption="INLINE ISSUE TRANSITIONS &amp; QUICK TOOLS PANEL" data-status="● Inline Status Menu">
+              <button type="button" role="tab" aria-selected="false" class="showcase-tab" data-img="images/ui-popup-transitions.png" data-caption="INLINE ISSUE TRANSITIONS &amp; QUICK TOOLS PANEL" data-status="● Inline Status Menu">
                 2. Inline Transitions
               </button>
-              <button type="button" class="showcase-tab" data-img="images/ui-options-workspaces.png" data-caption="CUSTOM JQL WORKSPACES &amp; STRICT SYNTAX VALIDATOR" data-status="✔ JQL Verified">
+              <button type="button" role="tab" aria-selected="false" class="showcase-tab" data-img="images/ui-options-workspaces.png" data-caption="CUSTOM JQL WORKSPACES, TAB ORDERING &amp; VALIDATOR" data-status="✔ JQL Verified">
                 3. JQL Workspaces
               </button>
-              <button type="button" class="showcase-tab" data-img="images/ui-options-colors.png" data-caption="PRIORITY COLORS SAMPLED FROM JIRA™ &amp; 30-TONE METRO PALETTE" data-status="● Custom Priorities">
+              <button type="button" role="tab" aria-selected="false" class="showcase-tab" data-img="images/ui-options-colors.png" data-caption="SAMPLED JIRA™ PRIORITIES &amp; 30-TONE METRO PALETTE" data-status="● 30 Metro Colors">
                 4. Priority Colors
               </button>
-              <button type="button" class="showcase-tab" data-img="images/ui-options-general-probe.png" data-caption="SMART CONNECTION PROBE — AUTO-DETECT REST API V3 &amp; V2" data-status="✔ Session Authenticated">
-                5. API Probe
+              <button type="button" role="tab" aria-selected="false" class="showcase-tab" data-img="images/ui-options-sizes.png" data-caption="PROPORTIONAL ISSUE-TYPE TILE SIZES (HALF TO QUADRO)" data-status="● 5 Tile Dimensions">
+                5. Tile Sizes
+              </button>
+              <button type="button" role="tab" aria-selected="false" class="showcase-tab" data-img="images/ui-options-general-probe.png" data-caption="SMART CONNECTION PROBE — AUTO-DETECT REST API V3 &amp; V2" data-status="✔ Session Authenticated">
+                6. API Probe
               </button>
             </div>
 
@@ -141,13 +146,13 @@
           </div>
 
           <div class="role-selector" role="tablist" aria-label="Role Workflows">
-            <button type="button" class="role-tab-btn active" data-role="developers">
+            <button type="button" role="tab" aria-selected="true" class="role-tab-btn active" data-role="developers">
               01. Software Developers
             </button>
-            <button type="button" class="role-tab-btn" data-role="scrum-masters">
+            <button type="button" role="tab" aria-selected="false" class="role-tab-btn" data-role="scrum-masters">
               02. Scrum Masters
             </button>
-            <button type="button" class="role-tab-btn" data-role="product-owners">
+            <button type="button" role="tab" aria-selected="false" class="role-tab-btn" data-role="product-owners">
               03. Product Owners
             </button>
           </div>
@@ -250,8 +255,8 @@
                     <span>Click Detach Window in the tools panel to pop Jironimo into a clean standalone board for screen-sharing during standups and retrospectives.</span>
                   </li>
                   <li>
-                    <strong>Multi-Account Squad Switching</strong>
-                    <span>Supporting multiple teams or client JIRA instances? Connect up to 10 Accounts and run Shared Workspaces across all of them.</span>
+                    <strong>Custom Workspace Ordering &amp; Multi-Account</strong>
+                    <span>Arrange Workspace tabs in your exact ceremony order and switch across up to 10 squad or client JIRA Accounts effortlessly.</span>
                   </li>
                   <li>
                     <strong>Focus-First WIP Discipline</strong>
@@ -262,7 +267,7 @@
 
               <div class="window-frame">
                 <div class="window-header">
-                  <span>SCRUM MASTER WORKFLOW — JQL WATCHERS &amp; ALERTS</span>
+                  <span>SCRUM MASTER WORKFLOW — JQL WATCHERS &amp; TAB ORDER</span>
                   <span class="status-indicator">✔ Strict JQL Verified</span>
                 </div>
                 <img src="images/ui-options-workspaces.png" alt="Jironimo JQL Workspaces and blocker alerts for Scrum Masters">
@@ -315,13 +320,13 @@
                 <span class="role-Tagline po">For Product Owners &amp; Product Managers</span>
                 <h3>See Epics, Priorities &amp; Release Progress <strong>at a Single Glance.</strong></h3>
                 <p class="role-lead">
-                  Standard JIRA lists flatten Epics, Stories, and trivial chores into identical rows. Jironimo's Metro Tile grid restores visual hierarchy through proportional sizing, sampled priority colors, and embedded progress bars.
+                  Standard JIRA lists flatten Epics, Stories, and minor sub-tasks into identical rows. Jironimo's Metro Tile grid restores visual hierarchy through proportional sizing, sampled priority colors, and embedded progress bars.
                 </p>
 
                 <ul class="benefit-list po">
                   <li>
                     <strong>Proportional Issue-Type Tile Sizing</strong>
-                    <span>Scale <em>Epics</em> to Triple-width (380×120), <em>Stories</em> to Double-width (250×120), and <em>Tasks/Bugs</em> to Default (120×120) or Half (55×55).</span>
+                    <span>Scale <em>Epics</em> to Triple-width (380×120) or Quadro (510×120), <em>Stories</em> to Double-width (250×120), <em>Tasks/Bugs</em> to Default (120×120), and <em>Sub-Tasks</em> to compact Half (55×55).</span>
                   </li>
                   <li>
                     <strong>One-Click Priority Sampling from JIRA</strong>
@@ -424,7 +429,7 @@
               </p>
             </article>
 
-            <article class="feature-tile accent-cobalt">
+            <article class="feature-tile accent-teal">
               <span class="feature-kicker">Multi-Server</span>
               <h3>Accounts &amp; Smart API Probe</h3>
               <p>
@@ -436,7 +441,7 @@
               <span class="feature-kicker">Custom Filters</span>
               <h3>JQL Workspaces &amp; Watchers</h3>
               <p>
-                Scope JQL <strong>Workspaces</strong> to a single Account or share them across all Accounts. Validate JQL syntax live, reorder tabs, import favorite JIRA filters, and receive background desktop notifications.
+                Scope JQL <strong>Workspaces</strong> to a single Account or share them across all Accounts. Validate JQL syntax live, reorder tabs freely, import favorite JIRA filters, and receive background desktop notifications.
               </p>
             </article>
 
@@ -493,69 +498,93 @@
         <div class="container">
           <div class="section-header">
             <span class="section-kicker">Visual Tour &amp; Store Assets</span>
-            <h2>Inside <strong>Jironimo v7.1</strong></h2>
-            <p>High-resolution Chrome Web Store screenshots and interface overviews across every view.</p>
+            <h2>Inside <strong>Jironimo</strong></h2>
+            <p>High-resolution Chrome Web Store screenshots and interface overviews across every view. Click any visual to inspect full size.</p>
           </div>
 
           <div class="gallery-grid">
-            <div class="gallery-card">
-              <img src="images/store-1-overview.png" alt="Jironimo Command Center Overview" loading="lazy">
+            <div class="gallery-card" data-lightbox-src="images/store-1-overview.png" data-lightbox-title="01. Your JIRA Command Center in One Shortcut (1280×800)">
+              <div class="gallery-media">
+                <img src="images/store-1-overview.png" alt="Jironimo Command Center Overview" loading="lazy">
+                <span class="gallery-zoom-hint">Click to Enlarge</span>
+              </div>
               <div class="gallery-caption">
                 <strong>01. Your JIRA Command Center in One Shortcut</strong>
                 <span>1280×800 • Store Screenshot</span>
               </div>
             </div>
 
-            <div class="gallery-card">
-              <img src="images/store-2-developers.png" alt="Jironimo for Software Developers" loading="lazy">
+            <div class="gallery-card" data-lightbox-src="images/store-2-developers.png" data-lightbox-title="02. Built for Developers: Inline Transitions &amp; Timer (1280×800)">
+              <div class="gallery-media">
+                <img src="images/store-2-developers.png" alt="Jironimo for Software Developers" loading="lazy">
+                <span class="gallery-zoom-hint">Click to Enlarge</span>
+              </div>
               <div class="gallery-caption">
                 <strong>02. Built for Developers: Inline Transitions &amp; Timer</strong>
                 <span>1280×800 • Store Screenshot</span>
               </div>
             </div>
 
-            <div class="gallery-card">
-              <img src="images/store-3-scrum-masters.png" alt="Jironimo for Scrum Masters" loading="lazy">
+            <div class="gallery-card" data-lightbox-src="images/store-3-scrum-masters.png" data-lightbox-title="03. Built for Scrum Masters: Live Impediment Radar (1280×800)">
+              <div class="gallery-media">
+                <img src="images/store-3-scrum-masters.png" alt="Jironimo for Scrum Masters" loading="lazy">
+                <span class="gallery-zoom-hint">Click to Enlarge</span>
+              </div>
               <div class="gallery-caption">
                 <strong>03. Built for Scrum Masters: Live Impediment Radar</strong>
                 <span>1280×800 • Store Screenshot</span>
               </div>
             </div>
 
-            <div class="gallery-card">
-              <img src="images/store-4-product-owners.png" alt="Jironimo for Product Owners" loading="lazy">
+            <div class="gallery-card" data-lightbox-src="images/store-4-product-owners.png" data-lightbox-title="04. Built for Product Owners: Visual Epics &amp; Priorities (1280×800)">
+              <div class="gallery-media">
+                <img src="images/store-4-product-owners.png" alt="Jironimo for Product Owners" loading="lazy">
+                <span class="gallery-zoom-hint">Click to Enlarge</span>
+              </div>
               <div class="gallery-caption">
                 <strong>04. Built for Product Owners: Visual Epics &amp; Priorities</strong>
                 <span>1280×800 • Store Screenshot</span>
               </div>
             </div>
 
-            <div class="gallery-card">
-              <img src="images/store-5-privacy-setup.png" alt="Smart Connection Probe and Direct Browser-to-JIRA Privacy" loading="lazy">
+            <div class="gallery-card" data-lightbox-src="images/store-5-privacy-setup.png" data-lightbox-title="05. Smart Connection Probe &amp; 100% Local Privacy (1280×800)">
+              <div class="gallery-media">
+                <img src="images/store-5-privacy-setup.png" alt="Smart Connection Probe and Direct Browser-to-JIRA Privacy" loading="lazy">
+                <span class="gallery-zoom-hint">Click to Enlarge</span>
+              </div>
               <div class="gallery-caption">
                 <strong>05. Smart Connection Probe &amp; 100% Local Privacy</strong>
                 <span>1280×800 • Store Screenshot</span>
               </div>
             </div>
 
-            <div class="gallery-card">
-              <img src="images/promo-marquee-1400x560.png" alt="Chrome Web Store Marquee Promo Banner" loading="lazy">
+            <div class="gallery-card" data-lightbox-src="images/promo-marquee-1400x560.png" data-lightbox-title="Chrome Web Store Marquee Promo Banner (1400×560)">
+              <div class="gallery-media">
+                <img src="images/promo-marquee-1400x560.png" alt="Chrome Web Store Marquee Promo Banner" loading="lazy">
+                <span class="gallery-zoom-hint">Click to Enlarge</span>
+              </div>
               <div class="gallery-caption">
                 <strong>Chrome Web Store Marquee Banner</strong>
                 <span>1400×560 • Promo Tile</span>
               </div>
             </div>
 
-            <div class="gallery-card">
-              <img src="images/jironimo-frontend-full.jpg" alt="Jironimo Popup Board and Inline Transitions" loading="lazy">
+            <div class="gallery-card" data-lightbox-src="images/jironimo-frontend-full.jpg" data-lightbox-title="Popup Workspace Board &amp; Inline Transitions (736×768)">
+              <div class="gallery-media">
+                <img src="images/jironimo-frontend-full.jpg" alt="Jironimo Popup Board and Inline Transitions" loading="lazy">
+                <span class="gallery-zoom-hint">Click to Enlarge</span>
+              </div>
               <div class="gallery-caption">
                 <strong>Popup Workspace Board &amp; Inline Transitions</strong>
                 <span>736×768 • Frontend Composite</span>
               </div>
             </div>
 
-            <div class="gallery-card">
-              <img src="images/jironimo-options-full.jpg" alt="Jironimo Settings Suite: Accounts, Workspaces, Priority Colors, Tile Sizes" loading="lazy">
+            <div class="gallery-card" data-lightbox-src="images/jironimo-options-full.jpg" data-lightbox-title="Complete Settings Suite: Accounts, JQL, Colors &amp; Tile Sizes (1024×768)">
+              <div class="gallery-media">
+                <img src="images/jironimo-options-full.jpg" alt="Jironimo Settings Suite: Accounts, Workspaces, Priority Colors, Tile Sizes" loading="lazy">
+                <span class="gallery-zoom-hint">Click to Enlarge</span>
+              </div>
               <div class="gallery-caption">
                 <strong>Complete Settings Suite (Accounts, JQL, Colors, Sizes)</strong>
                 <span>1024×768 • Options Composite</span>
@@ -568,9 +597,12 @@
       <!-- Bottom Call to Action -->
       <section class="cta-banner">
         <div class="container cta-box">
-          <div>
-            <h2>Ready to Keep JIRA <strong>One Shortcut Away?</strong></h2>
-            <p>Free, open-source, and built for agile teams who value focus and speed.</p>
+          <div class="cta-brand">
+            <img src="images/app.svg" alt="Jironimo Icon">
+            <div>
+              <h2>Ready to Keep JIRA <strong>One Shortcut Away?</strong></h2>
+              <p>Free, open-source, and built for agile teams who value focus and speed.</p>
+            </div>
           </div>
           <div class="hero-ctas" style="margin-bottom: 0;">
             <a href="https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl" target="_blank" rel="noopener" class="btn btn-lime">
@@ -586,8 +618,9 @@
 
     <footer class="site-footer">
       <div class="container footer-row">
-        <div>
-          <strong>jironimo for JIRA™</strong> • Created by <a href="http://2ka.by" target="_blank" rel="noopener">Kanstantsin Kamkou</a> • Licensed under Boost Software License 1.0 (BSL-1.0)
+        <div class="footer-brand">
+          <img src="images/app.svg" alt="">
+          <span><strong>jironimo for JIRA™</strong> • Created by <a href="http://2ka.by" target="_blank" rel="noopener">Kanstantsin Kamkou</a> • Boost Software License 1.0 (BSL-1.0)</span>
         </div>
         <div class="footer-links">
           <a href="https://chrome.google.com/webstore/detail/jironimo/bplmocfiilcboedgegkcndbngiicdihl" target="_blank" rel="noopener">Chrome Web Store</a>
@@ -598,6 +631,17 @@
       </div>
     </footer>
 
+    <!-- Full-Size Gallery Lightbox -->
+    <div id="lightbox" class="lightbox-backdrop" role="dialog" aria-modal="true" aria-labelledby="lightbox-title">
+      <div class="lightbox-frame">
+        <div class="lightbox-bar">
+          <span id="lightbox-title">Preview</span>
+          <button type="button" id="lightbox-close" class="lightbox-close" aria-label="Close preview">&times;</button>
+        </div>
+        <img id="lightbox-image" src="" alt="">
+      </div>
+    </div>
+
     <script>
       // Hero Showcase Switcher
       const showcaseTabs = document.querySelectorAll('.showcase-tab');
@@ -607,8 +651,12 @@
 
       showcaseTabs.forEach(tab => {
         tab.addEventListener('click', () => {
-          showcaseTabs.forEach(t => t.classList.remove('active'));
+          showcaseTabs.forEach(t => {
+            t.classList.remove('active');
+            t.setAttribute('aria-selected', 'false');
+          });
           tab.classList.add('active');
+          tab.setAttribute('aria-selected', 'true');
           showcaseImg.src = tab.dataset.img;
           showcaseCaption.textContent = tab.dataset.caption;
           showcaseStatus.textContent = tab.dataset.status;
@@ -620,7 +668,11 @@
       const rolePanels = document.querySelectorAll('.role-panel');
 
       function activateRole(roleKey) {
-        roleBtns.forEach(b => b.classList.toggle('active', b.dataset.role === roleKey));
+        roleBtns.forEach(b => {
+          const active = b.dataset.role === roleKey;
+          b.classList.toggle('active', active);
+          b.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
         rolePanels.forEach(p => p.classList.toggle('active', p.id === 'role-' + roleKey));
       }
 
@@ -645,6 +697,36 @@
             btn.textContent = 'Select below';
           }
         });
+      });
+
+      // Gallery Lightbox
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-image');
+      const lightboxTitle = document.getElementById('lightbox-title');
+      const lightboxClose = document.getElementById('lightbox-close');
+
+      function closeLightbox() {
+        lightbox.classList.remove('open');
+        lightboxImg.src = '';
+      }
+
+      document.querySelectorAll('[data-lightbox-src]').forEach(card => {
+        card.addEventListener('click', () => {
+          lightboxImg.src = card.dataset.lightboxSrc;
+          lightboxImg.alt = card.dataset.lightboxTitle || '';
+          lightboxTitle.textContent = card.dataset.lightboxTitle || '';
+          lightbox.classList.add('open');
+        });
+      });
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', event => {
+        if (event.target === lightbox) closeLightbox();
+      });
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && lightbox.classList.contains('open')) {
+          closeLightbox();
+        }
       });
     </script>
   </body>

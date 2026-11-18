@@ -30,10 +30,10 @@
 * **Live Impediment Radar:** Create dedicated JQL **Workspaces** for sprint blockers, flagged tickets, and stale in-progress work with background desktop notifications.
 * **Persistent Blocker Alerts:** Enable *Notifications require interaction* on critical Workspaces so sprint impediments never slip past unnoticed.
 * **Detachable Standup Window (`1024×768`):** Pop Jironimo out into a standalone window for clean screen-sharing during daily standups, refinement, and retrospectives.
-* **Multi-Account Squad Switching:** Connect up to 10 JIRA **Accounts** and switch between teams on the fly, or run Shared Workspaces across every server.
+* **Custom Workspace Ordering & Multi-Account Switching:** Arrange Workspace tabs in your exact ceremony order and switch across up to 10 JIRA **Accounts** on the fly—or run Shared Workspaces across every server.
 
 #### For Product Owners & Product Managers
-* **Visual Backlog Hierarchy:** Scale **Tile** sizes proportionally by issue type—set *Epics* to Triple-width (`380×120`), *Stories* to Double-width (`250×120`), and *Tasks/Bugs* to Default (`120×120`) or Half (`55×55`).
+* **Visual Backlog Hierarchy:** Scale **Tile** sizes proportionally by issue type—set *Epics* to Triple-width (`380×120`) or Quadro (`510×120`), *Stories* to Double-width (`250×120`), *Tasks/Bugs* to Default (`120×120`), and *Sub-Tasks* to Half (`55×55`).
 * **Sample Custom Priorities from JIRA:** Pull your server's exact priority definitions in one click and map them to 30 vibrant Metro palette tones per Account.
 * **Import Favorite JIRA Filters:** Bring all your saved favorite filters from JIRA into Jironimo Workspaces with a single click.
 * **Progress Bars & Estimates at a Glance:** Track remaining time estimates, completion progress bars, and closed checkmarks right on the face of every Tile.
@@ -96,10 +96,14 @@
 
 ## 4. Visual Asset Inventory (`images/`)
 
+### Brand Icons
+* `images/app.svg` — Vector primary brand icon (`512×512` viewBox)
+* `images/app-128.png` & `images/app-48.png` — Raster brand icons
+
 ### Chrome Web Store Screenshots (`1280×800` PNG)
-1. `images/store-1-overview.png` — Hero overview: Live Workspace Board, Worklog Timer & Priority Tiles
-2. `images/store-2-developers.png` — Developer workflow: Inline Status Transitions & Worklog Timer
-3. `images/store-3-scrum-masters.png` — Scrum Master workflow: JQL Workspaces, Validator & Blocker Notifications
+1. `images/store-1-overview.png` — Hero overview: Live Workspace Board, Worklog Timer & Proportional Priority Tiles
+2. `images/store-2-developers.png` — Developer workflow: Inline Status Transitions, Quick Tools & Worklog Timer
+3. `images/store-3-scrum-masters.png` — Scrum Master workflow: JQL Workspaces, Tab Ordering, Validator & Blocker Alerts
 4. `images/store-4-product-owners.png` — Product Owner workflow: Sampled Priority Colors, Metro Palette & Epic Sizing
 5. `images/store-5-privacy-setup.png` — Security & Setup: Smart Connection Probe (REST API v3 & v2) & Local Privacy
 
@@ -111,10 +115,10 @@
 ### Composite & Raw UI Captures
 * `images/jironimo-frontend-full.jpg` (`736×768`) & `images/jironimo-frontend.jpg` (`640×668`) — Updated popup board composites
 * `images/jironimo-options-full.jpg` (`1024×768`) & `images/jironimo-options.jpg` (`640×480`) — Updated 4-panel settings composites
-* `images/ui-popup-board.png` — Raw popup board with active Worklog Timer
+* `images/ui-popup-board.png` — Raw popup board with active Worklog Timer & proportional Tile sizes
 * `images/ui-popup-transitions.png` — Raw popup board with inline Transitions menu & Tools panel
 * `images/ui-options-general-probe.png` — Raw General Settings with Connection Probe modal
-* `images/ui-options-workspaces.png` — Raw Workspaces (JQL) Settings with verified queries
+* `images/ui-options-workspaces.png` — Raw Workspaces (JQL) Settings with verified queries & custom ordering
 * `images/ui-options-colors.png` — Raw Priority Colors & Metro Palette Settings
 * `images/ui-options-sizes.png` — Raw Issue-Type Tile Sizes Settings
 * `images/ui-options-timer.png` — Raw Worklog Timer & Refresh Interval Settings

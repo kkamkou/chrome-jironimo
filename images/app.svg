@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="52%" stop-color="#4f46e5"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02"/>
+    </linearGradient>
+    <linearGradient id="topCyan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0ea5e9"/>
+    </linearGradient>
+    <linearGradient id="hookCyan" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <linearGradient id="stemWhite" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+    <linearGradient id="baseLav" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="50%" stop-color="#c4b5fd"/>
+      <stop offset="100%" stop-color="#ddd6fe"/>
+    </linearGradient>
+    <linearGradient id="shTop" x1="359" y1="130" x2="379" y2="157" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0f172a" stop-opacity="0.26"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="shRight" x1="303" y1="382" x2="283" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1e1b4b" stop-opacity="0.24"/>
+      <stop offset="100%" stop-color="#1e1b4b" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="shLeft" x1="153" y1="382" x2="171" y2="406" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1e1b4b" stop-opacity="0.26"/>
+      <stop offset="100%" stop-color="#1e1b4b" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="j-clip">
+      <polygon points="212,94 408,94 336,418 104,418 138,265 220,265 202,346 270,346 310,166 196,166"/>
+    </clipPath>
+  </defs>
+
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <rect x="2" y="2" width="508" height="508" rx="110" fill="none" stroke="url(#rim)" stroke-width="4"/>
+
+  <g clip-path="url(#j-clip)">
+    <polygon points="100,422 340,422 276,340 196,340" fill="url(#baseLav)"/>
+    <polygon points="270,346 336,418 292,418 238,346" fill="url(#shRight)"/>
+    <polygon points="202,346 104,418 152,418 234,346" fill="url(#shLeft)"/>
+
+    <polygon points="410,92 336,418 270,346 308,162" fill="url(#stemWhite)"/>
+    <polygon points="310,166 408,94 396,148 298,220" fill="url(#shTop)"/>
+
+    <polygon points="138,265 220,265 202,346 104,418" fill="url(#hookCyan)"/>
+    <polygon points="212,94 408,94 310,166 196,166" fill="url(#topCyan)"/>
+  </g>
+</svg>
